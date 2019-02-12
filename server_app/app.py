@@ -46,9 +46,13 @@ port = int(os.getenv('PORT', '3000'))
 
 # devices
 gateway_printer = '004A0DB4'
-gateway_corener = '004A1092'
+gateway_corner  = '004A1092'
 gateway_drone   = '004A10EB'
 device_eui      = '78AF580300000493'
+
+# time format
+TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+01:00"
+TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
 
 
@@ -56,17 +60,6 @@ device_eui      = '78AF580300000493'
 @app.route('/')
 def hello_world():
 	return '<b>Welcome to the Drone application!</b>'
-
-
-# # adds a random datapoint to DB
-# @app.route('/test')
-# def test_function():
-# 	# create dummy datapoint
-# 	datapoint = DataPoint(devEUI='testestest', time='now', deviceType='testdevice', sp_fact=666, 
-# 		channel='666', sub_band='666')
-# 	print('adding test datapoint')
-# 	datapoint.save()
-# 	return 'Added testing datapoint with devEUI "testestest"'
 
 
 # Swisscom LPN listener to POST from actility
@@ -89,7 +82,7 @@ def sc_lpn():
 	# parse communication parameters
 	r_deveui    = j['DevEUI_uplink']['DevEUI']
 	r_time      = j['DevEUI_uplink']['Time']
-	r_timestamp = dt.datetime.strptime(r_time,"%Y-%m-%dT%H:%M:%S.%f+01:00")
+	r_timestamp = dt.datetime.strptime(r_time, TIME_FORMAT)
 	r_sp_fact   = j['DevEUI_uplink']['SpFact']
 	r_channel   = j['DevEUI_uplink']['Channel']
 	r_band      = j['DevEUI_uplink']['SubBand']
@@ -101,15 +94,16 @@ def sc_lpn():
 	r_payload_int = int(r_payload, 16)	# 16 as payload info in hexadecimal
 	r_real_dist   = r_payload_int         # for now just distance in payload
 
-	# store only drone gateway information or all gateways
-	store_only_drone = True
-	if store_only_drone:
-		# initialize g_ig
+	# store only one gateway information or all gateways
+	store_only_one = True
+	unique_gateway = gateway_drone
+	if store_only_one:
+		# initialize g_id
 		g_id = []
 
-		# store only metadata of drone gateway
+		# store only metadata of gateway
 		for item in j['DevEUI_uplink']['Lrrs']['Lrr']:
-			if gateway_drone == item['Lrrid']:
+			if unique_gateway == item['Lrrid']:
 				g_id   = item['Lrrid']
 				g_rssi = item['LrrRSSI']
 				g_snr  = item['LrrSNR']
@@ -117,8 +111,8 @@ def sc_lpn():
 		
 		# if drone gateway not detected
 		if not g_id:
-			print('information not received by drone GW')
-			return 'Datapoint not saved (not received by drone GW)'
+			print('information not received by set gateway')
+			return 'Datapoint not saved (not received by set gateway)'
 	else:
 		# set gateways parameters for transmission arriving on multiple gateways
 		g_id   = []
@@ -157,27 +151,11 @@ def print_json():
 @app.route('/query', methods=['GET'])
 def db_query():
 	query = request.args
- 
+
 	# defaults: only with 0 txpow, sf of 7 and in the previous year
 	sf = 7
 	start = dt.datetime.now() - dt.timedelta(days=365)  # begins selection one year ago
 	end = dt.datetime.now() + dt.timedelta(hours=2)		# just in case we have timestamps in the future?
-
-	#enable for deleting objects. Attention, deletes parts of the database! 
-	if 'delete' in query and 'start' in query and 'end' in query:
-		end = dt.datetime.strptime(query['end'], TIME_FORMAT)
-		start = dt.datetime.strptime(query['start'], TIME_FORMAT)
-		#DataPoint.objects(track_ID=query['delete'],timestamp__lt=end,timestamp__gt=start).delete()
-		#return 'objects deleted'
-		return 'delete feature disabled for security reasons'
-
-	if 'delpoint' in query:
-		print('query for deleting point received')
-		deltime_start = dt.datetime.strptime(query['delpoint'], TIME_FORMAT_DEL) - dt.timedelta(seconds=2)
-		deltime_end = dt.datetime.strptime(query['delpoint'], TIME_FORMAT_DEL) + dt.timedelta(seconds=2)
-		n_points = DataPoint.objects(timestamp__lt=deltime_end, timestamp__gt=deltime_start).count()
-		DataPoint.objects(timestamp__lt=deltime_end, timestamp__gt=deltime_start).delete()
-		return '{} points deleted'.format(n_points)
 
 	if 'start' in query:
 		start = dt.datetime.strptime(query['start'], TIME_FORMAT)
@@ -188,25 +166,11 @@ def db_query():
 	if 'sf' in query:
 		sf = int(query['sf'])
 
-	# for selection of only data corresponding to one end-device
-	if 'device' in query:
-		device = query['device']
-		datapoints = DataPoint.objects(devEUI=device,timestamp__lt=end,timestamp__gt=start,sp_fact=sf).to_json()
-	else:
-		datapoints = DataPoint.objects(timestamp__lt=end,timestamp__gt=start,sp_fact=sf).to_json()
+	datapoints = DataPoint.objects(timestamp__lt=end,timestamp__gt=start,sp_fact=sf).to_json()
 
 	#return datapoints 		# for directly in browser
 	return Response(datapoints,mimetype='application/json', 	# for automatic file download
 		headers={'Content-Disposition':'attachment;filename=query.json'})
-
-
-# delete the database: be careful !! 
-@app.route('/delete_all')
-def delete_function():
-	#Datapoint.objects.delete()
-	#return 'database is now empty'
-	return 'delete function removed for security reasons'
-
 
 
 # start the app

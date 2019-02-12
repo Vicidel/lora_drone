@@ -13,8 +13,14 @@
  *      Brief: Example Sketch to use LoRa GMX-LR1 Module
  *      Version: 1.2
  *      
+ * Inspired by: March 9, 2018
+ *      Author: Micha Burger michaburger92@gmail.com
+ *      Brief: LoRaWAN GPS mapper for signal strength
+ *      Version: 1.0
+ *      
  *  Created on: February 7, 2019
  *      Author: Victor Delafontaine
+ *      Version: 1.1
  *
  *      License: it's free - do whatever you want! ( provided you leave the credits)
  *
@@ -77,6 +83,7 @@ void setup() {
     SeeedOled.clearDisplay();          //clear the screen and set start position to top left corner
     SeeedOled.setNormalDisplay();      //Set display to normal mode (i.e non-inverse mode)
     SeeedOled.setHorizontalMode();     //Set addressing mode to Page Mode
+    splashScreen();
     
     // GMX-LR init pass callback function
     gmxLR_init(&loraRx);

@@ -158,10 +158,9 @@ def db_query():
 	end = dt.datetime.now() + dt.timedelta(hours=2)		# just in case we have timestamps in the future?
 
 	if 'start' in query:
-		start = dt.datetime.strptime(query['start'], TIME_FORMAT)
-
+		start = dt.datetime.strptime(query['start'], TIME_FORMAT_QUERY)
 	if 'end' in query:
-		end = dt.datetime.strptime(query['end'], TIME_FORMAT)
+		end = dt.datetime.strptime(query['end'], TIME_FORMAT_QUERY)
 
 	if 'sf' in query:
 		sf = int(query['sf'])
@@ -171,6 +170,14 @@ def db_query():
 	#return datapoints 		# for directly in browser
 	return Response(datapoints,mimetype='application/json', 	# for automatic file download
 		headers={'Content-Disposition':'attachment;filename=query.json'})
+
+
+# deletes the database
+@app.route('/delete_all')
+def db_delete():
+	#DataPoint.objects.delete()
+	#return 'database is now empty'
+	return 'delete function removed for (obvious) security reasons'
 
 
 # start the app

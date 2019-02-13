@@ -152,16 +152,24 @@ def print_json():
 def db_query():
 	query = request.args
 
+	# to delete datapoint based on id
+	if 'delete_point' in query and 'id' in query:
+		id = String(query['id'])
+		DataPoint.objects(_id['oid']=id).delete()
+		return 'point of id %s deleted' %(id)
+
 	# defaults: only with 0 txpow, sf of 7 and in the previous year
 	sf = 7
 	start = dt.datetime.now() - dt.timedelta(days=365)  # begins selection one year ago
 	end = dt.datetime.now() + dt.timedelta(hours=2)		# just in case we have timestamps in the future?
 
+	# change start and end time
 	if 'start' in query:
 		start = dt.datetime.strptime(query['start'], TIME_FORMAT_QUERY)
 	if 'end' in query:
 		end = dt.datetime.strptime(query['end'], TIME_FORMAT_QUERY)
 
+	# change SF to select
 	if 'sf' in query:
 		sf = int(query['sf'])
 

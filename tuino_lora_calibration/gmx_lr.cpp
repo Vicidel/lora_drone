@@ -333,6 +333,15 @@ byte gmxLR_isNetworkJoined(void)
 
 // Lora Network
 
+//modified by Micha Burger 09.03.2018
+byte gmxLR_setSF(String sf, String& ret){
+  
+  _sendCmd( "AT+DR="+sf+"\r" );
+
+  return(_parseResponse(ret));    
+
+}
+
 // returns true or false
 byte gmxLR_getADR(void)
 {
@@ -723,5 +732,3 @@ void gmxLR_StringToHex(String string, char *data, int *len )
 
     *len = j;
 }
-
-

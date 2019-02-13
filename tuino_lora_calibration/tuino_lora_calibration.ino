@@ -20,6 +20,7 @@
  *      
  *  Created on: February 7, 2019
  *      Author: Victor Delafontaine
+ *      Brief: LoRaWAN localization using drone-mounted gateway
  *      Version: 1.1
  *
  *      License: it's free - do whatever you want! ( provided you leave the credits)
@@ -34,7 +35,9 @@
 #include <Wire.h>
 
 // LoRa transmission parameters
-long int timer_period_to_tx = 20000;    // time between transmissions
+#define DISABLE_ADR 0   // ADR has to be enabled to set custom SF
+#define SF LORA_SF7     // only SF=7
+long int timer_period_to_tx = 5000;     // time between transmissions
 long int timer_millis_lora_tx = 0;      // time of last transmission
 
 // user set LED
@@ -64,7 +67,7 @@ void setup() {
     String loraClass,LoRaWANClass;
     String version;
     
-    char string[64];
+    char send_string[64];
     
     String adr,dcs,dxrate;
     
@@ -162,8 +165,8 @@ void setup() {
         Serial.print("Join:");
         Serial.println(join_wait);
         SeeedOled.setTextXY(1, 0);
-        sprintf(string, "Attempt #%d", join_wait);
-        SeeedOled.putString(string);
+        sprintf(send_string, "Attempt: %d", join_wait);
+        SeeedOled.putString(send_string);
         
         join_wait++;
       
@@ -182,6 +185,33 @@ void setup() {
     SeeedOled.putString("Joined!");
     Serial.println("Network Joined!");
 
+    /*               ::::   block to disable ADR and force set SF   ::::
+    // disable ADR ?
+    if(DISABLE_ADR) gmxLR_setADR("0");
+    Serial.print("ADR: ");
+    Serial.println(gmxLR_getADR());
+    SeeedOled.setTextXY(4, 0);
+    if (gmxLR_getADR()==0)
+        SeeedOled.putString("ADR inactive");
+    else
+        SeeedOled.putString("ADR active");
+    
+    // set spreading factor
+    String sf = "";
+    gmxLR_setSF(String(SF), sf);
+    Serial.print("Data rate (SF): ");
+    Serial.println(sf);
+    SeeedOled.setTextXY(5, 0);
+    sprintf(send_string,"SF: %s", SF);
+    SeeedOled.putString(send_string);
+
+    // get TX power
+    Serial.print("TXpow: ");
+    String answ = "";
+    gmxLR_getTXPower(answ);
+    Serial.println(answ);
+    */
+    
     delay(1000);
     SeeedOled.clearDisplay();
 }

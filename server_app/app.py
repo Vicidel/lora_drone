@@ -96,7 +96,7 @@ def sc_lpn():
 
 	# store only one gateway information or all gateways
 	store_only_one = True
-	unique_gateway = gateway_drone
+	unique_gateway = gateway_corner
 	if store_only_one:
 		# initialize g_id
 		g_id = []

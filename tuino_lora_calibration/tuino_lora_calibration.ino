@@ -345,9 +345,9 @@ void loop() {
             sendLora("14");
             break;
         case 5:
-            oledPut(3, "Sending: B2=50m");
+            oledPut(3, "Sending: 32=50m");
             oledPutNumMessage(4);
-            sendLora("B2");
+            sendLora("32");
             break;
         case 7:
             oledPut(3, "Sending: 64=100m");

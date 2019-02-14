@@ -98,16 +98,19 @@ def sc_lpn():
 	store_only_one = True
 	unique_gateway = gateway_corner
 	if store_only_one:
-		# initialize g_id
-		g_id = []
+		# set gateways parameters for transmission arriving on multiple gateways
+		g_id   = []
+		g_rssi = []
+		g_snr  = []
+		g_esp  = []
 
 		# store only metadata of gateway
 		for item in j['DevEUI_uplink']['Lrrs']['Lrr']:
 			if unique_gateway == item['Lrrid']:
-				g_id   = item['Lrrid']
-				g_rssi = item['LrrRSSI']
-				g_snr  = item['LrrSNR']
-				g_esp  = item['LrrESP']
+				g_id.append(item['Lrrid'])
+				g_rssi.append(item['LrrRSSI'])
+				g_snr.append(item['LrrSNR'])
+				g_esp.append(item['LrrESP'])
 		
 		# if drone gateway not detected
 		if not g_id:
@@ -138,13 +141,19 @@ def sc_lpn():
 	return 'Datapoint DevEUI %s saved' %(r_deveui)
 
 
-# output JSON
+# output JSON as downloaded file
 @app.route('/json', methods=['GET'])
-def print_json():
+def export_json():
 	print('exporting full database as JSON')
-	#return DataPoint.objects.to_json() 		# for directly in browser
-	return Response(DataPoint.objects.to_json(),mimetype='application/json', 	# for automatic file download
+	return Response(DataPoint.objects.to_json(),mimetype='application/json',
 		headers={'Content-Disposition':'attachment;filename=database.json'})
+
+
+# print JSON directly in browser
+@app.route('/json_print', methods=['GET'])
+def print_json():
+	print('printing full database as JSON')
+	return DataPoint.objects.to_json()
 
 
 #querying the database and giving back a JSON file
@@ -164,7 +173,7 @@ def db_query():
 		end = dt.datetime.strptime(query['end'], TIME_FORMAT_QUERY)
 		start = dt.datetime.strptime(query['start'], TIME_FORMAT_QUERY)
 		DataPoint.objects(timestamp__lt=end,timestamp__gt=start).delete()
-		return 'point deleted'
+		return 'time interval deleted'
 
 	# defaults: only with 0 txpow, sf of 7 and in the previous year
 	sf = 7

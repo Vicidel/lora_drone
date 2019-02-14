@@ -57,6 +57,7 @@ void loraRx(){
 
 // FSM state
 int current_state = 0;  // from 0 to 7, 8 states
+int message_sent = 0;
 
 
 void setup() {
@@ -232,6 +233,13 @@ void oledPutState(int line, int current_state){
     SeeedOled.putString(send_string);
 }
 
+void oledPutNumMessage(int line){
+    char send_string[64];
+    SeeedOled.setTextXY(line, 0);
+    sprintf(send_string,"Messages: %d", message_sent);
+    SeeedOled.putString(send_string);
+}
+
 // if time has passed, send a message
 void sendLora(char *str){
 
@@ -263,6 +271,9 @@ void sendLora(char *str){
 
         // set last emitting time as now
         timer_millis_lora_tx = millis();
+
+        // increase message sent
+        message_sent++; 
     }
 }
 
@@ -293,57 +304,63 @@ void loop() {
         case 0:
             oledPut(3, "Not sending");
             oledPut(4, "  go to 10m");
+            message_sent = 0;
             break;
         case 2:
             oledPut(3, "Not sending");
             oledPut(4, "  go to 20m");
+            message_sent = 0;
             break;
         case 4:
             oledPut(3, "Not sending");
             oledPut(4, "  go to 50m");
+            message_sent = 0;
             break;
         case 6:
             oledPut(3, "Not sending");
             oledPut(4, "  go to 100m");
+            message_sent = 0;
             break;
         case 8:
             oledPut(3, "Not sending");
             oledPut(4, "  go to 150m");
+            message_sent = 0;
             break;
         case 10:
             oledPut(3, "Not sending");
             oledPut(4, "  go to 200m");
+            message_sent = 0;
             break;
 
         // current_state odd: sending data to server, don't move it
         case 1:
             oledPut(3, "Sending: 0A=10m");
-            oledPut(4, "                ");
+            oledPutNumMessage(4);
             sendLora("0A");
             break;
         case 3:
             oledPut(3, "Sending: 14=20m");
-            oledPut(4, "                ");
-            sendLora("14"); 
+            oledPutNumMessage(4);
+            sendLora("14");
             break;
         case 5:
             oledPut(3, "Sending: B2=50m");
-            oledPut(4, "                ");
-            sendLora("B2"); 
+            oledPutNumMessage(4);
+            sendLora("B2");
             break;
         case 7:
             oledPut(3, "Sending: 64=100m");
-            oledPut(4, "                ");
-            sendLora("64"); 
+            oledPutNumMessage(4);
+            sendLora("64");
             break;
         case 9:
             oledPut(3, "Sending: 96=150m");
-            oledPut(4, "                ");
-            sendLora("96"); 
+            oledPutNumMessage(4);
+            sendLora("96");
             break;
         case 11:
             oledPut(3, "Sending: C8=200m");
-            oledPut(4, "                ");
+            oledPutNumMessage(4);
             sendLora("C8"); 
             break;
     }

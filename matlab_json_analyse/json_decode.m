@@ -5,6 +5,9 @@ db = jsondecode(fileread(fname));
 % to take only values from on gateway
 gateway_we_want = "004A1092";
 
+% calibration distances
+d_calib = [10 20 50 100 150 200];
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,6 +40,11 @@ end
 % normalize time to be in seconds, staring from first collection
 time = (time - time(1))/1000;
 
+% get mean ESP and RSSI
+means_ESP = [mean(ESP(distances==10)) mean(ESP(distances==20)) mean(ESP(distances==50))...
+             mean(ESP(distances==100)) mean(ESP(distances==150)) mean(ESP(distances==200))]';
+means_RSSI = [mean(RSSI(distances==10)) mean(RSSI(distances==20)) mean(RSSI(distances==50))...
+             mean(RSSI(distances==100)) mean(RSSI(distances==150)) mean(RSSI(distances==200))]';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -50,12 +58,12 @@ time = (time - time(1))/1000;
 % ylabel('RSSI [dBm]');
 % title('RSSI function of distance');
 
-% plotting ESP against distance
-figure();
-plot(distances, ESP, 'x');
-xlabel('Real distance [m]');
-ylabel('ESP [dBm]');
-title('ESP function of distance');
+% % plotting ESP against distance
+% figure();
+% plot(distances, ESP, 'x');
+% xlabel('Real distance [m]');
+% ylabel('ESP [dBm]');
+% title('ESP function of distance');
 
 % % plotting RSSI against time
 % figure();
@@ -63,10 +71,19 @@ title('ESP function of distance');
 % xlabel('Time [s]');
 % ylabel('RSSI [dBm]');
 % title('RSSI function of time');
-% 
+
 % % plotting ESP against time
 % figure();
 % plot(time, ESP, 'x');
 % xlabel('Time [s]');
 % ylabel('ESP [dBm]');
 % title('ESP function of time');
+
+% % plot mean ESP and RSSI against distances
+% figure();
+% plot(d_calib, means_ESP, 'ro-'); hold on; grid on;
+% plot(d_calib, means_RSSI, 'bo-');
+% legend('ESP', 'RSSI');
+% xlabel('Distance [m]');
+% ylabel('ESP/RSSI [dBm]');
+% title('Mean ESP and RSSI');

@@ -186,6 +186,7 @@ void setup() {
     SeeedOled.putString("Joined!");
     Serial.println("Network Joined!");
 
+    
     /*               ::::   block to disable ADR and force set SF   ::::
     // disable ADR ?
     if(DISABLE_ADR) gmxLR_setADR("0");
@@ -257,6 +258,9 @@ void sendLora(char *str){
 
     // check delta TX Timeout
     if ( delta_lora_tx > timer_period_to_tx) {
+        
+        // set last emitting time as now
+        timer_millis_lora_tx = millis();
 
         // transmit the string passed in argument
         gmxLR_TXData(str);    // Transmit data as HEX String
@@ -268,9 +272,6 @@ void sendLora(char *str){
         _snr = SNR.toInt();
         Serial.print("SNR: ");
         Serial.println(_snr);
-
-        // set last emitting time as now
-        timer_millis_lora_tx = millis();
 
         // increase message sent
         message_sent++; 

@@ -1,46 +1,72 @@
 % opens the JSON file and stores it in variable
-fname = 'database.json';
+fname = 'database2.json';
 db = jsondecode(fileread(fname));
-
-% note: the file should already be sorted with only messages we want
-% so good SF, only gateway we want...
 
 % to take only values from on gateway
 gateway_we_want = "004A1092";
 
-db = db(end-1:end);     % to work only on two last, temporary
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%  DECODING SECTION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % get values
 number_message = length(db);
 distances = zeros(number_message, 1);
 RSSI = zeros(number_message, 1);
-ESP = zeros(number_message, 1);
-SNR = zeros(number_message, 1);
+ESP  = zeros(number_message, 1);
+SNR  = zeros(number_message, 1);
+time = zeros(number_message, 1);
 for i=1: number_message
     gateway_index = 0;
-    distances(i) = db{i}.real_dist;
-    for j=1: length(db{1}.gateway_id(:))
-        if db{i}.gateway_id(j) == gateway_we_want
+    distances(i) = db(i).real_dist;
+    for j=1: length(db(i).gateway_id(:))
+        if db(i).gateway_id(j) == gateway_we_want
             gateway_index = j;
         end
     end
     if gateway_index ~= 0
-        RSSI(i) = db{i}.gateway_rssi(gateway_index);
-        SNR(i)  = db{i}.gateway_snr(gateway_index);
-        ESP(i)  = db{i}.gateway_esp(gateway_index);        
+        RSSI(i) = db(i).gateway_rssi(gateway_index);
+        SNR(i)  = db(i).gateway_snr(gateway_index);
+        ESP(i)  = db(i).gateway_esp(gateway_index);  
+        time(i) = db(i).timestamp.x_date;
     end
 end
 
-% plotting RSSI
-figure();
-scatter(distances, RSSI, 'filled');
-xlabel('Real distance [m]');
-ylabel('RSSI [dBm]');
-title('RSSI function of distance');
+% normalize time to be in seconds, staring from first collection
+time = (time - time(1))/1000;
 
-% plotting ESP
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%  PLOTTING SECTION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % plotting RSSI against distance
+% figure();
+% plot(distances, RSSI, 'x');
+% xlabel('Real distance [m]');
+% ylabel('RSSI [dBm]');
+% title('RSSI function of distance');
+
+% plotting ESP against distance
 figure();
-scatter(distances, ESP, 'filled');
+plot(distances, ESP, 'x');
 xlabel('Real distance [m]');
 ylabel('ESP [dBm]');
 title('ESP function of distance');
+
+% % plotting RSSI against time
+% figure();
+% plot(time, RSSI, 'x');
+% xlabel('Time [s]');
+% ylabel('RSSI [dBm]');
+% title('RSSI function of time');
+% 
+% % plotting ESP against time
+% figure();
+% plot(time, ESP, 'x');
+% xlabel('Time [s]');
+% ylabel('ESP [dBm]');
+% title('ESP function of time');

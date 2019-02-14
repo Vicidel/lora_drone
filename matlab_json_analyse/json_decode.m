@@ -1,5 +1,5 @@
 % opens the JSON file and stores it in variable
-fname = 'database2.json';
+fname = 'database3.json';
 db = jsondecode(fileread(fname));
 
 % to take only values from on gateway
@@ -87,3 +87,11 @@ means_RSSI = [mean(RSSI(distances==10)) mean(RSSI(distances==20)) mean(RSSI(dist
 % xlabel('Distance [m]');
 % ylabel('ESP/RSSI [dBm]');
 % title('Mean ESP and RSSI');
+
+% plot average time between two measures
+figure();
+plot(time(2:end)-time(1:end-1));
+xlabel('Message number [-]');
+ylabel('Time [s]');
+title('Time between two messages');
+

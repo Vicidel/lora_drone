@@ -37,7 +37,7 @@
 // LoRa transmission parameters
 #define DISABLE_ADR 0   // ADR has to be enabled to set custom SF
 #define SF LORA_SF7     // only SF=7
-long int timer_period_to_tx = 5000;     // time between transmissions
+long int timer_period_to_tx = 4000;     // time between transmissions
 long int timer_millis_lora_tx = 0;      // time of last transmission
 
 // user set LED

@@ -1,0 +1,22 @@
+20190212_database
+	contains testing things
+	mostly junk to test functioning of server app and message system
+
+20190214_1458_database
+	first real data, distances corrupted (B2 instead of 32 -> distances of 178...)
+	usable for testing matlab functions only
+
+20190215am_allSF
+	measure at all distances (10 -> 200), ~50 at each
+	at 10m is too small, probably due antenna placement...
+	at 150m abnormal spike up 
+
+20190215am_SF7
+	same but only with SF=7
+
+20190215pm_antenna45 20190215pm_antennaup 20190215pm_antennahor
+	experiments to know which antenna orientation is the best for which distance
+	~70 at each distance (5mn)
+	distances from 10 to 150 (ignore 200, data does not arrive...)
+	antenna angled upward (up), at 45 degrees in direction of node (45) and horizontaly in the direction of the node (hor)
+	

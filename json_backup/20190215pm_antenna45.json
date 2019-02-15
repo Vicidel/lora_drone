@@ -1,0 +1,10166 @@
+[
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550239645754
+    },
+    "tx_power": 8.0,
+    "time": "2019-02-15T14:07:25.754+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b98eb2c1e0000faa6d90"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239649891
+    },
+    "tx_power": 8.0,
+    "time": "2019-02-15T14:07:29.891+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -93.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b992b2c1e0000faa6d91"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550239654043
+    },
+    "tx_power": 8.0,
+    "time": "2019-02-15T14:07:34.043+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -91.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b996b2c1e0000faa6d92"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550239658191
+    },
+    "tx_power": 8.0,
+    "time": "2019-02-15T14:07:38.191+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -93.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b99ab2c1e0000faa6d93"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550239662331
+    },
+    "tx_power": 8.0,
+    "time": "2019-02-15T14:07:42.331+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -91.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b99eb2c1e0000faa6d94"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550239666486
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:07:46.486+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -95.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9a2b2c1e0000faa6d95"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550239670633
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:07:50.633+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -96.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9a6b2c1e0000faa6d96"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239674777
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:07:54.777+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -94.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -94.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9abb2c1e0000faa6d97"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550239678925
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:07:58.925+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -94.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -95.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9afb2c1e0000faa6d98"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550239683075
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:03.075+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -97.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9b3b2c1e0000faa6d99"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239687086
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:07.086+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9b7b2c1e0000faa6d9a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239691086
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:11.086+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -99.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9bbb2c1e0000faa6d9b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239695096
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:15.096+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -97.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9bfb2c1e0000faa6d9c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550239699105
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:19.105+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -97.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9c3b2c1e0000faa6d9d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550239703113
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:23.113+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -97.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9c7b2c1e0000faa6d9e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550239707116
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:27.116+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -97.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9cbb2c1e0000faa6d9f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239711128
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:31.128+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9cfb2c1e0000faa6da0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550239715142
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:35.142+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -96.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9d3b2c1e0000faa6da1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550239719146
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:39.146+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -96.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9d7b2c1e0000faa6da2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550239723157
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:43.157+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -97.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9dbb2c1e0000faa6da3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239727156
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:47.156+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -96.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9dfb2c1e0000faa6da4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550239731165
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:51.165+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -96.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9e3b2c1e0000faa6da5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239735177
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:55.177+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -97.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9e7b2c1e0000faa6da6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550239739187
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:08:59.187+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -96.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9ebb2c1e0000faa6da7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239743191
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:03.191+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9efb2c1e0000faa6da8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550239747199
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:07.199+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -95.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9f3b2c1e0000faa6da9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550239751206
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:11.206+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -96.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9f7b2c1e0000faa6daa"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239755218
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:15.218+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9fbb2c1e0000faa6dab"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550239759225
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:19.225+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -99.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66b9ffb2c1e0000faa6dac"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550239763229
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:23.229+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -97.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba03b2c1e0000faa6dad"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239767241
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:27.241+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -99.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba07b2c1e0000faa6dae"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550239771252
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:31.252+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -95.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba0bb2c1e0000faa6daf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239775261
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:35.261+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -97.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba0fb2c1e0000faa6db0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550239779266
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:39.266+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -97.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba13b2c1e0000faa6db1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550239783272
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:43.272+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -96.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba17b2c1e0000faa6db2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239787282
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:47.282+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -95.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba1bb2c1e0000faa6db3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550239791293
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:51.293+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -99.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba1fb2c1e0000faa6db4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239799301
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:09:59.301+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -99.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba27b2c1e0000faa6db5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550239803316
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:03.316+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -98.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba2bb2c1e0000faa6db6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550239807320
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:07.320+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -99.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba2fb2c1e0000faa6db7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239811331
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:11.331+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba33b2c1e0000faa6db8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239815333
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:15.333+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -94.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -94.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba37b2c1e0000faa6db9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550239819340
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:19.340+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -95.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba3bb2c1e0000faa6dba"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550239823351
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:23.351+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -99.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba3fb2c1e0000faa6dbb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550239827361
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:27.361+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -95.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba43b2c1e0000faa6dbc"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239831363
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:31.363+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -99.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba47b2c1e0000faa6dbd"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550239835380
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:35.380+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -96.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba4bb2c1e0000faa6dbe"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239839383
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:39.383+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -97.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba4fb2c1e0000faa6dbf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550239843393
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:43.393+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -96.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba53b2c1e0000faa6dc0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550239847404
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:47.404+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -97.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba57b2c1e0000faa6dc1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550239851413
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:51.413+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -95.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba5bb2c1e0000faa6dc2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550239855415
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:55.415+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -96.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba60b2c1e0000faa6dc3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550239859424
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:10:59.424+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -94.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -94.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba63b2c1e0000faa6dc4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550239863436
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:03.436+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -99.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba67b2c1e0000faa6dc5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239867444
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:07.444+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -94.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -94.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba6bb2c1e0000faa6dc6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239871444
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:11.444+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba6fb2c1e0000faa6dc7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550239875458
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:15.458+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -96.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba73b2c1e0000faa6dc8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.75
+    ],
+    "timestamp": {
+      "$date": 1550239879470
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:19.470+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -96.2547
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba77b2c1e0000faa6dc9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239883472
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:23.472+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -99.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba7bb2c1e0000faa6dca"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550239887475
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:27.475+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -96.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba7fb2c1e0000faa6dcb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550239891489
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:31.489+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -95.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba83b2c1e0000faa6dcc"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239895498
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:35.498+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -99.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba87b2c1e0000faa6dcd"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550239899508
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:39.508+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -97.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba8bb2c1e0000faa6dce"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239903516
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:43.516+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -94.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -94.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba8fb2c1e0000faa6dcf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239907519
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:47.519+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba93b2c1e0000faa6dd0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239911528
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:51.528+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -95.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba97b2c1e0000faa6dd1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239915531
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:55.531+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -99.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba9bb2c1e0000faa6dd2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239919548
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:11:59.548+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -95.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66ba9fb2c1e0000faa6dd3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550239923551
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:03.551+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -82.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -82.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baa3b2c1e0000faa6dd4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550239927560
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:07.560+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -85.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -85.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baa7b2c1e0000faa6dd5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550239931568
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:11.568+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -85.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -85.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baabb2c1e0000faa6dd6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239935570
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:15.570+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -83.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bab0b2c1e0000faa6dd7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550239939581
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:19.581+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -82.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -82.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bab3b2c1e0000faa6dd8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550239943593
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:23.593+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -85.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -85.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bab7b2c1e0000faa6dd9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.25
+    ],
+    "timestamp": {
+      "$date": 1550239947599
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:27.599+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -87.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -87.391785
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66babcb2c1e0000faa6dda"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550239951610
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:31.610+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -84.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -84.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66babfb2c1e0000faa6ddb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550239955620
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:12:35.620+01:00",
+    "sub_band": "G0",
+    "real_dist": 10,
+    "gateway_rssi": [
+      -87.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -87.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bac4b2c1e0000faa6ddc"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550239990771
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:10.771+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -79.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bae7b2c1e0000faa6ddd"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550239994914
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:14.914+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -83.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baebb2c1e0000faa6dde"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550239999056
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:19.056+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -83.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baefb2c1e0000faa6ddf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240003210
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:23.210+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -83.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baf3b2c1e0000faa6de0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240007355
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:27.355+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -79.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baf7b2c1e0000faa6de1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240011495
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:31.495+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -81.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bafbb2c1e0000faa6de2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240015652
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:35.652+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -81.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66baffb2c1e0000faa6de3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240019795
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:39.795+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -81.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb04b2c1e0000faa6de4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240023800
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:43.800+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -83.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb08b2c1e0000faa6de5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240027808
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:47.808+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -79.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb0cb2c1e0000faa6de6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240031816
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:51.816+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -79.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb10b2c1e0000faa6de7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240035826
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:55.826+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -83.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb14b2c1e0000faa6de8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240039835
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:13:59.835+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -81.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb18b2c1e0000faa6de9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240043845
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:03.845+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -81.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb1cb2c1e0000faa6dea"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240047854
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:07.854+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -81.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb20b2c1e0000faa6deb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240051856
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:11.856+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -79.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb24b2c1e0000faa6dec"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240055866
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:15.866+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -78.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -78.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb28b2c1e0000faa6ded"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240059876
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:19.876+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -81.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb2cb2c1e0000faa6dee"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240063880
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:23.880+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -83.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb30b2c1e0000faa6def"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240071896
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:31.896+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -83.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb38b2c1e0000faa6df0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240075908
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:35.908+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -81.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb3cb2c1e0000faa6df1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240079917
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:39.917+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -81.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb40b2c1e0000faa6df2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240083923
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:43.923+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -81.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb44b2c1e0000faa6df3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240087927
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:47.927+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -79.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb48b2c1e0000faa6df4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240091936
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:51.936+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -79.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb4cb2c1e0000faa6df5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240095948
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:55.948+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -81.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb50b2c1e0000faa6df6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240099960
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:14:59.960+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -79.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb54b2c1e0000faa6df7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240103958
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:03.958+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -83.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb58b2c1e0000faa6df8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240107968
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:07.968+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -83.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb5db2c1e0000faa6df9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240111978
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:11.978+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -83.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb60b2c1e0000faa6dfa"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240115989
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:15.989+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -83.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb64b2c1e0000faa6dfb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240119991
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:19.991+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -81.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb68b2c1e0000faa6dfc"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240124004
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:24.004+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -83.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb6cb2c1e0000faa6dfd"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240128009
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:28.009+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -83.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb70b2c1e0000faa6dfe"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240132014
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:32.014+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -83.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb74b2c1e0000faa6dff"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240136028
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:36.028+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -84.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -84.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb78b2c1e0000faa6e00"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240140030
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:40.030+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -79.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb7cb2c1e0000faa6e01"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240144042
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:44.042+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -78.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -78.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb80b2c1e0000faa6e02"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240148052
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:48.052+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -81.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb84b2c1e0000faa6e03"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240152054
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:52.054+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -79.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb88b2c1e0000faa6e04"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240156070
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:15:56.070+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -83.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb8cb2c1e0000faa6e05"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240160070
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:00.070+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -83.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb90b2c1e0000faa6e06"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240164079
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:04.079+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -79.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb94b2c1e0000faa6e07"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240168088
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:08.088+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -82.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -82.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb98b2c1e0000faa6e08"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240172103
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:12.103+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -81.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bb9cb2c1e0000faa6e09"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240176101
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:16.101+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -79.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bba0b2c1e0000faa6e0a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240180114
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:20.114+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -83.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bba4b2c1e0000faa6e0b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240184118
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:24.118+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -81.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bba8b2c1e0000faa6e0c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240188133
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:28.133+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -79.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbacb2c1e0000faa6e0d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240192136
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:32.136+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -81.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbb0b2c1e0000faa6e0e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240196148
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:36.148+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -79.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbb4b2c1e0000faa6e0f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240200151
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:40.151+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -83.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbb8b2c1e0000faa6e10"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240204156
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:44.156+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -78.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -78.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbbcb2c1e0000faa6e11"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240208166
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:48.166+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -79.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbc0b2c1e0000faa6e12"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240212178
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:52.178+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -81.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbc4b2c1e0000faa6e13"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.75
+    ],
+    "timestamp": {
+      "$date": 1550240216190
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:16:56.190+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -83.350853
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbc8b2c1e0000faa6e14"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240220191
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:00.191+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -81.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbccb2c1e0000faa6e15"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240224203
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:04.203+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -79.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbd0b2c1e0000faa6e16"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240232216
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:12.216+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -81.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbd8b2c1e0000faa6e17"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240240229
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:20.229+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -79.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbe0b2c1e0000faa6e18"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240244243
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:24.243+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -83.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbe4b2c1e0000faa6e19"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240248249
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:28.249+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -79.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbe8b2c1e0000faa6e1a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240252253
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:32.253+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -83.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -83.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbecb2c1e0000faa6e1b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550240256270
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:36.270+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -81.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbf0b2c1e0000faa6e1c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240260273
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:40.273+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -81.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbf4b2c1e0000faa6e1d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240264280
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:44.280+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -81.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbf8b2c1e0000faa6e1e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240268292
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:48.292+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -79.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -79.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bbfcb2c1e0000faa6e1f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240272302
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:52.302+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -81.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -81.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc00b2c1e0000faa6e20"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240276304
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:17:56.304+01:00",
+    "sub_band": "G0",
+    "real_dist": 20,
+    "gateway_rssi": [
+      -85.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -85.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc04b2c1e0000faa6e21"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240317698
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:18:37.698+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc2eb2c1e0000faa6e22"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240321855
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:18:41.855+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -90.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc32b2c1e0000faa6e23"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240325997
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:18:45.997+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -91.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc36b2c1e0000faa6e24"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240330144
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:18:50.144+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -91.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc3ab2c1e0000faa6e25"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240334292
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:18:54.292+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -90.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc3eb2c1e0000faa6e26"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240338443
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:18:58.443+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -93.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc42b2c1e0000faa6e27"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240342587
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:02.587+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -91.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc47b2c1e0000faa6e28"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240346732
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:06.732+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc4bb2c1e0000faa6e29"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240350887
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:10.887+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -93.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc4fb2c1e0000faa6e2a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240355035
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:15.035+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -91.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc53b2c1e0000faa6e2b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240359042
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:19.042+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -93.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc57b2c1e0000faa6e2c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240363043
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:23.043+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -91.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc5bb2c1e0000faa6e2d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240367054
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:27.054+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -91.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc5fb2c1e0000faa6e2e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240371063
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:31.063+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -93.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc63b2c1e0000faa6e2f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240375073
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:35.073+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -93.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc67b2c1e0000faa6e30"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240379074
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:39.074+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc6bb2c1e0000faa6e31"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240383086
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:43.086+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -91.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc6fb2c1e0000faa6e32"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240387097
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:47.097+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -89.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -89.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc73b2c1e0000faa6e33"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240391102
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:51.102+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -90.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc77b2c1e0000faa6e34"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240395110
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:55.110+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -93.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc7bb2c1e0000faa6e35"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240399122
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:19:59.122+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -90.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc7fb2c1e0000faa6e36"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240403126
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:03.126+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -90.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc83b2c1e0000faa6e37"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240407135
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:07.135+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -93.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc87b2c1e0000faa6e38"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240411141
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:11.141+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -90.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc8bb2c1e0000faa6e39"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240415154
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:15.154+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -91.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc8fb2c1e0000faa6e3a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240419154
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:19.154+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -91.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc93b2c1e0000faa6e3b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240423167
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:23.167+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -93.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc97b2c1e0000faa6e3c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240427170
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:27.170+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -93.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc9bb2c1e0000faa6e3d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240431178
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:31.178+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -93.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bc9fb2c1e0000faa6e3e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240435192
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:35.192+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -89.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -89.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bca3b2c1e0000faa6e3f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240439201
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:39.201+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -93.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bca7b2c1e0000faa6e40"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240443209
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:43.209+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcabb2c1e0000faa6e41"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240447219
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:47.219+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -95.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -95.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcafb2c1e0000faa6e42"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550240451218
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:51.218+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -90.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcb3b2c1e0000faa6e43"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240455232
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:55.232+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -91.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcb7b2c1e0000faa6e44"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240459235
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:20:59.235+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -91.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcbbb2c1e0000faa6e45"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240463246
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:03.246+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -93.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcbfb2c1e0000faa6e46"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240467258
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:07.258+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -91.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcc3b2c1e0000faa6e47"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240471265
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:11.265+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -93.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcc7b2c1e0000faa6e48"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240475268
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:15.268+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -91.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bccbb2c1e0000faa6e49"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240479278
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:19.278+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -93.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bccfb2c1e0000faa6e4a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240483289
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:23.289+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -93.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcd3b2c1e0000faa6e4b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240487291
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:27.291+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -89.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -89.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcd7b2c1e0000faa6e4c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240491297
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:31.297+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -91.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcdbb2c1e0000faa6e4d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240495307
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:35.307+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -93.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcdfb2c1e0000faa6e4e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240499319
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:39.319+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -91.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bce3b2c1e0000faa6e4f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240503330
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:43.330+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -91.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bce7b2c1e0000faa6e50"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240507331
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:47.331+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -90.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcebb2c1e0000faa6e51"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240511341
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:51.341+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -91.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcefb2c1e0000faa6e52"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240515349
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:55.349+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -89.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -89.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcf3b2c1e0000faa6e53"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240519361
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:21:59.361+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -91.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcf7b2c1e0000faa6e54"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240523361
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:03.361+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -90.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcfbb2c1e0000faa6e55"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240527370
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:07.370+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -90.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bcffb2c1e0000faa6e56"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240531381
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:11.381+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -93.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd03b2c1e0000faa6e57"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240535390
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:15.390+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -93.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd08b2c1e0000faa6e58"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240539399
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:19.399+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -93.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd0bb2c1e0000faa6e59"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.75
+    ],
+    "timestamp": {
+      "$date": 1550240543401
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:23.401+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -93.437256
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd0fb2c1e0000faa6e5a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550240547408
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:27.408+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -90.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd13b2c1e0000faa6e5b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240551417
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:31.417+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -90.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd17b2c1e0000faa6e5c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      10.0
+    ],
+    "timestamp": {
+      "$date": 1550240555427
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:35.427+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -93.413925
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd1bb2c1e0000faa6e5d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240559435
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:39.435+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -93.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd1fb2c1e0000faa6e5e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240563444
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:43.444+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -91.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd23b2c1e0000faa6e5f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240567454
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:47.454+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -91.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd27b2c1e0000faa6e60"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.5
+    ],
+    "timestamp": {
+      "$date": 1550240571465
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:51.465+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -93.461838
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd2bb2c1e0000faa6e61"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240575464
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:55.464+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -90.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd2fb2c1e0000faa6e62"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.25
+    ],
+    "timestamp": {
+      "$date": 1550240579482
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:22:59.482+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -90.487717
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd33b2c1e0000faa6e63"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240583485
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:23:03.485+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -89.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -89.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd37b2c1e0000faa6e64"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240587496
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:23:07.496+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -90.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -90.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd3bb2c1e0000faa6e65"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240591496
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:23:11.496+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -89.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -89.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd3fb2c1e0000faa6e66"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550240595506
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:23:15.506+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -98.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd43b2c1e0000faa6e67"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550240599518
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:23:19.518+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -101.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd47b2c1e0000faa6e68"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      9.0
+    ],
+    "timestamp": {
+      "$date": 1550240603527
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:23:23.527+01:00",
+    "sub_band": "G0",
+    "real_dist": 50,
+    "gateway_rssi": [
+      -91.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -91.514969
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd4bb2c1e0000faa6e69"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240669131
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:29.131+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -96.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd8db2c1e0000faa6e6a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240673142
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:33.142+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -93.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -93.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd91b2c1e0000faa6e6b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550240677143
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:37.143+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -99.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd95b2c1e0000faa6e6c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240681154
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:41.154+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -101.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd99b2c1e0000faa6e6d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550240685160
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:45.160+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -98.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bd9db2c1e0000faa6e6e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240689172
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:49.172+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -97.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bda1b2c1e0000faa6e6f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240693183
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:53.183+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -101.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bda5b2c1e0000faa6e70"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240697186
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:24:57.186+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -99.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bda9b2c1e0000faa6e71"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240701197
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:01.197+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -101.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdadb2c1e0000faa6e72"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240705198
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:05.198+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -99.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdb1b2c1e0000faa6e73"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.0
+    ],
+    "timestamp": {
+      "$date": 1550240709260
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:09.260+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -99.973228
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdb5b2c1e0000faa6e74"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550240713317
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:13.317+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -98.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -98.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdb9b2c1e0000faa6e75"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240717372
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:17.372+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -99.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdbdb2c1e0000faa6e76"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240721434
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:21.434+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -99.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdc1b2c1e0000faa6e77"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240725485
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:25.485+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -101.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdc5b2c1e0000faa6e78"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240729542
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:29.542+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -99.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdc9b2c1e0000faa6e79"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.0
+    ],
+    "timestamp": {
+      "$date": 1550240733603
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:33.603+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -98.455406
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdcdb2c1e0000faa6e7a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.0
+    ],
+    "timestamp": {
+      "$date": 1550240737664
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:37.664+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -99.973228
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdd2b2c1e0000faa6e7b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240741713
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:41.713+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -99.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdd6b2c1e0000faa6e7c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240745778
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:45.778+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -101.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bddab2c1e0000faa6e7d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240749831
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:49.831+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -99.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bddeb2c1e0000faa6e7e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550240753891
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:53.891+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -102.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bde2b2c1e0000faa6e7f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550240757951
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:25:57.951+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -100.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bde6b2c1e0000faa6e80"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240762004
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:02.004+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -97.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdeab2c1e0000faa6e81"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.75
+    ],
+    "timestamp": {
+      "$date": 1550240766060
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:06.060+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -101.543648
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdeeb2c1e0000faa6e82"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240770118
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:10.118+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -96.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdf2b2c1e0000faa6e83"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240774180
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:14.180+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -99.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdf6b2c1e0000faa6e84"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240778233
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:18.233+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -100.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdfab2c1e0000faa6e85"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240782295
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:22.295+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -99.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bdfeb2c1e0000faa6e86"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240786347
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:26.347+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -96.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be02b2c1e0000faa6e87"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240790407
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:30.407+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -101.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be06b2c1e0000faa6e88"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240794465
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:34.465+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -101.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be0ab2c1e0000faa6e89"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240798520
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:38.520+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -99.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be0eb2c1e0000faa6e8a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240802581
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:42.581+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -99.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be12b2c1e0000faa6e8b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240806641
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:46.641+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -97.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be17b2c1e0000faa6e8c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240810688
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:50.688+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -101.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be1bb2c1e0000faa6e8d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240814752
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:54.752+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -102.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be1fb2c1e0000faa6e8e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240818803
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:26:58.803+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -99.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be23b2c1e0000faa6e8f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550240822866
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:02.866+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -100.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be27b2c1e0000faa6e90"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240826926
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:06.926+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -99.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be2bb2c1e0000faa6e91"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240830978
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:10.978+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -96.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be2fb2c1e0000faa6e92"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550240835034
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:15.034+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -100.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be33b2c1e0000faa6e93"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.0
+    ],
+    "timestamp": {
+      "$date": 1550240839094
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:19.094+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -96.7901
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be37b2c1e0000faa6e94"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240843149
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:23.149+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be3bb2c1e0000faa6e95"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240847213
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:27.213+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -99.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be3fb2c1e0000faa6e96"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.0
+    ],
+    "timestamp": {
+      "$date": 1550240851265
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:31.265+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -99.973228
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be43b2c1e0000faa6e97"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240855327
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:35.327+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -99.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be47b2c1e0000faa6e98"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.25
+    ],
+    "timestamp": {
+      "$date": 1550240859379
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:39.379+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -99.60556
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be4bb2c1e0000faa6e99"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.5
+    ],
+    "timestamp": {
+      "$date": 1550240863436
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:43.436+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -99.573822
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be4fb2c1e0000faa6e9a"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550240867501
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:47.501+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -97.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be53b2c1e0000faa6e9b"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240871550
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:51.550+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -96.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be57b2c1e0000faa6e9c"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240875615
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:55.615+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -98.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -98.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be5bb2c1e0000faa6e9d"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.75
+    ],
+    "timestamp": {
+      "$date": 1550240879669
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:27:59.669+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -98.2547
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be5fb2c1e0000faa6e9e"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240883730
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:03.730+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -99.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be64b2c1e0000faa6e9f"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240891842
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:11.842+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -97.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be6cb2c1e0000faa6ea0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240895902
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:15.902+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -99.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be70b2c1e0000faa6ea1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.0
+    ],
+    "timestamp": {
+      "$date": 1550240899955
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:19.955+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -99.973228
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be74b2c1e0000faa6ea2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550240904008
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:24.008+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -99.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be78b2c1e0000faa6ea3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.5
+    ],
+    "timestamp": {
+      "$date": 1550240908073
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:28.073+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -100.710815
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be7cb2c1e0000faa6ea4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240912131
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:32.131+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be80b2c1e0000faa6ea5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240916180
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:36.180+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -96.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be84b2c1e0000faa6ea6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.75
+    ],
+    "timestamp": {
+      "$date": 1550240920246
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:40.246+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -103.2547
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be88b2c1e0000faa6ea7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      8.0
+    ],
+    "timestamp": {
+      "$date": 1550240924296
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:44.296+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -96.638924
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be8cb2c1e0000faa6ea8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240928357
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:48.357+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -96.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be90b2c1e0000faa6ea9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240932416
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:52.416+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -99.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be94b2c1e0000faa6eaa"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.75
+    ],
+    "timestamp": {
+      "$date": 1550240936471
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:28:56.471+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -101.673981
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be99b2c1e0000faa6eab"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.75
+    ],
+    "timestamp": {
+      "$date": 1550240940532
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:00.532+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -100.832695
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66be9db2c1e0000faa6eac"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240944586
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:04.586+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -100.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bea0b2c1e0000faa6ead"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550240948645
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:08.645+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -97.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bea4b2c1e0000faa6eae"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550240952697
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:12.697+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -99.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bea9b2c1e0000faa6eaf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240956759
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:16.759+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -101.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66beadb2c1e0000faa6eb0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550240960811
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:20.811+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -99.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -99.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66beb1b2c1e0000faa6eb1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550240964870
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:24.870+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -96.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -96.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66beb5b2c1e0000faa6eb2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      7.25
+    ],
+    "timestamp": {
+      "$date": 1550240968934
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:29:28.934+01:00",
+    "sub_band": "G0",
+    "real_dist": 100,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -101.749496
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66beb9b2c1e0000faa6eb3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241063421
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:03.421+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -106.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf17b2c1e0000faa6eb4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241067431
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:07.431+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -104.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf1bb2c1e0000faa6eb5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.5
+    ],
+    "timestamp": {
+      "$date": 1550241071441
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:11.441+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -104.078331
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf1fb2c1e0000faa6eb6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.0
+    ],
+    "timestamp": {
+      "$date": 1550241075448
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:15.448+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -104.455406
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf23b2c1e0000faa6eb7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.5
+    ],
+    "timestamp": {
+      "$date": 1550241079458
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:19.458+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -104.318794
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf28b2c1e0000faa6eb8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241083460
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:23.460+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -106.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf2bb2c1e0000faa6eb9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      2.5
+    ],
+    "timestamp": {
+      "$date": 1550241087469
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:27.469+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -104.937759
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf30b2c1e0000faa6eba"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      1.0
+    ],
+    "timestamp": {
+      "$date": 1550241091481
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:31.481+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -105.539017
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf33b2c1e0000faa6ebb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.5
+    ],
+    "timestamp": {
+      "$date": 1550241095491
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:35.491+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -103.078331
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf37b2c1e0000faa6ebc"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550241099496
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:39.496+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -108.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf3bb2c1e0000faa6ebd"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      1.5
+    ],
+    "timestamp": {
+      "$date": 1550241103552
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:43.552+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -105.324738
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf3fb2c1e0000faa6ebe"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      -0.25
+    ],
+    "timestamp": {
+      "$date": 1550241107611
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:47.611+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -100.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -103.1371
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf43b2c1e0000faa6ebf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.5
+    ],
+    "timestamp": {
+      "$date": 1550241111668
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:51.668+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -106.078331
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf48b2c1e0000faa6ec0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550241115725
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:55.725+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -105.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf4cb2c1e0000faa6ec1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.0
+    ],
+    "timestamp": {
+      "$date": 1550241119780
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:31:59.780+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -106.455406
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf50b2c1e0000faa6ec2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.0
+    ],
+    "timestamp": {
+      "$date": 1550241123838
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:03.838+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -103.455406
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf54b2c1e0000faa6ec3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241127894
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:07.894+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -106.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf58b2c1e0000faa6ec4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241131955
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:11.955+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -101.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -102.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf5cb2c1e0000faa6ec5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      0.0
+    ],
+    "timestamp": {
+      "$date": 1550241136011
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:16.011+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -105.0103
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf60b2c1e0000faa6ec6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.25
+    ],
+    "timestamp": {
+      "$date": 1550241140070
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:20.070+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -106.385674
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf64b2c1e0000faa6ec7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241144123
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:24.123+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -106.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf68b2c1e0000faa6ec8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.5
+    ],
+    "timestamp": {
+      "$date": 1550241148183
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:28.183+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -103.877357
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf6cb2c1e0000faa6ec9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.75
+    ],
+    "timestamp": {
+      "$date": 1550241152240
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:32.240+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -104.2547
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf70b2c1e0000faa6eca"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.5
+    ],
+    "timestamp": {
+      "$date": 1550241156297
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:36.297+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -104.318794
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf74b2c1e0000faa6ecb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550241160360
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:40.360+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -106.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf78b2c1e0000faa6ecc"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      3.75
+    ],
+    "timestamp": {
+      "$date": 1550241164409
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:44.409+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -104.528069
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf7cb2c1e0000faa6ecd"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241168467
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:48.467+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -106.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf80b2c1e0000faa6ece"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241176584
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:32:56.584+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -106.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf89b2c1e0000faa6ecf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241180646
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:00.646+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -106.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf8db2c1e0000faa6ed0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.0
+    ],
+    "timestamp": {
+      "$date": 1550241184703
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:04.703+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -104.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -105.455406
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf91b2c1e0000faa6ed1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241188752
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:08.752+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -108.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf95b2c1e0000faa6ed2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      2.25
+    ],
+    "timestamp": {
+      "$date": 1550241192815
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:12.815+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -104.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -106.029411
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf99b2c1e0000faa6ed3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241196873
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:16.873+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -106.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -107.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bf9db2c1e0000faa6ed4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.5
+    ],
+    "timestamp": {
+      "$date": 1550241204988
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:24.988+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -106.078331
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfa5b2c1e0000faa6ed5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241209045
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:29.045+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -104.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfa9b2c1e0000faa6ed6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241213098
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:33.098+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -106.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfadb2c1e0000faa6ed7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.25
+    ],
+    "timestamp": {
+      "$date": 1550241217159
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:37.159+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -104.385674
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfb1b2c1e0000faa6ed8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.5
+    ],
+    "timestamp": {
+      "$date": 1550241221215
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:41.215+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -104.078331
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfb5b2c1e0000faa6ed9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.0
+    ],
+    "timestamp": {
+      "$date": 1550241225271
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:45.271+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -105.973228
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfb9b2c1e0000faa6eda"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.75
+    ],
+    "timestamp": {
+      "$date": 1550241229328
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:49.328+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -103.2547
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfbdb2c1e0000faa6edb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241233391
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:33:53.391+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -103.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfc1b2c1e0000faa6edc"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241241507
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:01.507+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -103.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfc9b2c1e0000faa6edd"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241245561
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:05.561+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -104.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfcdb2c1e0000faa6ede"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.75
+    ],
+    "timestamp": {
+      "$date": 1550241249613
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:09.613+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -106.2547
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfd1b2c1e0000faa6edf"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.5
+    ],
+    "timestamp": {
+      "$date": 1550241253676
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:13.676+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -106.078331
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfd6b2c1e0000faa6ee0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241257732
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:17.732+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -102.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -103.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfdab2c1e0000faa6ee1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.75
+    ],
+    "timestamp": {
+      "$date": 1550241261789
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:21.789+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -106.02459
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfdeb2c1e0000faa6ee2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      1.75
+    ],
+    "timestamp": {
+      "$date": 1550241269904
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:29.904+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -105.222855
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfe6b2c1e0000faa6ee3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.5
+    ],
+    "timestamp": {
+      "$date": 1550241273957
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:33.957+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -108.318794
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bfeab2c1e0000faa6ee4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      3.75
+    ],
+    "timestamp": {
+      "$date": 1550241282075
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:42.075+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -106.528069
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bff2b2c1e0000faa6ee5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      2.0
+    ],
+    "timestamp": {
+      "$date": 1550241286130
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:46.130+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -108.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -110.124428
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bff6b2c1e0000faa6ee6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      -2.25
+    ],
+    "timestamp": {
+      "$date": 1550241290194
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:50.194+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -107.279411
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bffab2c1e0000faa6ee7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.25
+    ],
+    "timestamp": {
+      "$date": 1550241294254
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:54.254+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -106.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -107.385674
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66bffeb2c1e0000faa6ee8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.75
+    ],
+    "timestamp": {
+      "$date": 1550241298306
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:34:58.306+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -104.2547
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c002b2c1e0000faa6ee9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      3.75
+    ],
+    "timestamp": {
+      "$date": 1550241302362
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:02.362+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -104.528069
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c006b2c1e0000faa6eea"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      2.75
+    ],
+    "timestamp": {
+      "$date": 1550241306424
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:06.424+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -108.849426
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c00ab2c1e0000faa6eeb"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.0
+    ],
+    "timestamp": {
+      "$date": 1550241310481
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:10.481+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -108.193314
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c00fb2c1e0000faa6eec"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.0
+    ],
+    "timestamp": {
+      "$date": 1550241314538
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:14.538+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -97.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -98.455406
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c012b2c1e0000faa6eed"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      2.0
+    ],
+    "timestamp": {
+      "$date": 1550241318592
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:18.592+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -108.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -110.124428
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c016b2c1e0000faa6eee"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241322645
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:22.645+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC4",
+    "gateway_esp": [
+      -108.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c01bb2c1e0000faa6eef"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      3.25
+    ],
+    "timestamp": {
+      "$date": 1550241326705
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:26.705+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -104.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -105.682472
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c01fb2c1e0000faa6ef0"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.25
+    ],
+    "timestamp": {
+      "$date": 1550241330767
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:30.767+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -104.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -105.385674
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c023b2c1e0000faa6ef1"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.25
+    ],
+    "timestamp": {
+      "$date": 1550241334819
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:34.819+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC2",
+    "gateway_esp": [
+      -106.385674
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c027b2c1e0000faa6ef2"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.25
+    ],
+    "timestamp": {
+      "$date": 1550241338878
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:38.878+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC7",
+    "gateway_esp": [
+      -104.134544
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c02bb2c1e0000faa6ef3"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      3.25
+    ],
+    "timestamp": {
+      "$date": 1550241342935
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:42.935+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC8",
+    "gateway_esp": [
+      -106.682472
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c02fb2c1e0000faa6ef4"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.0
+    ],
+    "timestamp": {
+      "$date": 1550241346996
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:46.996+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -108.455406
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c033b2c1e0000faa6ef5"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      3.0
+    ],
+    "timestamp": {
+      "$date": 1550241351057
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:51.057+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -107.0
+    ],
+    "channel": "LC6",
+    "gateway_esp": [
+      -108.764351
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c037b2c1e0000faa6ef6"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      5.5
+    ],
+    "timestamp": {
+      "$date": 1550241355113
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:55.113+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -105.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -106.078331
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c03bb2c1e0000faa6ef7"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      4.25
+    ],
+    "timestamp": {
+      "$date": 1550241359166
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:35:59.166+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC5",
+    "gateway_esp": [
+      -104.385674
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c03fb2c1e0000faa6ef8"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      6.25
+    ],
+    "timestamp": {
+      "$date": 1550241363222
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:36:03.222+01:00",
+    "sub_band": "G0",
+    "real_dist": 150,
+    "gateway_rssi": [
+      -103.0
+    ],
+    "channel": "LC1",
+    "gateway_esp": [
+      -103.924179
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c043b2c1e0000faa6ef9"
+    }
+  },
+  {
+    "deviceType": "tuino-v3",
+    "devEUI": "78AF580300000493",
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gateway_snr": [
+      3.75
+    ],
+    "timestamp": {
+      "$date": 1550241410680
+    },
+    "tx_power": 2.0,
+    "time": "2019-02-15T14:36:50.680+01:00",
+    "sub_band": "G0",
+    "real_dist": 200,
+    "gateway_rssi": [
+      -108.0
+    ],
+    "channel": "LC3",
+    "gateway_esp": [
+      -109.528069
+    ],
+    "sp_fact": 7,
+    "_id": {
+      "$oid": "5c66c072b2c1e0000faa6efa"
+    }
+  }
+]

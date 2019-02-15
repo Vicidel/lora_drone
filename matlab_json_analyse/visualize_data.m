@@ -1,7 +1,7 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = '20190215am_SF7.json';
+fname = '20190215pm_antenna45.json';
 [time, distances, RSSI, ESP, means_RSSI, means_ESP] = decode_json(fname);
 
 % calibration distances
@@ -10,28 +10,28 @@ d_calib = [10 20 50 100 150 200];
 
 % plotting RSSI against distance
 figure();
-plot(distances, RSSI, 'x');
+plot(distances, RSSI, 'x'); grid on;
 xlabel('Real distance [m]');
 ylabel('RSSI [dBm]');
 title('RSSI function of distance');
 
 % plotting ESP against distance
 figure();
-plot(distances, ESP, 'x');
+plot(distances, ESP, 'x'); grid on;
 xlabel('Real distance [m]');
 ylabel('ESP [dBm]');
 title('ESP function of distance');
 
 % plotting RSSI against time
 figure();
-plot(time, RSSI, 'x');
+plot(time, RSSI, 'x'); grid on;
 xlabel('Time [s]');
 ylabel('RSSI [dBm]');
 title('RSSI function of time');
 
 % plotting ESP against time
 figure();
-plot(time, ESP, 'x');
+plot(time, ESP, 'x'); grid on;
 xlabel('Time [s]');
 ylabel('ESP [dBm]');
 title('ESP function of time');
@@ -47,7 +47,7 @@ title('Mean ESP and RSSI');
 
 % plot average time between two measures
 figure();
-plot(time(2:end)-time(1:end-1));
+plot(time(2:end)-time(1:end-1)); grid on;
 xlabel('Message number [-]');
 ylabel('Time [s]');
 title('Time between two messages');

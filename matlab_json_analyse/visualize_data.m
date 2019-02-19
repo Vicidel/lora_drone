@@ -2,7 +2,7 @@ clear all; close all;
 
 % opens the JSON file decodes it
 fname = '../json_backup/20190215pm_antenna45.json';
-[time, distances, RSSI, ESP, ~, means_RSSI, means_ESP, ~] = decode_json(fname);
+[time, distances, ~, RSSI, ESP, ~, means_RSSI, means_ESP, ~] = decode_json(fname);
 
 % calibration distances
 d_calib = [10 20 50 100 150 200];

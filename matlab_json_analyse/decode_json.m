@@ -1,4 +1,4 @@
-function [time, distances, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(filename)
+function [time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(filename)
 % this function takes as input a filename and returns
 
 % opens the JSON file and stores it in variable
@@ -17,6 +17,7 @@ distances = zeros(number_message, 1);
 RSSI = zeros(number_message, 1);
 ESP  = zeros(number_message, 1);
 SNR  = zeros(number_message, 1);
+SF   = zeros(number_message, 1);
 time = zeros(number_message, 1);
 for i=1: number_message
     gateway_index = 0;
@@ -31,6 +32,7 @@ for i=1: number_message
         SNR(i)  = db(i).gateway_snr(gateway_index);
         ESP(i)  = db(i).gateway_esp(gateway_index);  
         time(i) = db(i).timestamp.x_date;
+        SF(i)   = db(i).sp_fact;
     end
 end
 

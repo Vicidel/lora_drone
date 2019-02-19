@@ -4,9 +4,9 @@ clear all; close all;
 filename_45 = '../json_backup/20190215pm_antenna45.json';
 filename_up = '../json_backup/20190215pm_antennaup.json';
 filename_hor = '../json_backup/20190215pm_antennahor.json';
-[time45, distances45, RSSI45, ESP45, ~, means_RSSI45, means_ESP45, ~] = decode_json(filename_45);
-[timeup, distancesup, RSSIup, ESPup, ~, means_RSSIup, means_ESPup, ~] = decode_json(filename_up);
-[timehor, distanceshor, RSSIhor, ESPhor, ~, means_RSSIhor, means_ESPhor, ~] = decode_json(filename_hor);
+[time45, distances45, ~, RSSI45, ESP45, ~, means_RSSI45, means_ESP45, ~] = decode_json(filename_45);
+[timeup, distancesup, ~, RSSIup, ESPup, ~, means_RSSIup, means_ESPup, ~] = decode_json(filename_up);
+[timehor, distanceshor, ~, RSSIhor, ESPhor, ~, means_RSSIhor, means_ESPhor, ~] = decode_json(filename_hor);
 
 % calibration distances
 d_calib = [10 20 50 100 150 200];

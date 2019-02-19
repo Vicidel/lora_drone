@@ -3,7 +3,7 @@ clear all; close all;
 
 % opens the JSON file decodes it
 fname = '../json_backup/20190219pm_data.json';
-[time, distances, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
+[time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
 
 % calibration distances
 d_calib = [10 20 50 100 150 200];

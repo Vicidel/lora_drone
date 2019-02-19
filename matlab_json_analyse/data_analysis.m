@@ -100,3 +100,5 @@ legend('ESP signal', 'Polynomial fit');
 xlabel('Distance [m]');
 ylabel('ESP [dBm]');
 title('Polynomial interpolation of ESP');
+interpolation_polynom = fitresult;
+save('interp_polynom.mat', 'interpolation_polynom');

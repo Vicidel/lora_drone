@@ -1,3 +1,4 @@
+%% DECODING SECTION
 clear all; close all;
 
 % opens the JSON file decodes it
@@ -15,12 +16,13 @@ nb_100 = sum(distances==100);
 nb_150 = sum(distances==150);
 nb_200 = sum(distances==200);
 
-% % plotting ESP against distance
-% figure();
-% plot(distances, ESP, 'x'); grid on;
-% xlabel('Real distance [m]');
-% ylabel('ESP [dBm]');
-% title('ESP function of distance');
+%% PLOTTING SECTION
+% plotting ESP against distance
+figure();
+plot(distances, ESP, 'x'); grid on;
+xlabel('Real distance [m]');
+ylabel('ESP [dBm]');
+title('ESP function of distance');
 
 % % plotting SNR against distance
 % figure();
@@ -29,26 +31,26 @@ nb_200 = sum(distances==200);
 % ylabel('SNR [-]');
 % title('SNR function of distance');
 
-% plotting ESP against time
-figure();
-plot(time(distances==10), ESP(distances==10), 'rx'); grid on; hold on;
-plot(time(distances==20), ESP(distances==20), 'bx');
-plot(time(distances==50), ESP(distances==50), 'gx');
-plot(time(distances==100), ESP(distances==100), 'yx');
-plot(time(distances==150), ESP(distances==150), 'cx');
-plot(time(distances==200), ESP(distances==200), 'mx');
-xlabel('Time [s]');
-ylabel('ESP [dBm]');
-title('ESP function of time');
+% % plotting ESP against time
+% figure();
+% plot(time(distances==10), ESP(distances==10), 'rx'); grid on; hold on;
+% plot(time(distances==20), ESP(distances==20), 'bx');
+% plot(time(distances==50), ESP(distances==50), 'gx');
+% plot(time(distances==100), ESP(distances==100), 'yx');
+% plot(time(distances==150), ESP(distances==150), 'cx');
+% plot(time(distances==200), ESP(distances==200), 'mx');
+% xlabel('Time [s]');
+% ylabel('ESP [dBm]');
+% title('ESP function of time');
 
-% plot mean ESP and RSSI against distances
-figure();
-plot(d_calib, means_ESP, 'ro-'); hold on; grid on;
-plot(d_calib, means_RSSI, 'bo-');
-legend('ESP', 'RSSI');
-xlabel('Distance [m]');
-ylabel('ESP/RSSI [dBm]');
-title('Mean ESP and RSSI');
+% % plot mean ESP and RSSI against distances
+% figure();
+% plot(d_calib, means_ESP, 'ro-'); hold on; grid on;
+% plot(d_calib, means_RSSI, 'bo-');
+% legend('ESP', 'RSSI');
+% xlabel('Distance [m]');
+% ylabel('ESP/RSSI [dBm]');
+% title('Mean ESP and RSSI');
 
 % % plot mean SNR against distances
 % figure();
@@ -57,20 +59,20 @@ title('Mean ESP and RSSI');
 % ylabel('SNR [-]');
 % title('Mean SNR');
 
-% boxplot of ESP
-figure();
-group = [repmat(d_calib(1), length(ESP(distances==10)), 1);...
-        repmat(d_calib(2), length(ESP(distances==20)), 1);...
-        repmat(d_calib(3), length(ESP(distances==50)), 1);...
-        repmat(d_calib(4), length(ESP(distances==100)), 1);...
-        repmat(d_calib(5), length(ESP(distances==150)), 1);...
-        repmat(d_calib(6), length(ESP(distances==200)), 1)];
-boxplot([ESP(distances==10); ESP(distances==20); ESP(distances==50); ...
-        ESP(distances==100); ESP(distances==150); ESP(distances==200)], ...
-        group, 'positions', d_calib, 'labels', d_calib); grid on; 
-xlabel('Distance [m]');
-ylabel('ESP [dBm]');
-title('Boxplot of ESP');
+% % boxplot of ESP
+% figure();
+% group = [repmat(d_calib(1), length(ESP(distances==10)), 1);...
+%         repmat(d_calib(2), length(ESP(distances==20)), 1);...
+%         repmat(d_calib(3), length(ESP(distances==50)), 1);...
+%         repmat(d_calib(4), length(ESP(distances==100)), 1);...
+%         repmat(d_calib(5), length(ESP(distances==150)), 1);...
+%         repmat(d_calib(6), length(ESP(distances==200)), 1)];
+% boxplot([ESP(distances==10); ESP(distances==20); ESP(distances==50); ...
+%         ESP(distances==100); ESP(distances==150); ESP(distances==200)], ...
+%         group, 'positions', d_calib, 'labels', d_calib); grid on; 
+% xlabel('Distance [m]');
+% ylabel('ESP [dBm]');
+% title('Boxplot of ESP');
 
 % % boxplot of SNR
 % figure();
@@ -84,5 +86,17 @@ title('Boxplot of ESP');
 %         SNR(distances==100); SNR(distances==150); SNR(distances==200)], ...
 %         group, 'positions', d_calib, 'labels', d_calib); grid on; 
 % xlabel('Distance [m]');
-% ylabel('SNR [dBm]');
+% ylabel('SNR [-]');
 % title('Boxplot of SNR');
+
+%% ANALYSIS SECTION
+% interpolation
+x = distances(nb_10+1:end);     % remove all the 10
+y = ESP(nb_10+1:end);
+[fitresult, gof] = fit(x, y, fittype('poly2'));
+figure();
+plot(fitresult, x, y, 'x'); grid on;
+legend('ESP signal', 'Polynomial fit');
+xlabel('Distance [m]');
+ylabel('ESP [dBm]');
+title('Polynomial interpolation of ESP');

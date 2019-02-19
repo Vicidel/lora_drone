@@ -20,3 +20,12 @@
 	distances from 10 to 150 (ignore 200, data does not arrive...)
 	antenna angled upward (up), at 45 degrees in direction of node (45) and horizontaly in the direction of the node (hor)
 	
+20190218_antenna_node
+	test with 10m and antenna of node vert, 45 and hor
+	stored as 10, 20 and 50m
+
+20190218pm_antenna_node_hor 20190218pm_antenna_node_45
+	experiments to decide which orientation of NODE antenna is best
+	use 20190215pm_antenna45 as upward orientation for node antenna
+	~60 at each distances (4mn)
+	distances from 10 to 150 (ignore 200, data does not arrive...)

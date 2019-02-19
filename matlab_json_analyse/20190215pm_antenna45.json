@@ -10134,33 +10134,5 @@
     "_id": {
       "$oid": "5c66c043b2c1e0000faa6ef9"
     }
-  },
-  {
-    "deviceType": "tuino-v3",
-    "devEUI": "78AF580300000493",
-    "gateway_id": [
-      "004A1092"
-    ],
-    "gateway_snr": [
-      3.75
-    ],
-    "timestamp": {
-      "$date": 1550241410680
-    },
-    "tx_power": 2.0,
-    "time": "2019-02-15T14:36:50.680+01:00",
-    "sub_band": "G0",
-    "real_dist": 200,
-    "gateway_rssi": [
-      -108.0
-    ],
-    "channel": "LC3",
-    "gateway_esp": [
-      -109.528069
-    ],
-    "sp_fact": 7,
-    "_id": {
-      "$oid": "5c66c072b2c1e0000faa6efa"
-    }
   }
 ]

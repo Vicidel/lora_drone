@@ -1,9 +1,9 @@
 clear all; close all;
 
 % get data
-filename_45 = '20190215pm_antenna45.json';
-filename_up = '20190215pm_antennaup.json';
-filename_hor = '20190215pm_antennahor.json';
+filename_45 = '20190218pm_antenna_node_45.json';
+filename_up = '20190215pm_antenna45.json';
+filename_hor = '20190218pm_antenna_node_hor.json';
 [time45, distances45, RSSI45, ESP45, means_RSSI45, means_ESP45] = decode_json(filename_45);
 [timeup, distancesup, RSSIup, ESPup, means_RSSIup, means_ESPup] = decode_json(filename_up);
 [timehor, distanceshor, RSSIhor, ESPhor, means_RSSIhor, means_ESPhor] = decode_json(filename_hor);
@@ -14,9 +14,9 @@ d_calib = [10 20 50 100 150 200];
 
 % plot mean ESP and RSSI against distances
 figure();
-plot(d_calib(1:5), means_ESP45(1:5), 'ro-'); hold on; grid on;
-plot(d_calib(1:5), means_ESPup(1:5), 'bo-');
-plot(d_calib(1:5), means_ESPhor(1:5), 'go-');
+plot(d_calib, means_ESP45, 'ro-'); hold on; grid on;
+plot(d_calib, means_ESPup, 'bo-');
+plot(d_calib(1:4), means_ESPhor(1:4), 'go-');
 legend('45', 'up', 'hor');
 xlabel('Distance [m]');
 ylabel('ESP [dBm]');
@@ -66,23 +66,23 @@ title('Mean ESP');
 
 % trying aboxplot function: http://alex.bikfalvi.com/research/advanced_matlab_boxplot/
 figure();
-x1 = ESP45(distances45==10); x1 = x1(1:68);
-x2 = ESP45(distances45==20); x2 = x2(1:68);
-x3 = ESP45(distances45==50); x3 = x3(1:68);
-x4 = ESP45(distances45==100); x4 = x4(1:68);
-x5 = ESP45(distances45==150); x5 = x5(1:68);
+x1 = ESP45(distances45==10); x1 = x1(1:47);
+x2 = ESP45(distances45==20); x2 = x2(1:47);
+x3 = ESP45(distances45==50); x3 = x3(1:47);
+x4 = ESP45(distances45==100); x4 = x4(1:47);
+x5 = ESP45(distances45==150); x5 = x5(1:47);
 x = cat(2, x1, x2, x3, x4, x5);
-y1 = ESPup(distancesup==10); y1 = y1(1:68);
-y2 = ESPup(distancesup==20); y2 = y2(1:68);
-y3 = ESPup(distancesup==50); y3 = y3(1:68);
-y4 = ESPup(distancesup==100); y4 = y4(1:68);
-y5 = ESPup(distancesup==150); y5 = y5(1:68);
+y1 = ESPup(distancesup==10); y1 = y1(1:47);
+y2 = ESPup(distancesup==20); y2 = y2(1:47);
+y3 = ESPup(distancesup==50); y3 = y3(1:47);
+y4 = ESPup(distancesup==100); y4 = y4(1:47);
+y5 = ESPup(distancesup==150); y5 = y5(1:47);
 y = cat(2, y1, y2, y3, y4, y5);
-z1 = ESPup(distancesup==10); z1 = z1(1:68);
-z2 = ESPup(distancesup==20); z2 = z2(1:68);
-z3 = ESPhor(distanceshor==50); z3 = z3(1:68);
-z4 = ESPhor(distanceshor==100); z4 = z4(1:68);
-z5 = ESPhor(distanceshor==150); z5 = [z5; z5]; z5 = z5(1:68);
+z1 = ESPup(distancesup==10); z1 = z1(1:47);
+z2 = ESPup(distancesup==20); z2 = z2(1:47);
+z3 = ESPhor(distanceshor==50); z3 = z3(1:47);
+z4 = ESPhor(distanceshor==100); z4 = z4(1:47);
+z5 = ESPhor(distanceshor==150); z5 = -100*ones(size(z4));
 z = cat(2, z1, z2, z3, z4, z5);
 h = cat(1, reshape(x,[1 size(x)]), reshape(y,[1 size(y)]), reshape(z,[1 size(z)]));
 aboxplot(h,'labels',[10, 20, 50, 100, 150]); grid on;

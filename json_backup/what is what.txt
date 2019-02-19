@@ -29,3 +29,6 @@
 	use 20190215pm_antenna45 as upward orientation for node antenna
 	~60 at each distances (4mn)
 	distances from 10 to 150 (ignore 200, data does not arrive...)
+
+20190219pm_data
+	collection of always 200 sent messages from each location

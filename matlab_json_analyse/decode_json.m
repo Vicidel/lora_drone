@@ -1,4 +1,4 @@
-function [time, distances, RSSI, ESP, means_RSSI, means_ESP] = decode_json(filename)
+function [time, distances, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(filename)
 % this function takes as input a filename and returns
 
 % opens the JSON file and stores it in variable
@@ -42,6 +42,8 @@ means_ESP = [mean(ESP(distances==10)) mean(ESP(distances==20)) mean(ESP(distance
              mean(ESP(distances==100)) mean(ESP(distances==150)) mean(ESP(distances==200))]';
 means_RSSI = [mean(RSSI(distances==10)) mean(RSSI(distances==20)) mean(RSSI(distances==50))...
              mean(RSSI(distances==100)) mean(RSSI(distances==150)) mean(RSSI(distances==200))]';
+means_SNR = [mean(SNR(distances==10)) mean(SNR(distances==20)) mean(SNR(distances==50))...
+             mean(SNR(distances==100)) mean(SNR(distances==150)) mean(SNR(distances==200))]';
 
 end
 

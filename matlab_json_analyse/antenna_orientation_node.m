@@ -1,9 +1,9 @@
 clear all; close all;
 
 % get data
-filename_45 = '20190218pm_antenna_node_45.json';
-filename_up = '20190215pm_antenna45.json';
-filename_hor = '20190218pm_antenna_node_hor.json';
+filename_45 = '../json_backup/20190218pm_antenna_node_45.json';
+filename_up = '../json_backup/20190215pm_antenna45.json';
+filename_hor = '../json_backup/20190218pm_antenna_node_hor.json';
 [time45, distances45, RSSI45, ESP45, means_RSSI45, means_ESP45] = decode_json(filename_45);
 [timeup, distancesup, RSSIup, ESPup, means_RSSIup, means_ESPup] = decode_json(filename_up);
 [timehor, distanceshor, RSSIhor, ESPhor, means_RSSIhor, means_ESPhor] = decode_json(filename_hor);

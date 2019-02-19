@@ -89,6 +89,16 @@ title('ESP function of distance');
 % ylabel('SNR [-]');
 % title('Boxplot of SNR');
 
+% plot ESP with SF
+figure();
+plot(distances(SF==7), ESP(SF==7), 'ro'); grid on; hold on;
+plot(distances(SF==9), ESP(SF==9), 'go');
+plot(distances(SF==10), ESP(SF==10), 'yo');
+plot(distances(SF==12), ESP(SF==12), 'co');
+xlabel('Real distance [m]');
+ylabel('ESP [dBm]');
+title('ESP function of distance and SF (red=7, green=9...)');
+
 %% ANALYSIS SECTION
 % interpolation
 x = distances(nb_10+1:end);     % remove all the 10

@@ -30,46 +30,80 @@ while time < 400
     
     % recompute distance and get ESP (only temporary, will be from lora message afterwards
     distance = [distance, norm(drone_position - node_position)];
-    ESP = [ESP, p(1)*distance(step)^2 + p(2)*distance(step) + p(3)];
+    perfect_ESP = p(1)*distance(step)^2 + p(2)*distance(step) + p(3);
+    measured_ESP = perfect_ESP + rand()*4-2;
+    ESP = [ESP, measured_ESP];
     
     switch state
         case 0 % starting point
             state = 1;
         case 1 % try p00 direction
+            fprintf('Going p00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_p00;
+            measures = 0;
             state = 2;
         case 2 % check progress
-            if ESP(step) > ESP(step-1) % better signal
-                state = 1;
-            else
-                state = 3;
+            measures = measures + 1;
+            fprintf('%d measures done\n', measures);
+            if measures > 3
+                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+                    fprintf('Progress, continuing in this direction\n');
+                    state = 1;
+                else
+                    fprintf('No progress, next direction\n');
+                    state = 3;
+                end
             end
         case 3 % try m00 direction
+            fprintf('Going m00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_m00;
+            measures = 0;
             state = 4;
         case 4 %check progress
-            if ESP(step) > ESP(step-1) % better signal
-                state = 3;
-            else
-                state = 5;
+            measures = measures + 1;             
+            fprintf('%d measures done\n', measures);
+            if measures > 3
+                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+                    fprintf('Progress, continuing in this direction\n');
+                    state = 3;
+                else
+                    fprintf('No progress, next direction\n');
+                    state = 5;
+                end
             end
         case 5 % try 0p0 direction
+            fprintf('Going op0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0p0;
+            measures = 0;
             state = 6;
         case 6 % check progress
-            if ESP(step) > ESP(step-1) % better signal
-                state = 5;
-            else
-                state = 7;
+            measures = measures + 1;             
+            fprintf('%d measures done\n', measures);
+            if measures > 3
+                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+                    fprintf('Progress, continuing in this direction\n');
+                    state = 5;
+                else
+                    fprintf('No progress, next direction\n');
+                    state = 7;
+                end
             end
         case 7 % try m00 direction
+            fprintf('Going 0m0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0m0;
+            measures = 0;
             state = 8;
         case 8 %check progress
-            if ESP(step) > ESP(step-1) % better signal
-                state = 7;
-            else
-                state = 9;
+            measures = measures + 1;             
+            fprintf('%d measures done\n', measures);
+            if measures > 3
+                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+                    fprintf('Progress, continuing in this direction\n');
+                    state = 7;
+                else
+                    fprintf('No progress, next direction\n');
+                    state = 9;
+                end
             end
         case 9
             dist_increment = dist_increment/2;
@@ -88,11 +122,11 @@ while time < 400
     step = step + 1;
     
     % slows down simulation
-    pause(0.25)
+    pause(0.1)
 end
 
 % estimated final position
-estimated_position = drone_position + increment_p00 + increment_0p0;
+estimated_position = drone_position;% + increment_p00 + increment_0p0; % increments only for without noise
 
 % plot positions
 plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;

@@ -16,13 +16,21 @@ nb_100 = sum(distances==100);
 nb_150 = sum(distances==150);
 nb_200 = sum(distances==200);
 
+% std = noise level
+noises_ESP = zeros(size(d_calib));
+noises_RSSI = zeros(size(d_calib));
+for i=1: length(d_calib)
+    noises_ESP(i) = std(ESP(distances==d_calib(i)));
+    noises_RSSI(i) = std(RSSI(distances==d_calib(i)));
+end
+
 %% PLOTTING SECTION
-% plotting ESP against distance
-figure();
-plot(distances, ESP, 'x'); grid on;
-xlabel('Real distance [m]');
-ylabel('ESP [dBm]');
-title('ESP function of distance');
+% % plotting ESP against distance
+% figure();
+% plot(distances, ESP, 'x'); grid on;
+% xlabel('Real distance [m]');
+% ylabel('ESP [dBm]');
+% title('ESP function of distance');
 
 % % plotting SNR against distance
 % figure();
@@ -31,17 +39,17 @@ title('ESP function of distance');
 % ylabel('SNR [-]');
 % title('SNR function of distance');
 
-% % plotting ESP against time
-% figure();
-% plot(time(distances==10), ESP(distances==10), 'rx'); grid on; hold on;
-% plot(time(distances==20), ESP(distances==20), 'bx');
-% plot(time(distances==50), ESP(distances==50), 'gx');
-% plot(time(distances==100), ESP(distances==100), 'yx');
-% plot(time(distances==150), ESP(distances==150), 'cx');
-% plot(time(distances==200), ESP(distances==200), 'mx');
-% xlabel('Time [s]');
-% ylabel('ESP [dBm]');
-% title('ESP function of time');
+% plotting ESP against time
+figure();
+plot(time(distances==10), ESP(distances==10), 'rx'); grid on; hold on;
+plot(time(distances==20), ESP(distances==20), 'bx');
+plot(time(distances==50), ESP(distances==50), 'gx');
+plot(time(distances==100), ESP(distances==100), 'yx');
+plot(time(distances==150), ESP(distances==150), 'cx');
+plot(time(distances==200), ESP(distances==200), 'mx');
+xlabel('Time [s]');
+ylabel('ESP [dBm]');
+title('ESP function of time');
 
 % % plot mean ESP and RSSI against distances
 % figure();
@@ -89,15 +97,24 @@ title('ESP function of distance');
 % ylabel('SNR [-]');
 % title('Boxplot of SNR');
 
-% plot ESP with SF
+% % plot ESP with SF
+% figure();
+% plot(distances(SF==7), ESP(SF==7), 'ro'); grid on; hold on;
+% plot(distances(SF==9), ESP(SF==9), 'go');
+% plot(distances(SF==10), ESP(SF==10), 'yo');
+% plot(distances(SF==12), ESP(SF==12), 'co');
+% xlabel('Real distance [m]');
+% ylabel('ESP [dBm]');
+% title('ESP function of distance and SF (red=7, green=9...)');
+
+% plot noise level against distance
 figure();
-plot(distances(SF==7), ESP(SF==7), 'ro'); grid on; hold on;
-plot(distances(SF==9), ESP(SF==9), 'go');
-plot(distances(SF==10), ESP(SF==10), 'yo');
-plot(distances(SF==12), ESP(SF==12), 'co');
-xlabel('Real distance [m]');
-ylabel('ESP [dBm]');
-title('ESP function of distance and SF (red=7, green=9...)');
+plot(d_calib, noises_ESP, 'ro-'); hold on; grid on;
+plot(d_calib, noises_RSSI, 'bo-');
+legend('ESP', 'RSSI');
+xlabel('Distance [m]');
+ylabel('ESP/RSSI [dBm]');
+title('Noise of ESP and RSSI');
 
 %% ANALYSIS SECTION
 % % fit ESP as function of distance

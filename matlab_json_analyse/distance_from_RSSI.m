@@ -1,8 +1,8 @@
 function [distance, confidence_interval_95] = distance_from_RSSI(RSSI)
 
 % load interpolation data
-load('interp_polynom_RSSI.mat', 'interpolation_polynom_RSSI');
-p = interpolation_polynom_RSSI;
+load('polynom_RSSI_to_dist.mat', 'fitresult_RSSId');
+p = fitresult_RSSId;
 ci = confint(p);
 
 % get results

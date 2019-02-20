@@ -16,9 +16,12 @@ increment_m00 = [-dist_increment, 0, 0];
 p = [0.000916, -0.3961, -84.94];    % note that min at distance of 216: https://www.wolframalpha.com/input/?i=0.000916x%5E2-0.3961x-84.94
 
 % init
-time = 0; step = 1;
+time = 0; 
+step = 1;
 state = 0;
-ESP = []; distance = [];
+ESP = []; 
+distance = [];
+nb_measures_todo = 10;
 
 % localization
 while time < 400
@@ -45,12 +48,13 @@ while time < 400
         case 2 % check progress
             measures = measures + 1;
             fprintf('%d measures done\n', measures);
-            if measures > 3
-                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+            if measures > nb_measures_todo
+                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
                     fprintf('Progress, continuing in this direction\n');
                     state = 1;
                 else
-                    fprintf('No progress, next direction\n');
+                    fprintf('No progress, go back then next direction\n');
+                    drone_position = drone_position - increment_p00;
                     state = 3;
                 end
             end
@@ -62,29 +66,31 @@ while time < 400
         case 4 %check progress
             measures = measures + 1;             
             fprintf('%d measures done\n', measures);
-            if measures > 3
-                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+            if measures > nb_measures_todo
+                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
                     fprintf('Progress, continuing in this direction\n');
                     state = 3;
                 else
-                    fprintf('No progress, next direction\n');
+                    fprintf('No progress, go back then next direction\n');
+                    drone_position = drone_position - increment_m00;
                     state = 5;
                 end
             end
         case 5 % try 0p0 direction
-            fprintf('Going op0 of %.1f meters\n', dist_increment);
+            fprintf('Going 0p0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0p0;
             measures = 0;
             state = 6;
         case 6 % check progress
             measures = measures + 1;             
             fprintf('%d measures done\n', measures);
-            if measures > 3
-                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+            if measures > nb_measures_todo
+                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
                     fprintf('Progress, continuing in this direction\n');
                     state = 5;
                 else
-                    fprintf('No progress, next direction\n');
+                    fprintf('No progress, go back then next direction\n');
+                    drone_position = drone_position - increment_0p0;
                     state = 7;
                 end
             end
@@ -96,12 +102,13 @@ while time < 400
         case 8 %check progress
             measures = measures + 1;             
             fprintf('%d measures done\n', measures);
-            if measures > 3
-                if mean(ESP(step-3:step)) > ESP(step-4) % better signal on average of last three
+            if measures > nb_measures_todo
+                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
                     fprintf('Progress, continuing in this direction\n');
                     state = 7;
                 else
-                    fprintf('No progress, next direction\n');
+                    fprintf('No progress, go back then next direction\n');
+                    drone_position = drone_position - increment_0m0;
                     state = 9;
                 end
             end

@@ -33,6 +33,23 @@ for i=1: number_message
         ESP(i)  = db(i).gateway_esp(gateway_index);  
         time(i) = db(i).timestamp.x_date;
         SF(i)   = db(i).sp_fact;
+%         switch SF(i)      % correction based on SF
+%             case 8
+%                 ESP(i) = ESP(i) - 2.4;
+%                 RSSI(i) = RSSI(i) - 2.4;
+%             case 9
+%                 ESP(i) = ESP(i) - 4.9;
+%                 RSSI(i) = RSSI(i) - 4.9;
+%             case 10
+%                 ESP(i) = ESP(i) - 7.5;
+%                 RSSI(i) = RSSI(i) - 7.5;
+%             case 11
+%                 ESP(i) = ESP(i) - 10;
+%                 RSSI(i) = RSSI(i) - 10;
+%             case 12
+%                 ESP(i) = ESP(i) - 12.7;
+%                 RSSI(i) = RSSI(i) - 12.7;
+%         end
     end
 end
 

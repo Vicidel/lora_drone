@@ -100,15 +100,47 @@ ylabel('ESP [dBm]');
 title('ESP function of distance and SF (red=7, green=9...)');
 
 %% ANALYSIS SECTION
-% interpolation
-x = distances(nb_10+1:end);     % remove all the 10
-y = ESP(nb_10+1:end);
-[fitresult, gof] = fit(x, y, fittype('poly2'));
+% % fit ESP as function of distance
+% x = distances(nb_10+1:end);     % remove all the 10
+% y = ESP(nb_10+1:end);
+% [fitresult, gof] = fit(x, y, fittype('poly2'));
+% figure();
+% plot(fitresult, x, y, 'x'); grid on;
+% legend('ESP signal', 'Polynomial fit');
+% xlabel('Distance [m]');
+% ylabel('ESP [dBm]');
+% title('Polynomial interpolation of ESP');
+% interpolation_polynom = fitresult;
+% save('interp_polynom.mat', 'interpolation_polynom');
+
+% fit distance as function of ESP 
+y_dist = distances(nb_10+1:end);     % remove all the 10
+x_ESP = ESP(nb_10+1:end);
+[fitresult_ESP, gof_ESP] = fit(x_ESP, y_dist, fittype('poly2'));
 figure();
-plot(fitresult, x, y, 'x'); grid on;
-legend('ESP signal', 'Polynomial fit');
-xlabel('Distance [m]');
-ylabel('ESP [dBm]');
+plot(fitresult_ESP, x_ESP, y_dist, 'x'); grid on;
+legend('ESP signal', 'Polynomial fit 2');
+ylabel('Distance [m]');
+xlabel('ESP [dBm]');
 title('Polynomial interpolation of ESP');
-interpolation_polynom = fitresult;
-save('interp_polynom.mat', 'interpolation_polynom');
+interpolation_polynom_ESP = fitresult_ESP;
+save('interp_polynom_ESP.mat', 'interpolation_polynom_ESP');
+
+% get distance from ESP
+[distance_ESP, confidence_interval_ESP] = distance_from_ESP(-102.2);
+
+% fit distance as function of RSSI 
+y_dist = distances(nb_10+1:end);     % remove all the 10
+x_RSSI = RSSI(nb_10+1:end);
+[fitresult_RSSI, gof_RSSI] = fit(x_RSSI, y_dist, fittype('poly2'));
+figure();
+plot(fitresult_RSSI, x_RSSI, y_dist, 'x'); grid on;
+legend('RSSI signal', 'Polynomial fit 2');
+ylabel('Distance [m]');
+xlabel('RSSI [dBm]');
+title('Polynomial interpolation of RSSI');
+interpolation_polynom_RSSI = fitresult_RSSI;
+save('interp_polynom_RSSI.mat', 'interpolation_polynom_RSSI');
+
+% get distance from RSSI
+[distance_RSSI, confidence_interval_RSSI] = distance_from_RSSI(-101);

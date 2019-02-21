@@ -31,17 +31,25 @@ ESP = [];
 distance = [];
 
 % parameters
-noise_level = 0; % +- 2dB
-nb_measures_todo = 1;
+noise_level = 2; % +- 2dB
+nb_measures_todo = 10;
 time_limit = 1000;
-pause_time = 0.1; % seconds
+pause_time = 0; % seconds
 
 % localization
 while time < time_limit
     
     % plot positions
     plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;
-    plot3(drone_position(1), drone_position(2), drone_position(3), 'bo', 'MarkerSize', 10);
+    if dist_increment == 10
+        plot3(drone_position(1), drone_position(2), drone_position(3), 'bo', 'MarkerSize', 10);
+    elseif dist_increment == 5
+        plot3(drone_position(1), drone_position(2), drone_position(3), 'go', 'MarkerSize', 10);
+    elseif dist_increment == 2.5
+        plot3(drone_position(1), drone_position(2), drone_position(3), 'yo', 'MarkerSize', 10);
+    elseif dist_increment == 1.25
+        plot3(drone_position(1), drone_position(2), drone_position(3), 'ko', 'MarkerSize', 10);
+    end
     view(0, 90);
     
     % recompute distance and get ESP (only temporary, will be from lora message afterwards
@@ -53,16 +61,18 @@ while time < time_limit
     switch state
         case 0 % starting point
             state = 1;
+            
         case 1 % try p00 direction
             fprintf('Going p00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_p00;
             measures = 0;
             state = 2;
+            
         case 2 % check progress
             measures = measures + 1;
             fprintf('#%d ', measures);
             if measures >= nb_measures_todo
-                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
+                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
                     fprintf('\nProgress, continuing in this direction\n');
                     state = 1;
                 else
@@ -71,16 +81,18 @@ while time < time_limit
                     state = 3;
                 end
             end
+            
         case 3 % try m00 direction
             fprintf('Going m00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_m00;
             measures = 0;
             state = 4;
+            
         case 4 %check progress
             measures = measures + 1;             
             fprintf('#%d ', measures);
             if measures >= nb_measures_todo
-                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
+                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
                     fprintf('\nProgress, continuing in this direction\n');
                     state = 3;
                 else
@@ -89,16 +101,18 @@ while time < time_limit
                     state = 5;
                 end
             end
+            
         case 5 % try 0p0 direction
             fprintf('Going 0p0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0p0;
             measures = 0;
             state = 6;
+            
         case 6 % check progress
             measures = measures + 1;             
             fprintf('#%d ', measures);
             if measures >= nb_measures_todo
-                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
+                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
                     fprintf('\nProgress, continuing in this direction\n');
                     state = 5;
                 else
@@ -107,16 +121,18 @@ while time < time_limit
                     state = 7;
                 end
             end
+            
         case 7 % try m00 direction
             fprintf('Going 0m0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0m0;
             measures = 0;
             state = 8;
+            
         case 8 %check progress
             measures = measures + 1;             
             fprintf('#%d ', measures);
             if measures >= nb_measures_todo
-                if mean(ESP(step-nb_measures_todo:step)) > ESP(step-nb_measures_todo-1) % better signal on average of last three
+                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
                     fprintf('\nProgress, continuing in this direction\n');
                     state = 7;
                 else
@@ -125,13 +141,23 @@ while time < time_limit
                     state = 9;
                 end
             end
+            
         case 9
-            dist_increment = dist_increment/2;
-            increment_0p0 = [0, dist_increment, 0];
-            increment_0m0 = [0, -dist_increment, 0];
-            increment_p00 = [dist_increment, 0, 0];
-            increment_m00 = [-dist_increment, 0, 0];
+            % if reached maximum resolution for this increment, go smaller
+            horizontal_dist = sqrt(max(distance_from_ESP(ESP(end)), 10)^2 - 100);
+            fprintf('Estimated horizontal distance of %.2f m\n', horizontal_dist);
+            if horizontal_dist < 2 * dist_increment
+                dist_increment = dist_increment/2;
+                increment_0p0 = [0, dist_increment, 0];
+                increment_0m0 = [0, -dist_increment, 0];
+                increment_p00 = [dist_increment, 0, 0];
+                increment_m00 = [-dist_increment, 0, 0];
+            end
+            
+            % go back to beginning of algorithm
             state = 1;
+            
+            % end condition
             if dist_increment < 1
                 break;
             end

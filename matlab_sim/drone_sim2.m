@@ -14,9 +14,6 @@ measure_position2 = [-rand*100, rand*100, 0];    % x < 0, y > 0
 measure_position3 = [rand*200-100, rand*100-100, 0];    % y < 0
 distance = 9999;
 
-% define polynom of ESP as function of distance
-p = [0.0009959, -0.381, -85.57];    % note that min at distance of 216: https://www.wolframalpha.com/input/?i=0.000916x%5E2-0.3961x-84.94
-
 % init
 time = 0; 
 state = 0;
@@ -47,7 +44,7 @@ while time < time_limit
         case 2
             % make a measure
             distance = norm(drone_position - node_position);
-            perfect_ESP = p(1)*distance^2 + p(2)*distance + p(3);
+            perfect_ESP = ESP_from_distance(distance);
             ESP(1) = perfect_ESP + rand()*2*noise_level - noise_level;
             state = 3;
 
@@ -59,7 +56,7 @@ while time < time_limit
         case 4
             % make a measure
             distance = norm(drone_position - node_position);
-            perfect_ESP = p(1)*distance^2 + p(2)*distance + p(3);
+            perfect_ESP = ESP_from_distance(distance);
             ESP(2) = perfect_ESP + rand()*2*noise_level - noise_level;
             state = 5;
 
@@ -71,7 +68,7 @@ while time < time_limit
         case 6
             % make a measure
             distance = norm(drone_position - node_position);
-            perfect_ESP = p(1)*distance^2 + p(2)*distance + p(3);
+            perfect_ESP = ESP_from_distance(distance);
             ESP(3) = perfect_ESP + rand()*2*noise_level - noise_level;
             state = 7;
             
@@ -103,7 +100,7 @@ ylabel('y position [m]')
 zlabel('z position [m]')
 title('Node localization algorithm');
 legend('Node position', '1st measure', '2nd measure', '3rd measure');
-axis square; view(0, 90);
+view(0, 90); axis square; 
 
 % print
 fprintf('\nEstimated position of node: x=%.2f, y=%.2f\n', estimated_position(1), estimated_position(2));

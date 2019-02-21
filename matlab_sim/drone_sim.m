@@ -19,9 +19,6 @@ increment_0m0 = [0, -dist_increment, 0];
 increment_p00 = [dist_increment, 0, 0];
 increment_m00 = [-dist_increment, 0, 0];
 
-% define polynom of ESP as function of distance
-p = [0.0009959, -0.381, -85.57];    % note that min at distance of 216: https://www.wolframalpha.com/input/?i=0.000916x%5E2-0.3961x-84.94
-
 % init
 time = 0; 
 state = 0;
@@ -52,7 +49,7 @@ while time < time_limit
     
     % recompute distance and get ESP (only temporary, will be from lora message afterwards
     distance = [distance, norm(drone_position - node_position)];
-    perfect_ESP = p(1)*distance(end)^2 + p(2)*distance(end) + p(3);
+    perfect_ESP = ESP_from_distance(distance(end));
     measured_ESP = perfect_ESP + rand()*2*noise_level - noise_level;
     ESP = [ESP, measured_ESP];
     

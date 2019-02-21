@@ -11,7 +11,6 @@ clear all; close all;
 % define node coordinates xyz (z altitude)
 node_position = [rand*200-100, rand*200-100, 0];
 drone_position = [0, 0, 10];
-distance = 9999;
 
 % define increment in position
 dist_increment = 10;
@@ -21,11 +20,10 @@ increment_p00 = [dist_increment, 0, 0];
 increment_m00 = [-dist_increment, 0, 0];
 
 % define polynom of ESP as function of distance
-p = [0.000916, -0.3961, -84.94];    % note that min at distance of 216: https://www.wolframalpha.com/input/?i=0.000916x%5E2-0.3961x-84.94
+p = [0.0009959, -0.381, -85.57];    % note that min at distance of 216: https://www.wolframalpha.com/input/?i=0.000916x%5E2-0.3961x-84.94
 
 % init
 time = 0; 
-step = 1;
 state = 0;
 ESP = []; 
 distance = [];
@@ -54,7 +52,7 @@ while time < time_limit
     
     % recompute distance and get ESP (only temporary, will be from lora message afterwards
     distance = [distance, norm(drone_position - node_position)];
-    perfect_ESP = p(1)*distance(step)^2 + p(2)*distance(step) + p(3);
+    perfect_ESP = p(1)*distance(end)^2 + p(2)*distance(end) + p(3);
     measured_ESP = perfect_ESP + rand()*2*noise_level - noise_level;
     ESP = [ESP, measured_ESP];
     
@@ -143,6 +141,11 @@ while time < time_limit
             end
             
         case 9
+            % end condition (max one pass at 1.25m)
+            if dist_increment < 1.5
+                break;
+            end
+            
             % if reached maximum resolution for this increment, go smaller
             horizontal_dist = sqrt(max(distance_from_ESP(ESP(end)), 10)^2 - 100);
             fprintf('Estimated horizontal distance of %.2f m\n', horizontal_dist);
@@ -156,16 +159,10 @@ while time < time_limit
             
             % go back to beginning of algorithm
             state = 1;
-            
-            % end condition
-            if dist_increment < 1
-                break;
-            end
     end
     
     % time update
     time = time + 1;
-    step = step + 1;
     
     % slows down simulation
     pause(pause_time);
@@ -178,6 +175,10 @@ estimated_position = drone_position;% + increment_p00 + increment_0p0; % increme
 plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;
 plot3(drone_position(1), drone_position(2), drone_position(3), 'bo', 'MarkerSize', 10);
 plot3(estimated_position(1), estimated_position(2), estimated_position(3), 'gx', 'MarkerSize', 10);
+xlabel('x position [m]')
+ylabel('y position [m]')
+zlabel('z position [m]')
+title('Node localization algorithm');
 view(0, 90);
 
 % print

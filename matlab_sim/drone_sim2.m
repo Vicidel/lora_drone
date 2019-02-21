@@ -7,11 +7,12 @@
 clear all; close all;
 
 % define node coordinates xyz (z altitude)
-node_position = [rand*200-100, rand*200-100, 0];
+arena_size = 50;
+node_position = [rand*2*arena_size-arena_size, rand*2*arena_size-arena_size, 0];
 drone_position = [0, 0, 10];
-measure_position1 = [rand*100, rand*100, 0];    % x > 0, y > 0
-measure_position2 = [-rand*100, rand*100, 0];    % x < 0, y > 0
-measure_position3 = [rand*200-100, rand*100-100, 0];    % y < 0
+measure_position1 = [rand*100, rand*100, 10];    % x > 0, y > 0
+measure_position2 = [-rand*100, rand*100, 10];    % x < 0, y > 0
+measure_position3 = [rand*200-100, rand*100-100, 10];    % y < 0
 distance = 9999;
 
 % init
@@ -29,47 +30,60 @@ p_distance_from_ESP = fitresult_ESPd;
 noise_level = 0; % +- 2dB
 time_limit = 1000;
 pause_time = 0; % seconds
+max_dist_period = 10;
 
 % localization
 while time < time_limit
     
-%     % plot positions
-%     plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;
-%     plot3(drone_position(1), drone_position(2), drone_position(3), 'bo', 'MarkerSize', 10);
-%     axis square; view(0, 90);
+    % plot positions
+    plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;
+    plot3(drone_position(1), drone_position(2), drone_position(3), 'co', 'MarkerSize', 10);
+    plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
+    plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
+    plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
+    axis square; view(0, 90);
     
     switch state
         case 0 % starting point
+            delta = measure_position1 - drone_position;
             state = 1;
             
         case 1
             % move drone to position1
-            drone_position = measure_position1;
-            state = 2;
+            drone_position = drone_position + delta / 10;
+            if norm(measure_position1 - drone_position) < 2
+                state = 2;
+            end
 
         case 2
             % make a measure
             distance = norm(drone_position - node_position);
             perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
             ESP(1) = perfect_ESP + rand()*2*noise_level - noise_level;
+            delta = measure_position2 - drone_position;
             state = 3;
 
         case 3
             % move the drone in second position
-            drone_position = measure_position2;
-            state = 4;
+            drone_position = drone_position + delta / 10;
+            if norm(measure_position2 - drone_position) < 2
+                state = 4;
+            end
             
         case 4
             % make a measure
             distance = norm(drone_position - node_position);
             perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
             ESP(2) = perfect_ESP + rand()*2*noise_level - noise_level;
+            delta = measure_position3 - drone_position;
             state = 5;
 
         case 5
             % move the drone in third position
-            drone_position = measure_position3;
-            state = 6;
+            drone_position = drone_position + delta / 10;
+            if norm(measure_position3 - drone_position) < 2
+                state = 6;
+            end
             
         case 6
             % make a measure
@@ -95,9 +109,11 @@ end
 
 % plot positions and circles
 plot3(node_position(1), node_position(2), node_position(3), 'ko', 'MarkerSize', 10); grid on; hold on;
+plot3(drone_position(1), drone_position(2), drone_position(3), 'co', 'MarkerSize', 10);
 plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
 plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
 plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
+plot3(estimated_position(1), estimated_position(2), estimated_position(3), 'yx', 'MarkerSize', 10);
 plot_circle(measure_position1(1), measure_position1(2), distance_from_ESP(ESP(1), p_distance_from_ESP), 'r');
 plot_circle(measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2), p_distance_from_ESP), 'g');
 plot_circle(measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3), p_distance_from_ESP), 'b');
@@ -105,7 +121,7 @@ xlabel('x position [m]')
 ylabel('y position [m]')
 zlabel('z position [m]')
 title('Node localization algorithm');
-legend('Node position', '1st measure', '2nd measure', '3rd measure');
+legend('Node position', 'Drone position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
 view(0, 90); axis square; 
 
 % print

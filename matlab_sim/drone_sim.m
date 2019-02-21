@@ -29,7 +29,7 @@ distance = [];
 load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
 p_ESP_from_distance = fitresult_dESP;
 load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
-p_distance_from_ESP = fit_resultESPd;
+p_distance_from_ESP = fitresult_ESPd;
 
 % parameters
 noise_level = 2; % +- 2dB

@@ -22,6 +22,8 @@ ESP = zeros(3, 1);
 % load polynom
 load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
 p_ESP_from_distance = fitresult_dESP;
+load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
+p_distance_from_ESP = fitresult_ESPd;
 
 % parameters
 noise_level = 0; % +- 2dB
@@ -96,9 +98,9 @@ plot3(node_position(1), node_position(2), node_position(3), 'ko', 'MarkerSize', 
 plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
 plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
 plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
-plot_circle(measure_position1(1), measure_position1(2), distance_from_ESP(ESP(1)), 'r');
-plot_circle(measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2)), 'g');
-plot_circle(measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3)), 'b');
+plot_circle(measure_position1(1), measure_position1(2), distance_from_ESP(ESP(1), p_distance_from_ESP), 'r');
+plot_circle(measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2), p_distance_from_ESP), 'g');
+plot_circle(measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3), p_distance_from_ESP), 'b');
 xlabel('x position [m]')
 ylabel('y position [m]')
 zlabel('z position [m]')

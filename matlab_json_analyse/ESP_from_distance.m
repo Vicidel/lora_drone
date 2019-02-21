@@ -1,8 +1,5 @@
-function [ESP, confidence_interval_95] = ESP_from_distance(distance)
+function [ESP, confidence_interval_95] = ESP_from_distance(distance, p)
 
-% load interpolation data
-load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-p = fitresult_dESP;
 ci = confint(p);
 
 % get results

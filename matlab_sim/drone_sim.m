@@ -25,6 +25,12 @@ state = 0;
 ESP = []; 
 distance = [];
 
+% load polynom
+load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
+p_ESP_from_distance = fitresult_dESP;
+load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
+p_distance_from_ESP = fit_resultESPd;
+
 % parameters
 noise_level = 2; % +- 2dB
 nb_measures_todo = 10;
@@ -49,7 +55,7 @@ while time < time_limit
     
     % recompute distance and get ESP (only temporary, will be from lora message afterwards
     distance = [distance, norm(drone_position - node_position)];
-    perfect_ESP = ESP_from_distance(distance(end));
+    perfect_ESP = ESP_from_distance(distance(end), p_ESP_from_distance);
     measured_ESP = perfect_ESP + rand()*2*noise_level - noise_level;
     ESP = [ESP, measured_ESP];
     
@@ -144,7 +150,7 @@ while time < time_limit
             end
             
             % if reached maximum resolution for this increment, go smaller
-            horizontal_dist = sqrt(max(distance_from_ESP(ESP(end)), 10)^2 - 100);
+            horizontal_dist = sqrt(max(distance_from_ESP(ESP(end), p_distance_from_ESP), 10)^2 - 100);
             fprintf('Estimated horizontal distance of %.2f m\n', horizontal_dist);
             if horizontal_dist < 2 * dist_increment
                 dist_increment = dist_increment/2;

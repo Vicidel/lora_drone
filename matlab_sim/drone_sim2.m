@@ -19,6 +19,10 @@ time = 0;
 state = 0;
 ESP = zeros(3, 1); 
 
+% load polynom
+load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
+p_ESP_from_distance = fitresult_dESP;
+
 % parameters
 noise_level = 0; % +- 2dB
 time_limit = 1000;
@@ -44,7 +48,7 @@ while time < time_limit
         case 2
             % make a measure
             distance = norm(drone_position - node_position);
-            perfect_ESP = ESP_from_distance(distance);
+            perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
             ESP(1) = perfect_ESP + rand()*2*noise_level - noise_level;
             state = 3;
 
@@ -56,7 +60,7 @@ while time < time_limit
         case 4
             % make a measure
             distance = norm(drone_position - node_position);
-            perfect_ESP = ESP_from_distance(distance);
+            perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
             ESP(2) = perfect_ESP + rand()*2*noise_level - noise_level;
             state = 5;
 
@@ -68,7 +72,7 @@ while time < time_limit
         case 6
             % make a measure
             distance = norm(drone_position - node_position);
-            perfect_ESP = ESP_from_distance(distance);
+            perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
             ESP(3) = perfect_ESP + rand()*2*noise_level - noise_level;
             state = 7;
             

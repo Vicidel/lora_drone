@@ -33,7 +33,6 @@ for i=1: number_message
         ESP(i)  = db(i).gateway_esp(gateway_index);  
         time(i) = db(i).timestamp.x_date;
         SF(i)   = db(i).sp_fact;
-        [ESP(i), RSSI(i)] = SF_correction(SF(i), ESP(i), RSSI(i));      % SF correction
     end
 end
 

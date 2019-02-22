@@ -27,10 +27,9 @@ load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
 p_distance_from_ESP = fitresult_ESPd;
 
 % parameters
-noise_level = 0; % +- 2dB
+noise_level = 4; % +- 2dB
 time_limit = 1000;
 pause_time = 0; % seconds
-max_dist_period = 10;
 
 % localization
 while time < time_limit
@@ -55,8 +54,8 @@ while time < time_limit
             
         case 1
             % move drone to position1
-            drone_position = drone_position + delta / 10;
-            if norm(measure_position1 - drone_position) < 2
+            [drone_position, next_state] = move_drone(drone_position, measure_position1);
+            if next_state
                 state = 2;
             end
 
@@ -70,8 +69,8 @@ while time < time_limit
 
         case 3
             % move the drone in second position
-            drone_position = drone_position + delta / 10;
-            if norm(measure_position2 - drone_position) < 2
+            [drone_position, next_state] = move_drone(drone_position, measure_position2);
+            if next_state
                 state = 4;
             end
             
@@ -85,8 +84,8 @@ while time < time_limit
 
         case 5
             % move the drone in third position
-            drone_position = drone_position + delta / 10;
-            if norm(measure_position3 - drone_position) < 2
+            [drone_position, next_state] = move_drone(drone_position, measure_position3);
+            if next_state
                 state = 6;
             end
             
@@ -130,7 +129,7 @@ plot3(node_position(1), node_position(2), node_position(3), 'ko', 'MarkerSize', 
 plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
 plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
 plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
-plot3(estimated_position(1), estimated_position(2), 10, 'yx', 'MarkerSize', 10);
+plot3(estimated_position(1), estimated_position(2), 10, 'mx', 'MarkerSize', 10);
 plot_circle(measure_position1(1), measure_position1(2), distance_from_ESP(ESP(1), p_distance_from_ESP), 'r');
 plot_circle(measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2), p_distance_from_ESP), 'g');
 plot_circle(measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3), p_distance_from_ESP), 'b');
@@ -221,4 +220,19 @@ xout = mean([xout12(ind1), xout13(ind2), xout23(ind3)]);
 yout = mean([yout12(ind1), yout13(ind2), yout23(ind3)]);
 
 end
+
+% move drone from a to b
+function [next_position, next_state] = move_drone(current_pos, goal)
+
+max_dist = 10;
+delta_pos = goal - current_pos;
+
+if norm(delta_pos)>max_dist
+    next_position = current_pos + max_dist * delta_pos/norm(delta_pos);
+    next_state = false;
+else
+    next_position = goal;
+    next_state = true;
+end
  
+end

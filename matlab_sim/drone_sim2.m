@@ -36,11 +36,16 @@ max_dist_period = 10;
 while time < time_limit
     
     % plot positions
-    plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;
+    plot3(node_position(1), node_position(2), node_position(3), 'ko', 'MarkerSize', 10); grid on; hold on;
     plot3(drone_position(1), drone_position(2), drone_position(3), 'co', 'MarkerSize', 10);
     plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
     plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
     plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
+%     xlabel('x position [m]')
+%     ylabel('y position [m]')
+%     zlabel('z position [m]')
+%     title('Drone movement');
+%     legend('Node position', 'Drone position', '1st measure', '2nd measure', '3rd measure');
     axis square; view(0, 90);
     
     switch state
@@ -93,9 +98,21 @@ while time < time_limit
             state = 7;
             
         case 7
-            % compute position ((TODO))
-            estimated_position = drone_position;
-            break;
+            % compute position
+            [x, y] = get_position(measure_position1(1), measure_position1(2), distance_from_ESP(ESP(1), p_distance_from_ESP), ...
+                                  measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2), p_distance_from_ESP), ...
+                                  measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3), p_distance_from_ESP));
+            estimated_position = [x, y];
+            if isnan(estimated_position)    
+                fprintf('Could not find intersection, redoing now');
+                state = 0;
+                measure_position1 = [rand*100, rand*100, 10];    % x > 0, y > 0
+                measure_position2 = [-rand*100, rand*100, 10];    % x < 0, y > 0
+                measure_position3 = [rand*200-100, rand*100-100, 10];    % y < 0
+                close all;
+            else
+                break;
+            end
             
     end
     
@@ -108,12 +125,12 @@ end
 
 
 % plot positions and circles
+figure();
 plot3(node_position(1), node_position(2), node_position(3), 'ko', 'MarkerSize', 10); grid on; hold on;
-plot3(drone_position(1), drone_position(2), drone_position(3), 'co', 'MarkerSize', 10);
 plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
 plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
 plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
-plot3(estimated_position(1), estimated_position(2), estimated_position(3), 'yx', 'MarkerSize', 10);
+plot3(estimated_position(1), estimated_position(2), 10, 'yx', 'MarkerSize', 10);
 plot_circle(measure_position1(1), measure_position1(2), distance_from_ESP(ESP(1), p_distance_from_ESP), 'r');
 plot_circle(measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2), p_distance_from_ESP), 'g');
 plot_circle(measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3), p_distance_from_ESP), 'b');
@@ -121,7 +138,7 @@ xlabel('x position [m]')
 ylabel('y position [m]')
 zlabel('z position [m]')
 title('Node localization algorithm');
-legend('Node position', 'Drone position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
+legend('Node position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
 view(0, 90); axis square; 
 
 % print
@@ -130,10 +147,78 @@ fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_positi
 fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position(1) - node_position(1)), abs(estimated_position(2) - node_position(2)), norm([abs(drone_position(1) - node_position(1)), abs(drone_position(2) - node_position(2))])); 
 
 
+% plots a circle in x, y, radius r in defined color 
 function plot_circle(x, y, r, color)
     th = 0:pi/50:2*pi;
     xunit = r * cos(th) + x;
     yunit = r * sin(th) + y;
     plot(xunit, yunit, color);
+end
+
+% obtain the position at intersection of three circles
+function [xout, yout] = get_position(x1, y1, r1, x2, y2, r2, x3, y3, r3)
+
+% get each duo of intersection position (could be NaN in no intersection --> test that)
+[xout12, yout12] = circcirc(x1, y1, r1, x2, y2, r2);
+[xout13, yout13] = circcirc(x1, y1, r1, x3, y3, r3);
+[xout23, yout23] = circcirc(x3, y3, r3, x2, y2, r2);
+
+% test if we have three intersection
+if isnan(xout12(1)) || isnan(xout13(1)) || isnan(xout23(1)) || isnan(xout12(2)) || isnan(xout13(2)) || isnan(xout23(2))
+    xout = NaN;
+    yout = NaN;
+    return;
+end
+
+% we don't, compute sum of distances between points
+sum_vect = zeros(8, 1);
+for i=1: 8
+    if sum(i == [1, 2, 3, 4])   % test if we use first or second intersection for 12
+        ind1 = 1;
+    else 
+        ind1 = 2;
+    end
+    if sum(i == [1, 2, 5, 6])   % test if we use first or second intersection for 13
+        ind2 = 1;
+    else 
+        ind2 = 2;
+    end
+    if sum(i == [2, 4, 6, 8])   % test if we use first or second intersection for 23
+        ind3 = 2;
+    else 
+        ind3 = 1;
+    end
+    
+    % get sum of three distances between points
+    sum_vect(i) = norm([xout12(ind1) - xout13(ind2), yout12(ind1) - yout13(ind2)]) + ...
+                norm([xout12(ind1) - xout23(ind3), yout12(ind1) - yout23(ind3)]) + ...
+                norm([xout23(ind3) - xout13(ind2), yout23(ind3) - yout13(ind2)]);
+end
+
+% find minimum and get corresponding indexes
+[~, index] = min(sum_vect);
+switch index
+    case 1
+        ind1 = 1; ind2 = 1; ind3 = 1;
+    case 2
+        ind1 = 1; ind2 = 1; ind3 = 2;
+    case 3
+        ind1 = 1; ind2 = 2; ind3 = 1;
+    case 4
+        ind1 = 1; ind2 = 2; ind3 = 2;
+    case 5
+        ind1 = 2; ind2 = 1; ind3 = 1;
+    case 6
+        ind1 = 2; ind2 = 1; ind3 = 2;
+    case 7
+        ind1 = 2; ind2 = 2; ind3 = 1;
+    case 8
+        ind1 = 2; ind2 = 2; ind3 = 2;
+end
+
+% return mean with computed indexes
+xout = mean([xout12(ind1), xout13(ind2), xout23(ind3)]);
+yout = mean([yout12(ind1), yout13(ind2), yout23(ind3)]);
+
 end
  

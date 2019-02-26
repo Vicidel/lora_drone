@@ -150,8 +150,6 @@ while time < time_limit
     time = time + time_period;
 end
 
-fprintf('Found in t=%d loops\n', time);
-
 
 
 % plot a vector of 3x1 in defined color

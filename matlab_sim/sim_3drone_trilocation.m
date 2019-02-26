@@ -117,13 +117,13 @@ while time < time_limit
                 % print
                 fprintf('Second position found at x=%.2f, y=%.2f\n', x, y);
                 fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
-                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2)), norm([abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2))])); 
+                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n\n', abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2)), norm([abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2))])); 
                 
                 % plot
                 if plot_bool
                     figure();
-%                     plot_tri(node_position, 'ko'); grid on; hold on;
-                    plot_tri(drone_position_1, 'ro');grid on; hold on;
+                    plot_tri(node_position, 'ko'); grid on; hold on;
+                    plot_tri(drone_position_1, 'ro');
                     plot_tri(drone_position_2, 'go');
                     plot_tri(drone_position_3, 'bo');
                     plot_tri(estimated_position_v2, 'mx');
@@ -246,6 +246,7 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
         ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
         measured_distance = distance_from_ESP(ESP(i), p_distance_from_ESP);
         h = abs(node_position(3) - measure_position(3));
+        measured_distance = max([measured_distance, h]);
         dist(i) = sqrt(measured_distance*measured_distance - h*h);
     end
     

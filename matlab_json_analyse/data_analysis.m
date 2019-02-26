@@ -49,6 +49,7 @@ plot(time(distances==150), ESP(distances==150), 'cx');
 plot(time(distances==200), ESP(distances==200), 'mx');
 xlabel('Time [s]');
 ylabel('ESP [dBm]');
+legend('10m', '20m', '50m', '100m', '150m', '200m');
 title('ESP function of time');
 
 % plot mean ESP and RSSI against distances
@@ -97,12 +98,15 @@ title('Boxplot of RSSI');
 % plot ESP with SF
 figure();
 plot(distances(SF==7), ESP(SF==7), 'ro'); grid on; hold on;
-plot(distances(SF==9), ESP(SF==9), 'go');
-plot(distances(SF==10), ESP(SF==10), 'yo');
-plot(distances(SF==12), ESP(SF==12), 'co');
+% plot(distances(SF==8), ESP(SF==8), 'go');
+plot(distances(SF==9), ESP(SF==9), 'bo');
+plot(distances(SF==10), ESP(SF==10), 'go');
+% plot(distances(SF==11), ESP(SF==11), 'co');
+plot(distances(SF==12), ESP(SF==12), 'ko');
 xlabel('Real distance [m]');
 ylabel('ESP [dBm]');
-title('ESP function of distance and SF (red=7, green=9...)');
+legend('SF7', 'SF9', 'SF10', 'SF12');
+title('ESP function of distance and SF');
 
 % plot noise level against distance
 figure();

@@ -19,7 +19,7 @@ for i=1: length(x_values)
     for j=1: length(y_values)
         x = x_values(i);
         y = y_values(j);
-        distance = norm([x-node_position(1), y-node_position(2), 10]);
+        distance = norm([x-node_position(1), y-node_position(2), altitude]);
         matrix(i, j) = ESP_from_distance(distance, p_ESP_from_distance);
     end
 end

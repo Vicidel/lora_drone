@@ -25,7 +25,7 @@ p_distance_from_ESP = fitresult_ESPd;
 
 % define node coordinates xyz (z altitude) and network estimation (circle of 200m)
 node_position = [0, 0, 0];
-network_error = 50;
+network_error = 150;
 phi = rand()*2*pi; rad = rand()*network_error;
 network_position = node_position + [rad*cos(phi), rad*sin(phi), 0];
 

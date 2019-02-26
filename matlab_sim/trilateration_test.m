@@ -23,11 +23,13 @@ p_distance_from_ESP = fitresult_ESPd;
 [~, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2, p_ESP_from_distance, p_distance_from_ESP);
 [~, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3, p_ESP_from_distance, p_distance_from_ESP);
 
-% trilateration
+% trilateration data
 P = [drone_position_1' drone_position_2' drone_position_3'];
 S = [measured_distance_1 measured_distance_2 measured_distance_3];
+W = ones(size(S));
 
-
+% trilateration
+[x, y] = get_position(P, S, W);
 
 % plot 
 figure();
@@ -52,8 +54,46 @@ legend('Real position', 'Network position', '1st drone', '2nd drone', '3rd drone
 
 
 % obtain the position of two intersection of three circles (in 3D)
-% P is of size d.N with dimension d and N points
-function [x, y] = get_position(P, S)
+% P is of size d.N with dimension d and N points, W weights (usually ones)
+function [x, y] = get_position(P, S, W)
+    
+    [d, N] = size(P(1:2, :));
+
+    % for each point set A and b matrices
+    A = []; b = [];
+    for i=1: N
+        x = P(1,i); y = P(2,i);
+        s = S(i);
+        A = [A ; 1 -2*x  -2*y]; 
+        b = [b ; s^2-x^2-y^2];
+    end
+    ATA = A.' * A;
+    
+    % set D and f
+    D = zeros(d+1, d+1);
+    D(1:d, 1:d) = eye(d);
+    f = [zeros(1, d), -0.5]';
+    
+    % eigenvalues
+    eigen = eig(D, ATA);
+    if eigen(end) > 1e-10
+        lower_bound = -1/eigen(end);
+    else
+        lower_bound = -1e-5;
+    end
+    
+    % parameters
+    inf = 1e5; xtol = 1e-12;
+    lambda_opt = 0;
+    
+    % find optimal lambda
+    'TODO'
+    
+    % solve ?
+    lhs = ATA + lambda_opt*D;
+    rhs = A*b - lambda_opt*f;
+    y = lhs\rhs;
+    
     
     x = 0;
     y = 0;

@@ -11,13 +11,23 @@ clear all; close all;
 % init
 time = 0; 
 state = 0;
-ESP = []; 
-distance = [];
-altitude = 2;
+
+% parameters
+plot_bool = true;
+time_limit = 15*60;
+time_period = 1;
+altitude = 10;
+
+% load polynom
+load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
+p_ESP_from_distance = fitresult_dESP;
+load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
+p_distance_from_ESP = fitresult_ESPd;
 
 % define node coordinates xyz (z altitude)
 node_position = [rand*200-100, rand*200-100, 0];
 drone_position = [0, 0, altitude];
+ESP = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
 
 % define increment in position
 dist_increment = 10;
@@ -26,39 +36,23 @@ increment_0m0 = [0, -dist_increment, 0];
 increment_p00 = [dist_increment, 0, 0];
 increment_m00 = [-dist_increment, 0, 0];
 
-% load polynom
-load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-p_ESP_from_distance = fitresult_dESP;
-load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
-p_distance_from_ESP = fitresult_ESPd;
-
-% parameters
-noise_level = 2; % +- 2dB
-nb_measures_todo = 10;
-time_limit = 15*60;
-pause_time = 0; % seconds
-
 % localization
 while time < time_limit
     
     % plot positions
-    plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;
-    if dist_increment == 10
-        plot3(drone_position(1), drone_position(2), drone_position(3), 'bo', 'MarkerSize', 10);
-    elseif dist_increment == 5
-        plot3(drone_position(1), drone_position(2), drone_position(3), 'go', 'MarkerSize', 10);
-    elseif dist_increment == 2.5
-        plot3(drone_position(1), drone_position(2), drone_position(3), 'yo', 'MarkerSize', 10);
-    elseif dist_increment == 1.25
-        plot3(drone_position(1), drone_position(2), drone_position(3), 'ko', 'MarkerSize', 10);
+    if plot_bool
+        plot_tri(node_position, 'ro'); grid on; hold on;
+        if dist_increment == 10
+            plot_tri(drone_position, 'bo');
+        elseif dist_increment == 5
+            plot_tri(drone_position, 'go');
+        elseif dist_increment == 2.5
+            plot_tri(drone_position, 'yo');
+        else
+            plot_tri(drone_position, 'ko');
+        end
+        view(0, 90); axis equal;
     end
-    view(0, 90);
-    
-    % recompute distance and get ESP (only temporary, will be from lora message afterwards
-    distance = [distance, norm(drone_position - node_position)];
-    perfect_ESP = ESP_from_distance(distance(end), p_ESP_from_distance);
-    measured_ESP = perfect_ESP + rand()*2*noise_level - noise_level;
-    ESP = [ESP, measured_ESP];
     
     switch state
         case 0 % starting point
@@ -67,61 +61,52 @@ while time < time_limit
         case 1 % try p00 direction
             fprintf('Going p00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_p00;
-            measures = 0;
             state = 2;
             
-        case 2 % check progress
-            measures = measures + 1;
-            fprintf('#%d ', measures);
-            if measures >= nb_measures_todo
-                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
-                    fprintf('\nProgress, continuing in this direction\n');
-                    state = 1;
-                else
-                    fprintf('\nNo progress, go back then next direction\n');
-                    drone_position = drone_position - increment_p00;
-                    state = 3;
-                end
+        case 2 % make measures and check progress
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            ESP = [ESP, ESP_new];
+            if ESP(end) > ESP(end-1)    % better ESP
+                fprintf('Progress, continuing in this direction\n');
+                state = 1;
+            else
+                fprintf('No progress, go back then next direction\n');
+                drone_position = drone_position - increment_p00;
+                state = 3;
             end
             
         case 3 % try m00 direction
             fprintf('Going m00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_m00;
-            measures = 0;
             state = 4;
             
-        case 4 %check progress
-            measures = measures + 1;             
-            fprintf('#%d ', measures);
-            if measures >= nb_measures_todo
-                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
-                    fprintf('\nProgress, continuing in this direction\n');
-                    state = 3;
-                else
-                    fprintf('\nNo progress, go back then next direction\n');
-                    drone_position = drone_position - increment_m00;
-                    state = 5;
-                end
+        case 4 % make measures and check progress
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            ESP = [ESP, ESP_new];
+            if ESP(end) > ESP(end-1)    % better ESP
+                fprintf('Progress, continuing in this direction\n');
+                state = 3;
+            else
+                fprintf('No progress, go back then next direction\n');
+                drone_position = drone_position - increment_m00;
+                state = 5;
             end
             
         case 5 % try 0p0 direction
             fprintf('Going 0p0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0p0;
-            measures = 0;
             state = 6;
             
-        case 6 % check progress
-            measures = measures + 1;             
-            fprintf('#%d ', measures);
-            if measures >= nb_measures_todo
-                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
-                    fprintf('\nProgress, continuing in this direction\n');
-                    state = 5;
-                else
-                    fprintf('\nNo progress, go back then next direction\n');
-                    drone_position = drone_position - increment_0p0;
-                    state = 7;
-                end
+        case 6 % make measures and check progress
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            ESP = [ESP, ESP_new];
+            if ESP(end) > ESP(end-1)    % better ESP
+                fprintf('Progress, continuing in this direction\n');
+                state = 5;
+            else
+                fprintf('No progress, go back then next direction\n');
+                drone_position = drone_position - increment_0p0;
+                state = 7;
             end
             
         case 7 % try m00 direction
@@ -130,18 +115,16 @@ while time < time_limit
             measures = 0;
             state = 8;
             
-        case 8 %check progress
-            measures = measures + 1;             
-            fprintf('#%d ', measures);
-            if measures >= nb_measures_todo
-                if mean(ESP(end-nb_measures_todo:end)) > ESP(end-nb_measures_todo-1) % better signal on average of last three
-                    fprintf('\nProgress, continuing in this direction\n');
-                    state = 7;
-                else
-                    fprintf('\nNo progress, go back then next direction\n');
-                    drone_position = drone_position - increment_0m0;
-                    state = 9;
-                end
+        case 8 % make measures and check progress
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            ESP = [ESP, ESP_new];
+            if ESP(end) > ESP(end-1)    % better ESP
+                fprintf('Progress, continuing in this direction\n');
+                state = 7;
+            else
+                fprintf('No progress, go back then next direction\n');
+                drone_position = drone_position - increment_0m0;
+                state = 9;
             end
             
         case 9
@@ -153,7 +136,7 @@ while time < time_limit
             % if reached maximum resolution for this increment, go smaller
             horizontal_dist = sqrt(max(distance_from_ESP(ESP(end), p_distance_from_ESP), altitude)^2 - altitude^2);
             fprintf('Estimated horizontal distance of %.2f m\n', horizontal_dist);
-            if horizontal_dist < 2 * dist_increment
+            if horizontal_dist < 4 * dist_increment
                 dist_increment = dist_increment/2;
                 increment_0p0 = [0, dist_increment, 0];
                 increment_0m0 = [0, -dist_increment, 0];
@@ -166,27 +149,56 @@ while time < time_limit
     end
     
     % time update
-    time = time + 1;
+    time = time + time_period;
     
     % slows down simulation
-    pause(pause_time);
+    pause(0.1);
 end
 
 % estimated final position
-estimated_position = drone_position;% + increment_p00 + increment_0p0; % increments only for without noise
+estimated_position = drone_position;
 
 % plot positions
-plot3(node_position(1), node_position(2), node_position(3), 'ro', 'MarkerSize', 10); grid on; hold on;
-plot3(drone_position(1), drone_position(2), drone_position(3), 'bo', 'MarkerSize', 10);
-plot3(estimated_position(1), estimated_position(2), estimated_position(3), 'gx', 'MarkerSize', 10);
-xlabel('x position [m]')
-ylabel('y position [m]')
-zlabel('z position [m]')
-title('Node localization algorithm');
-view(0, 90);
+if plot_bool
+    plot_tri(estimated_position, 'gx');
+    xlabel('x position [m]')
+    ylabel('y position [m]')
+    zlabel('z position [m]')
+    title('Node localization algorithm');
+    view(0, 90); axis equal;
+end
 
 % print
 fprintf('\nEstimated position of node: x=%.2f, y=%.2f\n', estimated_position(1), estimated_position(2));
 fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
 fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position(1) - node_position(1)), abs(estimated_position(2) - node_position(2)), norm([abs(drone_position(1) - node_position(1)), abs(drone_position(2) - node_position(2))])); 
 fprintf('Found in t=%d loops\n', time);
+
+
+
+% plot a vector of 3x1 in defined color
+function plot_tri(vector, color)
+    plot3(vector(1), vector(2), vector(3), color);
+end
+
+% obtain a noisy ESP and distance from positions
+function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position, p_ESP_from_distance, p_distance_from_ESP)
+    noise_level = 3;     % +-2dB
+    number_measures = 3;
+    
+    ESP = zeros(number_measures,1);
+    dist = zeros(number_measures,1);
+    
+    for i=1: number_measures
+        real_dist = norm(measure_position - node_position);
+        perfect_ESP = ESP_from_distance(real_dist, p_ESP_from_distance);
+        ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
+        measured_distance = distance_from_ESP(ESP(i), p_distance_from_ESP);
+        h = abs(node_position(3) - measure_position(3));
+        measured_distance = max([measured_distance, h]);
+        dist(i) = sqrt(measured_distance*measured_distance - h*h);
+    end
+    
+    measured_ESP = mean(ESP);
+    measured_horizontal_distance = mean(dist);
+end

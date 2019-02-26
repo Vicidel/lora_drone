@@ -6,6 +6,18 @@
 
 clear all; close all;
 
+% init
+time = 0; 
+state = 0;
+ESP = zeros(3, 1); 
+
+% parameters
+plot_bool = true;
+time_limit = 60*15;     % battery limit
+time_period = 1;
+algo_loop = 0;
+size_around_est = 40;
+
 % define node coordinates xyz (z altitude)
 arena_size = 100;
 node_position = [rand*2*arena_size-arena_size, rand*2*arena_size-arena_size, 0];
@@ -15,25 +27,11 @@ measure_position2 = [-rand*arena_size, rand*arena_size, 10];    % x < 0, y > 0
 measure_position3 = [rand*2*arena_size-arena_size, rand*arena_size-arena_size, 10];    % y < 0
 distance = 9999;
 
-% init
-time = 0; 
-state = 0;
-ESP = zeros(3, 1); 
-
 % load polynom
 load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
 p_ESP_from_distance = fitresult_dESP;
 load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
 p_distance_from_ESP = fitresult_ESPd;
-
-% parameters
-noise_level = 3; % +- 2dB
-time_limit = 1000;
-pause_time = 0; % seconds
-end_condition_distance = 10;
-algo_loop = 0;
-size_around_est = 40;
-plot_bool = false;
 
 % set first figure
 if plot_bool 
@@ -45,12 +43,12 @@ while time < time_limit
     
     if plot_bool
         % plot positions
-        plot3(node_position(1), node_position(2), node_position(3), 'ko', 'MarkerSize', 10); grid on; hold on;
-        plot3(drone_position(1), drone_position(2), drone_position(3), 'co', 'MarkerSize', 10);
-        plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
-        plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
-        plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
-        axis square; view(0, 90);
+        plot_tri(node_position, 'ko'); grid on; hold on
+        plot_tri(drone_position, 'co');
+        plot_tri(measure_position1, 'ro');
+        plot_tri(measure_position2, 'go');
+        plot_tri(measure_position3, 'bo');
+        axis equal; view(0, 90);
     end
     
     switch state
@@ -67,11 +65,7 @@ while time < time_limit
 
         case 2
             % make a measure
-            distance = norm(drone_position - node_position);
-            perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
-            ESP_1st = perfect_ESP + rand()*2*noise_level - noise_level;
-            ESP_2nd = perfect_ESP + rand()*2*noise_level - noise_level;
-            ESP(1) = mean([ESP_1st, ESP_2nd]);
+            [ESP(1), ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
             delta = measure_position2 - drone_position;
             state = 3;
 
@@ -84,11 +78,7 @@ while time < time_limit
             
         case 4
             % make a measure
-            distance = norm(drone_position - node_position);
-            perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
-            ESP_1st = perfect_ESP + rand()*2*noise_level - noise_level;
-            ESP_2nd = perfect_ESP + rand()*2*noise_level - noise_level;
-            ESP(2) = mean([ESP_1st, ESP_2nd]);    
+            [ESP(2), ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
             delta = measure_position3 - drone_position;
             state = 5;
 
@@ -101,11 +91,7 @@ while time < time_limit
             
         case 6
             % make a measure
-            distance = norm(drone_position - node_position);
-            perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
-            ESP_1st = perfect_ESP + rand()*2*noise_level - noise_level;
-            ESP_2nd = perfect_ESP + rand()*2*noise_level - noise_level;
-            ESP(3) = mean([ESP_1st, ESP_2nd]);      
+            [ESP(3), ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
             state = 7;
             
         case 7
@@ -114,6 +100,8 @@ while time < time_limit
                                   measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2), p_distance_from_ESP), ...
                                   measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3), p_distance_from_ESP));
             estimated_position = [x, y, 10];
+            
+            % check intersection
             if isnan(estimated_position(1)) || isnan(estimated_position(2))
                 state = 0;
                 if algo_loop == 0
@@ -122,24 +110,22 @@ while time < time_limit
                     measure_position2 = [-rand*100, rand*100, 10];    % x < 0, y > 0
                     measure_position3 = [rand*200-100, rand*100-100, 10];    % y < 0
                 else
-                    size_around_est = 60;
                     fprintf('Could not find intersection, larger spacing (%d m)\n', size_around_est);
+                    size_around_est = 60;
                     measure_position1 = old_estimated_position + [0, -size_around_est, 0];   % south
                     measure_position2 = old_estimated_position + [size_around_est*cos(pi/6), size_around_est*sin(pi/6), 0];   % north east	
                     measure_position3 = old_estimated_position + [-size_around_est*cos(pi/6), size_around_est*sin(pi/6), 0];   % north west
                 end
                 close all;
             else
-                fprintf('Found best intersection at x=%f and y=%f\n', x, y);
-                
+                % plot positions and circles
                 if plot_bool
-                    % plot positions and circles
                     figure();
-                    plot3(node_position(1), node_position(2), node_position(3), 'ko', 'MarkerSize', 10); grid on; hold on;
-                    plot3(measure_position1(1), measure_position1(2), measure_position1(3), 'ro', 'MarkerSize', 10);
-                    plot3(measure_position2(1), measure_position2(2), measure_position2(3), 'go', 'MarkerSize', 10);
-                    plot3(measure_position3(1), measure_position3(2), measure_position3(3), 'bo', 'MarkerSize', 10);
-                    plot3(estimated_position(1), estimated_position(2), estimated_position(3), 'mx', 'MarkerSize', 10);
+                    plot_tri(node_position, 'ko'); grid on; hold on;
+                    plot_tri(measure_position1, 'ro');
+                    plot_tri(measure_position2, 'go');
+                    plot_tri(measure_position3, 'bo');
+                    plot_tri(estimated_position, 'mx');
                     plot_circle(measure_position1(1), measure_position1(2), distance_from_ESP(ESP(1), p_distance_from_ESP), 'r');
                     plot_circle(measure_position2(1), measure_position2(2), distance_from_ESP(ESP(2), p_distance_from_ESP), 'g');
                     plot_circle(measure_position3(1), measure_position3(2), distance_from_ESP(ESP(3), p_distance_from_ESP), 'b');
@@ -148,7 +134,7 @@ while time < time_limit
                     zlabel('z position [m]')
                     title('Node localization algorithm');
                     legend('Node position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
-                    view(0, 90); axis square; 
+                    view(0, 90); axis equal; 
                 end
 
                 % print in terminal
@@ -180,14 +166,16 @@ while time < time_limit
     end
     
     % time update
-    time = time + 1;
-    
-    % slows down simulation
-    pause(pause_time);
+    time = time + time_period;
 end
 
 fprintf('Found in t=%d loops\n', time);
 
+
+% plot a vector of 3x1 in defined color
+function plot_tri(vector, color)
+    plot3(vector(1), vector(2), vector(3), color);
+end
 
 % plots a circle in x, y, radius r in defined color 
 function plot_circle(x, y, r, color)
@@ -278,4 +266,26 @@ else
     next_state = true;
 end
  
+end
+
+% obtain a noisy ESP and distance from positions
+function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position, p_ESP_from_distance, p_distance_from_ESP)
+    noise_level = 3;     % +-2dB
+    number_measures = 2;
+    
+    ESP = zeros(number_measures,1);
+    dist = zeros(number_measures,1);
+    
+    for i=1: number_measures
+        real_dist = norm(measure_position - node_position);
+        perfect_ESP = ESP_from_distance(real_dist, p_ESP_from_distance);
+        ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
+        measured_distance = distance_from_ESP(ESP(i), p_distance_from_ESP);
+        h = abs(node_position(3) - measure_position(3));
+        measured_distance = max([measured_distance, h]);
+        dist(i) = sqrt(measured_distance*measured_distance - h*h);
+    end
+    
+    measured_ESP = mean(ESP);
+    measured_horizontal_distance = mean(dist);
 end

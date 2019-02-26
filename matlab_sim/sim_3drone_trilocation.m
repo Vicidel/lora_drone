@@ -1,16 +1,19 @@
 % the algorithms place the node at the origin
 % then an estimated position is done (from network)
 % the three drones are placed at equidistance around the estimation
-% the drones then move closer and closer
+% the drones then make a measure, then move towards it and remeasure
+% estimation is obtainde from second estimation
 
 clear all; close all;
 
+% init 
+time = 0;
+state = 0;
+
 % simulation parameters
 plot_bool = true;    % if true plot all
-time = 0;
 time_period = 1;
 time_limit = 60*15;  % battery limit
-state = 0;
 size_around_estimation_v1 = 70;     % size of triangle around estimation
 size_around_estimation_v2 = 20;
 
@@ -26,8 +29,7 @@ network_error = 50;
 phi = rand()*2*pi; rad = rand()*network_error;
 network_position = node_position + [rad*cos(phi), rad*sin(phi), 0];
 
-
-% loop
+% localization
 while time < time_limit
     
     switch state
@@ -148,7 +150,7 @@ while time < time_limit
     time = time + time_period;
 end
 
-
+fprintf('Found in t=%d loops\n', time);
 
 
 

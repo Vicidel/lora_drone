@@ -10,22 +10,16 @@ clear all; close all;
 time = 0; 
 state = 0;
 ESP = zeros(3, 1); 
+algo_loop = 1;
 
 % parameters
 plot_bool = true;
+algo_loops_todo = 3;
+plot_movement_bool = false;
 time_limit = 60*15;     % battery limit
 time_period = 1;
-algo_loop = 0;
-size_around_est = 40;
-
-% define node coordinates xyz (z altitude)
-arena_size = 100;
-node_position = [rand*2*arena_size-arena_size, rand*2*arena_size-arena_size, 0];
-drone_position = [0, 0, 10];
-measure_position1 = [rand*arena_size, rand*arena_size, 10];    % x > 0, y > 0
-measure_position2 = [-rand*arena_size, rand*arena_size, 10];    % x < 0, y > 0
-measure_position3 = [rand*2*arena_size-arena_size, rand*arena_size-arena_size, 10];    % y < 0
-distance = 9999;
+size_around_estimation_v1 = 100;    % size of triangle around estimation
+size_around_estimation_v2 = 40;
 
 % load polynom
 load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
@@ -33,16 +27,30 @@ p_ESP_from_distance = fitresult_dESP;
 load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
 p_distance_from_ESP = fitresult_ESPd;
 
+% define node coordinates xyz (z altitude) and network estimation (circle of XXm)
+node_position = [0, 0, 0];
+network_error = 150;
+phi = rand()*2*pi; rad = rand()*network_error;  
+network_position = node_position + [rad*cos(phi), rad*sin(phi), 0];
+
+% define measuring positions
+measure_position1 = network_position + [0, -size_around_estimation_v1, 0];   % south
+measure_position2 = network_position + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
+measure_position3 = network_position + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
+            
+% set drone starting point
+drone_position = [rand*2*100-100, rand*2*100-100, 0];
+
 % set first figure
-if plot_bool 
+if plot_movement_bool  && plot_bool
     figure(1);
 end
 
 % localization
 while time < time_limit
     
-    if plot_bool
-        % plot positions
+    if plot_movement_bool && plot_bool
+        % plot movement
         plot_tri(node_position, 'ko'); grid on; hold on
         plot_tri(drone_position, 'co');
         plot_tri(measure_position1, 'ro');
@@ -110,18 +118,20 @@ while time < time_limit
                     measure_position2 = [-rand*100, rand*100, 10];    % x < 0, y > 0
                     measure_position3 = [rand*200-100, rand*100-100, 10];    % y < 0
                 else
-                    fprintf('Could not find intersection, larger spacing (%d m)\n', size_around_est);
-                    size_around_est = 60;
-                    measure_position1 = old_estimated_position + [0, -size_around_est, 0];   % south
-                    measure_position2 = old_estimated_position + [size_around_est*cos(pi/6), size_around_est*sin(pi/6), 0];   % north east	
-                    measure_position3 = old_estimated_position + [-size_around_est*cos(pi/6), size_around_est*sin(pi/6), 0];   % north west
+                    fprintf('Could not find intersection, larger spacing (%d m)\n', size_around_estimation_v2);
+                    size_around_estimation_v2 = 60;
+                    measure_position1 = old_estimated_position + [0, -size_around_estimation_v2, 0];   % south
+                    measure_position2 = old_estimated_position + [size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north east	
+                    measure_position3 = old_estimated_position + [-size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north west
                 end
-                close all;
             else
                 % plot positions and circles
                 if plot_bool
                     figure();
                     plot_tri(node_position, 'ko'); grid on; hold on;
+                    if algo_loop == 1
+                        plot_tri(network_position, 'co'); 
+                    end
                     plot_tri(measure_position1, 'ro');
                     plot_tri(measure_position2, 'go');
                     plot_tri(measure_position3, 'bo');
@@ -133,7 +143,7 @@ while time < time_limit
                     ylabel('y position [m]')
                     zlabel('z position [m]')
                     title('Node localization algorithm');
-                    legend('Node position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
+                    legend('Node position', 'Network position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
                     view(0, 90); axis equal; 
                 end
 
@@ -143,23 +153,23 @@ while time < time_limit
                 fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position(1) - node_position(1)), abs(estimated_position(2) - node_position(2)), norm([abs(estimated_position(1) - node_position(1)), abs(estimated_position(2) - node_position(2))])); 
                 
                 % end condition
-                if algo_loop == 1
+                if algo_loop == algo_loops_todo
                     fprintf('End of algorithm\n');
                     break;
                 end
                 
                 % smaller size
-                measure_position1 = estimated_position + [0, -size_around_est, 0];   % south
-                measure_position2 = estimated_position + [size_around_est*cos(pi/6), size_around_est*sin(pi/6), 0];   % north east	
-                measure_position3 = estimated_position + [-size_around_est*cos(pi/6), size_around_est*sin(pi/6), 0];   % north west
+                measure_position1 = estimated_position + [0, -size_around_estimation_v2, 0];   % south
+                measure_position2 = estimated_position + [size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north east	
+                measure_position3 = estimated_position + [-size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north west
                 
                 % return to beginning
                 fprintf('Restarting algorithm around found position\n\n');
-                if plot_bool
+                if plot_movement_bool && plot_bool
                     figure();
                 end
                 state = 0;
-                algo_loop = 1;
+                algo_loop = algo_loop + 1;
                 old_estimated_position = estimated_position;
             end
             
@@ -270,7 +280,7 @@ end
 
 % obtain a noisy ESP and distance from positions
 function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position, p_ESP_from_distance, p_distance_from_ESP)
-    noise_level = 3;     % +-2dB
+    noise_level = 3;     % +-3dB
     number_measures = 2;
     
     ESP = zeros(number_measures,1);

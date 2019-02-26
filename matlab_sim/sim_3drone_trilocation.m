@@ -23,7 +23,7 @@ p_ESP_from_distance = fitresult_dESP;
 load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
 p_distance_from_ESP = fitresult_ESPd;
 
-% define node coordinates xyz (z altitude) and network estimation (circle of 200m)
+% define node coordinates xyz (z altitude) and network estimation (circle of XXm)
 node_position = [0, 0, 0];
 network_error = 150;
 phi = rand()*2*pi; rad = rand()*network_error;

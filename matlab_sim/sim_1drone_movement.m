@@ -8,9 +8,16 @@
 
 clear all; close all;
 
+% init
+time = 0; 
+state = 0;
+ESP = []; 
+distance = [];
+altitude = 2;
+
 % define node coordinates xyz (z altitude)
 node_position = [rand*200-100, rand*200-100, 0];
-drone_position = [0, 0, 10];
+drone_position = [0, 0, altitude];
 
 % define increment in position
 dist_increment = 10;
@@ -18,12 +25,6 @@ increment_0p0 = [0, dist_increment, 0];
 increment_0m0 = [0, -dist_increment, 0];
 increment_p00 = [dist_increment, 0, 0];
 increment_m00 = [-dist_increment, 0, 0];
-
-% init
-time = 0; 
-state = 0;
-ESP = []; 
-distance = [];
 
 % load polynom
 load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
@@ -34,7 +35,7 @@ p_distance_from_ESP = fitresult_ESPd;
 % parameters
 noise_level = 2; % +- 2dB
 nb_measures_todo = 10;
-time_limit = 1000;
+time_limit = 15*60;
 pause_time = 0; % seconds
 
 % localization
@@ -150,7 +151,7 @@ while time < time_limit
             end
             
             % if reached maximum resolution for this increment, go smaller
-            horizontal_dist = sqrt(max(distance_from_ESP(ESP(end), p_distance_from_ESP), 10)^2 - 100);
+            horizontal_dist = sqrt(max(distance_from_ESP(ESP(end), p_distance_from_ESP), altitude)^2 - altitude^2);
             fprintf('Estimated horizontal distance of %.2f m\n', horizontal_dist);
             if horizontal_dist < 2 * dist_increment
                 dist_increment = dist_increment/2;
@@ -188,3 +189,4 @@ view(0, 90);
 fprintf('\nEstimated position of node: x=%.2f, y=%.2f\n', estimated_position(1), estimated_position(2));
 fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
 fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position(1) - node_position(1)), abs(estimated_position(2) - node_position(2)), norm([abs(drone_position(1) - node_position(1)), abs(drone_position(2) - node_position(2))])); 
+fprintf('Found in t=%d loops\n', time);

@@ -69,7 +69,9 @@ while time < time_limit
             % make a measure
             distance = norm(drone_position - node_position);
             perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
-            ESP(1) = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP_1st = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP_2nd = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP(1) = mean([ESP_1st, ESP_2nd]);
             delta = measure_position2 - drone_position;
             state = 3;
 
@@ -84,7 +86,9 @@ while time < time_limit
             % make a measure
             distance = norm(drone_position - node_position);
             perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
-            ESP(2) = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP_1st = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP_2nd = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP(2) = mean([ESP_1st, ESP_2nd]);    
             delta = measure_position3 - drone_position;
             state = 5;
 
@@ -99,7 +103,9 @@ while time < time_limit
             % make a measure
             distance = norm(drone_position - node_position);
             perfect_ESP = ESP_from_distance(distance, p_ESP_from_distance);
-            ESP(3) = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP_1st = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP_2nd = perfect_ESP + rand()*2*noise_level - noise_level;
+            ESP(3) = mean([ESP_1st, ESP_2nd]);      
             state = 7;
             
         case 7
@@ -180,6 +186,7 @@ while time < time_limit
     pause(pause_time);
 end
 
+fprintf('Found in t=%d loops\n', time);
 
 
 % plots a circle in x, y, radius r in defined color 

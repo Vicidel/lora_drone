@@ -7,11 +7,12 @@ clear all; close all;
 
 % simulation parameters
 plot_bool = true;    % if true plot all
-noise_level = 3;     % +-2dB
 time = 0;
 time_period = 1;
 time_limit = 60*15;  % battery limit
 state = 0;
+size_around_estimation_v1 = 70;     % size of triangle around estimation
+size_around_estimation_v2 = 20;
 
 % load polynom
 load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
@@ -32,10 +33,9 @@ while time < time_limit
     switch state
         case 0
             % fix the three drone positions
-            size_around_estimation = 70;
-            drone_position_1 = network_position + [0, -size_around_estimation, 0];   % south
-            drone_position_2 = network_position + [size_around_estimation*cos(pi/6), size_around_estimation*sin(pi/6), 0];   % north east	
-            drone_position_3 = network_position + [-size_around_estimation*cos(pi/6), size_around_estimation*sin(pi/6), 0];   % north east	
+            drone_position_1 = network_position + [0, -size_around_estimation_v1, 0];   % south
+            drone_position_2 = network_position + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
+            drone_position_3 = network_position + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
             state = 1;
             
         case 1
@@ -43,19 +43,10 @@ while time < time_limit
             state = 2;
             
         case 2
-            % make the three first measures            
-            real_dist = norm(drone_position_1 - node_position);
-            perfect_ESP_1 = ESP_from_distance(real_dist, p_ESP_from_distance);
-            measured_ESP_1 = perfect_ESP_1 + rand()*2*noise_level - noise_level;
-            measured_distance_1 = distance_from_ESP(measured_ESP_1, p_distance_from_ESP);
-            real_dist = norm(drone_position_2 - node_position);
-            perfect_ESP_2 = ESP_from_distance(real_dist, p_ESP_from_distance);
-            measured_ESP_2 = perfect_ESP_2 + rand()*2*noise_level - noise_level;
-            measured_distance_2 = distance_from_ESP(measured_ESP_2, p_distance_from_ESP);
-            real_dist = norm(drone_position_3 - node_position);
-            perfect_ESP_3 = ESP_from_distance(real_dist, p_ESP_from_distance);
-            measured_ESP_3 = perfect_ESP_3 + rand()*2*noise_level - noise_level;
-            measured_distance_3 = distance_from_ESP(measured_ESP_3, p_distance_from_ESP);
+            % make the three first measures  
+            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1, p_ESP_from_distance, p_distance_from_ESP);
+            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2, p_ESP_from_distance, p_distance_from_ESP);
+            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3, p_ESP_from_distance, p_distance_from_ESP);
 
             % get estimation
             [x, y] = get_position(drone_position_1(1), drone_position_1(2), measured_distance_1, ...
@@ -68,7 +59,12 @@ while time < time_limit
                 fprintf('First position found is NaN (no intersection), new measurements\n');
                 state = 2;
             else
+                % print
                 fprintf('First position found at x=%.2f, y=%.2f\n', x, y);
+                fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
+                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n\n', abs(estimated_position_v1(1) - node_position(1)), abs(estimated_position_v1(2) - node_position(2)), norm([abs(estimated_position_v1(1) - node_position(1)), abs(estimated_position_v1(2) - node_position(2))])); 
+            
+                % plot
                 if plot_bool
                     figure();
                     plot_tri(node_position, 'ko'); grid on; hold on;
@@ -92,10 +88,9 @@ while time < time_limit
             
         case 3
             % new drone positions around estimation
-            size_around_estimation = 30;
-            drone_position_1 = estimated_position_v1 + [0, -size_around_estimation, 0];   % south
-            drone_position_2 = estimated_position_v1 + [size_around_estimation*cos(pi/6), size_around_estimation*sin(pi/6), 0];   % north east	
-            drone_position_3 = estimated_position_v1 + [-size_around_estimation*cos(pi/6), size_around_estimation*sin(pi/6), 0];   % north east	
+            drone_position_1 = estimated_position_v1 + [0, -size_around_estimation_v2, 0];   % south
+            drone_position_2 = estimated_position_v1 + [size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north east	
+            drone_position_3 = estimated_position_v1 + [-size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north east	
             state = 4;
 
         case 4
@@ -104,19 +99,10 @@ while time < time_limit
             
         case 5
             % make the three second measures            
-            real_dist = norm(drone_position_1 - node_position);
-            perfect_ESP_1 = ESP_from_distance(real_dist, p_ESP_from_distance);
-            measured_ESP_1 = perfect_ESP_1 + rand()*2*noise_level - noise_level;
-            measured_distance_1 = distance_from_ESP(measured_ESP_1, p_distance_from_ESP);
-            real_dist = norm(drone_position_2 - node_position);
-            perfect_ESP_2 = ESP_from_distance(real_dist, p_ESP_from_distance);
-            measured_ESP_2 = perfect_ESP_2 + rand()*2*noise_level - noise_level;
-            measured_distance_2 = distance_from_ESP(measured_ESP_2, p_distance_from_ESP);
-            real_dist = norm(drone_position_3 - node_position);
-            perfect_ESP_3 = ESP_from_distance(real_dist, p_ESP_from_distance);
-            measured_ESP_3 = perfect_ESP_3 + rand()*2*noise_level - noise_level;
-            measured_distance_3 = distance_from_ESP(measured_ESP_3, p_distance_from_ESP);
-
+            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1, p_ESP_from_distance, p_distance_from_ESP);
+            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2, p_ESP_from_distance, p_distance_from_ESP);
+            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3, p_ESP_from_distance, p_distance_from_ESP);
+            
             % get second estimation
             [x, y] = get_position(drone_position_1(1), drone_position_1(2), measured_distance_1, ...
                                   drone_position_2(1), drone_position_2(2), measured_distance_2, ...
@@ -128,11 +114,16 @@ while time < time_limit
                 fprintf('Second position found is NaN (no intersection), new measurements\n');
                 state = 5;
             else
+                % print
                 fprintf('Second position found at x=%.2f, y=%.2f\n', x, y);
+                fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
+                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2)), norm([abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2))])); 
+                
+                % plot
                 if plot_bool
                     figure();
-                    plot_tri(node_position, 'ko'); grid on; hold on;
-                    plot_tri(drone_position_1, 'ro');
+%                     plot_tri(node_position, 'ko'); grid on; hold on;
+                    plot_tri(drone_position_1, 'ro');grid on; hold on;
                     plot_tri(drone_position_2, 'go');
                     plot_tri(drone_position_3, 'bo');
                     plot_tri(estimated_position_v2, 'mx');
@@ -146,16 +137,10 @@ while time < time_limit
                     title('Localization with three drones - Second measure');
                     legend('Real position', '1st drone', '2nd drone', '3rd drone', 'Estimated position');
                 end
-                state = 6;
+                
+                % this is the end
+                break; 
             end
-            
-        case 6
-            % print in terminal
-            fprintf('\n');
-            fprintf('Estimated position of node: x=%.2f, y=%.2f\n', estimated_position_v2(1), estimated_position_v2(2));
-            fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
-            fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2)), norm([abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2))])); 
-            break;
 
     end
     
@@ -245,4 +230,25 @@ end
 xout = mean([xout12(ind1), xout13(ind2), xout23(ind3)]);
 yout = mean([yout12(ind1), yout13(ind2), yout23(ind3)]);
 
+end
+
+% obtain a noisy ESP and distance from positions
+function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position, p_ESP_from_distance, p_distance_from_ESP)
+    noise_level = 3;     % +-2dB
+    number_measures = 2;
+    
+    ESP = zeros(number_measures,1);
+    dist = zeros(number_measures,1);
+    
+    for i=1: number_measures
+        real_dist = norm(measure_position - node_position);
+        perfect_ESP = ESP_from_distance(real_dist, p_ESP_from_distance);
+        ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
+        measured_distance = distance_from_ESP(ESP(i), p_distance_from_ESP);
+        h = abs(node_position(3) - measure_position(3));
+        dist(i) = sqrt(measured_distance*measured_distance - h*h);
+    end
+    
+    measured_ESP = mean(ESP);
+    measured_horizontal_distance = mean(dist);
 end

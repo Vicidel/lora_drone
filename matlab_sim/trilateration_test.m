@@ -12,16 +12,17 @@ drone_position_1 = network_position + [0, -size_around_estimation_v1, 0];   % so
 drone_position_2 = network_position + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
 drone_position_3 = network_position + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
 
-% load polynom
-load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-p_ESP_from_distance = fitresult_dESP;
-load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
-p_distance_from_ESP = fitresult_ESPd;
+% load function
+load('func_ESP_to_distance.mat', 'fitresult_ESPd');
+global func_a;
+global func_b;
+func_a = fitresult_ESPd.a;
+func_b = fitresult_ESPd.b;
 
 % get distances
-[~, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1, p_ESP_from_distance, p_distance_from_ESP);
-[~, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2, p_ESP_from_distance, p_distance_from_ESP);
-[~, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3, p_ESP_from_distance, p_distance_from_ESP);
+[~, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1);
+[~, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2);
+[~, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3);
 
 % trilateration data
 P = [drone_position_1' drone_position_2' drone_position_3'];
@@ -140,7 +141,7 @@ function plot_circle(x, y, r, color)
 end
 
 % obtain a noisy ESP and distance from positions
-function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position, p_ESP_from_distance, p_distance_from_ESP)
+function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position)
     noise_level = 3;     % +-2dB
     number_measures = 2;
     
@@ -149,9 +150,9 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     for i=1: number_measures
         real_dist = norm(measure_position - node_position);
-        perfect_ESP = ESP_from_distance(real_dist, p_ESP_from_distance);
+        perfect_ESP = func_distance_to_signal(real_dist);
         ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
-        measured_distance = distance_from_ESP(ESP(i), p_distance_from_ESP);
+        measured_distance = func_signal_to_distance(ESP(i));
         h = abs(node_position(3) - measure_position(3));
         measured_distance = max([measured_distance, h]);
         dist(i) = sqrt(measured_distance*measured_distance - h*h);

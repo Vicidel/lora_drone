@@ -20,9 +20,12 @@ close all;
 %         - extrapolate based on previous results (same regression)
 %         - make new measurements
 
-% load polynom
-load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-p_dist_to_ESP = fitresult_dESP;
+% load function
+load('func_ESP_to_distance.mat', 'fitresult_ESPd');
+global func_a;
+global func_b;
+func_a = fitresult_ESPd.a;
+func_b = fitresult_ESPd.b;
 
 % dataset, Nx3 size, N points
 % in order horizontal distance, vertical distance, signal strength
@@ -48,7 +51,7 @@ for i=1: length(x_values)
         for k=1: length(z_values)
             horizontal_distance = norm([x_values(i), y_values(j)]);
             vertical_distance = z_values(k);
-            ESP_values(i,j,k) = get_ESP(horizontal_distance, vertical_distance, p_dist_to_ESP);
+            ESP_values(i,j,k) = get_ESP(horizontal_distance, vertical_distance);
         end
     end
 end

@@ -17,11 +17,12 @@ time_limit = 60*15;  % battery limit
 size_around_estimation_v1 = 70;     % size of triangle around estimation
 size_around_estimation_v2 = 20;
 
-% load polynom
-load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-p_ESP_from_distance = fitresult_dESP;
-load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
-p_distance_from_ESP = fitresult_ESPd;
+% load function
+load('func_ESP_to_distance.mat', 'fitresult_ESPd');
+global func_a;
+global func_b;
+func_a = fitresult_ESPd.a;
+func_b = fitresult_ESPd.b;
 
 % define node coordinates xyz (z altitude) and network estimation (circle of XXm)
 node_position = [0, 0, 0];
@@ -46,9 +47,9 @@ while time < time_limit
             
         case 2
             % make the three first measures  
-            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1, p_ESP_from_distance, p_distance_from_ESP);
-            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2, p_ESP_from_distance, p_distance_from_ESP);
-            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3, p_ESP_from_distance, p_distance_from_ESP);
+            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1);
+            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2);
+            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3);
 
             % get estimation
             [x, y] = get_position(drone_position_1(1), drone_position_1(2), measured_distance_1, ...
@@ -101,9 +102,9 @@ while time < time_limit
             
         case 5
             % make the three second measures            
-            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1, p_ESP_from_distance, p_distance_from_ESP);
-            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2, p_ESP_from_distance, p_distance_from_ESP);
-            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3, p_ESP_from_distance, p_distance_from_ESP);
+            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1);
+            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2);
+            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3);
             
             % get second estimation
             [x, y] = get_position(drone_position_1(1), drone_position_1(2), measured_distance_1, ...
@@ -233,7 +234,7 @@ yout = mean([yout12(ind1), yout13(ind2), yout23(ind3)]);
 end
 
 % obtain a noisy ESP and distance from positions
-function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position, p_ESP_from_distance, p_distance_from_ESP)
+function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position)
     noise_level = 3;     % +-2dB
     number_measures = 2;
     
@@ -242,9 +243,9 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     for i=1: number_measures
         real_dist = norm(measure_position - node_position);
-        perfect_ESP = ESP_from_distance(real_dist, p_ESP_from_distance);
+        perfect_ESP = func_distance_to_signal(real_dist);
         ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
-        measured_distance = distance_from_ESP(ESP(i), p_distance_from_ESP);
+        measured_distance = func_signal_to_distance(ESP(i));
         h = abs(node_position(3) - measure_position(3));
         measured_distance = max([measured_distance, h]);
         dist(i) = sqrt(measured_distance*measured_distance - h*h);

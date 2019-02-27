@@ -18,16 +18,17 @@ time_limit = 15*60;
 time_period = 1;
 altitude = 10;
 
-% load polynom
-load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-p_ESP_from_distance = fitresult_dESP;
-load('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
-p_distance_from_ESP = fitresult_ESPd;
+% load function
+load('func_ESP_to_distance.mat', 'fitresult_ESPd');
+global func_a;
+global func_b;
+func_a = fitresult_ESPd.a;
+func_b = fitresult_ESPd.b;
 
 % define node coordinates xyz (z altitude)
 node_position = [rand*200-100, rand*200-100, 0];
 drone_position = [0, 0, altitude];
-ESP = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+ESP = get_noisy_ESP(node_position, drone_position);
 
 % define increment in position
 dist_increment = 10;
@@ -64,7 +65,7 @@ while time < time_limit
             state = 2;
             
         case 2 % make measures and check progress
-            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position);
             ESP = [ESP, ESP_new];
             if ESP(end) > ESP(end-1)    % better ESP
                 fprintf('Progress, continuing in this direction\n');
@@ -81,7 +82,7 @@ while time < time_limit
             state = 4;
             
         case 4 % make measures and check progress
-            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position);
             ESP = [ESP, ESP_new];
             if ESP(end) > ESP(end-1)    % better ESP
                 fprintf('Progress, continuing in this direction\n');
@@ -98,7 +99,7 @@ while time < time_limit
             state = 6;
             
         case 6 % make measures and check progress
-            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position);
             ESP = [ESP, ESP_new];
             if ESP(end) > ESP(end-1)    % better ESP
                 fprintf('Progress, continuing in this direction\n');
@@ -116,7 +117,7 @@ while time < time_limit
             state = 8;
             
         case 8 % make measures and check progress
-            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position, p_ESP_from_distance, p_distance_from_ESP);
+            [ESP_new, ~] = get_noisy_ESP(node_position, drone_position);
             ESP = [ESP, ESP_new];
             if ESP(end) > ESP(end-1)    % better ESP
                 fprintf('Progress, continuing in this direction\n');
@@ -134,7 +135,7 @@ while time < time_limit
             end
             
             % if reached maximum resolution for this increment, go smaller
-            horizontal_dist = sqrt(max(distance_from_ESP(ESP(end), p_distance_from_ESP), altitude)^2 - altitude^2);
+            horizontal_dist = sqrt(max(func_signal_to_distance(ESP(end)), altitude)^2 - altitude^2);
             fprintf('Estimated horizontal distance of %.2f m\n', horizontal_dist);
             if horizontal_dist < 4 * dist_increment
                 dist_increment = dist_increment/2;
@@ -182,7 +183,7 @@ function plot_tri(vector, color)
 end
 
 % obtain a noisy ESP and distance from positions
-function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position, p_ESP_from_distance, p_distance_from_ESP)
+function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position)
     noise_level = 3;     % +-2dB
     number_measures = 3;
     
@@ -191,9 +192,9 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     for i=1: number_measures
         real_dist = norm(measure_position - node_position);
-        perfect_ESP = ESP_from_distance(real_dist, p_ESP_from_distance);
+        perfect_ESP = func_distance_to_signal(real_dist);
         ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
-        measured_distance = distance_from_ESP(ESP(i), p_distance_from_ESP);
+        measured_distance = func_signal_to_distance(ESP(i));
         h = abs(node_position(3) - measure_position(3));
         measured_distance = max([measured_distance, h]);
         dist(i) = sqrt(measured_distance*measured_distance - h*h);

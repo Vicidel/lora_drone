@@ -124,46 +124,46 @@ fit_dist = distances(nb_10+1:end);
 fit_ESP = ESP(nb_10+1:end);
 fit_RSSI = RSSI(nb_10+1:end);
 
-% fit ESP as function of distance
-x = fit_dist; y = fit_ESP;
-[fitresult_dESP, gof_dESP] = fit(x, y, fittype('poly2'));
-figure();
-plot(fitresult_dESP, x, y, 'x'); grid on;
-legend('ESP signal', 'Polynomial fit');
-xlabel('Distance [m]');
-ylabel('ESP [dBm]');
-title('Fit of ESP as function of distance');
-save('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-
-% fit RSSI as function of distance
-x = fit_dist; y = fit_RSSI;
-[fitresult_dRSSI, gof_dRSSI] = fit(x, y, fittype('poly2'));
-figure();
-plot(fitresult_dRSSI, x, y, 'x'); grid on;
-legend('RSSI signal', 'Polynomial fit');
-xlabel('Distance [m]');
-ylabel('RSSI [dBm]');
-title('Fit of RSSI as function of distance');
-save('polynom_dist_to_RSSI.mat', 'fitresult_dRSSI');
+% % fit ESP as function of distance
+% x = fit_dist; y = fit_ESP;
+% [fitresult_dESP, gof_dESP] = fit(x, y, fittype('poly2'));
+% figure();
+% plot(fitresult_dESP, x, y, 'x'); grid on;
+% legend('ESP signal', 'Polynomial fit');
+% xlabel('Distance [m]');
+% ylabel('ESP [dBm]');
+% title('Fit of ESP as function of distance');
+% save('polynom_dist_to_ESP.mat', 'fitresult_dESP');
+% 
+% % fit RSSI as function of distance
+% x = fit_dist; y = fit_RSSI;
+% [fitresult_dRSSI, gof_dRSSI] = fit(x, y, fittype('poly2'));
+% figure();
+% plot(fitresult_dRSSI, x, y, 'x'); grid on;
+% legend('RSSI signal', 'Polynomial fit');
+% xlabel('Distance [m]');
+% ylabel('RSSI [dBm]');
+% title('Fit of RSSI as function of distance');
+% save('polynom_dist_to_RSSI.mat', 'fitresult_dRSSI');
 
 % fit distance as function of ESP 
 x = fit_ESP; y = fit_dist;
-[fitresult_ESPd, gof_ESPd] = fit(x, y, fittype('poly2'));
+[fitresult_ESPd, gof_ESPd] = fit(x, y, fittype('exp1'));
 figure();
 plot(fitresult_ESPd, x, y, 'x'); grid on;
-legend('ESP signal', 'Polynomial fit 2');
+legend('ESP signal', 'Exponential fit dist=a*exp(b*ESP)');
 ylabel('Distance [m]');
 xlabel('ESP [dBm]');
 title('Fit of distance as function of ESP');
-save('polynom_ESP_to_dist.mat', 'fitresult_ESPd');
+save('func_ESP_to_distance.mat', 'fitresult_ESPd', 'gof_ESPd');
 
 % fit distance as function of RSSI 
 x = fit_RSSI; y = fit_dist;
-[fitresult_RSSId, gof_RSSId] = fit(x, y, fittype('poly2'));
+[fitresult_RSSId, gof_RSSId] = fit(x, y, fittype('exp1'));
 figure();
 plot(fitresult_RSSId, x, y, 'x'); grid on;
-legend('RSSI signal', 'Polynomial fit 2');
+legend('RSSI signal', 'Exponential fit dist=a*exp(b*RSSI)');
 ylabel('Distance [m]');
 xlabel('RSSI [dBm]');
 title('Fit of distance as function of RSSI');
-save('polynom_RSSI_to_dist.mat', 'fitresult_RSSId');
+save('func_RSSI_to_dist.mat', 'fitresult_RSSId', 'gof_RSSId');

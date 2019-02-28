@@ -2,7 +2,7 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = '../json_backup/20190219pm_data.json';
+fname = 'json_backup/20190219pm_data.json';
 [time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
 
 % calibration distances
@@ -155,7 +155,7 @@ legend('ESP signal', 'Exponential fit dist=a*exp(b*ESP)');
 ylabel('Distance [m]');
 xlabel('ESP [dBm]');
 title('Fit of distance as function of ESP');
-save('func_ESP_to_distance.mat', 'fitresult_ESPd', 'gof_ESPd');
+save('matlab_json_analyse/func_ESP_to_distance.mat', 'fitresult_ESPd', 'gof_ESPd');
 
 % fit distance as function of RSSI 
 x = fit_RSSI; y = fit_dist;
@@ -166,4 +166,4 @@ legend('RSSI signal', 'Exponential fit dist=a*exp(b*RSSI)');
 ylabel('Distance [m]');
 xlabel('RSSI [dBm]');
 title('Fit of distance as function of RSSI');
-save('func_RSSI_to_dist.mat', 'fitresult_RSSId', 'gof_RSSId');
+save('matlab_json_analyse/func_RSSI_to_dist.mat', 'fitresult_RSSId', 'gof_RSSId');

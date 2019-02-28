@@ -11,6 +11,14 @@ filename_hor = '../json_backup/20190215pm_antennahor.json';
 % calibration distances
 d_calib = [10 20 50 100 150 200];
 
+% for fit
+fit_dist_up = distancesup(distancesup~=10);
+fit_dist_45 = distances45(distances45~=10);
+fit_dist_hor = distanceshor(distanceshor~=10);
+fit_ESP_hor = ESPhor(distanceshor~=10);
+fit_ESP_up = ESPup(distancesup~=10);
+fit_ESP_45 = ESP45(distances45~=10);
+
 
 % plot mean ESP and RSSI against distances
 figure();
@@ -64,40 +72,40 @@ title('Mean ESP');
 % ylabel('ESP [dBm]');
 % title('Boxplot of ESP for vertical antenna');
 
-% trying aboxplot function: http://alex.bikfalvi.com/research/advanced_matlab_boxplot/
-figure();
-x1 = ESP45(distances45==10); x1 = x1(1:68);
-x2 = ESP45(distances45==20); x2 = x2(1:68);
-x3 = ESP45(distances45==50); x3 = x3(1:68);
-x4 = ESP45(distances45==100); x4 = x4(1:68);
-x5 = ESP45(distances45==150); x5 = x5(1:68);
-x = cat(2, x1, x2, x3, x4, x5);
-y1 = ESPup(distancesup==10); y1 = y1(1:68);
-y2 = ESPup(distancesup==20); y2 = y2(1:68);
-y3 = ESPup(distancesup==50); y3 = y3(1:68);
-y4 = ESPup(distancesup==100); y4 = y4(1:68);
-y5 = ESPup(distancesup==150); y5 = y5(1:68);
-y = cat(2, y1, y2, y3, y4, y5);
-z1 = ESPup(distancesup==10); z1 = z1(1:68);
-z2 = ESPup(distancesup==20); z2 = z2(1:68);
-z3 = ESPhor(distanceshor==50); z3 = z3(1:68);
-z4 = ESPhor(distanceshor==100); z4 = z4(1:68);
-z5 = ESPhor(distanceshor==150); z5 = [z5; z5]; z5 = z5(1:68);
-z = cat(2, z1, z2, z3, z4, z5);
-h = cat(1, reshape(x,[1 size(x)]), reshape(y,[1 size(y)]), reshape(z,[1 size(z)]));
-aboxplot(h,'labels',[10, 20, 50, 100, 150]); grid on;
-xlabel('Distance [m]');
-ylabel('ESP [dBm]');
-title('Boxplot of ESP');
-legend('45°', 'upward', 'horizontal');
-
-% plot of stdev
-figure();
-mean_std_45 = mean([std(x1), std(x2), std(x3), std(x4), std(x5)]);
-mean_std_up = mean([std(y1), std(y2), std(y3), std(y4), std(y5)]);
-mean_std_hor = mean([std(z1), std(z2), std(z3), std(z4), std(z5)]);
-plot([1, 2, 3], [mean_std_45, mean_std_up, mean_std_hor], 'o'); grid on;
-xticks([1 2 3]); xticklabels({'45°', 'upward', 'horizontal'});
-xlabel('Antenna orientation');
-ylabel('STD of ESP [dBm]');
-title('Standard deviation of ESP as function of antenna orientation');
+% % trying aboxplot function: http://alex.bikfalvi.com/research/advanced_matlab_boxplot/
+% figure();
+% x1 = ESP45(distances45==10); x1 = x1(1:68);
+% x2 = ESP45(distances45==20); x2 = x2(1:68);
+% x3 = ESP45(distances45==50); x3 = x3(1:68);
+% x4 = ESP45(distances45==100); x4 = x4(1:68);
+% x5 = ESP45(distances45==150); x5 = x5(1:68);
+% x = cat(2, x1, x2, x3, x4, x5);
+% y1 = ESPup(distancesup==10); y1 = y1(1:68);
+% y2 = ESPup(distancesup==20); y2 = y2(1:68);
+% y3 = ESPup(distancesup==50); y3 = y3(1:68);
+% y4 = ESPup(distancesup==100); y4 = y4(1:68);
+% y5 = ESPup(distancesup==150); y5 = y5(1:68);
+% y = cat(2, y1, y2, y3, y4, y5);
+% z1 = ESPup(distancesup==10); z1 = z1(1:68);
+% z2 = ESPup(distancesup==20); z2 = z2(1:68);
+% z3 = ESPhor(distanceshor==50); z3 = z3(1:68);
+% z4 = ESPhor(distanceshor==100); z4 = z4(1:68);
+% z5 = ESPhor(distanceshor==150); z5 = [z5; z5]; z5 = z5(1:68);
+% z = cat(2, z1, z2, z3, z4, z5);
+% h = cat(1, reshape(x,[1 size(x)]), reshape(y,[1 size(y)]), reshape(z,[1 size(z)]));
+% aboxplot(h,'labels',[10, 20, 50, 100, 150]); grid on;
+% xlabel('Distance [m]');
+% ylabel('ESP [dBm]');
+% title('Boxplot of ESP');
+% legend('45°', 'upward', 'horizontal');
+% 
+% % plot of stdev
+% figure();
+% mean_std_45 = mean([std(x1), std(x2), std(x3), std(x4), std(x5)]);
+% mean_std_up = mean([std(y1), std(y2), std(y3), std(y4), std(y5)]);
+% mean_std_hor = mean([std(z1), std(z2), std(z3), std(z4), std(z5)]);
+% plot([1, 2, 3], [mean_std_45, mean_std_up, mean_std_hor], 'o'); grid on;
+% xticks([1 2 3]); xticklabels({'45°', 'upward', 'horizontal'});
+% xlabel('Antenna orientation');
+% ylabel('STD of ESP [dBm]');
+% title('Standard deviation of ESP as function of antenna orientation');

@@ -9,14 +9,17 @@
 clear all; close all;
 
 % init
-time = 0; 
+global time_move;
+global time_measure;
+time_move = 0; 
+time_measure = 0;
 state = 0;
 
 % parameters
 plot_bool = true;
-time_limit = 15*60;
-time_period = 1;
+time_limit = 20*60;
 altitude = 10;
+drone_speed = 1;    % m/s
 
 % load function
 load('func_ESP_to_distance.mat', 'fitresult_ESPd');
@@ -38,7 +41,7 @@ increment_p00 = [dist_increment, 0, 0];
 increment_m00 = [-dist_increment, 0, 0];
 
 % localization
-while time < time_limit
+while time_move+time_measure < time_limit
     
     % plot positions
     if plot_bool
@@ -62,6 +65,7 @@ while time < time_limit
         case 1 % try p00 direction
             fprintf('Going p00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_p00;
+            time_move = time_move + norm(increment_p00)/drone_speed;
             state = 2;
             
         case 2 % make measures and check progress
@@ -73,12 +77,14 @@ while time < time_limit
             else
                 fprintf('No progress, go back then next direction\n');
                 drone_position = drone_position - increment_p00;
+                time_move = time_move + norm(increment_p00)/drone_speed;
                 state = 3;
             end
             
         case 3 % try m00 direction
             fprintf('Going m00 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_m00;
+            time_move = time_move + norm(increment_m00)/drone_speed;
             state = 4;
             
         case 4 % make measures and check progress
@@ -90,12 +96,14 @@ while time < time_limit
             else
                 fprintf('No progress, go back then next direction\n');
                 drone_position = drone_position - increment_m00;
+                time_move = time_move + norm(increment_m00)/drone_speed;
                 state = 5;
             end
             
         case 5 % try 0p0 direction
             fprintf('Going 0p0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0p0;
+            time_move = time_move + norm(increment_0p0)/drone_speed;
             state = 6;
             
         case 6 % make measures and check progress
@@ -107,13 +115,14 @@ while time < time_limit
             else
                 fprintf('No progress, go back then next direction\n');
                 drone_position = drone_position - increment_0p0;
+                time_move = time_move + norm(increment_0p0)/drone_speed;
                 state = 7;
             end
             
         case 7 % try m00 direction
             fprintf('Going 0m0 of %.1f meters\n', dist_increment);
             drone_position = drone_position + increment_0m0;
-            measures = 0;
+            time_move = time_move + norm(increment_p00)/drone_speed;
             state = 8;
             
         case 8 % make measures and check progress
@@ -125,6 +134,7 @@ while time < time_limit
             else
                 fprintf('No progress, go back then next direction\n');
                 drone_position = drone_position - increment_0m0;
+                time_move = time_move + norm(increment_0m0)/drone_speed;
                 state = 9;
             end
             
@@ -149,11 +159,8 @@ while time < time_limit
             state = 1;
     end
     
-    % time update
-    time = time + time_period;
-    
     % slows down simulation
-    pause(0.1);
+    pause(0.05);
 end
 
 % estimated final position
@@ -173,7 +180,7 @@ end
 fprintf('\nEstimated position of node: x=%.2f, y=%.2f\n', estimated_position(1), estimated_position(2));
 fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
 fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position(1) - node_position(1)), abs(estimated_position(2) - node_position(2)), norm([abs(drone_position(1) - node_position(1)), abs(drone_position(2) - node_position(2))])); 
-fprintf('Found in t=%d loops\n', time);
+fprintf('Found in t=%.1f seconds (%.1f moving and %.1f measuring)\n', time_move+time_measure, time_move, time_measure);
 
 
 
@@ -184,8 +191,8 @@ end
 
 % obtain a noisy ESP and distance from positions
 function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position)
-    noise_level = 3;     % +-2dB
-    number_measures = 3;
+    noise_level = 5;     % +-2dB
+    number_measures = 2;
     
     ESP = zeros(number_measures,1);
     dist = zeros(number_measures,1);
@@ -202,4 +209,7 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     measured_ESP = mean(ESP);
     measured_horizontal_distance = mean(dist);
+    
+    global time_measure;
+    time_measure = time_measure + 5*number_measures;
 end

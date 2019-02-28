@@ -7,13 +7,16 @@
 clear all; close all;
 
 % init 
-time = 0;
+global time_move;
+global time_measure;
+time_move = 0; 
+time_measure = 0;
 state = 0;
 
 % simulation parameters
 plot_bool = true;    % if true plot all
-time_period = 1;
-time_limit = 60*15;  % battery limit
+drone_speed = 1;     % m/s
+time_limit = 60*20;  % battery limit
 size_around_estimation_v1 = 70;     % size of triangle around estimation
 size_around_estimation_v2 = 20;
 
@@ -31,31 +34,32 @@ phi = rand()*2*pi; rad = rand()*network_error;
 network_position = node_position + [rad*cos(phi), rad*sin(phi), 0];
 
 % localization
-while time < time_limit
+while time_move+time_measure < time_limit
     
     switch state
         case 0
             % fix the three drone positions
-            drone_position_1 = network_position + [0, -size_around_estimation_v1, 0];   % south
-            drone_position_2 = network_position + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
-            drone_position_3 = network_position + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
+            drone_position_1_v1 = network_position + [0, -size_around_estimation_v1, 10];   % south
+            drone_position_2_v1 = network_position + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 10];   % north east	
+            drone_position_3_v1 = network_position + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 10];   % north east	
             state = 1;
             
         case 1
             % move the drone, we consider teleportation possible
+            time_move = time_move + size_around_estimation_v1/drone_speed;
             state = 2;
             
         case 2
             % make the three first measures  
-            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1);
-            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2);
-            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3);
+            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1_v1);
+            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2_v1);
+            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3_v1);
 
             % get estimation
-            [x, y] = get_position(drone_position_1(1), drone_position_1(2), measured_distance_1, ...
-                                  drone_position_2(1), drone_position_2(2), measured_distance_2, ...
-                                  drone_position_3(1), drone_position_3(2), measured_distance_3);
-            estimated_position_v1 = [x, y, 10];
+            [x, y] = get_position(drone_position_1_v1(1), drone_position_1_v1(2), measured_distance_1, ...
+                                  drone_position_2_v1(1), drone_position_2_v1(2), measured_distance_2, ...
+                                  drone_position_3_v1(1), drone_position_3_v1(2), measured_distance_3);
+            estimated_position_v1 = [x, y, 0];
             
             % check NaN
             if isnan(estimated_position_v1(1)) || isnan(estimated_position_v1(2))
@@ -72,13 +76,13 @@ while time < time_limit
                     figure();
                     plot_tri(node_position, 'ko'); grid on; hold on;
                     plot_tri(network_position, 'co');
-                    plot_tri(drone_position_1, 'ro');
-                    plot_tri(drone_position_2, 'go');
-                    plot_tri(drone_position_3, 'bo');
+                    plot_tri(drone_position_1_v1, 'ro');
+                    plot_tri(drone_position_2_v1, 'go');
+                    plot_tri(drone_position_3_v1, 'bo');
                     plot_tri(estimated_position_v1, 'mx');
-                    plot_circle(drone_position_1(1), drone_position_1(2), measured_distance_1, 'r');
-                    plot_circle(drone_position_2(1), drone_position_2(2), measured_distance_2, 'g');
-                    plot_circle(drone_position_3(1), drone_position_3(2), measured_distance_3, 'b');
+                    plot_circle(drone_position_1_v1(1), drone_position_1_v1(2), measured_distance_1, 'r');
+                    plot_circle(drone_position_2_v1(1), drone_position_2_v1(2), measured_distance_2, 'g');
+                    plot_circle(drone_position_3_v1(1), drone_position_3_v1(2), measured_distance_3, 'b');
                     axis equal; view(0, 90);
                     xlabel('x position [m]')
                     ylabel('y position [m]')
@@ -91,25 +95,29 @@ while time < time_limit
             
         case 3
             % new drone positions around estimation
-            drone_position_1 = estimated_position_v1 + [0, -size_around_estimation_v2, 0];   % south
-            drone_position_2 = estimated_position_v1 + [size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north east	
-            drone_position_3 = estimated_position_v1 + [-size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 0];   % north east	
+            drone_position_1_v2 = estimated_position_v1 + [0, -size_around_estimation_v2, 10];   % south
+            drone_position_2_v2 = estimated_position_v1 + [size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 10];   % north east	
+            drone_position_3_v2 = estimated_position_v1 + [-size_around_estimation_v2*cos(pi/6), size_around_estimation_v2*sin(pi/6), 10];   % north east	
             state = 4;
 
         case 4
             % move the drone, we consider teleportation possible
+            max_dist_to_cover = max([norm([drone_position_1_v2-drone_position_1_v1]), ...
+                                    norm([drone_position_2_v2-drone_position_2_v1]), ...
+                                    norm([drone_position_3_v2-drone_position_3_v1])]);
+            time_move = time_move + max_dist_to_cover/drone_speed;
             state = 5;
             
         case 5
             % make the three second measures            
-            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1);
-            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2);
-            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3);
+            [measured_ESP_1, measured_distance_1] = get_noisy_ESP(node_position, drone_position_1_v2);
+            [measured_ESP_2, measured_distance_2] = get_noisy_ESP(node_position, drone_position_2_v2);
+            [measured_ESP_3, measured_distance_3] = get_noisy_ESP(node_position, drone_position_3_v2);
             
             % get second estimation
-            [x, y] = get_position(drone_position_1(1), drone_position_1(2), measured_distance_1, ...
-                                  drone_position_2(1), drone_position_2(2), measured_distance_2, ...
-                                  drone_position_3(1), drone_position_3(2), measured_distance_3);
+            [x, y] = get_position(drone_position_1_v2(1), drone_position_1_v2(2), measured_distance_1, ...
+                                  drone_position_2_v2(1), drone_position_2_v2(2), measured_distance_2, ...
+                                  drone_position_3_v2(1), drone_position_3_v2(2), measured_distance_3);
             estimated_position_v2 = [x, y, 10];
 
             % check NaN
@@ -126,13 +134,13 @@ while time < time_limit
                 if plot_bool
                     figure();
                     plot_tri(node_position, 'ko'); grid on; hold on;
-                    plot_tri(drone_position_1, 'ro');
-                    plot_tri(drone_position_2, 'go');
-                    plot_tri(drone_position_3, 'bo');
+                    plot_tri(drone_position_1_v2, 'ro');
+                    plot_tri(drone_position_2_v2, 'go');
+                    plot_tri(drone_position_3_v2, 'bo');
                     plot_tri(estimated_position_v2, 'mx');
-                    plot_circle(drone_position_1(1), drone_position_1(2), measured_distance_1, 'r');
-                    plot_circle(drone_position_2(1), drone_position_2(2), measured_distance_2, 'g');
-                    plot_circle(drone_position_3(1), drone_position_3(2), measured_distance_3, 'b');
+                    plot_circle(drone_position_1_v2(1), drone_position_1_v2(2), measured_distance_1, 'r');
+                    plot_circle(drone_position_2_v2(1), drone_position_2_v2(2), measured_distance_2, 'g');
+                    plot_circle(drone_position_3_v2(1), drone_position_3_v2(2), measured_distance_3, 'b');
                     axis equal; view(0, 90);
                     xlabel('x position [m]')
                     ylabel('y position [m]')
@@ -141,14 +149,13 @@ while time < time_limit
                     legend('Real position', '1st drone', '2nd drone', '3rd drone', 'Estimated position');
                 end
                 
+                fprintf('Found in t=%.1f seconds (%.1f moving and %.1f measuring)\n', time_move+time_measure, time_move, time_measure);
+                
                 % this is the end
                 break; 
             end
 
     end
-    
-    % increase time
-    time = time + time_period;
 end
 
 
@@ -253,4 +260,7 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     measured_ESP = mean(ESP);
     measured_horizontal_distance = mean(dist);
+    
+    global time_measure;
+    time_measure = time_measure + 5*number_measures;
 end

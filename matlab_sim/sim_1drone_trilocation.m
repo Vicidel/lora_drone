@@ -7,17 +7,20 @@
 clear all; close all;
 
 % init
-time = 0; 
+global time_move;
+global time_measure;
+time_move = 0; 
+time_measure = 0;
 state = 0;
 ESP = zeros(3, 1); 
 algo_loop = 1;
 
 % parameters
 plot_bool = true;
-algo_loops_todo = 3;
+algo_loops_todo = 2;
 plot_movement_bool = false;
-time_limit = 60*15;     % battery limit
-time_period = 1;
+time_limit = 60*20;     % battery limit
+drone_speed = 1;        % m/s
 size_around_estimation_v1 = 100;    % size of triangle around estimation
 size_around_estimation_v2 = 40;
 
@@ -48,7 +51,7 @@ if plot_movement_bool  && plot_bool
 end
 
 % localization
-while time < time_limit
+while time_move+time_measure < time_limit
     
     if plot_movement_bool && plot_bool
         % plot movement
@@ -69,6 +72,7 @@ while time < time_limit
             % move drone to position1
             [drone_position, next_state] = move_drone(drone_position, measure_position1);
             if next_state
+                time_move = time_move + norm(delta)/drone_speed;
                 state = 2;
             end
 
@@ -82,6 +86,7 @@ while time < time_limit
             % move the drone in second position
             [drone_position, next_state] = move_drone(drone_position, measure_position2);
             if next_state
+                time_move = time_move + norm(delta)/drone_speed;
                 state = 4;
             end
             
@@ -95,6 +100,7 @@ while time < time_limit
             % move the drone in third position
             [drone_position, next_state] = move_drone(drone_position, measure_position3);
             if next_state
+                time_move = time_move + norm(delta)/drone_speed;
                 state = 6;
             end
             
@@ -156,6 +162,7 @@ while time < time_limit
                 % end condition
                 if algo_loop == algo_loops_todo
                     fprintf('End of algorithm\n');
+                    fprintf('Found in t=%.1f seconds (%.1f moving and %.1f measuring)\n', time_move+time_measure, time_move, time_measure);
                     break;
                 end
                 
@@ -176,11 +183,8 @@ while time < time_limit
             
     end
     
-    % time update
-    time = time + time_period;
 end
 
-fprintf('Found in t=%d loops\n', time);
 
 
 % plot a vector of 3x1 in defined color
@@ -299,4 +303,7 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     measured_ESP = mean(ESP);
     measured_horizontal_distance = mean(dist);
+    
+    global time_measure;
+    time_measure = time_measure + 5*number_measures;
 end

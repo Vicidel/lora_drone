@@ -7,11 +7,14 @@ global func_b;
 func_a = fitresult_ESPd.a;
 func_b = fitresult_ESPd.b;
 
+% confidence interval
+ci = confint(fitresult_ESPd);
+
 % distances
 distances = [20, 50, 100, 150, 200];
 height = [10, 10, 10, 10, 10];
 
-% fill in attenuation for the different configurations
+% fill in attenuation for the different configurations and ESP
 attenuation_gateway_up = zeros(size(distances));
 attenuation_node_up = zeros(size(distances));
 ESP_up_up = zeros(size(distances));
@@ -21,3 +24,4 @@ for i=1: length(distances)
     attenuation_node_up(i) = signal_attenuation_angle(theta_deg);
     ESP_up = func_distance_to_signal(distances(i));
 end
+

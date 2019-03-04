@@ -24,15 +24,21 @@ for i=1: length(distances)
     attenuation_node_up(i) = signal_attenuation_angle(theta_deg);
     ESP_up_up(i) = func_distance_to_signal(distances(i));
 end
+attenuation_gateway_up_db = 10*log(attenuation_gateway_up);
+attenuation_node_up_db = 10*log(attenuation_node_up);
 
 %%
 % system
-syms Tx_0 a;
-% a = func_a;
-% b = func_b;
-eqn1 = ESP_up_up(1) == attenuation_gateway_up(1) * attenuation_node_up(1) * Tx_0 * log(distances(1) / a);
-eqn2 = ESP_up_up(2) == attenuation_gateway_up(2) * attenuation_node_up(2) * Tx_0 * log(distances(2) / a);
-eqn3 = ESP_up_up(3) == attenuation_gateway_up(3) * attenuation_node_up(3) * Tx_0 * log(distances(3) / a);
-eqn4 = ESP_up_up(4) == attenuation_gateway_up(4) * attenuation_node_up(4) * Tx_0 * log(distances(4) / a);
-eqn5 = ESP_up_up(5) == attenuation_gateway_up(5) * attenuation_node_up(5) * Tx_0 * log(distances(5) / a);
-sol = vpasolve([eqn1, eqn2, eqn3], [Tx_0, a], 'Random', true)
+syms a c1 c2 c3;
+eqn1 = ESP_up_up(1) == c1*attenuation_gateway_up_db(1) + c1*attenuation_node_up_db(1) - c3*log(distances(1) / a);
+eqn2 = ESP_up_up(2) == c1*attenuation_gateway_up_db(2) + c1*attenuation_node_up_db(2) - c3*log(distances(2) / a);
+eqn3 = ESP_up_up(3) == c1*attenuation_gateway_up_db(3) + c1*attenuation_node_up_db(3) - c3*log(distances(3) / a);
+eqn4 = ESP_up_up(4) == c1*attenuation_gateway_up_db(4) + c1*attenuation_node_up_db(4) - c3*log(distances(4) / a);
+eqn5 = ESP_up_up(5) == c1*attenuation_gateway_up_db(5) + c1*attenuation_node_up_db(5) - c3*log(distances(5) / a);
+% eqn1 = ESP_up_up(1) == log(distances(1) / a) / b;
+% eqn2 = ESP_up_up(2) == log(distances(2) / a) / b;
+% eqn3 = ESP_up_up(3) == log(distances(3) / a) / b;
+% eqn4 = ESP_up_up(4) == log(distances(4) / a) / b;
+% eqn5 = ESP_up_up(5) == log(distances(5) / a) / b;
+range = [func_a - 1, func_a + 1; -0.1, 0.1; 0, 100];
+sol = vpasolve([eqn1, eqn2, eqn3], [a, c1, c3], range)

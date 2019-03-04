@@ -13,6 +13,7 @@ ci = confint(fitresult_ESPd);
 % distances
 distances = [20, 50, 100, 150, 200];
 height = [10, 10, 10, 10, 10];
+distances_hor = sqrt(distances.^2-height.^2);
 
 % fill in attenuation for the different configurations and ESP
 attenuation_gateway_up = zeros(size(distances));
@@ -27,18 +28,32 @@ end
 attenuation_gateway_up_db = 10*log(attenuation_gateway_up);
 attenuation_node_up_db = 10*log(attenuation_node_up);
 
+
 %%
 % system
-syms a c1 c2 c3;
-eqn1 = ESP_up_up(1) == c1*attenuation_gateway_up_db(1) + c1*attenuation_node_up_db(1) - c3*log(distances(1) / a);
-eqn2 = ESP_up_up(2) == c1*attenuation_gateway_up_db(2) + c1*attenuation_node_up_db(2) - c3*log(distances(2) / a);
-eqn3 = ESP_up_up(3) == c1*attenuation_gateway_up_db(3) + c1*attenuation_node_up_db(3) - c3*log(distances(3) / a);
-eqn4 = ESP_up_up(4) == c1*attenuation_gateway_up_db(4) + c1*attenuation_node_up_db(4) - c3*log(distances(4) / a);
-eqn5 = ESP_up_up(5) == c1*attenuation_gateway_up_db(5) + c1*attenuation_node_up_db(5) - c3*log(distances(5) / a);
-% eqn1 = ESP_up_up(1) == log(distances(1) / a) / b;
-% eqn2 = ESP_up_up(2) == log(distances(2) / a) / b;
-% eqn3 = ESP_up_up(3) == log(distances(3) / a) / b;
-% eqn4 = ESP_up_up(4) == log(distances(4) / a) / b;
-% eqn5 = ESP_up_up(5) == log(distances(5) / a) / b;
-range = [func_a - 1, func_a + 1; -0.1, 0.1; 0, 100];
-sol = vpasolve([eqn1, eqn2, eqn3], [a, c1, c3], range)
+syms a b;
+eqn1 = ESP_up_up(1) == attenuation_gateway_up_db(1) + attenuation_node_up_db(1) + log(distances(1) / a) / b;
+eqn2 = ESP_up_up(2) == attenuation_gateway_up_db(2) + attenuation_node_up_db(2) + log(distances(2) / a) / b;
+eqn3 = ESP_up_up(3) == attenuation_gateway_up_db(3) + attenuation_node_up_db(3) + log(distances(3) / a) / b;
+eqn4 = ESP_up_up(4) == attenuation_gateway_up_db(4) + attenuation_node_up_db(4) + log(distances(4) / a) / b;
+eqn5 = ESP_up_up(5) == attenuation_gateway_up_db(5) + attenuation_node_up_db(5) + log(distances(5) / a) / b;
+sol = vpasolve([eqn1, eqn5], [a, b], [func_a, func_b]);
+
+% store in mat file
+func_a_att = double(sol.a);
+func_b_att = double(sol.b);
+save('matlab_json_analyse/func_ESP_to_distance_att.mat', 'func_a_att', 'func_b_att');
+
+
+%% 
+% plot new a, b
+figure();
+fit_dist = 10:1:200;
+fit_ESP = log(fit_dist/sol.a) / sol.b;
+fit_ESP_old = log(fit_dist/func_a) / func_b;
+plot(fit_dist, fit_ESP); grid on; hold on;
+plot(fit_dist, fit_ESP_old);
+xlabel('Distance [m]');
+ylabel('ESP [dB]');
+legend('New fit considering attenuation', 'Old fit');
+title('ESP attenuation due to angle');

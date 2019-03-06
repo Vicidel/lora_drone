@@ -343,69 +343,69 @@ void loop() {
             
         // current_state odd: sending data to server, don't move it
         case 1:
-            oledPut(3, "Send: 000=0d");
+            oledPut(3, "Send: 01=0d");
             oledPutNumMessage(4);
-            sendLora("000");
+            sendLora("01");
             break;
         case 3:
-            oledPut(3, "Send: 01E=30d");
+            oledPut(3, "Send: 02=30d");
             oledPutNumMessage(4);
-            sendLora("01E");
+            sendLora("02");
             break;
         case 5:
-            oledPut(3, "Send: 03C=60d");
+            oledPut(3, "Send: 03=60d");
             oledPutNumMessage(4);
-            sendLora("03C");
+            sendLora("03");
             break;
         case 7:
-            oledPut(3, "Send: 05A=90d");
+            oledPut(3, "Send: 04=90d");
             oledPutNumMessage(4);
-            sendLora("05A");
+            sendLora("04");
             break;
         case 9:
-            oledPut(3, "Send: 078=120d");
+            oledPut(3, "Send: 05=120d");
             oledPutNumMessage(4);
-            sendLora("078");
+            sendLora("05");
             break;
         case 11:
-            oledPut(3, "Send: 096=150d");
+            oledPut(3, "Send: 06=150d");
             oledPutNumMessage(4);
-            sendLora("096"); 
+            sendLora("06"); 
             break;
         case 13:
-            oledPut(3, "Send: 0B4=180d");
+            oledPut(3, "Send: 07=180d");
             oledPutNumMessage(4);
-            sendLora("0B4");
+            sendLora("07");
             break;
         case 15:
-            oledPut(3, "Send: 01E=210d");
+            oledPut(3, "Send: 08=210d");
             oledPutNumMessage(4);
-            sendLora("01E");
+            sendLora("08");
             break;
         case 17:
-            oledPut(3, "Send: 0F0=240d");
+            oledPut(3, "Send: 09=240d");
             oledPutNumMessage(4);
-            sendLora("0F0");
+            sendLora("09");
             break;
         case 19:
-            oledPut(3, "Send: 10E=270d");
+            oledPut(3, "Send: 0A=270d");
             oledPutNumMessage(4);
-            sendLora("10E");
+            sendLora("0A");
             break;
         case 21:
-            oledPut(3, "Send: 12C=300d");
+            oledPut(3, "Send: 0B=300d");
             oledPutNumMessage(4);
-            sendLora("12C");
+            sendLora("0B");
             break;
         case 23:
-            oledPut(3, "Send: 14A=330d");
+            oledPut(3, "Send: 0C=330d");
             oledPutNumMessage(4);
-            sendLora("14A"); 
+            sendLora("0C"); 
             break;
         case 25:
-            oledPut(3, "Send: 168=360d");
+            oledPut(3, "Send: 0D=360d");
             oledPutNumMessage(4);
-            sendLora("168");
+            sendLora("0D");
             break;
     }
     

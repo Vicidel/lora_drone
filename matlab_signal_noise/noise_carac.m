@@ -29,7 +29,7 @@ signal_d100 = RSSI(distances==100);
 noise_d100  = signal_d100 - mean(signal_d100);
 signal_d150 = RSSI(distances==150);
 noise_d150  = signal_d150 - mean(signal_d150);
-signal_d200 = RSSI(distances==200);
+signal_d200 = RSSI(distances==200); 
 noise_d200  = signal_d200 - mean(signal_d200);
 
 % get normal fir
@@ -44,6 +44,11 @@ norm_fit_200 = fitdist(noise_d200, 'Normal');
 noise_normal_fit = [norm_fit_10.sigma, norm_fit_20.sigma, norm_fit_50.sigma, ...
                     norm_fit_100.sigma, norm_fit_150.sigma, norm_fit_200.sigma];
 save('matlab_signal_noise/noise_normal_sigma.mat', 'noise_normal_fit');
+
+% fit straight line
+d_calib_v2 = d_calib(2:end);
+noise_normal_fit_v2 = noise_normal_fit(2:end);
+
 
 
 %% PLOT SECTION

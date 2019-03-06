@@ -32,3 +32,8 @@
 
 20190219pm_data
 	collection of always 200 sent messages from each location
+
+20190306pm_torus_horizontal 20190306pm_torus_vertical
+	data collection for torus shape
+	every 45° approximately for horizontal data, from 0 to 315°
+	every 15° for vertical data, from 0 to 90°

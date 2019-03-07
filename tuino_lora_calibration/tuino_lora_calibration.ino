@@ -35,8 +35,9 @@
 #include <Wire.h>
 
 // LoRa transmission parameters
-#define DISABLE_ADR 0   // ADR has to be enabled to set custom SF
-#define SF LORA_SF7     // only SF=7
+#define DISABLE_ADR  0            // ADR has to be enabled to set custom SF
+#define SF           LORA_SF7     // only SF=7
+#define TXPOW        0            // only TXpow=0 (20dB)
 long int timer_period_to_tx = 4000;     // time between transmissions
 long int timer_millis_lora_tx = 0;      // time of last transmission
 
@@ -186,33 +187,24 @@ void setup() {
     SeeedOled.putString("Joined!");
     Serial.println("Network Joined!");
 
-    
-    /*               ::::   block to disable ADR and force set SF   ::::
-    // disable ADR ?
+
+    // disable ADR
     if(DISABLE_ADR) gmxLR_setADR("0");
     Serial.print("ADR: ");
     Serial.println(gmxLR_getADR());
-    SeeedOled.setTextXY(4, 0);
-    if (gmxLR_getADR()==0)
-        SeeedOled.putString("ADR inactive");
-    else
-        SeeedOled.putString("ADR active");
     
     // set spreading factor
     String sf = "";
     gmxLR_setSF(String(SF), sf);
     Serial.print("Data rate (SF): ");
     Serial.println(sf);
-    SeeedOled.setTextXY(5, 0);
-    sprintf(send_string,"SF: %s", SF);
-    SeeedOled.putString(send_string);
 
     // get TX power
     Serial.print("TXpow: ");
     String answ = "";
     gmxLR_getTXPower(answ);
     Serial.println(answ);
-    */
+    
     
     delay(1000);
     SeeedOled.clearDisplay();
@@ -244,37 +236,39 @@ void oledPutNumMessage(int line){
 // if time has passed, send a message
 void sendLora(char *str){
 
-    // LoRa parameters
-    String RSSI;
-    String SNR;
-    String rx_data;
-    char rx_buf[128];
-    int rx_buf_len;
-    int port;
-    int _snr;
-
+    // create answer string
+    String answ = "";
+   
     // time from last emission
     long int delta_lora_tx = millis() - timer_millis_lora_tx;
-
+    
     // check delta TX Timeout
     if ( delta_lora_tx > timer_period_to_tx) {
-        
-        // set last emitting time as now
-        timer_millis_lora_tx = millis();
 
-        // transmit the string passed in argument
-        gmxLR_TXData(str);    // Transmit data as HEX String
-        
-        // get RSSI and SNR of last received packet
-        gmxLR_getRSSI(RSSI);
-        Serial.println("RSSI: "+RSSI);
-        gmxLR_getSNR(SNR);
-        _snr = SNR.toInt();
-        Serial.print("SNR: ");
-        Serial.println(_snr);
+        //multiple trials to set TX power
+        for(int i=0; i<5; i++){
 
-        // increase message sent
-        message_sent++; 
+            // set TXpower
+            gmxLR_setTXPower(String(TXPOW));
+            delay(50);
+            gmxLR_getTXPower(answ);
+            
+            if(int(answ[0])-48 == TXPOW){
+
+                // set last emitting time as now
+                timer_millis_lora_tx = millis();
+        
+                //When ADR is enabled, SF change has to be enforced before every TX
+                gmxLR_setSF(String(SF),answ);
+                gmxLR_TXData(str);
+                
+                // increase message sent
+                message_sent++; 
+
+                // break;
+                i=5;
+            }
+        }
     }
 }
 

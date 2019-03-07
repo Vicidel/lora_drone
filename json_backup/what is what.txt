@@ -36,3 +36,10 @@
 20190306pm_torus_horizontal 
 	data collection for torus shape
 	every 45° approximately for horizontal data, from 0 to 315°
+
+20190307am_torus_indoor (et v2, v3, v4)
+	same experiment as previous, but indoor
+	for v2, no movement to test if same spike at 300s --> no
+	for v3, two complete rotations (720° total)
+	for v4, static for more than 300s
+	for v5, in opposite direction

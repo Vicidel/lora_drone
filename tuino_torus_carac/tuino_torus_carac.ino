@@ -252,6 +252,9 @@ void sendLora(char *str){
             gmxLR_setTXPower(String(TXPOW));
             delay(50);
             gmxLR_getTXPower(answ);
+
+            Serial.println("i="+String(i));
+            Serial.println("answer:"+answ);
             
             if(int(answ[0])-48 == TXPOW){
 

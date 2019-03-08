@@ -43,3 +43,5 @@
 	for v3, two complete rotations (720° total)
 	for v4, static for more than 300s
 	for v5, in opposite direction
+	for v6, with Micha TXpow set
+	for v7, again without Micha stuff to check

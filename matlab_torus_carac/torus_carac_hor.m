@@ -1,9 +1,8 @@
 %% DECODING SECTION
-%clear all; close all;
+clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190307pm_torus_hor_indoor_v3.json';
-% fname = 'json_backup/20190306pm_torus_horizontal.json';
+fname = 'json_backup/20190308pm_torus_hor_indoor_v7.json';
 [time, angles, SF, RSSI, ESP, SNR, ~, ~, ~, tx_pow] = decode_json(fname);
 
 % angles
@@ -27,7 +26,3 @@ figure();
 plot(time, ESP, 'r'); grid on; hold on;
 plot(time, RSSI, 'b');
 title(fname);
-
-% plot angles with time
-figure();
-plot(time, tx_pow); grid on;

@@ -109,34 +109,6 @@ void setup() {
         // first start only
         if ( join_wait == 0 )
         {
-            gmxLR_getAppEui(AppEui);
-            if (NewAppEui.length() > 0 )
-            {
-                AppEui.trim();
-                Serial.println("**** UPDATING AppEUI ****");
-                if ( !AppEui.equals(NewAppEui) )
-                {
-                    Serial.println("Setting AppEui:"+NewAppEui);
-                    gmxLR_setAppEui(NewAppEui);
-                }
-                else
-                    Serial.println("AppEui is already:"+AppEui);
-            }
-    
-            gmxLR_getAppKey(AppKey);
-            if (NewAppKey.length() > 0 )
-            {
-                AppKey.trim();
-                Serial.println("**** UPDATING AppKey ****");
-                if ( !AppKey.equals(NewAppKey) )
-                {
-                    Serial.println("Setting AppKey:"+NewAppKey);
-                    gmxLR_setAppKey(NewAppKey);
-                }
-                else
-                    Serial.println("AppKey is already:"+AppKey);
-            }  
-        
             // Disable Duty Cycle  ONLY FOR DEBUG!
             gmxLR_setDutyCycle("0");
         
@@ -156,7 +128,7 @@ void setup() {
             adr = String( gmxLR_getADR() );
             Serial.println("ADR:"+adr);
             dcs = String( gmxLR_getDutyCycle() );
-            Serial.println("DCS:"+dcs);
+            Serial.println("Duty cycle:"+dcs);
             gmxLR_getRX2DataRate(dxrate);
             Serial.println("RX2 DataRate:"+dxrate);
             
@@ -164,7 +136,7 @@ void setup() {
         }
 
         // print number of attempts
-        Serial.print("Join:");
+        Serial.print("Join attempt:");
         Serial.println(join_wait);
         SeeedOled.setTextXY(1, 0);
         sprintf(send_string, "Attempt: %d", join_wait);
@@ -188,7 +160,7 @@ void setup() {
     Serial.println("Network Joined!");
 
 
-    // disable ADR
+    // to disable ADR if needed
     if(DISABLE_ADR) gmxLR_setADR("0");
     Serial.print("ADR: ");
     Serial.println(gmxLR_getADR());
@@ -245,13 +217,16 @@ void sendLora(char *str){
     // check delta TX Timeout
     if ( delta_lora_tx > timer_period_to_tx) {
 
-        //multiple trials to set TX power
+        // multiple trials to set TX power
         for(int i=0; i<5; i++){
 
             // set TXpower
             gmxLR_setTXPower(String(TXPOW));
             delay(50);
             gmxLR_getTXPower(answ);
+
+            Serial.println("i="+String(i));
+            Serial.println("answer:"+answ);
             
             if(int(answ[0])-48 == TXPOW){
 
@@ -259,7 +234,7 @@ void sendLora(char *str){
                 timer_millis_lora_tx = millis();
         
                 //When ADR is enabled, SF change has to be enforced before every TX
-                gmxLR_setSF(String(SF),answ);
+                gmxLR_setSF(String(SF), answ);
                 gmxLR_TXData(str);
                 
                 // increase message sent

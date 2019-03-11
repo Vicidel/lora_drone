@@ -46,3 +46,12 @@
 	for v6, with Micha TXpow set
 	for v7, again without Micha stuff to check
 	for v8, final "real" data collection
+
+20190311am_torus_vert_v1
+	every 15° between 0 and 75° (90° we would have nothing)
+	for v1, too much reflections so high angles (above 45° maybe) are bad...
+	for v2, outdoor, maybe still too much reflections, need to go in 100% open field
+
+20190311pm_noise_carac
+	1000 messages to carac the noise
+	distance of 100m

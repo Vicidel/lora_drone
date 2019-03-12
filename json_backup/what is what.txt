@@ -37,7 +37,7 @@
 	data collection for torus shape
 	every 45° approximately for horizontal data, from 0 to 315°
 
-20190307am_torus_indoor (et v2, v3, v4)
+20190307am_torus_indoor (and v2 to v8)
 	same experiment as previous, but indoor
 	for v2, no movement to test if same spike at 300s --> no
 	for v3, two complete rotations (720° total)
@@ -47,11 +47,12 @@
 	for v7, again without Micha stuff to check
 	for v8, final "real" data collection
 
-20190311am_torus_vert_v1
+20190311am_torus_vert_v1 (and v2)
 	every 15° between 0 and 75° (90° we would have nothing)
 	for v1, too much reflections so high angles (above 45° maybe) are bad...
 	for v2, outdoor, maybe still too much reflections, need to go in 100% open field
 
-20190311pm_noise_carac
+20190311pm_noise_carac (and v2, v3)
 	1000 messages to carac the noise
-	distance of 100m
+	distance of 100m, 200m (v2) and 50m (v3)
+	100m is not normal, 200 is approximately, 50 []

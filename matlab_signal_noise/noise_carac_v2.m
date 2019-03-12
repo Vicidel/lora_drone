@@ -2,11 +2,8 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190311pm_noise_carac.json';
+fname = 'json_backup/20190312am_noise_carac_v3.json';
 [time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
-
-ESP = ESP(distances==2);
-RSSI = RSSI(distances==2);
 
 
 %% PLOTTING SECTION
@@ -19,7 +16,7 @@ RSSI = RSSI(distances==2);
 % legend('ESP', 'RSSI');
 
 figure();
-histfit(-ESP, [], 'lognormal'); grid on;
+histfit(-ESP); grid on;
 xlabel('Signal [dBm]');
 ylabel('Occurences [-]');
 title('Histogram fit for signal');

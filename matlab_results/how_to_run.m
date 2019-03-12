@@ -1,0 +1,46 @@
+% testing file to test the free-space path loss and angle attenuation
+% we define the axis as north in positive y and east as positive x
+
+%% INITIALIZATION
+% clear and close
+clear all;
+close all;
+
+% set the position of drone (gateway) and node 
+drone_position = [100, 100, 10];
+node_position = [0, 0, 0];
+
+% set the antenna angles
+drone_antenna_angle = 0;    % 0 for towards ground
+drone_orientation = 0;      % 0 for north orientation
+node_antenna = 0;           % 0 for towards sky
+
+
+%% COMPUTE DISTANCE AND ANGLES
+% get the distance from drone to node
+distances = drone_position - node_position;
+distance_norm = norm(distances);
+
+% get the angles
+% ((for now we consider that the two are vertical))
+distance_ground = sqrt(distances(1)^2+distances(2)^2);
+angle_rad = atan(distances(3)/distance_ground);
+angle_deg = angle_rad*180/pi;
+
+
+%% GET FREE-SPACE PATH LOSS
+% get the true signal from the distance
+ESP_true = func_distance_to_signal(distance_norm, 'esp');
+
+% add 2.5 dB noise
+ESP_noisy = ESP_true + normrnd(0, 2.5);
+
+
+%% GET ANGLE ATTENUATIONS
+% get attenuation in db
+attenuation_db = func_attenuation_angle(angle_deg);
+
+
+%% SUM THE TWO COMPONENTS
+% sum it to noisy signal
+ESP_final = ESP_noisy + attenuation_db;

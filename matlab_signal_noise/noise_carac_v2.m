@@ -10,16 +10,16 @@ RSSI = RSSI(distances==2);
 
 
 %% PLOTTING SECTION
-figure();
-plot(ESP, 'r'); grid on; hold on;
-plot(RSSI, 'b');
-xlabel('Measure number [-]');
-ylabel('Signal [dBm]');
-title('Signal received');
-legend('ESP', 'RSSI');
+% figure();
+% plot(ESP, 'r'); grid on; hold on;
+% plot(RSSI, 'b');
+% xlabel('Measure number [-]');
+% ylabel('Signal [dBm]');
+% title('Signal received');
+% legend('ESP', 'RSSI');
 
 figure();
-histfit(ESP); grid on;
+histfit(-ESP, [], 'lognormal'); grid on;
 xlabel('Signal [dBm]');
 ylabel('Occurences [-]');
 title('Histogram fit for signal');
@@ -27,3 +27,4 @@ title('Histogram fit for signal');
 
 %% STAT SECTION
 [H, p] = jbtest(ESP);       % result: does not follow it...
+[H2, p2, ksstat, cv] = kstest(ESP, 'Alpha', 0.1);

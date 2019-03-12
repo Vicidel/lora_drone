@@ -1,5 +1,8 @@
+% ------------------------------------------------------------------------
 % testing file to test the free-space path loss and angle attenuation
 % we define the axis as north in positive y and east as positive x
+% ------------------------------------------------------------------------
+
 
 %% INITIALIZATION
 % clear and close
@@ -42,12 +45,22 @@ fprintf('With added normal noise of std=2.5dB: %.2f dBm\n', ESP_noisy);
 
 
 %% GET ANGLE ATTENUATIONS
-% get attenuation in db
 attenuation_db = func_attenuation_angle(angle_deg);
 fprintf('The attenuation due to the angle between them is %.2f dB\n', attenuation_db);
 
 
 %% SUM THE TWO COMPONENTS
-% sum it to noisy signal
-ESP_final = ESP_noisy + attenuation_db;
-fprintf('The final simulated ESP is %.2f dBm\n', ESP_final);
+ESP_received = ESP_noisy + attenuation_db;
+fprintf('The final simulated ESP is %.2f dBm\n', ESP_received);
+
+
+% ------------------------------------------------------------------------
+% all before was only to get an estimate of the ESP in Matlab
+% now we need to use this estimate to get back the distance
+% ------------------------------------------------------------------------
+
+
+%% MODIFY THE DISTANCE ACCORDING TO SIGNAL
+distance_estimated = func_signal_to_distance(ESP_received, 'esp');
+fprintf('Estimated distance of %.2f meters\n', distance_estimated);
+fprintf('Error from real distance: %.2f meters\n', abs(distance_estimated-distance_norm));

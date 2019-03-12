@@ -8,9 +8,9 @@ exp_b_rssi = -0.0777;
 
 switch data_type
     case 'esp'
-        signal_strength = log(distance*exp_a_esp) / exp_b_esp;
+        signal_strength = log(distance/exp_a_esp) / exp_b_esp;
     case 'rssi'
-        signal_strength = log(distance*exp_a_rssi) / exp_b_rssi;
+        signal_strength = log(distance/exp_a_rssi) / exp_b_rssi;
     otherwise
         fprintf('Error, unknown type\n');
 end

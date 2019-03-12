@@ -16,12 +16,14 @@ fname = 'json_backup/20190312am_noise_carac_v2.json';
 % legend('ESP', 'RSSI');
 
 figure();
-histfit(-ESP); grid on;
+histfit(ESP-mean(ESP)); grid on;
 xlabel('Signal [dBm]');
 ylabel('Occurences [-]');
-title('Histogram fit for signal');
+title('Distance of 50m');
 
 
-%% STAT SECTION
-[H, p] = jbtest(ESP);       % result: does not follow it...
-% [H2, p2, ksstat, cv] = kstest(ESP, 'Alpha', 0.1);
+% %% STAT SECTION
+% mean_esp = mean(ESP);
+% std_esp = std(ESP);
+% test_cdf = makedist('tlocationscale','mu',mean_esp,'sigma',std_esp,'nu',1);
+% [h, p] = kstest(ESP, 'CDF', test_cdf, 'Alpha', 0.01);

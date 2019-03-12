@@ -2,7 +2,7 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190312am_noise_carac_v3.json';
+fname = 'json_backup/20190312am_noise_carac_v2.json';
 [time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
 
 
@@ -24,4 +24,4 @@ title('Histogram fit for signal');
 
 %% STAT SECTION
 [H, p] = jbtest(ESP);       % result: does not follow it...
-[H2, p2, ksstat, cv] = kstest(ESP, 'Alpha', 0.1);
+% [H2, p2, ksstat, cv] = kstest(ESP, 'Alpha', 0.1);

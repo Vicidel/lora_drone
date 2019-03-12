@@ -47,5 +47,5 @@ plot(fit_dist, fit_ESP); grid on; hold on;
 plot(fit_dist, fit_ESP_old);
 xlabel('Distance [m]');
 ylabel('ESP [dB]');
-legend('New fit considering attenuation', 'Old fit');
+legend('Decorrelated fit', 'Fit using data collected at h=10m');
 title('ESP attenuation due to angle');

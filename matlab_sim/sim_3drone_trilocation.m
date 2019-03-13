@@ -241,11 +241,20 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     dist = zeros(number_measures,1);
     
     for i=1: number_measures
-        real_dist = norm(measure_position - node_position);
-        perfect_ESP = func_distance_to_signal(real_dist, 'esp');
-        ESP(i) = perfect_ESP + normrnd(0, 2.5);
+        % get distance and angle
+        distances = measure_position - node_position;
+        distance_ground = sqrt(distances(1)^2+distances(2)^2);
+        real_dist = norm(distances);
+        theta_deg = atan(distances(3)/distance_ground)*180/pi;
+        
+        % get ESP
+        ESP_distance = func_distance_to_signal(real_dist, 'esp');
+        ESP_attenuation = func_attenuation_angle(theta_deg);
+        ESP(i) = ESP_distance + ESP_attenuation + normrnd(0, 2.5);
+        
+        % get distance
         measured_distance = func_signal_to_distance(ESP(i), 'esp');
-        h = abs(node_position(3) - measure_position(3));
+        h = abs(distances(3));
         measured_distance = max([measured_distance, h]);
         dist(i) = sqrt(measured_distance*measured_distance - h*h);
     end

@@ -20,13 +20,6 @@ time_limit = 60*20;  % battery limit
 size_around_estimation_v1 = 70;     % size of triangle around estimation
 size_around_estimation_v2 = 20;
 
-% load function
-load('func_ESP_to_distance.mat', 'fitresult_ESPd');
-global func_a;
-global func_b;
-func_a = fitresult_ESPd.a;
-func_b = fitresult_ESPd.b;
-
 % define node coordinates xyz (z altitude) and network estimation (circle of XXm)
 node_position = [0, 0, 0];
 network_error = 150;
@@ -242,7 +235,6 @@ end
 
 % obtain a noisy ESP and distance from positions
 function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position)
-    noise_level = 3;     % +-2dB
     number_measures = 2;
     
     ESP = zeros(number_measures,1);
@@ -250,9 +242,9 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     for i=1: number_measures
         real_dist = norm(measure_position - node_position);
-        perfect_ESP = func_distance_to_signal(real_dist);
-        ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
-        measured_distance = func_signal_to_distance(ESP(i));
+        perfect_ESP = func_distance_to_signal(real_dist, 'esp');
+        ESP(i) = perfect_ESP + normrnd(0, 2.5);
+        measured_distance = func_signal_to_distance(ESP(i), 'esp');
         h = abs(node_position(3) - measure_position(3));
         measured_distance = max([measured_distance, h]);
         dist(i) = sqrt(measured_distance*measured_distance - h*h);

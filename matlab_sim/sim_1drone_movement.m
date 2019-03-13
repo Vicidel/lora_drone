@@ -21,13 +21,6 @@ time_limit = 20*60;
 altitude = 10;
 drone_speed = 1;    % m/s
 
-% load function
-load('func_ESP_to_distance.mat', 'fitresult_ESPd');
-global func_a;
-global func_b;
-func_a = fitresult_ESPd.a;
-func_b = fitresult_ESPd.b;
-
 % define node coordinates xyz (z altitude)
 node_position = [rand*200-100, rand*200-100, 0];
 drone_position = [0, 0, altitude];
@@ -145,7 +138,7 @@ while time_move+time_measure < time_limit
             end
             
             % if reached maximum resolution for this increment, go smaller
-            horizontal_dist = sqrt(max(func_signal_to_distance(ESP(end)), altitude)^2 - altitude^2);
+            horizontal_dist = sqrt(max(func_signal_to_distance(ESP(end), 'esp'), altitude)^2 - altitude^2);
             fprintf('Estimated horizontal distance of %.2f m\n', horizontal_dist);
             if horizontal_dist < 4 * dist_increment
                 dist_increment = dist_increment/2;
@@ -191,7 +184,6 @@ end
 
 % obtain a noisy ESP and distance from positions
 function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_position, measure_position)
-    noise_level = 5;     % +-2dB
     number_measures = 2;
     
     ESP = zeros(number_measures,1);
@@ -199,9 +191,9 @@ function [measured_ESP, measured_horizontal_distance] = get_noisy_ESP(node_posit
     
     for i=1: number_measures
         real_dist = norm(measure_position - node_position);
-        perfect_ESP = func_distance_to_signal(real_dist);
-        ESP(i) = perfect_ESP + rand()*2*noise_level - noise_level;
-        measured_distance = func_signal_to_distance(ESP(i));
+        perfect_ESP = func_distance_to_signal(real_dist, 'esp');
+        ESP(i) = perfect_ESP + normrnd(0, 2.5);
+        measured_distance = func_signal_to_distance(ESP(i), 'esp');
         h = abs(node_position(3) - measure_position(3));
         measured_distance = max([measured_distance, h]);
         dist(i) = sqrt(measured_distance*measured_distance - h*h);

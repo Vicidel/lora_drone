@@ -1,4 +1,4 @@
-function coefficient = signal_attenuation_angle(theta_deg)
+function coefficient = func_attenuation_angle_old(theta_deg)
 % get attenuation coefficient of the signal based on the angle theta
 
     theta = (theta_deg*pi/180) + pi/2;

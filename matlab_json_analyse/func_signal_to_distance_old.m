@@ -1,4 +1,4 @@
-function distance = func_signal_to_distance(signal_strength)
+function distance = func_signal_to_distance_old(signal_strength)
 % returns a distance from the signal stregnth (can be RSSI or ESP)
 
 global func_a;

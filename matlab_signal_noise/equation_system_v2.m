@@ -1,7 +1,7 @@
 clear all; close all;
 
 % load function
-load('func_ESP_to_distance.mat', 'fitresult_ESPd');
+load('coeff_ESP_dist_old.mat', 'fitresult_ESPd');
 global func_a;
 global func_b;
 func_a = fitresult_ESPd.a;
@@ -20,7 +20,7 @@ for i=1: length(distances)
     theta_deg = atan(height(i)/distances_hor(i))*180/pi;
     attenuation_gateway(i) = func_attenuation_angle(theta_deg);
     attenuation_node(i) = func_attenuation_angle(theta_deg);
-    ESP(i) = func_distance_to_signal(distances(i));
+    ESP(i) = func_distance_to_signal(distances(i), 'esp');
 end
 
 

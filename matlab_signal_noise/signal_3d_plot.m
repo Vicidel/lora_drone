@@ -20,13 +20,6 @@ close all;
 %         - extrapolate based on previous results (same regression)
 %         - make new measurements
 
-% load function
-load('func_ESP_to_distance.mat', 'fitresult_ESPd');
-global func_a;
-global func_b;
-func_a = fitresult_ESPd.a;
-func_b = fitresult_ESPd.b;
-
 % dataset, Nx3 size, N points
 % in order horizontal distance, vertical distance, signal strength
 dataset = [20, 10, -92;
@@ -38,7 +31,7 @@ dataset = [20, 10, -92;
 % define positions and arena
 node_position = [0, 0, 0];
 arena_size = 200;       % 200m in each direction
-division_size = 20;      % 1m subdivisions
+division_size = 5;      % 1m subdivisions
 x_values = -arena_size:division_size:arena_size;
 y_values = -arena_size:division_size:arena_size;
 z_values = 0:division_size:arena_size;
@@ -58,7 +51,9 @@ end
 
 %%
 % plot
-slice(x_values, y_values, z_values, ESP_values, [0], [0], [10]);
+h = slice(x_values, y_values, z_values, ESP_values, [0], [0], [10]);
 xlabel('x [m]'); ylabel('y [m]'); zlabel('z [m]');
+lightangle(-45,45);
+h.EdgeColor = 'none';
 colorbar;
 colormap(jet);

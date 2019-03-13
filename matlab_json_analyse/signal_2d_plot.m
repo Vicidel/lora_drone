@@ -7,10 +7,6 @@ x_values = -limit:1:limit;
 y_values = -limit:1:limit;
 altitude = 10;
 
-% load polynom
-load('polynom_dist_to_ESP.mat', 'fitresult_dESP');
-p_ESP_from_distance = fitresult_dESP;
-
 % result
 matrix = zeros(length(x_values), length(y_values));
 
@@ -20,7 +16,7 @@ for i=1: length(x_values)
         x = x_values(i);
         y = y_values(j);
         distance = norm([x-node_position(1), y-node_position(2), altitude]);
-        matrix(i, j) = ESP_from_distance(distance, p_ESP_from_distance);
+        matrix(i, j) = func_distance_to_signal(distance, 'esp');
     end
 end
 

@@ -1,0 +1,46 @@
+Florian code, in master project master folder
+All in C++, runs on Linux
+Contains three main folders
+	Cloud server
+	RPi
+	Scripts
+
+Cloud server
+	Runs on the Groundstation (computer)
+	Files: 	
+		server.cpp, main file
+			Opens a socket for TCP/IP
+			Redirect control to PID/MPC depending on things
+		mpc_ctrl.cpp, MPC algorithm, we won't use it
+		pid.cpp, PID algorithm, also useless for us
+		navigator.cpp, interface with the console for puting the endpoints
+			Tests navigation in the case of MPC/PID on cloud/PID on RPi
+			GPS lock, then connexion to MAVLINK
+			Asks goal position, then goes there 
+
+Raspberry Pi
+	Three different sub-folders: controller, gateway and latency evaluation
+		Controller I guess to run the PID/MPC on the RPi
+		Gateway to just route the MAVLINK to the server and receive back the commands
+		Latency evaluation to get experimental results
+	For each:
+		run.cpp, main file
+			Mainly calls the run function of serial.cpp
+		serial.cpp, receive the serial messages
+			Opens serial port to Pixhawk
+			Reads incomming data and checks for MAVLINK messages
+			Warning: only looks for specific messages (ATTITUDE, LOCAL_POSITION_NED)
+			Also writes mixer commands
+		server.cpp, weirdly commented
+			Manages the socket to server
+		tcp_client.cpp
+			Contains send_tcp function
+			Sends data and receive reply from server 
+		tools.cpp, misc functions
+
+Scripts
+	kill_rsp.sh, log to ssh and kill RPi+PX4
+	print.sh, make graphs from logs (we won't need that)
+	px4.sh, run PX4 Gazebo simulation
+	rpi.sh, connects RPi to groundstation via ssh (?)
+	exe.sh, latency experiments (we won't need that)

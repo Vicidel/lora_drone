@@ -19,9 +19,10 @@ pos_drone = pos_network_estimate;
 
 % name of the running script
 file_run = dbstack(1);
+file_run_name = file_run.name;
 
 %% for gradient follow
-if file_run.name == 'sim2_1drone_gradient'
+if file_run_name == 'sim2_1drone_gradient'
     
     % distance increment
     dist_increment = 10;

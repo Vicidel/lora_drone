@@ -1,0 +1,14 @@
+Two things to test: one or three drones
+
+One drone:
+	Follows the gradient of signal strength and finds the best
+		+: 
+		-: 
+	Moves in three positions and do trilateration measures
+		+: precise
+		-: moving takes time
+
+Three drones:
+	Trilateration from three positions around network estimate
+		+: precise and fast
+		-: requires three drones

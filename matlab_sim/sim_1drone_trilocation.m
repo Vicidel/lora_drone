@@ -16,7 +16,7 @@ ESP = zeros(3, 1);
 algo_loop = 1;
 
 % parameters
-plot_bool = true;
+plot_bool = false;
 algo_loops_todo = 2;
 plot_movement_bool = false;
 time_limit = 60*20;     % battery limit

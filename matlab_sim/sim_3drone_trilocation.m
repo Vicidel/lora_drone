@@ -62,8 +62,9 @@ while time_move+time_measure < time_limit
                 % print
                 fprintf('First position found at x=%.2f, y=%.2f\n', x, y);
                 fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
-                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n\n', abs(estimated_position_v1(1) - node_position(1)), abs(estimated_position_v1(2) - node_position(2)), norm([abs(estimated_position_v1(1) - node_position(1)), abs(estimated_position_v1(2) - node_position(2))])); 
-            
+                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position_v1(1) - node_position(1)), abs(estimated_position_v1(2) - node_position(2)), norm([abs(estimated_position_v1(1) - node_position(1)), abs(estimated_position_v1(2) - node_position(2))])); 
+                fprintf('Time passed: %.1f\n\n', time_move+time_measure);
+                
                 % plot
                 if plot_bool
                     figure();
@@ -121,7 +122,8 @@ while time_move+time_measure < time_limit
                 % print
                 fprintf('Second position found at x=%.2f, y=%.2f\n', x, y);
                 fprintf('Real position of node: x=%.2f, y=%.2f\n', node_position(1), node_position(2));
-                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n\n', abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2)), norm([abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2))])); 
+                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2)), norm([abs(estimated_position_v2(1) - node_position(1)), abs(estimated_position_v2(2) - node_position(2))])); 
+                fprintf('Time passed: %.1f\n\n', time_move+time_measure);
                 
                 % plot
                 if plot_bool

@@ -135,8 +135,8 @@ function output = sim2_1drone_gradient()
                 state = 1;
         end
         
-        % slows simulation
-        pause(0.05);
+%         % slows simulation
+%         pause(0.05);
     end
 
     % time limit reached

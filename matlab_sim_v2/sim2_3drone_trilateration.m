@@ -56,7 +56,7 @@ function output = sim2_3drone_trilateration()
 
                 % check NaN
                 if isnan(pos_estimated(1)) || isnan(pos_estimated(2))
-                    fprintf('First position found is NaN (no intersection), new measurements\n');
+                    if print_bool fprintf('Position found is NaN (no intersection), new measurements\n'); end
                     state = 2;
                 else                    
                     % plot

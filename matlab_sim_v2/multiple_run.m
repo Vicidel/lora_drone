@@ -2,11 +2,14 @@
 clear all; close all;
 
 % define size
-number_runs = 3;
+number_runs = 100;
+
+% launch profiler
+profile on;
 
 % run the simulations
 for k=1: number_runs
-    % check progress
+    %check progress
     fprintf('%d... ', k);
     
     % for 1 drone and gradient
@@ -18,22 +21,36 @@ for k=1: number_runs
     results_1drone_trilateration{k} = sim2_1drone_trilateration();
     final_precision_1drone_trilateration(k) = results_1drone_trilateration{k}.final_precision;
     final_time_1drone_trilateration(k) = results_1drone_trilateration{k}.time_final;
+    
+    % for three drones and trilateration
+    results_3drone_trilateration{k} = sim2_3drone_trilateration();
+    final_precision_3drone_trilateration(k) = results_3drone_trilateration{k}.final_precision;
+    final_time_3drone_trilateration(k) = results_3drone_trilateration{k}.time_final;
 end
+fprintf('\n');
+
+% stop profiler
+profile off;
+profile viewer;
 
 % plot precisions
 figure();
 plot(final_precision_1drone_gradient, 'bo-'); grid on; hold on;
 plot(final_precision_1drone_trilateration, 'ro-');
+plot(final_precision_3drone_trilateration, 'go-');
 title('Reached precision');
 xlabel('Experiment');
 ylabel('Precision [m]');
-legend('Gradient', 'Trilateration');
+legend('Gradient', 'Trilateration1', 'Trilateration3');
 
 % plot final time
 figure();
 plot(final_time_1drone_gradient, 'bo-'); grid on; hold on;
 plot(final_time_1drone_trilateration, 'ro-');
+plot(final_time_3drone_trilateration, 'go-');
 title('Final time');
 xlabel('Experiment');
 ylabel('Time [s]');
-legend('Gradient', 'Trilateration');
+legend('Gradient', 'Trilateration1', 'Trilateration3');
+
+

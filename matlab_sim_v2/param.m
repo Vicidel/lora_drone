@@ -8,9 +8,9 @@ altitude = 10;          % flies at 10m
 number_measures = 2;    % makes 2 measures at each point
 
 % boolean for plotting and printing
-plot_bool = true;       
+plot_bool = false;       
 plot_movement_bool = false;
-print_bool = true;
+print_bool = false;
 
 % node position and estimate from network
 pos_true_node = [0, 0, 0];

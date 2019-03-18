@@ -122,7 +122,7 @@ function output = sim2_1drone_gradient()
                 % if reached maximum resolution for this increment, go smaller
                 horizontal_dist = sqrt(max(func_signal_to_distance(signal(end), signal_type), altitude)^2 - altitude^2);
                 if print_bool fprintf('Estimated horizontal distance of %.2f meters, time is %.1f seconds\n', horizontal_dist, time_move+time_measure); end
-                if horizontal_dist < 4 * dist_increment
+                if horizontal_dist < 6 * dist_increment
                     dist_increment = dist_increment/2;
                     if print_bool fprintf('Reducing increment to %.2f meters\n', dist_increment); end
                     increment_0p0 = [0, dist_increment, 0];
@@ -134,8 +134,8 @@ function output = sim2_1drone_gradient()
                 % go back to beginning of algorithm
                 state = 1;
         end
-
-        % slows down simulation
+        
+        % slows simulation
         pause(0.05);
     end
 
@@ -146,6 +146,9 @@ function output = sim2_1drone_gradient()
 
     % final estimated position
     pos_estimated = pos_drone;
+    error_x = abs(pos_estimated(1) - pos_true_node(1));
+    error_y = abs(pos_estimated(2) - pos_true_node(2));
+    error_norm = norm([abs(error_x), abs(error_y)]);
 
     % plot positions
     if plot_bool
@@ -163,12 +166,17 @@ function output = sim2_1drone_gradient()
         fprintf('\nRESULTS:\n');
         fprintf('Estimated position of node: x=%.2f, y=%.2f\n', pos_estimated(1), pos_estimated(2));
         fprintf('Real position of node: x=%.2f, y=%.2f\n', pos_true_node(1), pos_true_node(2));
-        fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2)), norm([abs(pos_drone(1) - pos_true_node(1)), abs(pos_drone(2) - pos_true_node(2))])); 
+        fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', error_x, error_y, error_norm); 
         fprintf('Found in t=%.1f seconds (%.1f moving and %.1f measuring)\n', time_move+time_measure, time_move, time_measure);
     end
     
     % create output
-    output = 1;
+    output.time_move_final = time_move;
+    output.time_measure_final = time_measure;
+    output.time_final = time_move + time_measure;
+    output.final_precision = error_norm;
+    output.pos_real = pos_true_node;
+    output.pos_estimated = pos_estimated;
     
 end
 

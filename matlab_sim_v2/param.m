@@ -1,7 +1,7 @@
 %% sets the parameters used in the simulations
 
 % general parameters
-time_limit = 15*60;     % 15 minutes
+time_limit = 30*60;     % 15 minutes
 drone_speed = 1;        % 1 m/s
 signal_type = 'esp';    % can be 'esp' or 'rssi'
 

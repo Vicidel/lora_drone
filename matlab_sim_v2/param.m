@@ -8,9 +8,9 @@ altitude = 10;          % flies at 10m
 number_measures = 2;    % makes 2 measures at each point
 
 % boolean for plotting and printing
-plot_bool = false;       
+plot_bool = true;       
 plot_movement_bool = false;
-print_bool = false;
+print_bool = true;
 
 % node position and estimate from network
 pos_true_node = [0, 0, 0];
@@ -42,6 +42,21 @@ switch file_run_name
         measure_position1 = pos_network_estimate + [0, -size_around_estimation_v1, 0];   % south
         measure_position2 = pos_network_estimate + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
         measure_position3 = pos_network_estimate + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
+        
+        % drone starting position
+        pos_drone = pos_network_estimate;
+        
+        % number of loops of trilateration
+        algo_loops_todo = 2;
+        
+    case 'sim2_1drone_trilateration_mod'
+        % measuring positions
+        size_around_estimation_v1 = 100;
+        size_around_estimation_v2 = 30;
+        angle_total = 90*pi/180;        % angle instead of 360deg
+        measure_position1 = pos_network_estimate + [size_around_estimation_v1, 0, 0];   
+        measure_position2 = pos_network_estimate + [size_around_estimation_v1*cos(angle_total/2), size_around_estimation_v1*sin(angle_total/2), 0];   
+        measure_position3 = pos_network_estimate + [size_around_estimation_v1*cos(angle_total), size_around_estimation_v1*sin(angle_total), 0];   
         
         % drone starting position
         pos_drone = pos_network_estimate;

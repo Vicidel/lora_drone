@@ -1,4 +1,4 @@
-% goes in three positions to do trilateration
+% goes in three positions to do trilateration, flies at 10m height
 function output = sim2_1drone_trilateration()
 
     clear all; close all;
@@ -130,6 +130,7 @@ function output = sim2_1drone_trilateration()
                     % print in terminal
                     if print_bool
                         fprintf('Error after %d loop(s): dx=%.2f, dy=%.2f, norm=%.2f\n', algo_loop, abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2)), norm([abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2))])); 
+                        fprintf('Time passed: %.2f\n', time_move+time_measure);
                     end 
                     
                     % end condition

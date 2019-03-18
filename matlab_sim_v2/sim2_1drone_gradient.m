@@ -1,4 +1,4 @@
-% follows a gradient of signal strength to find maximum
+% follows a gradient of signal strength to find maximum, flies at 10m height
 function output = sim2_1drone_gradient()
 
     clear all; close all;

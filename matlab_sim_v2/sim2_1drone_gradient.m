@@ -123,6 +123,17 @@ function output = sim2_1drone_gradient()
                 horizontal_dist = sqrt(max(func_signal_to_distance(signal(end), signal_type), altitude)^2 - altitude^2);
                 if print_bool fprintf('Estimated horizontal distance of %.2f meters, time is %.1f seconds\n', horizontal_dist, time_move+time_measure); end
                 if horizontal_dist < 6 * dist_increment
+                    
+                    % store inter for 5m
+                    if dist_increment == 2.5
+                        output.inter_time_move = time_move;
+                        output.inter_time_measure = time_measure;
+                        output.inter_time = time_move + time_measure;
+                        output.inter_precision = norm([abs(abs(pos_drone(1) - pos_true_node(1))), abs(abs(pos_drone(2) - pos_true_node(2)))]);
+                        output.inter_pos_estimated = pos_drone;
+                    end
+                    
+                    % decrease distance increment
                     dist_increment = dist_increment/2;
                     if print_bool fprintf('Reducing increment to %.2f meters\n', dist_increment); end
                     increment_0p0 = [0, dist_increment, 0];
@@ -171,12 +182,12 @@ function output = sim2_1drone_gradient()
     end
     
     % create output
-    output.time_move_final = time_move;
-    output.time_measure_final = time_measure;
-    output.time_final = time_move + time_measure;
+    output.final_time_move = time_move;
+    output.final_time_measure = time_measure;
+    output.final_time= time_move + time_measure;
     output.final_precision = error_norm;
+    output.final_pos_estimated = pos_estimated;
     output.pos_real = pos_true_node;
-    output.pos_estimated = pos_estimated;
     
 end
 

@@ -131,7 +131,16 @@ function output = sim2_1drone_trilateration_mod()
                     if print_bool
                         fprintf('Error after %d loop(s): dx=%.2f, dy=%.2f, norm=%.2f\n', algo_loop, abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2)), norm([abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2))])); 
                         fprintf('Time passed: %.2f\n', time_move+time_measure);
-                    end 
+                    end
+                    
+                    % store inter
+                    if algo_loop == 1
+                        output.inter_time_move = time_move;
+                        output.inter_time_measure = time_measure;
+                        output.inter_time = time_move + time_measure;
+                        output.inter_precision = norm([abs(abs(pos_estimated(1) - pos_true_node(1))), abs(abs(pos_estimated(2) - pos_true_node(2)))]);
+                        output.inter_pos_estimated = pos_estimated;
+                    end
                     
                     % end condition
                     if algo_loop == algo_loops_todo 
@@ -173,12 +182,12 @@ function output = sim2_1drone_trilateration_mod()
     end
     
     % create output
-    output.time_move_final = time_move;
-    output.time_measure_final = time_measure;
-    output.time_final = time_move + time_measure;
+    output.final_time_move = time_move;
+    output.final_time_measure = time_measure;
+    output.final_time= time_move + time_measure;
     output.final_precision = error_norm;
+    output.final_pos_estimated = pos_estimated;
     output.pos_real = pos_true_node;
-    output.pos_estimated = pos_estimated;
     
 end
 

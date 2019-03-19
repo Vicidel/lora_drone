@@ -15,22 +15,22 @@ for k=1: number_runs
 %     % for 1 drone and gradient
 %     results_1drone_gradient{k} = sim2_1drone_gradient();
 %     final_precision_1drone_gradient(k) = results_1drone_gradient{k}.final_precision;
-%     final_time_1drone_gradient(k) = results_1drone_gradient{k}.time_final;
+%     final_time_1drone_gradient(k) = results_1drone_gradient{k}.final_time;
     
 %     % for 1 drone and trilateration
 %     results_1drone_trilateration{k} = sim2_1drone_trilateration();
 %     final_precision_1drone_trilateration(k) = results_1drone_trilateration{k}.final_precision;
-%     final_time_1drone_trilateration(k) = results_1drone_trilateration{k}.time_final;
+%     final_time_1drone_trilateration(k) = results_1drone_trilateration{k}.final_time;
     
 %     % for 1 drone and trilateration (mod)
 %     results_1drone_trilateration_mod{k} = sim2_1drone_trilateration_mod();
 %     final_precision_1drone_trilateration_mod(k) = results_1drone_trilateration_mod{k}.final_precision;
-%     final_time_1drone_trilateration_mod(k) = results_1drone_trilateration_mod{k}.time_final;
+%     final_time_1drone_trilateration_mod(k) = results_1drone_trilateration_mod{k}.final_time;
     
 %     % for three drones and trilateration
 %     results_3drone_trilateration{k} = sim2_3drone_trilateration();
 %     final_precision_3drone_trilateration(k) = results_3drone_trilateration{k}.final_precision;
-%     final_time_3drone_trilateration(k) = results_3drone_trilateration{k}.time_final;
+%     final_time_3drone_trilateration(k) = results_3drone_trilateration{k}.final_time;
 end
 fprintf('\n');
 

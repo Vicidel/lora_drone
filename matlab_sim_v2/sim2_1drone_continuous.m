@@ -79,6 +79,15 @@ function output = sim2_1drone_continuous()
                 fprintf('Time passed: %.2f\n', time_move+0);
             end 
             
+            % store inter
+            if algo_loop == 1
+                output.inter_time_move = time_move;
+                output.inter_time_measure = time_measure;
+                output.inter_time = time_move + time_measure;
+                output.inter_precision = norm([abs(abs(pos_estimated(1) - pos_true_node(1))), abs(abs(pos_estimated(2) - pos_true_node(2)))]);
+                output.inter_pos_estimated = pos_estimated;
+            end
+            
             % create second circle around estimate
             pattern_center = pos_estimated;
             pattern_radius = pattern_radius_v2;
@@ -133,12 +142,12 @@ function output = sim2_1drone_continuous()
     end
     
     % create output
-    output.time_move_final = time_move;
-    output.time_measure_final = 0;
-    output.time_final = time_move + 0;
+    output.final_time_move = time_move;
+    output.final_time_measure = 0;
+    output.final_time= time_move + 0;
     output.final_precision = error_norm;
+    output.final_pos_estimated = pos_estimated;
     output.pos_real = pos_true_node;
-    output.pos_estimated = pos_estimated;
     
 end
 

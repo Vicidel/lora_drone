@@ -133,6 +133,15 @@ function output = sim2_1drone_trilateration()
                         fprintf('Time passed: %.2f\n', time_move+time_measure);
                     end 
                     
+                    % store inter
+                    if algo_loop == 1
+                        output.inter_time_move = time_move;
+                        output.inter_time_measure = time_measure;
+                        output.inter_time = time_move + time_measure;
+                        output.inter_precision = norm([abs(abs(pos_estimated(1) - pos_true_node(1))), abs(abs(pos_estimated(2) - pos_true_node(2)))]);
+                        output.inter_pos_estimated = pos_estimated;
+                    end
+                    
                     % end condition
                     if algo_loop == algo_loops_todo 
                         break; 

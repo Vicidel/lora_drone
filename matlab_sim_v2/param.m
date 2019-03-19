@@ -93,6 +93,9 @@ switch file_run_name
         pattern_anglerad_per_second = drone_speed / pattern_radius;
         pattern_anglerad_per_second_v2 = drone_speed / pattern_radius_v2;
         
+        % number of loops
+        algo_loops_todo = 2;
+        
     otherwise
         % drone starting position
         pos_drone = pos_network_estimate;

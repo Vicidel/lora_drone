@@ -109,9 +109,7 @@ function output = sim2_1drone_trilateration()
                     if plot_bool
                         figure();
                         plot_tri(pos_true_node, 'ko'); grid on; hold on;
-                        if algo_loop == 1
-                            plot_tri(pos_network_estimate, 'co'); 
-                        end
+                        plot_tri(pos_network_estimate, 'co'); 
                         plot_tri(measure_position1, 'ro');
                         plot_tri(measure_position2, 'go');
                         plot_tri(measure_position3, 'bo');
@@ -182,12 +180,12 @@ function output = sim2_1drone_trilateration()
     end
     
     % create output
-    output.time_move_final = time_move;
-    output.time_measure_final = time_measure;
-    output.time_final = time_move + time_measure;
+    output.final_time_move = time_move;
+    output.final_time_measure = time_measure;
+    output.final_time= time_move + time_measure;
     output.final_precision = error_norm;
+    output.final_pos_estimated = pos_estimated;
     output.pos_real = pos_true_node;
-    output.pos_estimated = pos_estimated;
     
 end
 

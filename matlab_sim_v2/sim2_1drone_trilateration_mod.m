@@ -109,9 +109,7 @@ function output = sim2_1drone_trilateration_mod()
                     if plot_bool
                         figure();
                         plot_tri(pos_true_node, 'ko'); grid on; hold on;
-                        if algo_loop == 1
-                            plot_tri(pos_network_estimate, 'co'); 
-                        end
+                        plot_tri(pos_network_estimate, 'co'); 
                         plot_tri(measure_position1, 'ro');
                         plot_tri(measure_position2, 'go');
                         plot_tri(measure_position3, 'bo');

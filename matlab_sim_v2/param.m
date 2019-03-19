@@ -53,7 +53,7 @@ switch file_run_name
         % measuring positions
         size_around_estimation_v1 = 100;
         size_around_estimation_v2 = 30;
-        angle_total = 90*pi/180;        % angle instead of 360deg
+        angle_total = 120*pi/180;        % angle instead of 360deg
         measure_position1 = pos_network_estimate + [size_around_estimation_v1, 0, 0];   
         measure_position2 = pos_network_estimate + [size_around_estimation_v1*cos(angle_total/2), size_around_estimation_v1*sin(angle_total/2), 0];   
         measure_position3 = pos_network_estimate + [size_around_estimation_v1*cos(angle_total), size_around_estimation_v1*sin(angle_total), 0];   
@@ -80,5 +80,21 @@ switch file_run_name
         % number of loops of trilateration
         algo_loops_todo = 2;
         
+    case 'sim2_1drone_continuous'
+        % drone starting position
+        pos_drone = pos_network_estimate;
+        
+        % pattern
+        pattern_shape = 'circle';
+        pattern_center = pos_network_estimate;
+        pattern_radius = 70;
+        pattern_radius_v2 = 30;
+        pattern_angle_start = 0;
+        pattern_anglerad_per_second = drone_speed / pattern_radius;
+        pattern_anglerad_per_second_v2 = drone_speed / pattern_radius_v2;
+        
+    otherwise
+        % drone starting position
+        pos_drone = pos_network_estimate;
         
 end

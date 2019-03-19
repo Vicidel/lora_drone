@@ -19,6 +19,7 @@ function output = sim2_1drone_continuous()
         figure();
         plot_tri(pos_true_node, 'ro'); grid on; hold on;
         plot_tri(pos_network_estimate, 'co');
+        view(0, 90); axis equal;
     end
 
     % drone takes off
@@ -29,7 +30,6 @@ function output = sim2_1drone_continuous()
     pos_drone = pos_drone + [pattern_radius, 0, 0];
     time_move = time_move + pattern_radius/drone_speed;
     
-
     
     % localization
     while time_move+0 < time_limit
@@ -50,6 +50,13 @@ function output = sim2_1drone_continuous()
             if plot_bool
                 plot_tri(pos_drone, 'bo');
             end
+        end
+        
+        % temporary estimate
+        if angle_count > 10
+            [x, y] = get_position_dataset(dataset, signal_type);
+            pos_estimated_temp = [x, y, 0];
+            plot_tri(pos_estimated_temp, 'mx');
         end
         
         % done on full circle
@@ -112,14 +119,15 @@ function output = sim2_1drone_continuous()
                 figure(); 
                 plot_tri(pos_true_node, 'ro'); grid on; hold on;
                 plot_tri(pos_estimated, 'co');
+                view(0, 90); axis equal;
             end
             angle_count = 0;
             dataset = [];
             algo_loop = algo_loop + 1;
         end
         
-%         % slows down
-%         pause(0.01);
+        % slows down
+        pause(0.01);
     end
     
     % time limit reached

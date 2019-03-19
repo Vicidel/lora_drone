@@ -2,35 +2,44 @@
 clear all; close all;
 
 % define size
-number_runs = 20;
+number_experiments = 1000;
 
 % launch profiler
 profile on;
 
 % run the simulations
-for k=1: number_runs
+for experiment_counter=1: number_experiments
+    
+    % save in workspace (not good code OK, but best option...)
+    save('matlab_sim_v2/temp.mat', 'experiment_counter', 'number_experiments');
+    
     %check progress
-    fprintf('%d... ', k);
+    fprintf('%d... ', experiment_counter);
     
 %     % for 1 drone and gradient
-%     results_1drone_gradient{k} = sim2_1drone_gradient();
-%     final_precision_1drone_gradient(k) = results_1drone_gradient{k}.final_precision;
-%     final_time_1drone_gradient(k) = results_1drone_gradient{k}.final_time;
+%     results_1drone_gradient{experiment_counter} = sim2_1drone_gradient();
+%     final_precision_1drone_gradient(experiment_counter) = results_1drone_gradient{experiment_counter}.final_precision;
+%     final_time_1drone_gradient(experiment_counter) = results_1drone_gradient{experiment_counter}.final_time;
+    
+    % for 1 drone and continuous
+    results_1drone_continuous{experiment_counter} = sim2_1drone_continuous();
+    final_precision_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.final_precision;
+    final_time_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.final_time;
     
 %     % for 1 drone and trilateration
-%     results_1drone_trilateration{k} = sim2_1drone_trilateration();
-%     final_precision_1drone_trilateration(k) = results_1drone_trilateration{k}.final_precision;
-%     final_time_1drone_trilateration(k) = results_1drone_trilateration{k}.final_time;
+%     results_1drone_trilateration{experiment_counter} = sim2_1drone_trilateration();
+%     final_precision_1drone_trilateration(experiment_counter) = results_1drone_trilateration{experiment_counter}.final_precision;
+%     final_time_1drone_trilateration(experiment_counter) = results_1drone_trilateration{experiment_counter}.final_time;
     
 %     % for 1 drone and trilateration (mod)
-%     results_1drone_trilateration_mod{k} = sim2_1drone_trilateration_mod();
-%     final_precision_1drone_trilateration_mod(k) = results_1drone_trilateration_mod{k}.final_precision;
-%     final_time_1drone_trilateration_mod(k) = results_1drone_trilateration_mod{k}.final_time;
+%     results_1drone_trilateration_mod{experiment_counter} = sim2_1drone_trilateration_mod();
+%     final_precision_1drone_trilateration_mod(experiment_counter) = results_1drone_trilateration_mod{experiment_counter}.final_precision;
+%     final_time_1drone_trilateration_mod(experiment_counter) = results_1drone_trilateration_mod{experiment_counter}.final_time;
     
 %     % for three drones and trilateration
-%     results_3drone_trilateration{k} = sim2_3drone_trilateration();
-%     final_precision_3drone_trilateration(k) = results_3drone_trilateration{k}.final_precision;
-%     final_time_3drone_trilateration(k) = results_3drone_trilateration{k}.final_time;
+%     results_3drone_trilateration{experiment_counter} = sim2_3drone_trilateration();
+%     final_precision_3drone_trilateration(experiment_counter) = results_3drone_trilateration{experiment_counter}.final_precision;
+%     final_time_3drone_trilateration(experiment_counter) = results_3drone_trilateration{experiment_counter}.final_time;
 end
 fprintf('\n');
 
@@ -38,14 +47,15 @@ fprintf('\n');
 profile off;
 profile viewer;
 
-% % plot precisions and time
-% figure();
-% plot(final_precision_1drone_trilateration, 'bo-'); grid on; hold on;
-% plot(final_precision_1drone_trilateration_mod, 'ro-');
-% figure();
-% plot(final_time_1drone_trilateration, 'bo-'); grid on; hold on;
-% plot(final_time_1drone_trilateration_mod, 'ro-');
-% 
+mean_precision = mean(final_precision_1drone_continuous);
+mean_time = mean(final_time_1drone_continuous);
+
+% plot precisions and time
+figure();
+plot(final_precision_1drone_continuous, 'bo-'); grid on; hold on;
+figure();
+plot(final_time_1drone_continuous, 'bo-'); grid on; hold on;
+
 % % plot precisions
 % figure();
 % plot(final_precision_1drone_gradient, 'bo-'); grid on; hold on;
@@ -66,4 +76,4 @@ profile viewer;
 % ylabel('Time [s]');
 % legend('Gradient', 'Trilateration1', 'Trilateration3');
 
-
+delete('matlab_sim_v2\temp.mat');

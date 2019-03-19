@@ -82,8 +82,8 @@ function output = sim2_1drone_continuous()
             % store inter
             if algo_loop == 1
                 output.inter_time_move = time_move;
-                output.inter_time_measure = time_measure;
-                output.inter_time = time_move + time_measure;
+                output.inter_time_measure = 0;
+                output.inter_time = time_move + 0;
                 output.inter_precision = norm([abs(abs(pos_estimated(1) - pos_true_node(1))), abs(abs(pos_estimated(2) - pos_true_node(2)))]);
                 output.inter_pos_estimated = pos_estimated;
             end
@@ -94,7 +94,7 @@ function output = sim2_1drone_continuous()
             pattern_anglerad_per_second = pattern_anglerad_per_second_v2;  
             
             % find closest starting point
-            pattern_angle_start = pi;    % !!!!! to change !!!!!
+            pattern_angle_start = find_closest_angle(pos_drone, pattern_center, pattern_radius);
             
             % break condition
             if algo_loop == algo_loops_todo
@@ -118,8 +118,8 @@ function output = sim2_1drone_continuous()
             algo_loop = algo_loop + 1;
         end
         
-        % slows down
-        pause(0.01);
+%         % slows down
+%         pause(0.01);
     end
     
     % time limit reached
@@ -164,6 +164,26 @@ function plot_circle(x, y, r)
     xunit = r * cos(th) + x;
     yunit = r * sin(th) + y;
     plot(xunit, yunit);
+end
+
+% finds the point of a circle closest to current position
+function pattern_angle_start = find_closest_angle(current_position, circle_center, circle_radius)
+    
+    % remove z coordinate
+    current_position = current_position(1:2);
+    circle_center = circle_center(1:2);
+
+    % find best point
+    theta = 0:0.1:2*pi;
+    min_dist = 1000;
+    for i=1:length(theta)
+        point = circle_center + [circle_radius*cos(theta(i)), circle_radius*sin(theta(i))];
+        dist = norm(current_position - point);
+        if dist < min_dist
+            min_dist = dist;
+            pattern_angle_start = theta(i);
+        end
+    end
 end
 
 % make estimation base on dataset samples

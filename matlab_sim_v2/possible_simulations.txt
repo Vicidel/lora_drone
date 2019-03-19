@@ -7,6 +7,9 @@ One drone:
 	Moves in three positions and do trilateration measures
 		+: precise
 		-: moving takes time
+    Continuously moves and make measures
+        +: no time loss due to measures
+        -: can only do one measure so noisy
 
 Three drones:
 	Trilateration from three positions around network estimate

@@ -2,7 +2,7 @@
 clear all; close all;
 
 % define size
-number_experiments = 1000;
+number_experiments = 20;
 
 % launch profiler
 profile on;
@@ -47,14 +47,30 @@ fprintf('\n');
 profile off;
 profile viewer;
 
-mean_precision = mean(final_precision_1drone_continuous);
-mean_time = mean(final_time_1drone_continuous);
+% for easier use
+precision = final_precision_1drone_continuous;
+time = final_time_1drone_continuous;
 
 % plot precisions and time
 figure();
-plot(final_precision_1drone_continuous, 'bo-'); grid on; hold on;
+plot(precision, 'bo-'); grid on; hold on;
+str = sprintf('Reached precision, mean=%.1f', mean(precision));
+title(str);
+xlabel('Experiment');
+ylabel('Precision [m]');
 figure();
-plot(final_time_1drone_continuous, 'bo-'); grid on; hold on;
+plot(time, 'bo-'); grid on; hold on;
+str = sprintf('Final time, mean=%.1f', mean(time));
+title(str);
+xlabel('Experiment');
+ylabel('Time [s]');
+
+
+% mean_pre1 = mean(precision(1:end/2));
+% mean_pre2 = mean(precision(end/2:end));
+% mean_time1 = mean(time(1:end/2));
+% mean_time2 = mean(time(end/2:end));
+
 
 % % plot precisions
 % figure();

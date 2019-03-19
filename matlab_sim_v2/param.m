@@ -8,9 +8,9 @@ altitude = 10;          % flies at 10m
 number_measures = 2;    % makes 2 measures at each point
 
 % boolean for plotting and printing
-plot_bool = false;       
+plot_bool = true;       
 plot_movement_bool = false;
-print_bool = false;
+print_bool = true;
 
 % node position and estimate from network
 pos_true_node = [0, 0, 0];
@@ -104,9 +104,14 @@ end
 
 
 %% change based on experiment counter
-load('matlab_sim_v2/temp.mat', 'experiment_counter', 'number_experiments');
-if experiment_counter < number_experiments/2
-    signal_type = 'esp';
-else
-    signal_type = 'rssi';
+if isfile('matlab_sim_v2/temp.mat')     % simulation run from 'multiple_run.m'
+    plot_bool = false;
+    print_bool = false;
+    plot_movement_bool = false;
+    load('matlab_sim_v2/temp.mat', 'experiment_counter', 'number_experiments');
+    if experiment_counter < number_experiments/2
+
+    else
+
+    end
 end

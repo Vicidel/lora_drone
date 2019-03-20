@@ -24,7 +24,7 @@ function output = sim2_1drone_continuous()
 
     % drone takes off
     pos_drone = pos_drone + [0, 0, altitude];
-    time_move = time_move + 10;
+    time_move = time_move + 20;
     
     % drones goes into start position
     pos_drone = pos_drone + [pattern_radius, 0, 0];

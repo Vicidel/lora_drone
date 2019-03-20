@@ -98,8 +98,8 @@ function output = sim2_3drone_continuous()
             break;
         end
         
-        % slows down
-        pause(0.01);
+        % slows down if launched from file
+        if ~isfile('matlab_sim_v2/temp.mat') pause(0.01); end
     end
     
     % time limit reached

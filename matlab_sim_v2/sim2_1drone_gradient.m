@@ -146,8 +146,8 @@ function output = sim2_1drone_gradient()
                 state = 1;
         end
         
-%         % slows simulation
-%         pause(0.05);
+        % slows down if launched from file
+        if ~isfile('matlab_sim_v2/temp.mat') pause(0.05); end
     end
 
     % time limit reached

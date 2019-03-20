@@ -114,6 +114,26 @@ switch file_run_name
         pattern_angle_start3 = -pi/3;
         pattern_anglerad_per_second = drone_speed / pattern_radius;
         
+    case 'sim2_3drone_swarm'
+        
+        % swarm parameters
+        swarm_spacing = 15;
+        
+        % drone starting position
+        pos_start = pos_network_estimate;
+        pos_swarm_center = pos_start;
+        pos_drone1 = pos_swarm_center + swarm_spacing*[0, -1, 0];
+        pos_drone2 = pos_swarm_center + swarm_spacing*[-sqrt(3)/2, 1/2, 0];
+        pos_drone3 = pos_swarm_center + swarm_spacing*[sqrt(3)/2, 1/2, 0];
+        
+        % state 0, make circle
+        pattern_radius = 20;
+        pattern_center = pos_network_estimate - [pattern_radius, 0, 0];
+        pattern_anglerad_per_second = drone_speed / pattern_radius;
+        
+        % state 1, make circle around estimate
+        pattern_radius_v2 = 50;
+                
     otherwise
         % drone starting position
         pos_drone = pos_network_estimate;

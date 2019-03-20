@@ -2,7 +2,7 @@
 clear all; close all;
 
 % define size
-number_experiments = 20;
+number_experiments = 10;
 
 % launch profiler
 profile on;

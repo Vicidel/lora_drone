@@ -126,8 +126,8 @@ function output = sim2_1drone_continuous()
             algo_loop = algo_loop + 1;
         end
         
-        % slows down
-        pause(0.01);
+        % slows down if launched from file
+        if ~isfile('matlab_sim_v2/temp.mat') pause(0.01); end
     end
     
     % time limit reached

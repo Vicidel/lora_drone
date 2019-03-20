@@ -24,7 +24,7 @@ function output = sim2_3drone_swarm()
     end
 
     % drone takes off (and moves from each other)
-    time_move = time_move + 20;
+    time_move = time_move + 20 + swarm_spacing;
     pos_drone1 = pos_swarm_center + [0, 0, altitude];
     pos_drone2 = pos_swarm_center + [0, 0, altitude];
     pos_drone3 = pos_swarm_center + [0, 0, altitude];
@@ -62,7 +62,7 @@ function output = sim2_3drone_swarm()
         end
         
         % temporary estimate
-        if angle_count > 10 && floor(angle_count/5)==angle_count/5
+        if angle_count > 10 && floor(angle_count/10)==angle_count/10
             [x, y] = get_position_dataset(dataset, signal_type);
             pos_estimated = [x, y, 0];
             if plot_bool plot_tri(pos_estimated, 'mx'); end
@@ -80,14 +80,16 @@ function output = sim2_3drone_swarm()
                 angle_count = angle_count + 1;  % go to next position
                 time_move = time_move + 1;      % angle_count is angle done in one second
                 
-                % one circle done, next state with estimate
+                % one circle done
                 if angle_count*pattern_anglerad_per_second>2*pi
+                    
+                    % get final estimation
                     [x, y] = get_position_dataset(dataset, signal_type);
                     pos_estimated = [x, y, 0];
 
                     % plot
                     if plot_bool
-                        for i=2:7:size(dataset)
+                        for i=4:floor(size(dataset)/10):size(dataset)
                             plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
                         end
                         plot_tri(pos_estimated, 'kx');
@@ -143,14 +145,16 @@ function output = sim2_3drone_swarm()
                 angle_count = angle_count + 1;  % go to next position
                 time_move = time_move + 1;      % angle_count is angle done in one second
                 
-                % one circle done, use estimate
+                % one circle done
                 if angle_count*pattern_anglerad_per_second>2*pi
+                    
+                    % get final estimation
                     [x, y] = get_position_dataset(dataset, signal_type);
                     pos_estimated = [x, y, 0];
                     
                     % plot
                     if plot_bool
-                        for i=2:7:size(dataset)
+                        for i=4:floor(size(dataset)/10):size(dataset)
                             plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
                         end
                         plot_tri(pos_estimated, 'kx');
@@ -168,13 +172,13 @@ function output = sim2_3drone_swarm()
                         fprintf('Time passed: %.2f\n', time_move+0);
                     end 
                     
-                    % stop loops
+                    % stop loop
                     break;
                 end                
         end
         
-%         % slows down 
-%         pause(0.01);
+        % slows down if launched from file
+        if ~isfile('matlab_sim_v2/temp.mat') pause(0.01); end
     end
     
     % time limit reached

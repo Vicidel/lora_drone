@@ -230,10 +230,10 @@ end
 function [xout, yout] = get_position_dataset(dataset, signal_type)
     
     [nb_points,~] = size(dataset);
-    sol_x = zeros(nb_points,1);
-    sol_y = zeros(nb_points,1);
+    sol_x = nan(nb_points,1);
+    sol_y = nan(nb_points,1);
     
-    for i=1:nb_points
+    for i=1:1:nb_points
         % get index of three random points
         index1 = 1+floor(rand()*nb_points);
         index2 = 1+floor(rand()*nb_points);

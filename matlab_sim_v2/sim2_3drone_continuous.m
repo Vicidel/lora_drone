@@ -65,7 +65,7 @@ function output = sim2_3drone_continuous()
         if angle_count > 10 && floor(angle_count/5)==angle_count/5
             [x, y] = get_position_dataset(dataset, signal_type);
             pos_estimated_temp = [x, y, 0];
-            plot_tri(pos_estimated_temp, 'mx');
+            if plot_bool plot_tri(pos_estimated_temp, 'mx'); end
         end
         
         % done on full circle
@@ -77,7 +77,7 @@ function output = sim2_3drone_continuous()
             
             % plot
             if plot_bool
-                for i=2:5:size(dataset)
+                for i=2:10:size(dataset)
                     plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
                 end
                 plot_tri(pos_estimated, 'kx');

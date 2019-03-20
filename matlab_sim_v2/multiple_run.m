@@ -29,6 +29,11 @@ for experiment_counter=1: number_experiments
 %     inter_precision_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.inter_precision;
 %     final_time_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.final_time;
 %     inter_time_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.inter_time;
+     
+    % for 3 drone and continuous
+    results_3drone_continuous{experiment_counter} = sim2_3drone_continuous();
+    final_precision_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.final_precision;
+    final_time_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.final_time;
     
 %     % for 1 drone and trilateration
 %     results_1drone_trilateration{experiment_counter} = sim2_1drone_trilateration();
@@ -51,12 +56,12 @@ for experiment_counter=1: number_experiments
 %     final_time_3drone_trilateration(experiment_counter) = results_3drone_trilateration{experiment_counter}.final_time;
 %     inter_time_3drone_trilateration(experiment_counter) = results_3drone_trilateration{experiment_counter}.inter_time;
     
-    % for three drones and trilateration
-    results_3drone_swarm{experiment_counter} = sim2_3drone_swarm();
-    final_precision_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.final_precision;
-    inter_precision_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.inter_precision;
-    final_time_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.final_time;
-    inter_time_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.inter_time;
+%     % for three drones and trilateration
+%     results_3drone_swarm{experiment_counter} = sim2_3drone_swarm();
+%     final_precision_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.final_precision;
+%     inter_precision_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.inter_precision;
+%     final_time_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.final_time;
+%     inter_time_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.inter_time;
 end
 fprintf('\n');
 
@@ -65,8 +70,8 @@ profile off;
 profile viewer;
 
 % for easier use
-precision = final_precision_3drone_swarm;
-time = final_time_3drone_swarm;
+precision = final_precision_3drone_continuous;
+time = final_time_3drone_continuous;
 
 % plot precisions and time
 figure();

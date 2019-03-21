@@ -40,7 +40,7 @@ function output = sim2_1drone_continuous()
         time_move = time_move + 1;      % angle_count is angle done in one second
         
         % five seconds since last measure
-        if time_move - time_last_measure > 5
+        if time_move - time_last_measure >= 5
             
             % make measure
             time_last_measure = time_move;
@@ -62,13 +62,28 @@ function output = sim2_1drone_continuous()
         % done on full circle
         if angle_count*pattern_anglerad_per_second > 2*pi
             
-            % make estimation
+            % make one estimation
             [x, y] = get_position_dataset(dataset, signal_type);
             pos_estimated = [x, y, 0];
             
+            % at the end of first loop, store intermediary output
+            if algo_loop == 1
+                
+                % make better estimation based on ten measures
+                for i=1:10 [x(i), y(i)] = get_position_dataset(dataset, signal_type); end
+                pos_estimated = [median([x;y],2)', 0];
+                
+                % create output
+                output.inter_time_move = time_move;
+                output.inter_time_measure = 0;
+                output.inter_time = time_move + 0;
+                output.inter_precision = norm([abs(abs(pos_estimated(1) - pos_true_node(1))), abs(abs(pos_estimated(2) - pos_true_node(2)))]);
+                output.inter_pos_estimated = pos_estimated;
+            end
+            
             % plot
             if plot_bool
-                for i=2:5:size(dataset)
+                for i=2:1:size(dataset)
                     plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
                 end
                 plot_tri(pos_estimated, 'kx');
@@ -85,15 +100,6 @@ function output = sim2_1drone_continuous()
                 fprintf('Error after %d loop(s): dx=%.2f, dy=%.2f, norm=%.2f\n', algo_loop, abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2)), norm([abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2))])); 
                 fprintf('Time passed: %.2f\n', time_move+0);
             end 
-            
-            % store inter
-            if algo_loop == 1
-                output.inter_time_move = time_move;
-                output.inter_time_measure = 0;
-                output.inter_time = time_move + 0;
-                output.inter_precision = norm([abs(abs(pos_estimated(1) - pos_true_node(1))), abs(abs(pos_estimated(2) - pos_true_node(2)))]);
-                output.inter_pos_estimated = pos_estimated;
-            end
             
             % create second circle around estimate
             pattern_center = pos_estimated;
@@ -136,6 +142,10 @@ function output = sim2_1drone_continuous()
     end
 
     % final estimated position
+    for i=1:10 [x(i), y(i)] = get_position_dataset(dataset, signal_type); end
+    pos_estimated = [median([x;y],2)', 0];
+    
+    % error
     error_x = abs(pos_estimated(1) - pos_true_node(1));
     error_y = abs(pos_estimated(2) - pos_true_node(2));
     error_norm = norm([abs(error_x), abs(error_y)]);

@@ -77,7 +77,7 @@ function output = sim2_3drone_continuous()
             
             % plot
             if plot_bool
-                for i=2:10:size(dataset)
+                for i=2:1:size(dataset)
                     plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
                 end
                 plot_tri(pos_estimated, 'kx');

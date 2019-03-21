@@ -14,11 +14,6 @@ function output = sim2_3drone_trilateration()
     distances = zeros(3,1);
     algo_loop = 1;
 
-    % create first figure
-    if plot_movement_bool  && plot_bool
-        figure(1);
-    end
-
     % drone takes off
     time_move = time_move + 20;
     pos_drone1 = pos_drone1 + [0, 0, altitude];
@@ -106,7 +101,6 @@ function output = sim2_3drone_trilateration()
 
                     % return to beginning
                     if print_bool fprintf('Restarting algorithm around found position\n\n'); end
-                    if plot_movement_bool && plot_bool figure(); end
                     state = 0;
                     algo_loop = algo_loop + 1;
                     pos_estimated_old = pos_estimated;

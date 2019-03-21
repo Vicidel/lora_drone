@@ -87,7 +87,7 @@ function output = sim2_1drone_trilateration()
                 [x, y] = get_position_tri(measure_position1(1), measure_position1(2), func_signal_to_distance(signal(1), signal_type), ...
                                       measure_position2(1), measure_position2(2), func_signal_to_distance(signal(2), signal_type), ...
                                       measure_position3(1), measure_position3(2), func_signal_to_distance(signal(3), signal_type));
-                pos_estimated = [x, y, 10];
+                pos_estimated = [x, y, 0];
 
                 % check intersection
                 if isnan(pos_estimated(1)) || isnan(pos_estimated(2))
@@ -158,6 +158,9 @@ function output = sim2_1drone_trilateration()
                     pos_estimated_old = pos_estimated;
                 end
         end
+        
+        % slows down if launched from file
+        if ~isfile('matlab_sim_v2/temp.mat') pause(0.005); end
     end
     
     % time limit reached

@@ -1,8 +1,9 @@
 %% sets the parameters used in the simulations
 
 % general parameters
-time_limit = 30*60;     % 15 minutes
-drone_speed = 1;        % 1 m/s
+time_limit = 15*60;     % 15 minutes
+drone_speed = 5;        % m/s
+drone_speed_v2 = 2;     % m/s
 signal_type = 'esp';    % can be 'esp' or 'rssi'
 altitude = 10;          % flies at 10m
 number_measures = 2;    % makes 2 measures at each point
@@ -14,7 +15,7 @@ print_bool = true;
 
 % node position and estimate from network
 pos_true_node = [0, 0, 0];
-pos_network_error = 250; 
+pos_network_error = 400; 
 pos_network_estimate = pos_true_node + [rand()*pos_network_error*cos(rand()*2*pi), rand()*pos_network_error*sin(rand()*2*pi), 0];
 
 % name of the running script
@@ -66,8 +67,8 @@ switch file_run_name
         
     case 'sim2_3drone_trilateration'
         % measureing positions
-        size_around_estimation_v1 = 100;
-        size_around_estimation_v2 = 30;
+        size_around_estimation_v1 = 120;
+        size_around_estimation_v2 = 50;
         measure_position1 = pos_network_estimate + [0, -size_around_estimation_v1, 0];   % south
         measure_position2 = pos_network_estimate + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
         measure_position3 = pos_network_estimate + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
@@ -87,11 +88,11 @@ switch file_run_name
         % pattern
         pattern_shape = 'circle';
         pattern_center = pos_network_estimate;
-        pattern_radius = 70;
-        pattern_radius_v2 = 30;
+        pattern_radius = 120;
+        pattern_radius_v2 = 70;
         pattern_angle_start = 0;
         pattern_anglerad_per_second = drone_speed / pattern_radius;
-        pattern_anglerad_per_second_v2 = drone_speed / pattern_radius_v2;
+        pattern_anglerad_per_second_v2 = drone_speed_v2 / pattern_radius_v2;
         
         % number of loops
         algo_loops_todo = 2;
@@ -104,7 +105,7 @@ switch file_run_name
         
         % pattern
         pattern_shape = 'circle';
-        pattern_dist_from_estimate = 100;
+        pattern_dist_from_estimate = 120;
         pattern_center1 = pos_network_estimate + [0, -pattern_dist_from_estimate, 0];   % south
         pattern_center2 = pos_network_estimate + [pattern_dist_from_estimate*cos(pi/6), pattern_dist_from_estimate*sin(pi/6), 0];   % north east	
         pattern_center3 = pos_network_estimate + [-pattern_dist_from_estimate*cos(pi/6), pattern_dist_from_estimate*sin(pi/6), 0];   % north west	
@@ -138,9 +139,6 @@ switch file_run_name
         
         % swarm parameters
         swarm_spacing = 5;
-        
-        % change drone speed
-        drone_speed = 6;
         
         % drone starting position
         phi = rand()*2*pi; pos_start = (rand()*700+300)*[cos(phi), sin(phi), 0];

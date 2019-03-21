@@ -49,9 +49,9 @@ function output = sim2_3drone_swarm()
             
             % make measure for the three drones and add them to the dataset
             time_last_measure = time_move;
-            dataset = [dataset; pos_drone1, get_noisy_signal(pos_true_node, pos_drone1, signal_type, 10)];
-            dataset = [dataset; pos_drone2, get_noisy_signal(pos_true_node, pos_drone2, signal_type, 10)];
-            dataset = [dataset; pos_drone3, get_noisy_signal(pos_true_node, pos_drone3, signal_type, 10)];
+            dataset = [dataset; pos_drone1, get_noisy_signal(pos_true_node, pos_drone1, signal_type, 1)];
+            dataset = [dataset; pos_drone2, get_noisy_signal(pos_true_node, pos_drone2, signal_type, 1)];
+            dataset = [dataset; pos_drone3, get_noisy_signal(pos_true_node, pos_drone3, signal_type, 1)];
             
             % plot
             if plot_bool

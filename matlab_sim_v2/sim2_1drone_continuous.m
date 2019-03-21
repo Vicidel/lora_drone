@@ -44,7 +44,7 @@ function output = sim2_1drone_continuous()
             
             % make measure
             time_last_measure = time_move;
-            dataset = [dataset; pos_drone, get_noisy_signal(pos_true_node, pos_drone, signal_type, 10)];
+            dataset = [dataset; pos_drone, get_noisy_signal(pos_true_node, pos_drone, signal_type, 1)];
             
             % plot
             if plot_bool

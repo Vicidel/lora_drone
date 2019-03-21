@@ -14,7 +14,7 @@ print_bool = true;
 
 % node position and estimate from network
 pos_true_node = [0, 0, 0];
-pos_network_error = 150; 
+pos_network_error = 250; 
 pos_network_estimate = pos_true_node + [rand()*pos_network_error*cos(rand()*2*pi), rand()*pos_network_error*sin(rand()*2*pi), 0];
 
 % name of the running script
@@ -133,7 +133,22 @@ switch file_run_name
         
         % state 1, make circle around estimate
         pattern_radius_v2 = 50;
-                
+               
+    case 'sim2_3drone_swarm_v2'
+        
+        % swarm parameters
+        swarm_spacing = 5;
+        
+        % change drone speed
+        drone_speed = 6;
+        
+        % drone starting position
+        phi = rand()*2*pi; pos_start = (rand()*700+300)*[cos(phi), sin(phi), 0];
+        pos_swarm_center = pos_start;
+        pos_drone1 = pos_swarm_center + swarm_spacing*[0, -1, 0];
+        pos_drone2 = pos_swarm_center + swarm_spacing*[-sqrt(3)/2, 1/2, 0];
+        pos_drone3 = pos_swarm_center + swarm_spacing*[sqrt(3)/2, 1/2, 0];
+        
     otherwise
         % drone starting position
         pos_drone = pos_network_estimate;

@@ -1,6 +1,6 @@
 #include "tcp_client.h"
 
-// thread to exchange with the cloud server
+
 void* send_tcp(void* arg)
 {
     mav &data = *(static_cast<mav *>(arg));
@@ -12,6 +12,8 @@ void* send_tcp(void* arg)
     static unsigned char msg_count[1];
 
     while(1){
+
+        sleep(1);
 
         Dt t;
          
@@ -34,7 +36,6 @@ void* send_tcp(void* arg)
             close(sock);
         }
         else{
-            sleep(2);
             connected = true;
             printf("Connected.\nReady for cloud control.\n\n");
         }
@@ -45,6 +46,21 @@ void* send_tcp(void* arg)
             my_sprintf(data.hex_attitude, MESSAGE_LEN, &mavlink_messages[0]);
             my_sprintf(data.hex_local_position_ned, MESSAGE_LEN, &mavlink_messages[MESSAGE_LEN]);
             my_sprintf(msg_count, 1, &mavlink_messages[2*MESSAGE_LEN]);
+
+
+            //for(unsigned int i=0;i<sizeof(mavlink_messages);i++){
+            //    printf("%02X", mavlink_messages[i]);
+            //}
+            //printf("\n");
+
+            //for(int i=0; i<MESSAGE_LEN; i++){
+            //    printf("%02X", data.hex_attitude[i]);
+            //}
+            //for(int i=0; i<MESSAGE_LEN; i++){
+            //    printf("%02X", data.hex_local_position_ned[i]);
+            //}
+            //printf("%02X", msg_count[0]);
+            //printf("\n");
 
             //Send some data
             if( send(sock , mavlink_messages, sizeof(mavlink_messages) , 0) < 0) {
@@ -67,11 +83,21 @@ void* send_tcp(void* arg)
                 break;
             }
 
-            // file mixer struct and prepare for sending
-            hex_to_mixer(server_reply, data.mixer);
+            //for(int i=0;i<len;i++){
+            //    printf("%02X", server_reply[i]);
+            //}
+            //printf("\n");
+            // get differentiel time
+            //dt_(t);
+            //printf("\ndt: %d\n\n", t.dt);
+            //sleep(1);
 
-            // write data to UART
-            write_mixer(data.fd);
+            // file mixer struct and send to uart
+            hex_to_waypoint(server_reply, data.way_point);
+
+            /*for(int j=0;j<3;j++){
+                printf("%f", data.way_point[j]);
+            }*/
 
             // for the server to keep track of dataloss
             msg_count[0]++;

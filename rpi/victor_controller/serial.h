@@ -31,6 +31,7 @@
 struct mav{
 	mavlink_local_position_ned_t local_position_ned;
 	mavlink_local_position_ned_t initial_pos;
+	float way_point[3];
 	mavlink_attitude_t attitude;
 	mavlink_set_actuator_control_target_t mixer;
 	unsigned char hex_local_position_ned[MESSAGE_LEN];
@@ -38,8 +39,8 @@ struct mav{
 	int sysid;
 	int autopilot_id;
 	int compid;
-	int newdata;
-	int fd;
+	int offboard;
+	int gps_lock;
 };
 
 void enable_offboard_control(const int fd );

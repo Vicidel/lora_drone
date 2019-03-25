@@ -109,7 +109,7 @@ function output = sim2_3drone_swarm_v2()
                 
                 % change spacing based on measures done
                 if size(dataset, 1)>15
-                    swarm_spacing = 100 - 3*(size(dataset, 1)-15);
+                    swarm_spacing = 100 - 2*(size(dataset, 1)-15);
                 end
                 
                 % change state
@@ -120,6 +120,14 @@ function output = sim2_3drone_swarm_v2()
             case 2
                 % drone hover
                 swarm_migration_direction = zeros(3,1);
+                
+                % make more measures
+                if print_bool fprintf('Hovering and making more final measures\n'); end
+                nb_measures_final = 3;
+                dataset = [dataset; pos_drone1, get_noisy_signal(pos_true_node, pos_drone1, signal_type, nb_measures_final)];
+                dataset = [dataset; pos_drone2, get_noisy_signal(pos_true_node, pos_drone2, signal_type, nb_measures_final)];
+                dataset = [dataset; pos_drone3, get_noisy_signal(pos_true_node, pos_drone3, signal_type, nb_measures_final)];
+                time_move = time_move + 5*3*nb_measures_final;
                 
                 % make multiple estimates
                 for i=1:10

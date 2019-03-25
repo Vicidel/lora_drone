@@ -2,7 +2,7 @@
 clear all; close all;
 
 % define size
-number_experiments = 10;
+number_experiments = 40;
 
 % launch profiler
 profile on;
@@ -11,10 +11,10 @@ profile on;
 test_1drone_gradient          = 1;
 test_1drone_continuous        = 1;
 test_1drone_trilateration     = 1;
-test_1drone_trilateration_mod = 1;
-test_3drone_continuous        = 1;
-test_3drone_trilateration     = 1;
-test_3drone_swarm             = 1;
+test_1drone_trilateration_mod = 0;
+test_3drone_continuous        = 0;
+test_3drone_trilateration     = 0;
+test_3drone_swarm             = 0;
 
 % run the simulations
 for experiment_counter=1: number_experiments
@@ -33,6 +33,11 @@ for experiment_counter=1: number_experiments
         inter_precision_1drone_gradient(experiment_counter) = results_1drone_gradient{experiment_counter}.inter_precision;
         final_time_1drone_gradient(experiment_counter) = results_1drone_gradient{experiment_counter}.final_time;
         inter_time_1drone_gradient(experiment_counter) = results_1drone_gradient{experiment_counter}.inter_time;
+    else
+        final_precision_1drone_gradient(experiment_counter) = 0;
+        inter_precision_1drone_gradient(experiment_counter) = 0;
+        final_time_1drone_gradient(experiment_counter) = 0;
+        inter_time_1drone_gradient(experiment_counter) = 0;
     end
     
     if test_1drone_continuous
@@ -42,6 +47,11 @@ for experiment_counter=1: number_experiments
         inter_precision_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.inter_precision;
         final_time_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.final_time;
         inter_time_1drone_continuous(experiment_counter) = results_1drone_continuous{experiment_counter}.inter_time;
+    else
+        final_precision_1drone_continuous(experiment_counter) = 0;
+        inter_precision_1drone_continuous(experiment_counter) = 0;
+        final_time_1drone_continuous(experiment_counter) = 0;
+        inter_time_1drone_continuous(experiment_counter) = 0;
     end
     
     if test_1drone_trilateration
@@ -51,6 +61,11 @@ for experiment_counter=1: number_experiments
         inter_precision_1drone_trilateration(experiment_counter) = results_1drone_trilateration{experiment_counter}.inter_precision;
         final_time_1drone_trilateration(experiment_counter) = results_1drone_trilateration{experiment_counter}.final_time;
         inter_time_1drone_trilateration(experiment_counter) = results_1drone_trilateration{experiment_counter}.inter_time;
+    else
+        final_precision_1drone_trilateration(experiment_counter) = 0;
+        inter_precision_1drone_trilateration(experiment_counter) = 0;
+        final_time_1drone_trilateration(experiment_counter) = 0;
+        inter_time_1drone_trilateration(experiment_counter) = 0;
     end
     
     if test_1drone_trilateration_mod
@@ -60,7 +75,12 @@ for experiment_counter=1: number_experiments
         inter_precision_1drone_trilateration_mod(experiment_counter) = results_1drone_trilateration_mod{experiment_counter}.inter_precision;
         final_time_1drone_trilateration_mod(experiment_counter) = results_1drone_trilateration_mod{experiment_counter}.final_time;
         inter_time_1drone_trilateration_mod(experiment_counter) = results_1drone_trilateration_mod{experiment_counter}.inter_time;
-    end
+    else
+        final_precision_1drone_trilateration_mod(experiment_counter) = 0;
+        inter_precision_1drone_trilateration_mod(experiment_counter) = 0;
+        final_time_1drone_trilateration_mod(experiment_counter) = 0;
+        inter_time_1drone_trilateration_mod(experiment_counter) = 0;
+    end    
     
     if test_3drone_continuous
         %for 3 drone and continuous
@@ -68,6 +88,11 @@ for experiment_counter=1: number_experiments
         final_precision_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.final_precision;
         inter_precision_3drone_continuous(experiment_counter) = 0;
         final_time_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.final_time;
+        inter_time_3drone_continuous(experiment_counter) = 0;
+    else
+        final_precision_3drone_continuous(experiment_counter) = 0;
+        inter_precision_3drone_continuous(experiment_counter) = 0;
+        final_time_3drone_continuous(experiment_counter) = 0;
         inter_time_3drone_continuous(experiment_counter) = 0;
     end
     
@@ -78,6 +103,11 @@ for experiment_counter=1: number_experiments
         inter_precision_3drone_trilateration(experiment_counter) = results_3drone_trilateration{experiment_counter}.inter_precision;
         final_time_3drone_trilateration(experiment_counter) = results_3drone_trilateration{experiment_counter}.final_time;
         inter_time_3drone_trilateration(experiment_counter) = results_3drone_trilateration{experiment_counter}.inter_time;
+    else
+        final_precision_3drone_trilateration(experiment_counter) = 0;
+        inter_precision_3drone_trilateration(experiment_counter) = 0;
+        final_time_3drone_trilateration(experiment_counter) = 0;
+        inter_time_3drone_trilateration(experiment_counter) = 0;
     end
     
     if test_3drone_swarm
@@ -87,6 +117,11 @@ for experiment_counter=1: number_experiments
         inter_precision_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.inter_precision;
         final_time_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.final_time;
         inter_time_3drone_swarm(experiment_counter) = results_3drone_swarm{experiment_counter}.inter_time;
+    else
+        final_precision_3drone_swarm(experiment_counter) = 0;
+        inter_precision_3drone_swarm(experiment_counter) = 0;
+        final_time_3drone_swarm(experiment_counter) = 0;
+        inter_time_3drone_swarm(experiment_counter) = 0;
     end
     
     % store execution time
@@ -124,7 +159,7 @@ plot(final_time_3drone_continuous, 'mo-');
 plot(final_time_3drone_trilateration, 'yo-'); 
 plot(final_time_3drone_swarm, 'ko-');
 legend('One drone, gradient', 'One drone, continuous', 'One drone, trilateration', ...
-        'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, continuous');
+        'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, swarming');
 title('Final time');
 xlabel('Experiment');
 ylabel('Time [s]');
@@ -142,7 +177,7 @@ if plot_inter_bool
     plot(inter_precision_3drone_trilateration, 'yo-'); 
     plot(inter_precision_3drone_swarm, 'ko-'); 
     legend('One drone, gradient', 'One drone, continuous', 'One drone, trilateration', ...
-            'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, continuous');
+            'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, swarming');
     title('Intermediary precision');
     xlabel('Experiment');
     ylabel('Precision [m]');
@@ -162,6 +197,24 @@ if plot_inter_bool
     xlabel('Experiment');
     ylabel('Time [s]');
 end
+
+% compute means
+means_final_precision = [mean(final_precision_1drone_gradient), mean(final_precision_1drone_continuous), ...
+                         mean(final_precision_1drone_trilateration), mean(final_precision_1drone_trilateration_mod), ...
+                         mean(final_precision_3drone_continuous), mean(final_precision_3drone_trilateration), ...
+                         mean(final_precision_3drone_swarm)];
+means_final_time      = [mean(final_time_1drone_gradient), mean(final_time_1drone_continuous), ...
+                         mean(final_time_1drone_trilateration), mean(final_time_1drone_trilateration_mod), ...
+                         mean(final_time_3drone_continuous), mean(final_time_3drone_trilateration), ...
+                         mean(final_time_3drone_swarm)];
+means_inter_precision = [mean(inter_precision_1drone_gradient), mean(inter_precision_1drone_continuous), ...
+                         mean(inter_precision_1drone_trilateration), mean(inter_precision_1drone_trilateration_mod), ...
+                         mean(inter_precision_3drone_continuous), mean(inter_precision_3drone_trilateration), ...
+                         mean(inter_precision_3drone_swarm)];
+means_inter_time      = [mean(inter_time_1drone_gradient), mean(inter_time_1drone_continuous), ...
+                         mean(inter_time_1drone_trilateration), mean(inter_time_1drone_trilateration_mod), ...
+                         mean(inter_time_3drone_continuous), mean(inter_time_3drone_trilateration), ...
+                         mean(inter_time_3drone_swarm)];
 
 % delete files
 delete('matlab_sim_v2\temp.mat');

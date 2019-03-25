@@ -1,5 +1,6 @@
 Florian code, in master project master folder
-All in C++, runs on Linux
+All in C++, runs on Linux, but only on the Raspberry (otherwise pthread error)
+
 Contains three main folders
 	Cloud server
 	RPi

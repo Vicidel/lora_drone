@@ -11,6 +11,7 @@ function output = sim2_1drone_gradient()
     time_measure = 0;
     state = 0;
     signal = [func_distance_to_signal(300, signal_type)];
+    output_inter_filled = false;
 
     % create first figure
     if plot_bool
@@ -131,6 +132,7 @@ function output = sim2_1drone_gradient()
                         output.inter_time = time_move + time_measure;
                         output.inter_precision = norm([abs(abs(pos_drone(1) - pos_true_node(1))), abs(abs(pos_drone(2) - pos_true_node(2)))]);
                         output.inter_pos_estimated = pos_drone;
+                        output_inter_filled = true;
                     end
                     
                     % decrease distance increment
@@ -179,6 +181,15 @@ function output = sim2_1drone_gradient()
         fprintf('Real position of node: x=%.2f, y=%.2f\n', pos_true_node(1), pos_true_node(2));
         fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', error_x, error_y, error_norm); 
         fprintf('Found in t=%.1f seconds (%.1f moving and %.1f measuring)\n', time_move+time_measure, time_move, time_measure);
+    end
+    
+    % if didn't reach inter
+    if ~output_inter_filled
+        output.inter_time_move = time_move;
+        output.inter_time_measure = time_measure;
+        output.inter_time = time_move + time_measure;
+        output.inter_precision = norm([abs(abs(pos_drone(1) - pos_true_node(1))), abs(abs(pos_drone(2) - pos_true_node(2)))]);
+        output.inter_pos_estimated = pos_drone;
     end
     
     % create output

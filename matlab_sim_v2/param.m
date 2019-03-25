@@ -15,7 +15,7 @@ print_bool = true;
 
 % node position and estimate from network
 pos_true_node = [0, 0, 0];
-pos_network_error = 400; 
+pos_network_error = 200; 
 pos_network_estimate = pos_true_node + [rand()*pos_network_error*cos(rand()*2*pi), rand()*pos_network_error*sin(rand()*2*pi), 0];
 
 % name of the running script

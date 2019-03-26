@@ -143,13 +143,13 @@ fprintf('\n');
 
 % plot final precisions
 figure();
-plot(final_precision_1drone_gradient, 'r-'); grid on; hold on;
-plot(final_precision_1drone_continuous, 'g-'); 
-plot(final_precision_1drone_trilateration, 'b-'); 
-% plot(final_precision_1drone_trilateration_mod, 'co-'); 
-% plot(final_precision_3drone_continuous, 'mo-'); 
-% plot(final_precision_3drone_trilateration, 'yo-'); 
-% plot(final_precision_3drone_swarm, 'ko-'); 
+% plot(final_precision_1drone_gradient, 'r-'); grid on; hold on;
+% plot(final_precision_1drone_continuous, 'g-'); 
+% plot(final_precision_1drone_trilateration, 'b-'); 
+plot(final_precision_1drone_trilateration_mod, 'co-'); 
+plot(final_precision_3drone_continuous, 'mo-'); 
+plot(final_precision_3drone_trilateration, 'yo-'); 
+plot(final_precision_3drone_swarm, 'ko-'); 
 % legend('One drone, gradient', 'One drone, continuous', 'One drone, trilateration', ...
 %         'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, continuous');
 legend('Gradient descent', 'Multilateration', 'Trilateration');
@@ -159,9 +159,9 @@ ylabel('Precision [m]');
 
 % plot final times
 figure();
-plot(final_time_1drone_gradient, 'r-'); grid on; hold on;
-plot(final_time_1drone_continuous, 'g-'); 
-plot(final_time_1drone_trilateration, 'b-'); 
+% plot(final_time_1drone_gradient, 'r-'); grid on; hold on;
+% plot(final_time_1drone_continuous, 'g-'); 
+% plot(final_time_1drone_trilateration, 'b-'); 
 % plot(final_time_1drone_trilateration_mod, 'co-'); 
 % plot(final_time_3drone_continuous, 'mo-'); 
 % plot(final_time_3drone_trilateration, 'yo-'); 

@@ -6,11 +6,11 @@ drone_speed = 5;        % m/s
 drone_speed_v2 = 2;     % m/s
 signal_type = 'esp';    % can be 'esp' or 'rssi'
 altitude = 10;          % flies at 10m
-number_measures = 2;    % makes 2 measures at each point
+number_measures = 5;    % makes 2 measures at each point
 
 % boolean for plotting and printing
 plot_bool = true;       
-plot_movement_bool = true;
+plot_movement_bool = false;
 print_bool = true;
 
 % node position and estimate from network
@@ -79,7 +79,7 @@ switch file_run_name
         pos_drone3 = pos_network_estimate;
         
         % number of loops of trilateration
-        algo_loops_todo = 4;
+        algo_loops_todo = 2;
         
     case 'sim2_1drone_continuous'
         % drone starting position
@@ -106,17 +106,24 @@ switch file_run_name
         pos_drone2 = pos_network_estimate;
         pos_drone3 = pos_network_estimate;
         
+        % drone speed
+        drone_speed = 5;    % slowed down for more measures
+        drone_speed_v2 = 1;    % slowed down for more measures
+        
         % pattern
         pattern_shape = 'circle';
-        pattern_dist_from_estimate = 120;
+        pattern_dist_from_estimate = 100;
+        pattern_dist_from_estimate_v2 = 50;
         pattern_center1 = pos_network_estimate + [0, -pattern_dist_from_estimate, 0];   % south
         pattern_center2 = pos_network_estimate + [pattern_dist_from_estimate*cos(pi/6), pattern_dist_from_estimate*sin(pi/6), 0];   % north east	
         pattern_center3 = pos_network_estimate + [-pattern_dist_from_estimate*cos(pi/6), pattern_dist_from_estimate*sin(pi/6), 0];   % north west	
         pattern_radius = 70;
+        pattern_radius_v2 = 20;
         pattern_angle_start1 = pi/2;
         pattern_angle_start2 = 4*pi/3;
         pattern_angle_start3 = -pi/3;
         pattern_anglerad_per_second = drone_speed / pattern_radius;
+        pattern_anglerad_per_second_v2 = drone_speed_v2 / pattern_radius_v2;
         
     case 'sim2_3drone_swarm'
         
@@ -163,15 +170,22 @@ if isfile('matlab_sim_v2/temp.mat')     % simulation run from 'multiple_run.m'
     print_bool = false;
     plot_movement_bool = false;
     load('matlab_sim_v2/temp.mat', 'experiment_counter', 'number_experiments');
+%     if experiment_counter < number_experiments/4
+%         number_measures = 2;
+%         algo_loops_todo = 2;
+%     elseif experiment_counter < number_experiments/2 && experiment_counter > number_experiments/4
+%         number_measures = 4;
+%         algo_loops_todo = 2;
+%     elseif experiment_counter < 3*number_experiments/4 && experiment_counter > number_experiments/2
+%         number_measures = 2;
+%         algo_loops_todo = 3;
+%     else
+%         number_measures = 4;
+%         algo_loops_todo = 3;
+%     end
     if experiment_counter < number_experiments/2
-%         drone_speed = 4;        % m/s
-%         drone_speed_v2 = 2;     % m/s
-%         pattern_radius = 120;
-%         pattern_radius_v2 = 70;
+        
     else
-%         drone_speed = 5;        % m/s
-%         drone_speed_v2 = 5;     % m/s
-%         pattern_radius = 120;
-%         pattern_radius_v2 = 70;
+        
     end
 end

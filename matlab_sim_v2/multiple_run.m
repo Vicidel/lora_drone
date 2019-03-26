@@ -8,11 +8,11 @@ number_experiments = 100;
 % profile on;
 
 % simulations to test
-test_1drone_gradient          = 1;
-test_1drone_continuous        = 1;
-test_1drone_trilateration     = 1;
+test_1drone_gradient          = 0;
+test_1drone_continuous        = 0;
+test_1drone_trilateration     = 0;
 test_1drone_trilateration_mod = 0;
-test_3drone_continuous        = 0;
+test_3drone_continuous        = 1;
 test_3drone_trilateration     = 0;
 test_3drone_swarm             = 0;
 
@@ -86,9 +86,9 @@ for experiment_counter=1: number_experiments
         %for 3 drone and continuous
         results_3drone_continuous{experiment_counter} = sim2_3drone_continuous();
         final_precision_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.final_precision;
-        inter_precision_3drone_continuous(experiment_counter) = 0;
+        inter_precision_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.inter_precision;
         final_time_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.final_time;
-        inter_time_3drone_continuous(experiment_counter) = 0;
+        inter_time_3drone_continuous(experiment_counter) = results_3drone_continuous{experiment_counter}.inter_time;
     else
         final_precision_3drone_continuous(experiment_counter) = 0;
         inter_precision_3drone_continuous(experiment_counter) = 0;
@@ -134,41 +134,41 @@ fprintf('\n');
 % profile off;
 % profile viewer;
 
-% mean(final_precision_1drone_continuous)
-% mean(final_precision_1drone_continuous(1:end/2))
-% mean(final_precision_1drone_continuous(end/2:end))
-% mean(final_time_1drone_continuous)
-% mean(final_time_1drone_continuous(1:end/2))
-% mean(final_time_1drone_continuous(end/2:end))
+% nanmean(final_precision_1drone_trilateration)
+% nanmean(final_precision_1drone_trilateration(1:end/2))
+% nanmean(final_precision_1drone_trilateration(end/2:end))
+% nanmean(final_time_1drone_trilateration)
+% nanmean(final_time_1drone_trilateration(1:end/2))
+% nanmean(final_time_1drone_trilateration(end/2:end))
 
 % plot final precisions
-figure();
-% plot(final_precision_1drone_gradient, 'r-'); grid on; hold on;
+figure(); grid on; hold on;
+% plot(final_precision_1drone_gradient, 'r-'); 
 % plot(final_precision_1drone_continuous, 'g-'); 
-% plot(final_precision_1drone_trilateration, 'b-'); 
-plot(final_precision_1drone_trilateration_mod, 'co-'); 
+% plot(final_precision_1drone_trilateration, 'b-');
+% plot(final_precision_1drone_trilateration_mod, 'co-'); 
 plot(final_precision_3drone_continuous, 'mo-'); 
-plot(final_precision_3drone_trilateration, 'yo-'); 
-plot(final_precision_3drone_swarm, 'ko-'); 
+% plot(final_precision_3drone_trilateration, 'yo-'); 
+% plot(final_precision_3drone_swarm, 'ko-'); 
 % legend('One drone, gradient', 'One drone, continuous', 'One drone, trilateration', ...
 %         'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, continuous');
-legend('Gradient descent', 'Multilateration', 'Trilateration');
+% legend('Gradient descent', 'Multilateration', 'Trilateration');
 title('Final precision');
 xlabel('Experiment');
 ylabel('Precision [m]');
 
 % plot final times
-figure();
-% plot(final_time_1drone_gradient, 'r-'); grid on; hold on;
+figure(); grid on; hold on;
+% plot(final_time_1drone_gradient, 'r-'); 
 % plot(final_time_1drone_continuous, 'g-'); 
-% plot(final_time_1drone_trilateration, 'b-'); 
+% plot(final_time_1drone_trilateration, 'b-');
 % plot(final_time_1drone_trilateration_mod, 'co-'); 
-% plot(final_time_3drone_continuous, 'mo-'); 
+plot(final_time_3drone_continuous, 'mo-'); 
 % plot(final_time_3drone_trilateration, 'yo-'); 
 % plot(final_time_3drone_swarm, 'ko-');
 % legend('One drone, gradient', 'One drone, continuous', 'One drone, trilateration', ...
 %         'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, swarming');
-legend('Gradient descent', 'Multilateration', 'Trilateration');
+% legend('Gradient descent', 'Multilateration', 'Trilateration');
 title('Final time');
 xlabel('Experiment');
 ylabel('Time [s]');

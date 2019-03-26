@@ -70,7 +70,7 @@ function output = sim2_3drone_trilateration()
                         xlabel('x position [m]')
                         ylabel('y position [m]')
                         zlabel('z position [m]')
-                        title('Localization with three drones');
+                        title('Node localization algorithm');
                         legend('Real position', 'Network position', '1st drone', '2nd drone', '3rd drone', 'Estimated position');
                     end
                     

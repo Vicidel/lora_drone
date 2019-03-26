@@ -12,6 +12,7 @@ function output = sim2_3drone_continuous()
     angle_count = 0;
     time_last_measure = 0;
     dataset = [];
+    algo_loop = 1;
 
     % create first figure
     if plot_bool
@@ -37,65 +38,158 @@ function output = sim2_3drone_continuous()
     % localization
     while time_move+0 < time_limit
         
-        % fly drone in a circle
-        pos_drone1 = pattern_center1 + [pattern_radius*cos(pattern_angle_start1 + angle_count*pattern_anglerad_per_second), pattern_radius*sin(pattern_angle_start1 + angle_count*pattern_anglerad_per_second), 0];
-        pos_drone2 = pattern_center2 + [pattern_radius*cos(pattern_angle_start2 + angle_count*pattern_anglerad_per_second), pattern_radius*sin(pattern_angle_start2 + angle_count*pattern_anglerad_per_second), 0];
-        pos_drone3 = pattern_center3 + [pattern_radius*cos(pattern_angle_start3 + angle_count*pattern_anglerad_per_second), pattern_radius*sin(pattern_angle_start3 + angle_count*pattern_anglerad_per_second), 0];
-        angle_count = angle_count + 1;  % go to next position
-        time_move = time_move + 1;      % angle_count is angle done in one second
-        
-        % five seconds since last measure
-        if time_move - time_last_measure > 5
+        switch algo_loop 
             
-            % make measure for the three drones and add them to the dataset
-            time_last_measure = time_move;
-            dataset = [dataset; pos_drone1, get_noisy_signal(pos_true_node, pos_drone1, signal_type, 1)];
-            dataset = [dataset; pos_drone2, get_noisy_signal(pos_true_node, pos_drone2, signal_type, 1)];
-            dataset = [dataset; pos_drone3, get_noisy_signal(pos_true_node, pos_drone3, signal_type, 1)];
-            
-            % plot
-            if plot_bool
-                plot_tri(pos_drone1, 'ro');
-                plot_tri(pos_drone2, 'go');
-                plot_tri(pos_drone3, 'bo');
-            end
-        end
-        
-        % temporary estimate
-        if angle_count > 10 && floor(angle_count/5)==angle_count/5
-            [x, y] = get_position_dataset(dataset, signal_type);
-            pos_estimated_temp = [x, y, 0];
-            if plot_bool plot_tri(pos_estimated_temp, 'mx'); end
-        end
-        
-        % done on full circle
-        if angle_count*pattern_anglerad_per_second > 2*pi
-            
-            % make estimation
-            [x, y] = get_position_dataset(dataset, signal_type);
-            pos_estimated = [x, y, 0];
-            
-            % plot
-            if plot_bool
-                for i=2:1:size(dataset)
-                    plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
+            case 1
+                % fly drone in a circle
+                pos_drone1 = pattern_center1 + [pattern_radius*cos(pattern_angle_start1 + angle_count*pattern_anglerad_per_second), pattern_radius*sin(pattern_angle_start1 + angle_count*pattern_anglerad_per_second), 0];
+                pos_drone2 = pattern_center2 + [pattern_radius*cos(pattern_angle_start2 + angle_count*pattern_anglerad_per_second), pattern_radius*sin(pattern_angle_start2 + angle_count*pattern_anglerad_per_second), 0];
+                pos_drone3 = pattern_center3 + [pattern_radius*cos(pattern_angle_start3 + angle_count*pattern_anglerad_per_second), pattern_radius*sin(pattern_angle_start3 + angle_count*pattern_anglerad_per_second), 0];
+                angle_count = angle_count + 1;  % go to next position
+                time_move = time_move + 1;      % angle_count is angle done in one second
+
+                % five seconds since last measure
+                if time_move - time_last_measure >= 5
+
+                    % make measure for the three drones and add them to the dataset
+                    time_last_measure = time_move;
+                    dataset = [dataset; pos_drone1, get_noisy_signal(pos_true_node, pos_drone1, signal_type, 1)];
+                    dataset = [dataset; pos_drone2, get_noisy_signal(pos_true_node, pos_drone2, signal_type, 1)];
+                    dataset = [dataset; pos_drone3, get_noisy_signal(pos_true_node, pos_drone3, signal_type, 1)];
+
+                    % plot
+                    if plot_bool
+                        plot_tri(pos_drone1, 'ro');
+                        plot_tri(pos_drone2, 'go');
+                        plot_tri(pos_drone3, 'bo');
+                    end
                 end
-                plot_tri(pos_estimated, 'kx');
-                xlabel('x position [m]')
-                ylabel('y position [m]')
-                zlabel('z position [m]')
-                title('Node localization algorithm');
-                legend('Node position', 'Last estimate', 'Measuring positions for drone 1', 'Measuring positions for drone 2', 'Measuring positions for drone 3');
-                view(0, 90); axis equal;
-            end
-            
-            % print in terminal
-            if print_bool
-                fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2)), norm([abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2))])); 
-                fprintf('Time passed: %.2f\n', time_move+0);
-            end 
-            
-            break;
+
+                % temporary estimate
+                if angle_count > 10 && floor(angle_count/5)==angle_count/5
+                    [x, y] = get_position_dataset(dataset, signal_type);
+                    pos_estimated_temp = [x, y, 0];
+                    if plot_bool plot_tri(pos_estimated_temp, 'mx'); end
+                end
+
+                % done on full circle
+                if angle_count*pattern_anglerad_per_second > 2*pi
+
+                    % make estimation
+                    [x, y] = get_position_dataset(dataset, signal_type);
+                    pos_estimated = [x, y, 0];
+
+                    % plot
+                    if plot_bool
+                        for i=2:1:size(dataset)
+                            plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
+                        end
+                        plot_tri(pos_estimated, 'kx');
+                        xlabel('x position [m]')
+                        ylabel('y position [m]')
+                        zlabel('z position [m]')
+                        title('Node localization algorithm');
+                        legend('Node position', 'Last estimate', 'Measuring positions for drone 1', 'Measuring positions for drone 2', 'Measuring positions for drone 3');
+                        view(0, 90); axis equal;
+                    end
+
+                    % print in terminal
+                    if print_bool
+                        fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2)), norm([abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2))])); 
+                        fprintf('Time passed: %.2f\n', time_move+0);
+                    end 
+
+                    % next loop
+                    algo_loop = 2;
+                    angle_count = 0;
+                    dataset = [];
+                    
+                    % store inter
+                    output.inter_time_move = time_move;
+                    output.inter_time_measure = 0;
+                    output.inter_time = time_move + 0;
+                    output.inter_precision = norm([abs(abs(pos_estimated(1) - pos_true_node(1))), abs(abs(pos_estimated(2) - pos_true_node(2)))]);
+                    output.inter_pos_estimated = pos_estimated;
+                    
+                    % new figure
+                    if plot_bool
+                        figure();
+                        plot_tri(pos_true_node, 'mo'); grid on; hold on;
+                        plot_tri(pos_network_estimate, 'co');
+                        view(0, 90); axis equal;
+                    end
+                    
+                    % add moving time
+                    max_distance = max([norm(pos_drone1-pos_estimated), norm(pos_drone2-pos_estimated), norm(pos_drone3-pos_estimated)]);
+                    time_move = time_move + max_distance/drone_speed;
+                end
+
+            case 2
+                % new centers
+                pattern_center1 = pos_estimated + [0, -pattern_dist_from_estimate_v2, 0];   % south
+                pattern_center2 = pos_estimated + [pattern_dist_from_estimate_v2*cos(pi/6), pattern_dist_from_estimate_v2*sin(pi/6), 0];   % north east	
+                pattern_center3 = pos_estimated + [-pattern_dist_from_estimate_v2*cos(pi/6), pattern_dist_from_estimate_v2*sin(pi/6), 0];   % north west	
+                
+                % fly drone in a circle
+                pos_drone1 = pattern_center1 + [pattern_radius_v2*cos(pattern_angle_start1 + angle_count*pattern_anglerad_per_second_v2), pattern_radius_v2*sin(pattern_angle_start1 + angle_count*pattern_anglerad_per_second_v2), 0];
+                pos_drone2 = pattern_center2 + [pattern_radius_v2*cos(pattern_angle_start2 + angle_count*pattern_anglerad_per_second_v2), pattern_radius_v2*sin(pattern_angle_start2 + angle_count*pattern_anglerad_per_second_v2), 0];
+                pos_drone3 = pattern_center3 + [pattern_radius_v2*cos(pattern_angle_start3 + angle_count*pattern_anglerad_per_second_v2), pattern_radius_v2*sin(pattern_angle_start3 + angle_count*pattern_anglerad_per_second_v2), 0];
+                angle_count = angle_count + 1;  % go to next position
+                time_move = time_move + 1;      % angle_count is angle done in one second
+
+                % five seconds since last measure
+                if time_move - time_last_measure >= 5
+
+                    % make measure for the three drones and add them to the dataset
+                    time_last_measure = time_move;
+                    dataset = [dataset; pos_drone1, get_noisy_signal(pos_true_node, pos_drone1, signal_type, 1)];
+                    dataset = [dataset; pos_drone2, get_noisy_signal(pos_true_node, pos_drone2, signal_type, 1)];
+                    dataset = [dataset; pos_drone3, get_noisy_signal(pos_true_node, pos_drone3, signal_type, 1)];
+
+                    % plot
+                    if plot_bool
+                        plot_tri(pos_drone1, 'ro');
+                        plot_tri(pos_drone2, 'go');
+                        plot_tri(pos_drone3, 'bo');
+                    end
+                end
+
+                % temporary estimate
+                if angle_count > 10 && floor(angle_count/5)==angle_count/5
+                    [x, y] = get_position_dataset(dataset, signal_type);
+                    pos_estimated_temp = [x, y, 0];
+                    if plot_bool plot_tri(pos_estimated_temp, 'mx'); end
+                end
+
+                % done one full circle
+                if angle_count*pattern_anglerad_per_second_v2 > 2*pi
+
+                    % make estimation
+                    [x, y] = get_position_dataset(dataset, signal_type);
+                    pos_estimated = [x, y, 0];
+
+                    % plot
+                    if plot_bool
+                        for i=2:1:size(dataset)
+                            plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
+                        end
+                        plot_tri(pos_estimated, 'kx');
+                        xlabel('x position [m]')
+                        ylabel('y position [m]')
+                        zlabel('z position [m]')
+                        title('Node localization algorithm');
+                        legend('Node position', 'Last estimate', 'Measuring positions for drone 1', 'Measuring positions for drone 2', 'Measuring positions for drone 3');
+                        view(0, 90); axis equal;
+                    end
+
+                    % print in terminal
+                    if print_bool
+                        fprintf('Error: dx=%.2f, dy=%.2f, norm=%.2f\n', abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2)), norm([abs(pos_estimated(1) - pos_true_node(1)), abs(pos_estimated(2) - pos_true_node(2))])); 
+                        fprintf('Time passed: %.2f\n', time_move+0);
+                    end 
+                    
+                    break;
+                end
         end
         
         % slows down if launched from file

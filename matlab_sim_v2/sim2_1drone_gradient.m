@@ -34,11 +34,11 @@ function output = sim2_1drone_gradient()
 
         % plot positions
         if plot_bool
-            if dist_increment == 10
+            if dist_increment == 20
                 plot_tri(pos_drone, 'bo');
-            elseif dist_increment == 5
+            elseif dist_increment == 10
                 plot_tri(pos_drone, 'mo');
-            elseif dist_increment == 2.5
+            elseif dist_increment == 5
                 plot_tri(pos_drone, 'go');
             else
                 plot_tri(pos_drone, 'yo');
@@ -116,7 +116,7 @@ function output = sim2_1drone_gradient()
 
             case 9
                 % end condition (max one pass at 1.25m)
-                if dist_increment < 1.5
+                if dist_increment < 3
                     break;
                 end
 
@@ -126,7 +126,7 @@ function output = sim2_1drone_gradient()
                 if horizontal_dist < 6 * dist_increment
                     
                     % store inter for 5m
-                    if dist_increment == 2.5
+                    if dist_increment == 5
                         output.inter_time_move = time_move;
                         output.inter_time_measure = time_measure;
                         output.inter_time = time_move + time_measure;
@@ -166,11 +166,12 @@ function output = sim2_1drone_gradient()
     % plot positions
     if plot_bool
         plot_tri(pos_estimated, 'kx');
+        plot_tri(pos_network_estimate, 'co');
         xlabel('x position [m]')
         ylabel('y position [m]')
         zlabel('z position [m]')
         title('Node localization algorithm');
-        legend('Node position', 'Network estimate', '10m increments', '5m increments', '2.5m increments', '1.25m increments');
+        legend('Node position', 'Network estimate', '20m increments', '10m increments', '5m increments', '2.5m increments');
         view(0, 90); axis equal;
     end
 

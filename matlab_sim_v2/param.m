@@ -27,7 +27,7 @@ switch file_run_name
     
     case 'sim2_1drone_gradient'
         % distance increment
-        dist_increment = 10;
+        dist_increment = 20;
         increment_0p0 = [0, dist_increment, 0];
         increment_0m0 = [0, -dist_increment, 0];
         increment_p00 = [dist_increment, 0, 0];
@@ -67,8 +67,8 @@ switch file_run_name
         
     case 'sim2_3drone_trilateration'
         % measureing positions
-        size_around_estimation_v1 = 120;
-        size_around_estimation_v2 = 50;
+        size_around_estimation_v1 = 100;
+        size_around_estimation_v2 = 30;
         measure_position1 = pos_network_estimate + [0, -size_around_estimation_v1, 0];   % south
         measure_position2 = pos_network_estimate + [size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
         measure_position3 = pos_network_estimate + [-size_around_estimation_v1*cos(pi/6), size_around_estimation_v1*sin(pi/6), 0];   % north east	
@@ -79,14 +79,17 @@ switch file_run_name
         pos_drone3 = pos_network_estimate;
         
         % number of loops of trilateration
-        algo_loops_todo = 2;
+        algo_loops_todo = 4;
         
     case 'sim2_1drone_continuous'
         % drone starting position
         pos_drone = pos_network_estimate;
         
+        % drone speed
+        drone_speed = 5;        % m/s
+        drone_speed_v2 = 5;     % m/s
+        
         % pattern
-        pattern_shape = 'circle';
         pattern_center = pos_network_estimate;
         pattern_radius = 120;
         pattern_radius_v2 = 70;
@@ -161,8 +164,14 @@ if isfile('matlab_sim_v2/temp.mat')     % simulation run from 'multiple_run.m'
     plot_movement_bool = false;
     load('matlab_sim_v2/temp.mat', 'experiment_counter', 'number_experiments');
     if experiment_counter < number_experiments/2
-
+%         drone_speed = 4;        % m/s
+%         drone_speed_v2 = 2;     % m/s
+%         pattern_radius = 120;
+%         pattern_radius_v2 = 70;
     else
-
+%         drone_speed = 5;        % m/s
+%         drone_speed_v2 = 5;     % m/s
+%         pattern_radius = 120;
+%         pattern_radius_v2 = 70;
     end
 end

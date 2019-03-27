@@ -1,0 +1,26 @@
+This commands run the C++ script located in catkin_ws/src/mavros/mavros/src/offb_node.cpp
+The drone moves in the Gazebo window according to the script
+We can spectate the simulation from QGC (terminal 4)
+
+	Terminal 1:
+		cd src/Firmware
+		make px4_sitl gazebo
+
+	Terminal 2:
+		cd
+		roslaunch mavros px4.launch fcu_url:="udp://:14540@14580" 
+		// the numbers are obtained from terminal 1 
+		// (cf http://discuss.px4.io/t/interfacing-mavros-with-gazebo-sitl/1552/5)
+
+	Terminal 3:
+		cd catkin_ws
+		rosrun mavros offb_node
+
+	Terminal 4 (optional):
+		cd QGroundControl
+		./QGroundControl.AppImage
+
+To compile the offboard example after a modification:
+In terminal 3:
+	catkin build mavros
+	source devel/setup.bash

@@ -1,0 +1,32 @@
+Notes on how to run...
+
+
+Raspberry PI
+	RPi needs to be connected to Pixhawk via serial
+	ssh pi@192.168.1.134 (note: could change IP)
+	password is alex1234
+	sudo screen -x
+	if screen is not running:
+		mavproxy.py --master=/dev/ttyS0 --aircraft MyCopter --baudrate 921600 --out 192.168.1.134:14550
+	gibberish can come, if so "set shownoise false"
+--> result of this is a MAVPROXY running with "MANUAL> "
+
+PX4 + SITL + Gazebo + ROS master
+	should start with opening of new terminal
+	launches simulation with Iris inside of it
+--> Gazebo is running
+
+MAVROS
+	roslaunch mavros px4.launch fcu_url:="udp://:14540@192.168.1.134:14550" 	// on RPi (does not work...)
+	roslaunch mavros px4.launch fcu_url:="udp://:14540@14580"   // on SITL
+--> don't know exactly what is does...
+
+Offboard project
+	cd catkin_ws
+	catkin build mavros
+	source devel/setup.bash
+	rosrun mavros offb_node
+--> runs the offb_node.cpp in catkin_ws/src/mavros/mavros/src/
+Thanks url: http://discuss.px4.io/t/mavros-ros-and-pixhawk/3136/4
+
+

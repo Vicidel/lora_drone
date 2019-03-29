@@ -41,6 +41,14 @@ class DataPoint(db.Document):
 	tx_power     = db.FloatField()
 	real_dist 	 = db.IntField()
 
+class DataPoint2(db.Document):
+	pos_x 		 = db.FloatField();
+	pos_y 		 = db.FloatField();
+	pos_z 		 = db.FloatField();
+	timestamp    = db.DateTimeField();
+	time 		 = db.StringField();
+
+
 # set the port dynamically with a default of 3000 for local development
 port = int(os.getenv('PORT', '3000'))
 
@@ -139,6 +147,39 @@ def sc_lpn():
 
 	# success
 	return 'Datapoint DevEUI %s saved' %(r_deveui)
+
+
+# receive GPS coordinates from offb_node script
+@app.route('/gps_coordinates', methods=['POST'])
+def gps_coord():
+	print("!!! Data received from ThingPark !!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("file is not a JSON: error")
+		return 'Can only receive JSON file'
+
+	# display in log the JSON received
+	print("JSON received:")
+	print(j)
+
+	# parse communication parameters
+	r_pos_x     = j['pos_x']
+	r_pos_y     = j['pos_y']
+	r_pos_z     = j['pos_z']
+	r_time      = j['time']
+	r_timestamp = dt.datetime.strptime(r_time, TIME_FORMAT)
+
+	# create new datapoint with parsed data
+	datapoint = DataPoint2(pos_x=r_pos_x, pos_y=r_pos_y, pos_z=r_pos_z, time=r_time, timestamp=r_timestamp)
+	datapoint.save()
+	print('new datapoint saved to database')
+
+	# success
+	return 'GPS added to database'
 
 
 # output JSON as downloaded file

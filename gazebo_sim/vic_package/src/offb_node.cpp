@@ -19,7 +19,7 @@ using namespace Eigen; // To use matrix and vector representation
 #include <mavros_msgs/HilGPS.h>
 
 // for server communication
-#include "tcp_client.h"
+#include "server_app.h"
 
 
 // define the received MAVROS messages
@@ -94,11 +94,8 @@ int main(int argc, char **argv)
     int state = 0;
     float precision = 0.2f;
 
-
-    // testing
-    send_tcp();
-
-
+send_GPS(pos_drone, ros::Time::now().toSec());
+    
     // while ROS is online
     while(ros::ok()){
 

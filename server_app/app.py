@@ -26,7 +26,9 @@ app.config['MONGODB_SETTINGS'] = {'host': mongo_uri, 'db':'testing', 'alias':'de
 # bootstrap our app
 db = MongoEngine(app)
 
-class DataPoint(db.Document):
+
+# create the two classes for LoRa and drone messages
+class LoRa_datapoint(db.Document):
 	devEUI       = db.StringField(required=True)
 	deviceType   = db.StringField()
 	timestamp    = db.DateTimeField()
@@ -41,12 +43,14 @@ class DataPoint(db.Document):
 	tx_power     = db.FloatField()
 	real_dist 	 = db.IntField()
 
-class DataPoint2(db.Document):
-	pos_x 		 = db.FloatField();
-	pos_y 		 = db.FloatField();
-	pos_z 		 = db.FloatField();
-	timestamp    = db.DateTimeField();
-	time 		 = db.StringField();
+class drone_datapoint(db.Document):
+	pos_x 		 = db.FloatField()
+	pos_y 		 = db.FloatField()
+	pos_z 		 = db.FloatField()
+	timestamp    = db.DateTimeField()
+	time 		 = db.StringField()
+	payload      = db.StringField()
+
 
 
 # set the port dynamically with a default of 3000 for local development
@@ -71,8 +75,8 @@ def hello_world():
 
 
 # Swisscom LPN listener to POST from actility
-@app.route('/sc_lpn', methods=['POST'])
-def sc_lpn():
+@app.route('/lora/receive_message', methods=['POST'])
+def lora_receive():
 	print("!!! Data received from ThingPark !!!")
 
 	# test nature of message: if not JSON we don't want it
@@ -80,7 +84,7 @@ def sc_lpn():
 	try:
 		j = request.json
 	except:
-		print("file is not a JSON: error")
+		print("ERROR: file is not a JSON")
 		return 'Can only receive JSON file'
 
 	# display in log the JSON received
@@ -139,84 +143,38 @@ def sc_lpn():
 			g_esp.append(item['LrrESP'])
 
 	# create new datapoint with parsed data
-	datapoint = DataPoint(devEUI=r_deveui, time= r_time, timestamp=r_timestamp, deviceType=r_devtype, sp_fact=r_sp_fact, 
+	datapoint = LoRa_datapoint(devEUI=r_deveui, time=r_time, timestamp=r_timestamp, deviceType=r_devtype, sp_fact=r_sp_fact, 
 		channel=r_channel, sub_band=r_band, gateway_id=g_id, gateway_rssi=g_rssi, gateway_snr=g_snr, 
 		gateway_esp=g_esp, real_dist=r_real_dist, tx_power=r_tx_power)
+
+	# save it to database
 	datapoint.save()
-	print('new datapoint saved to database')
+	print('SUCESS: new LoRa datapoint saved to database')
 
 	# success
 	return 'Datapoint DevEUI %s saved' %(r_deveui)
 
 
-# receive GPS coordinates from offb_node script
-@app.route('/gps_coordinates', methods=['POST'])
-def gps_coord():
-	print("!!! Data received from ThingPark !!!")
-
-	# test nature of message: if not JSON we don't want it
-	j = []
-	try:
-		j = request.json
-	except:
-		print("file is not a JSON: error")
-		return 'Can only receive JSON file'
-
-	# display in log the JSON received
-	print("JSON received:")
-	print(j)
-
-	# parse communication parameters
-	r_pos_x     = j['pos_x']
-	r_pos_y     = j['pos_y']
-	r_pos_z     = j['pos_z']
-	r_time      = j['time']
-	r_timestamp = dt.datetime.strptime(r_time, TIME_FORMAT)
-
-	# create new datapoint with parsed data
-	datapoint = DataPoint2(pos_x=r_pos_x, pos_y=r_pos_y, pos_z=r_pos_z, time=r_time, timestamp=r_timestamp)
-	datapoint.save()
-	print('new datapoint saved to database')
-
-	# success
-	return 'GPS added to database'
-
-
-# output JSON as downloaded file
-@app.route('/json', methods=['GET'])
-def export_json():
-	print('exporting full database as JSON')
-	return Response(DataPoint.objects.to_json(),mimetype='application/json',
-		headers={'Content-Disposition':'attachment;filename=database.json'})
-
-
-# print JSON directly in browser
-@app.route('/json_print', methods=['GET'])
-def print_json():
-	print('printing full database as JSON')
-	return DataPoint.objects.to_json()
-
-
 #querying the database and giving back a JSON file
-@app.route('/query', methods=['GET'])
-def db_query():
+@app.route('/lora/query', methods=['GET'])
+def lora_query():
 	query = request.args
 
 	# to delete datapoint based on time
 	if 'delete_time_point' in query and 'time' in query:
 		deltime_start = dt.datetime.strptime(query['time'], TIME_FORMAT_QUERY) - dt.timedelta(seconds=2)
 		deltime_end = dt.datetime.strptime(query['time'], TIME_FORMAT_QUERY) + dt.timedelta(seconds=2)
-		DataPoint.objects(timestamp__lt=deltime_end, timestamp__gt=deltime_start).delete()
+		LoRa_datapoint.objects(timestamp__lt=deltime_end, timestamp__gt=deltime_start).delete()
 		return 'point deleted'
 
 	# to delete datapoints based on time
 	if 'delete_time_interval' in query and 'start' in query and 'end' in query:
 		end = dt.datetime.strptime(query['end'], TIME_FORMAT_QUERY)
 		start = dt.datetime.strptime(query['start'], TIME_FORMAT_QUERY)
-		DataPoint.objects(timestamp__lt=end,timestamp__gt=start).delete()
+		LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start).delete()
 		return 'time interval deleted'
 
-	# defaults: only with 0 txpow, sf of 7 and in the previous year
+	# defaults: only sf of 7 and in the previous year
 	sf = 7
 	start = dt.datetime.now() - dt.timedelta(days=365)  # begins selection one year ago
 	end = dt.datetime.now() + dt.timedelta(hours=2)		# just in case we have timestamps in the future?
@@ -231,19 +189,130 @@ def db_query():
 	if 'sf' in query:
 		sf = int(query['sf'])
 
-	datapoints = DataPoint.objects(timestamp__lt=end,timestamp__gt=start,sp_fact=sf).to_json()
+	datapoints = LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start,sp_fact=sf).to_json()
 
 	#return datapoints 		# for directly in browser
 	return Response(datapoints,mimetype='application/json', 	# for automatic file download
 		headers={'Content-Disposition':'attachment;filename=query.json'})
 
 
+# receive GPS coordinates from offb_node script
+@app.route('/drone/receive_message', methods=['POST'])
+def drone_receive():
+	print("!!! Data received from drone !!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the JSON received
+	print("JSON received:")
+	print(j)
+
+	# parse communication parameters
+	r_pos_x     = j['pos_x']
+	r_pos_y     = j['pos_y']
+	r_pos_z     = j['pos_z']
+	r_payload   = j['payload']
+	r_ts_temp   = j['timestamp']
+	r_time      = dt.datetime.utcfromtimestamp(float(r_ts_temp)).strftime(TIME_FORMAT)
+
+	# type conversion and stuff
+	r_timestamp = dt.datetime.utcfromtimestamp(float(r_ts_temp))
+	r_time 		= str(r_time) 
+
+	# create new datapoint with parsed data
+	datapoint = drone_datapoint(pos_x=r_pos_x, pos_y=r_pos_y, pos_z=r_pos_z, time=r_time, timestamp=r_timestamp, payload=r_payload)
+
+	# save it to database
+	datapoint.save()
+	print('SUCESS: new drone datapoint saved to database')
+
+	# success
+	return 'GPS added to database'
+
+
+#querying the database and giving back a JSON file
+@app.route('/lora/query', methods=['GET'])
+def lora_query():
+	query = request.args
+
+	# to delete datapoint based on time
+	if 'delete_time_point' in query and 'time' in query:
+		deltime_start = dt.datetime.strptime(query['time'], TIME_FORMAT_QUERY) - dt.timedelta(seconds=2)
+		deltime_end = dt.datetime.strptime(query['time'], TIME_FORMAT_QUERY) + dt.timedelta(seconds=2)
+		drone_datapoint.objects(timestamp__lt=deltime_end, timestamp__gt=deltime_start).delete()
+		return 'point deleted'
+
+	# to delete datapoints based on time
+	if 'delete_time_interval' in query and 'start' in query and 'end' in query:
+		end = dt.datetime.strptime(query['end'], TIME_FORMAT_QUERY)
+		start = dt.datetime.strptime(query['start'], TIME_FORMAT_QUERY)
+		drone_datapoint.objects(timestamp__lt=end,timestamp__gt=start).delete()
+		return 'time interval deleted'
+
+	# defaults: only in the previous year
+	start = dt.datetime.now() - dt.timedelta(days=365)  # begins selection one year ago
+	end = dt.datetime.now() + dt.timedelta(hours=2)		# just in case we have timestamps in the future?
+
+	# change start and end time
+	if 'start' in query:
+		start = dt.datetime.strptime(query['start'], TIME_FORMAT_QUERY)
+	if 'end' in query:
+		end = dt.datetime.strptime(query['end'], TIME_FORMAT_QUERY)
+
+	datapoints = LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start).to_json()
+
+	#return datapoints 		# for directly in browser
+	return Response(datapoints,mimetype='application/json', 	# for automatic file download
+		headers={'Content-Disposition':'attachment;filename=query.json'})
+
+
+# output JSON as downloaded file, LoRa database
+@app.route('/lora/json', methods=['GET'])
+def lora_export_json():
+	print('Exporting LoRa database as JSON')
+	return Response(LoRa_datapoint.objects.to_json(),mimetype='application/json',
+		headers={'Content-Disposition':'attachment;filename=database.json'})
+
+
+# print JSON directly in browser, LoRa database
+@app.route('/lora/json_print', methods=['GET'])
+def lora_print_json():
+	print('Printing LoRa database as JSON')
+	return LoRa_datapoint.objects.to_json()
+
+
+# output JSON as downloaded file, drone database
+@app.route('/drone/json', methods=['GET'])
+def drone_export_json():
+	print('Exporting drone database as JSON')
+	return Response(drone_datapoint.objects.to_json(),mimetype='application/json',
+		headers={'Content-Disposition':'attachment;filename=database.json'})
+
+
+# print JSON directly in browser, drone database
+@app.route('/drone/json_print', methods=['GET'])
+def drone_print_json():
+	print('Printing drone database as JSON')
+	return drone_datapoint.objects.to_json()
+
+
+
+
+
+
 # deletes the database
 @app.route('/delete_all')
 def db_delete():
-	#DataPoint.objects.delete()
-	#return 'database is now empty'
-	return 'delete function removed for (obvious) security reasons'
+	#LoRa_datapoint.objects.delete()
+	#drone_datapoint.objects.delete()
+	#return 'Databases are now empty'
+	return 'Delete function removed for (obvious) security reasons'
 
 
 # start the app

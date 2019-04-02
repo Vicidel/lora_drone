@@ -112,13 +112,13 @@ switch file_run_name
         
         % pattern
         pattern_shape = 'circle';
-        pattern_dist_from_estimate = 100;
+        pattern_dist_from_estimate = 80;
         pattern_dist_from_estimate_v2 = 50;
         pattern_center1 = pos_network_estimate + [0, -pattern_dist_from_estimate, 0];   % south
         pattern_center2 = pos_network_estimate + [pattern_dist_from_estimate*cos(pi/6), pattern_dist_from_estimate*sin(pi/6), 0];   % north east	
         pattern_center3 = pos_network_estimate + [-pattern_dist_from_estimate*cos(pi/6), pattern_dist_from_estimate*sin(pi/6), 0];   % north west	
         pattern_radius = 70;
-        pattern_radius_v2 = 20;
+        pattern_radius_v2 = 30;
         pattern_angle_start1 = pi/2;
         pattern_angle_start2 = 4*pi/3;
         pattern_angle_start3 = -pi/3;

@@ -5,7 +5,7 @@ time_limit = 15*60;     % 15 minutes
 drone_speed = 5;        % m/s
 drone_speed_v2 = 2;     % m/s
 signal_type = 'esp';    % can be 'esp' or 'rssi'
-altitude = 10;          % flies at 10m
+altitude = 50;          % flies at 10m
 number_measures = 5;    % makes 2 measures at each point
 
 % boolean for plotting and printing
@@ -127,24 +127,28 @@ switch file_run_name
         
     case 'sim2_3drone_swarm'
         
+        % drone speed
+        drone_speed = 5;    % slowed down for more measures
+        drone_speed_v2 = 2;    % slowed down for more measures
+        
         % swarm parameters
         swarm_spacing = 30;
+        swarm_spacing_v2 = 25;
+        
+        % circle parameters
+        pattern_radius = 80;
+        pattern_radius_v2 = 60;
+        pattern_center = pos_network_estimate;
+        pattern_anglerad_per_second = drone_speed / pattern_radius;
+        pattern_anglerad_per_second_v2 = drone_speed_v2 / pattern_radius_v2;
         
         % drone starting position
         pos_start = pos_network_estimate;
-        pos_swarm_center = pos_start;
+        pos_swarm_center = pos_start + [pattern_radius, 0, 0];
         pos_drone1 = pos_swarm_center + swarm_spacing*[0, -1, 0];
         pos_drone2 = pos_swarm_center + swarm_spacing*[-sqrt(3)/2, 1/2, 0];
         pos_drone3 = pos_swarm_center + swarm_spacing*[sqrt(3)/2, 1/2, 0];
-        
-        % state 0, make circle
-        pattern_radius = 40;
-        pattern_center = pos_network_estimate - [pattern_radius, 0, 0];
-        pattern_anglerad_per_second = drone_speed / pattern_radius;
-        
-        % state 1, make circle around estimate
-        pattern_radius_v2 = 50;
-               
+         
     case 'sim2_3drone_swarm_v2'
         
         % swarm parameters
@@ -170,22 +174,21 @@ if isfile('matlab_sim_v2/temp.mat')     % simulation run from 'multiple_run.m'
     print_bool = false;
     plot_movement_bool = false;
     load('matlab_sim_v2/temp.mat', 'experiment_counter', 'number_experiments');
-%     if experiment_counter < number_experiments/4
-%         number_measures = 2;
-%         algo_loops_todo = 2;
-%     elseif experiment_counter < number_experiments/2 && experiment_counter > number_experiments/4
-%         number_measures = 4;
-%         algo_loops_todo = 2;
-%     elseif experiment_counter < 3*number_experiments/4 && experiment_counter > number_experiments/2
-%         number_measures = 2;
-%         algo_loops_todo = 3;
-%     else
-%         number_measures = 4;
-%         algo_loops_todo = 3;
-%     end
-    if experiment_counter < number_experiments/2
-        
+    if experiment_counter < number_experiments/4
+        altitude = 20;
+        size_around_estimation_v1 = 100;
+        size_around_estimation_v2 = 30;
+    elseif experiment_counter < number_experiments/2
+        altitude = 20;
+        size_around_estimation_v1 = 150;
+        size_around_estimation_v2 = 80;
+    elseif experiment_counter < number_experiments*3/4
+        altitude = 100;
+        size_around_estimation_v1 = 100;
+        size_around_estimation_v2 = 30;
     else
-        
+        altitude = 100;
+        size_around_estimation_v1 = 150;
+        size_around_estimation_v2 = 80;
     end
 end

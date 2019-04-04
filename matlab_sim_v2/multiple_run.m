@@ -2,7 +2,7 @@
 clear all; close all;
 
 % define size
-number_experiments = 100;
+number_experiments = 800;
 
 % % launch profiler
 % profile on;
@@ -10,9 +10,9 @@ number_experiments = 100;
 % simulations to test
 test_1drone_gradient          = 0;
 test_1drone_continuous        = 0;
-test_1drone_trilateration     = 0;
+test_1drone_trilateration     = 1;
 test_1drone_trilateration_mod = 0;
-test_3drone_continuous        = 1;
+test_3drone_continuous        = 0;
 test_3drone_trilateration     = 0;
 test_3drone_swarm             = 0;
 
@@ -145,14 +145,14 @@ fprintf('\n');
 figure(); grid on; hold on;
 % plot(final_precision_1drone_gradient, 'r-'); 
 % plot(final_precision_1drone_continuous, 'g-'); 
-% plot(final_precision_1drone_trilateration, 'b-');
-% plot(final_precision_1drone_trilateration_mod, 'co-'); 
-plot(final_precision_3drone_continuous, 'mo-'); 
-% plot(final_precision_3drone_trilateration, 'yo-'); 
-% plot(final_precision_3drone_swarm, 'ko-'); 
+plot(final_precision_1drone_trilateration, 'b-');
+% plot(final_precision_1drone_trilateration_mod, 'c-'); 
+% plot(final_precision_3drone_continuous, 'r-'); 
+% plot(final_precision_3drone_trilateration, 'g-'); 
+% plot(final_precision_3drone_swarm, 'b-'); 
 % legend('One drone, gradient', 'One drone, continuous', 'One drone, trilateration', ...
 %         'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, continuous');
-% legend('Gradient descent', 'Multilateration', 'Trilateration');
+% legend('Multilateration', 'Trilateration', 'Swarm');
 title('Final precision');
 xlabel('Experiment');
 ylabel('Precision [m]');
@@ -161,14 +161,14 @@ ylabel('Precision [m]');
 figure(); grid on; hold on;
 % plot(final_time_1drone_gradient, 'r-'); 
 % plot(final_time_1drone_continuous, 'g-'); 
-% plot(final_time_1drone_trilateration, 'b-');
-% plot(final_time_1drone_trilateration_mod, 'co-'); 
-plot(final_time_3drone_continuous, 'mo-'); 
-% plot(final_time_3drone_trilateration, 'yo-'); 
-% plot(final_time_3drone_swarm, 'ko-');
+plot(final_time_1drone_trilateration, 'b-');
+% plot(final_time_1drone_trilateration_mod, 'c-'); 
+% plot(final_time_3drone_continuous, 'r-'); 
+% plot(final_time_3drone_trilateration, 'g-'); 
+% plot(final_time_3drone_swarm, 'b-');
 % legend('One drone, gradient', 'One drone, continuous', 'One drone, trilateration', ...
 %         'One drone, trilateration mod', 'Three drone, continuous', 'Three drone, trilateration', 'Three drone, swarming');
-% legend('Gradient descent', 'Multilateration', 'Trilateration');
+% legend('Multilateration', 'Trilateration', 'Swarm');
 title('Final time');
 xlabel('Experiment');
 ylabel('Time [s]');

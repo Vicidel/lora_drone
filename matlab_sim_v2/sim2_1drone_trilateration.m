@@ -3,7 +3,7 @@ function output = sim2_1drone_trilateration()
 
     clear all; close all;
     param;
-
+    
     % init
     global time_move;
     global time_measure;
@@ -94,9 +94,9 @@ function output = sim2_1drone_trilateration()
                     state = 0;
                     if algo_loop == 1
                         if print_bool fprintf('Could not find intersection, new random positions\n'); end
-                        measure_position1 = [rand*100, rand*100, 10];    % x > 0, y > 0
-                        measure_position2 = [-rand*100, rand*100, 10];    % x < 0, y > 0
-                        measure_position3 = [rand*200-100, rand*100-100, 10];    % y < 0
+                        measure_position1 = [rand*100, rand*100, altitude];    % x > 0, y > 0
+                        measure_position2 = [-rand*100, rand*100, altitude];    % x < 0, y > 0
+                        measure_position3 = [rand*200-100, rand*100-100, altitude];    % y < 0
                     else
                         if print_bool fprintf('Could not find intersection, larger spacing (%d m)\n', size_around_estimation_v2); end
                         size_around_estimation_v2 = 60;
@@ -121,7 +121,7 @@ function output = sim2_1drone_trilateration()
                         ylabel('y position [m]')
                         zlabel('z position [m]')
                         title('Node localization algorithm');
-                        legend('Node position', 'Network position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
+                        legend('Node position', 'Last estimated position', '1st measure', '2nd measure', '3rd measure', 'Estimated position');
                         view(0, 90); axis equal; 
                     end
 
@@ -156,6 +156,7 @@ function output = sim2_1drone_trilateration()
                     state = 0;
                     algo_loop = algo_loop + 1;
                     pos_estimated_old = pos_estimated;
+                    pos_network_estimate = pos_estimated;
                 end
         end
         

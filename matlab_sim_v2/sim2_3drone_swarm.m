@@ -122,6 +122,8 @@ function output = sim2_3drone_swarm()
                     
                     % next state
                     state = 1;
+                    swarm_spacing = swarm_spacing_v2;
+                    pattern_anglerad_per_second = pattern_anglerad_per_second_v2;
                 end
                 
             case 1

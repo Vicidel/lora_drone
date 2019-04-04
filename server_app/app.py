@@ -2,6 +2,7 @@
 import os
 import json
 import struct
+import math
 import numpy as np
 import datetime as dt
 from flask import Flask, Response, request, redirect, url_for, escape, jsonify, make_response
@@ -51,6 +52,10 @@ class drone_datapoint(db.Document):
 	time 		 = db.StringField()
 	payload      = db.StringField()
 
+# create the class for server memory
+class server_memory(db.Document):
+	state 		 = db.IntField()
+
 
 
 # set the port dynamically with a default of 3000 for local development
@@ -66,13 +71,31 @@ device_eui      = '78AF580300000493'
 TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+01:00"
 TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
+# waypoint parameters
+flying_altitude   = 10
+takeoff_altitude  = 2
+network_x 		  = 50
+network_y 		  = 0
+network_z 		  = 0
+circle_radius     = 20
+hover_time 		  = 2
 
+
+
+#########################################################################################
+###################################  DEFAULT ROUTE  #####################################
+#########################################################################################
 
 # base route which just returns a string
 @app.route('/')
 def hello_world():
 	return '<b>Welcome to the Drone application!</b>'
 
+
+
+#########################################################################################
+#####################################  LORA ROUTE  ######################################
+#########################################################################################
 
 # Swisscom LPN listener to POST from actility
 @app.route('/lora/receive_message', methods=['POST'])
@@ -155,6 +178,113 @@ def lora_receive():
 	return 'Datapoint DevEUI %s saved' %(r_deveui)
 
 
+
+#########################################################################################
+####################################  DRONE ROUTE  ######################################
+#########################################################################################
+
+# receive GPS coordinates from offb_node script
+@app.route('/drone/receive_message', methods=['POST'])
+def drone_receive():
+	print("!!! Data received from drone !!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the JSON received
+	print("JSON received:")
+	print(j)
+
+	# parse communication parameters
+	r_pos_x     = j['pos_x']
+	r_pos_y     = j['pos_y']
+	r_pos_z     = j['pos_z']
+	r_payload   = j['payload']
+	r_ts_temp   = j['timestamp']
+	r_time      = dt.datetime.utcfromtimestamp(float(r_ts_temp)).strftime(TIME_FORMAT)
+
+	# type conversion and stuff
+	r_timestamp = dt.datetime.utcfromtimestamp(float(r_ts_temp))
+	r_time 		= str(r_time) 
+
+	# create new datapoint with parsed data
+	datapoint = drone_datapoint(pos_x=r_pos_x, pos_y=r_pos_y, pos_z=r_pos_z, time=r_time, timestamp=r_timestamp, payload=r_payload)
+
+	# save it to database
+	datapoint.save()
+	print('SUCESS: new drone datapoint saved to database')
+
+	# process payload
+	if r_payload=='drone_armed':
+		# set takeoff position as 2m above current position
+		pos_x = float(r_pos_x)
+		pos_y = float(r_pos_y)
+		pos_z = float(r_pos_z) + float(takeoff_altitude)
+		return "New waypoint (takeoff): x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+	if r_payload=='drone_takeoff':
+		# empty memory database
+		server_memory.objects.delete()
+
+		# set state
+		current_state = 0
+		print('STATE: current state is {}'.format(current_state))
+		memory = server_memory(state=current_state)
+		memory.save()
+
+		# send first waypoint
+		pos_x = network_x + circle_radius*math.cos(0)
+		pos_y = network_y + circle_radius*math.sin(0)
+		pos_z = flying_altitude
+		return "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+	if r_payload=='waypoint_reached':
+		# read old state to increment it
+		latest = server_memory.objects.order_by('-id').first()
+		current_state = latest.state + 1
+
+		# set state
+		print('STATE: current state is {}'.format(current_state))
+		memory = server_memory(state=current_state)
+		memory.save()
+
+		# send hover time
+		return "Hover time set: h{}".format(hover_time)
+
+	if r_payload=='data_collected':
+		# read old state to know which waypoint is next
+		latest = server_memory.objects.order_by('-id').first()
+
+		# create and send waypoint
+		if latest.state == 1:
+			pos_x = network_x + circle_radius*math.cos(2*math.pi/3)
+			pos_y = network_y + circle_radius*math.sin(2*math.pi/3)
+			pos_z = flying_altitude
+		elif latest.state == 2:
+			pos_x = network_x + circle_radius*math.cos(4*math.pi/3)
+			pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
+			pos_z = flying_altitude
+		else:
+			pos_x = network_x
+			pos_y = network_y
+			pos_z = flying_altitude
+			return "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+		return "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+	# success
+	return 'Datapoint added to database'
+
+
+
+#########################################################################################
+######################################  QUERIES  ########################################
+#########################################################################################
+
 #querying the database and giving back a JSON file
 @app.route('/lora/query', methods=['GET'])
 def lora_query():
@@ -196,49 +326,9 @@ def lora_query():
 		headers={'Content-Disposition':'attachment;filename=query.json'})
 
 
-# receive GPS coordinates from offb_node script
-@app.route('/drone/receive_message', methods=['POST'])
-def drone_receive():
-	print("!!! Data received from drone !!!")
-
-	# test nature of message: if not JSON we don't want it
-	j = []
-	try:
-		j = request.json
-	except:
-		print("ERROR: file is not a JSON")
-		return 'Can only receive JSON file'
-
-	# display in log the JSON received
-	print("JSON received:")
-	print(j)
-
-	# parse communication parameters
-	r_pos_x     = j['pos_x']
-	r_pos_y     = j['pos_y']
-	r_pos_z     = j['pos_z']
-	r_payload   = j['payload']
-	r_ts_temp   = j['timestamp']
-	r_time      = dt.datetime.utcfromtimestamp(float(r_ts_temp)).strftime(TIME_FORMAT)
-
-	# type conversion and stuff
-	r_timestamp = dt.datetime.utcfromtimestamp(float(r_ts_temp))
-	r_time 		= str(r_time) 
-
-	# create new datapoint with parsed data
-	datapoint = drone_datapoint(pos_x=r_pos_x, pos_y=r_pos_y, pos_z=r_pos_z, time=r_time, timestamp=r_timestamp, payload=r_payload)
-
-	# save it to database
-	datapoint.save()
-	print('SUCESS: new drone datapoint saved to database')
-
-	# success
-	return 'GPS added to database'
-
-
 #querying the database and giving back a JSON file
-@app.route('/lora/query', methods=['GET'])
-def lora_query():
+@app.route('/drone/query', methods=['GET'])
+def drone_query():
 	query = request.args
 
 	# to delete datapoint based on time
@@ -265,12 +355,17 @@ def lora_query():
 	if 'end' in query:
 		end = dt.datetime.strptime(query['end'], TIME_FORMAT_QUERY)
 
-	datapoints = LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start).to_json()
+	datapoints = drone_datapoint.objects(timestamp__lt=end,timestamp__gt=start).to_json()
 
 	#return datapoints 		# for directly in browser
 	return Response(datapoints,mimetype='application/json', 	# for automatic file download
 		headers={'Content-Disposition':'attachment;filename=query.json'})
 
+
+
+#########################################################################################
+####################################  JSON OUTPUT  ######################################
+#########################################################################################
 
 # output JSON as downloaded file, LoRa database
 @app.route('/lora/json', methods=['GET'])
@@ -302,9 +397,17 @@ def drone_print_json():
 	return drone_datapoint.objects.to_json()
 
 
+# print JSON directly in browser, memory database
+@app.route('/memory/json_print', methods=['GET'])
+def memory_print_json():
+	print('Printing memory database as JSON')
+	return server_memory.objects.to_json()
 
 
 
+#########################################################################################
+################################### DATABASE CLEAR  #####################################
+#########################################################################################
 
 # deletes the database
 @app.route('/delete_all')
@@ -314,6 +417,11 @@ def db_delete():
 	#return 'Databases are now empty'
 	return 'Delete function removed for (obvious) security reasons'
 
+
+
+#########################################################################################
+#####################################  APP START  #######################################
+#########################################################################################
 
 # start the app
 if __name__ == '__main__':

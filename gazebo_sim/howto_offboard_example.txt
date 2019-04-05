@@ -1,4 +1,4 @@
-This commands run the C++ script located in catkin_ws/src/mavros/mavros/src/offb_node.cpp
+These commands run the C++ script located in catkin_ws/src/mavros/mavros/src/offb_node.cpp
 The drone moves in the Gazebo window according to the script
 We can spectate the simulation from QGC (terminal 4)
 

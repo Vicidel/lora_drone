@@ -1,0 +1,9 @@
+These commands launch MAVROS on the RPi and links it with the Pixhawk
+
+	Terminal 1 (on RPi via SSH):
+		// starts the ROS node master
+		roscore
+
+	Terminal 2 (on RPi via SSH):
+		// connects the RPi with the Pixhawk
+		roslaunch mavros px4.launch fcu_url:=serial:///dev/ttyS0

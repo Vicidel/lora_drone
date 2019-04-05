@@ -3,6 +3,7 @@
 
 // standard libraries
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <string.h>
 
@@ -16,6 +17,11 @@
 using namespace Eigen; // To use matrix and vector representation
 
 
-int send_GPS(Vector3f position, float time);
+#define DRONE_POST_GPS_URL "http://victor.scapp.io/drone/receive_message"
+#define DRONE_GET_WAYPOINT_URL "http://victor.scapp.io/drone/send_waypoint"
+
+std::string send_GPS(Vector3f position, float time, char* payload);
+std::string get(void);
+
 
 #endif

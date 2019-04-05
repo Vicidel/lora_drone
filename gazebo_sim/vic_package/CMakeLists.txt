@@ -9,7 +9,7 @@ project(vic_package)
 set(requiredlibs)
 set(CURL_LIBRARY "-lcurl")
 set(CMAKE_INCLUDE_PATH "/usr/include")
-set(CMAKE_LIBRARY_PATH "/usr/lib/x86_64-linux-gnu/libncurses.so")
+#set(CMAKE_LIBRARY_PATH "/usr/lib/x86_64-linux-gnu/libncurses.so")
 
 # find packages for mavros
 find_package(catkin REQUIRED COMPONENTS

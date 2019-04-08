@@ -102,18 +102,21 @@ int main(int argc, char **argv){
     while(ros::ok() && drone_doing_stuff){
 
         // every 5s, try to set mode as OFFBOARD
-        if(current_state.mode != "OFFBOARD" && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
+        if(current_state.mode != "OFFBOARD"){
 
-            // this block for setting OFFBOARD from script
-            //if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
-            //    ROS_INFO("Offboard enabled from script");
-            //    pos_home = pos_drone;
-            //}
+            if( (ros::Time::now() - time_last_request) > ros::Duration(2.0) ){
 
-            // this block to wait for OFFBOARD from RC
-            ROS_INFO("Waiting for offboard mode from RC");
+                // this block for setting OFFBOARD from script
+                //if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
+                //    ROS_INFO("Offboard enabled from script");
+                //    pos_home = pos_drone;
+                //}
 
-            time_last_request = ros::Time::now();
+                // this block to wait for OFFBOARD from RC
+                ROS_INFO("Waiting for offboard mode from RC");
+
+                time_last_request = ros::Time::now();
+            }
 
         } else{
             // drone current mode is OFFBOARD

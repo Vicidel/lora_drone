@@ -102,7 +102,7 @@ int main(int argc, char **argv){
     while(ros::ok() && drone_doing_stuff){
 
         // every 5s, try to set mode as OFFBOARD
-        if(current_state.mode != "OFFBOARD" && (ros::Time::now() - time_last_request > ros::Duration(5.0))){
+        if(current_state.mode != "OFFBOARD" && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
 
             // this block for setting OFFBOARD from script
             //if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
@@ -119,7 +119,7 @@ int main(int argc, char **argv){
             // drone current mode is OFFBOARD
 
             // every 5s, try to arm drone
-            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(5.0))){
+            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                 }
@@ -133,6 +133,8 @@ int main(int argc, char **argv){
                 ros::spinOnce();
                 rate.sleep();
                 pos_drone = conversion_to_vect(est_local_pos);
+                ROS_INFO("Current position: x=%.2f, y=%.2f, z=%.2f", pos_drone(0), pos_drone(1), pos_drone(2));
+                ROS_INFO("Current goal:  x=%.2f, y=%.2f, z=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
 
                 // FSM
                 switch(state){

@@ -88,7 +88,8 @@ int main(int argc, char **argv){
 
     // time storage
     ros::Time time_last_request = ros::Time::now();
-    ros::Time time_start_hover = ros::Time::now();
+    ros::Time time_start_hover  = ros::Time::now();
+    ros::Time time_last_print   = ros::Time::now();
 
 
     // parameters
@@ -102,13 +103,17 @@ int main(int argc, char **argv){
     while(ros::ok() && drone_doing_stuff){
 
         // display info
-        char state_char[current_state.mode.size()+1];
-        strcpy(state_char, current_state.mode.c_str());
-        ROS_INFO("State: %s, armed: %d", state_char, current_state.armed); 
+        if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
+            char state_char[current_state.mode.size()+1];
+            strcpy(state_char, current_state.mode.c_str());
+            ROS_INFO("Current state: %s, drone armed: %d", state_char, current_state.armed); 
+            ROS_INFO("Current position: x=%.2f, y=%.2f, z=%.2f", pos_drone(0), pos_drone(1), pos_drone(2));
+            ROS_INFO("Current goal:  x=%.2f, y=%.2f, z=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
+            time_last_print = ros::Time::now();
+        }
 
-        // every 5s, try to set mode as OFFBOARD
-        if(current_state.mode != "OFFBOARD"){
-
+        // every 5s, try to set mode as OFFBOARD if switch is in MANUAL
+        if(current_state.mode == "MANUAL"){
             if( (ros::Time::now() - time_last_request) > ros::Duration(2.0) ){
 
                 // this block for setting OFFBOARD from script
@@ -131,6 +136,16 @@ int main(int argc, char **argv){
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                 }
+
+                // get arming position
+                ros::spinOnce();
+                rate.sleep();
+                pos_drone = conversion_to_vect(est_local_pos);
+
+                // set goal as 1m higher
+                pos_current_goal = pos_drone;
+                pos_current_goal(2) = pos_current_goal(2) + 1.0f;
+
                 time_last_request = ros::Time::now();
             }
             
@@ -141,9 +156,7 @@ int main(int argc, char **argv){
                 ros::spinOnce();
                 rate.sleep();
                 pos_drone = conversion_to_vect(est_local_pos);
-                ROS_INFO("Current position: x=%.2f, y=%.2f, z=%.2f", pos_drone(0), pos_drone(1), pos_drone(2));
-                ROS_INFO("Current goal:  x=%.2f, y=%.2f, z=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
-
+                
                 // FSM
                 switch(state){
                     case 0:{

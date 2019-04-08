@@ -93,7 +93,7 @@ int main(int argc, char **argv){
 
 
     // parameters
-    float precision = 0.2f;     // precision to reach the waypoints
+    float precision = 0.1f;     // precision to reach the waypoints
     int state = 0;              // FSM state
     float hover_time = 20.0f;   // hovering time at measure positions
     bool drone_doing_stuff = true;
@@ -140,10 +140,10 @@ int main(int argc, char **argv){
                 // get arming position
                 ros::spinOnce();
                 rate.sleep();
-                pos_drone = conversion_to_vect(est_local_pos);
+                pos_home = conversion_to_vect(est_local_pos);
 
                 // set goal as 1m higher
-                pos_current_goal = pos_drone;
+                pos_current_goal = pos_home;
                 pos_current_goal(2) = pos_current_goal(2) + 1.0f;
 
                 time_last_request = ros::Time::now();
@@ -176,6 +176,7 @@ int main(int argc, char **argv){
                         // time hovering is passed
                         if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
                             ROS_INFO("Time spend hovering is over, landing");
+                            pos_current_goal = pos_home;
                             state = 2;
                         }
                         
@@ -188,13 +189,13 @@ int main(int argc, char **argv){
                             arm_cmd.request.value = false;
                             if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                                 ROS_INFO("Drone landing spot reached!");
-                                state = 4;
+                                state = 3;
                             }
                         }
                         break;
                     }
 
-                    case 4:{
+                    case 3:{
                         // finished
                         ROS_INFO("Drone landed");
                         drone_doing_stuff = false;

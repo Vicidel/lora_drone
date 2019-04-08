@@ -101,7 +101,11 @@ int main(int argc, char **argv){
     // while ROS is online
     while(ros::ok() && drone_doing_stuff){
 
-        ROS_INFO("State: %s, armed: %d", current_state.mode, current_state.armed); 
+        // display info
+        char state_char[current_state.mode.size()+1];
+        strcpy(state_char, current_state.mode.c_str());
+        ROS_INFO("State: %s, armed: %d", state_char, current_state.armed); 
+
         // every 5s, try to set mode as OFFBOARD
         if(current_state.mode != "OFFBOARD"){
 

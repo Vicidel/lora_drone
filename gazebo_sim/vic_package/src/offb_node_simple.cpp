@@ -109,6 +109,7 @@ int main(int argc, char **argv){
             ROS_INFO("Current state: %s, drone armed: %d", state_char, current_state.armed); 
             ROS_INFO("Current position: x=%.2f, y=%.2f, z=%.2f", pos_drone(0), pos_drone(1), pos_drone(2));
             ROS_INFO("Current goal:  x=%.2f, y=%.2f, z=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
+            ROS_INFO("");
             time_last_print = ros::Time::now();
         }
 
@@ -123,16 +124,19 @@ int main(int argc, char **argv){
                 //}
 
                 // this block to wait for OFFBOARD from RC
-                ROS_INFO("Waiting for offboard mode from RC");
+                ROS_INFO("Waiting for offboard mode from RC, keeping drone disarmed");
+                arm_cmd.request.value = false;
+                arming_client.call(arm_cmd);
 
                 time_last_request = ros::Time::now();
             }
 
         } else{
-            // drone current mode is OFFBOARD
+            // drone current mode is OFFBOARD (or at least not MANUAL)
 
             // every 5s, try to arm drone
             if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
+                arm_cmd.request.value = true;
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                 }
@@ -207,9 +211,6 @@ int main(int argc, char **argv){
                         break;
                     }
                 }
-
-                // set new position at 1m in front
-                local_pos_pub.publish(conversion_to_msg(pos_current_goal));
             }
 
         }
@@ -246,5 +247,9 @@ Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg){
     vect(0) = msg.pose.position.x;
     vect(1) = msg.pose.position.y;
     vect(2) = msg.pose.position.z;
+    ROS_INFO("");
+    ROS_INFO("new pose: %f %f %f", vect(0), vect(1), vect(2));
+    ROS_INFO("");
+
     return vect;
 }

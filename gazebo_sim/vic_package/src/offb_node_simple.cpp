@@ -19,6 +19,7 @@ using namespace Eigen; // To use matrix and vector representation
 #include <ros/ros.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
@@ -31,12 +32,13 @@ using namespace Eigen; // To use matrix and vector representation
 // define the received MAVROS messages
 mavros_msgs::State current_state;               // drone state (for OFFBOARD mode)
 geometry_msgs::PoseStamped  est_local_pos;      // local position (x, y, z)
+geometry_msgs::PoseWithCovarianceStamped  est_global_pos;      // global position (x, y, z)
 
 
 // functions definitions
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos);
-void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos);
+void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos_gps);
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
 Vector3f conversion_to_vect_v2(geometry_msgs::PoseWithCovarianceStamped msg);
@@ -71,6 +73,7 @@ int main(int argc, char **argv){
     // create position vectors
     Vector3f pos_takeoff       (0.0f,  0.0f, 2.0f);
     Vector3f pos_drone         (0.0f,  0.0f, 0.0f);
+    Vector3f pos_drone_gps     (0.0f,  0.0f, 0.0f);
     Vector3f pos_home          (0.0f,  0.0f, 0.0f);
     Vector3f pos_current_goal;
 
@@ -241,8 +244,8 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg){
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
     est_local_pos = *est_pos;
 }
-void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos){
-    est_global_pos = *est_pos;
+void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos_gps){
+    est_global_pos = *est_pos_gps;
 }
 
 

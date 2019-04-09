@@ -32,15 +32,15 @@ using namespace Eigen; // To use matrix and vector representation
 // define the received MAVROS messages
 mavros_msgs::State current_state;               // drone state (for OFFBOARD mode)
 geometry_msgs::PoseStamped  est_local_pos;      // local position (x, y, z)
-geometry_msgs::PoseWithCovarianceStamped  est_global_pos;      // global position (x, y, z)
+geometry_msgs::PoseWithCovarianceStamped  est_gps_pos;      // global position (x, y, z)
 
 
 // functions definitions
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
-void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos);
-void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos_gps);
+void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg);
+void est_gps_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg);
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
-Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
+Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg);
 Vector3f conversion_to_vect_v2(geometry_msgs::PoseWithCovarianceStamped msg);
 
 
@@ -55,7 +55,7 @@ int main(int argc, char **argv){
     // subscribes to topics 
     ros::Subscriber state_sub          = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
     ros::Subscriber est_local_pos_sub  = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
-    ros::Subscriber est_global_pos_sub = nh.subscribe<geometry_msgs::PoseWithCovarianceStamped> ("mavros/global_position/local", 10, est_global_pos_cb);
+    ros::Subscriber est_gps_pos_sub    = nh.subscribe<geometry_msgs::PoseWithCovarianceStamped> ("mavros/global_position/local", 10, est_gps_pos_cb);
     ros::Publisher local_pos_pub       = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
     ros::ServiceClient arming_client   = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode> ("mavros/set_mode");
@@ -121,9 +121,9 @@ int main(int argc, char **argv){
             time_last_print = ros::Time::now();
         }
 
-        // every 5s, try to set mode as OFFBOARD if switch is in MANUAL
+        // every 1s, try disarm if switch is in MANUAL
         if(current_state.mode == "MANUAL"){
-            if( (ros::Time::now() - time_last_request) > ros::Duration(2.0) ){
+            if( (ros::Time::now() - time_last_request) > ros::Duration(1.0) ){
 
                 // this block for setting OFFBOARD from script
                 //if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
@@ -142,18 +142,18 @@ int main(int argc, char **argv){
         } else{
             // drone current mode is OFFBOARD (or at least not MANUAL)
 
+            // get arming position
+            ros::spinOnce();
+            rate.sleep();
+            pos_home = conversion_to_vect(est_local_pos);
+            pos_drone_gps = conversion_to_vect_v2(est_gps_pos);
+
             // every 5s, try to arm drone
             if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
                 arm_cmd.request.value = true;
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                 }
-
-                // get arming position
-                ros::spinOnce();
-                rate.sleep();
-                pos_home = conversion_to_vect(est_local_pos);
-                pos_drone_gps = conversion_to_vect_v2(est_global_pos);
 
                 // set goal as 1m higher
                 pos_current_goal = pos_home;
@@ -165,12 +165,6 @@ int main(int argc, char **argv){
             if(current_state.armed){
                 // drone is armed and ready to fly
 
-                // get new position
-                ros::spinOnce();
-                rate.sleep();
-                pos_drone = conversion_to_vect(est_local_pos);
-                pos_drone_gps = conversion_to_vect_v2(est_global_pos);
-                
                 // FSM
                 switch(state){
                     case 0:{
@@ -229,7 +223,7 @@ int main(int argc, char **argv){
         ros::spinOnce();
         rate.sleep();
         pos_drone = conversion_to_vect(est_local_pos);
-        pos_drone_gps = conversion_to_vect_v2(est_global_pos);
+        pos_drone_gps = conversion_to_vect_v2(est_gps_pos);
     }
 
     return 0;
@@ -241,11 +235,11 @@ int main(int argc, char **argv){
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
     current_state = *msg;
 }
-void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
-    est_local_pos = *est_pos;
+void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg){
+    est_local_pos = *msg;
 }
-void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos_gps){
-    est_global_pos = *est_pos_gps;
+void est_gps_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& msg){
+    est_gps_pos = *msg;
 }
 
 

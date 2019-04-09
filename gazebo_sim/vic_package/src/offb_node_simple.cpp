@@ -36,8 +36,11 @@ geometry_msgs::PoseStamped  est_local_pos;      // local position (x, y, z)
 // functions definitions
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos);
+void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos);
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
+Vector3f conversion_to_vect_v2(geometry_msgs::PoseWithCovarianceStamped msg);
+
 
 // main
 int main(int argc, char **argv){    
@@ -48,10 +51,11 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
 
     // subscribes to topics 
-    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
-    ros::Subscriber est_local_pos_sub = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
-    ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
-    ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
+    ros::Subscriber state_sub          = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
+    ros::Subscriber est_local_pos_sub  = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
+    ros::Subscriber est_global_pos_sub = nh.subscribe<geometry_msgs::PoseWithCovarianceStamped> ("mavros/global_position/local", 10, est_global_pos_cb);
+    ros::Publisher local_pos_pub       = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
+    ros::ServiceClient arming_client   = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode> ("mavros/set_mode");
 
     //the setpoint publishing rate MUST be faster than 2Hz
@@ -108,6 +112,7 @@ int main(int argc, char **argv){
             strcpy(state_char, current_state.mode.c_str());
             ROS_INFO("Current state: %s, drone armed: %d", state_char, current_state.armed); 
             ROS_INFO("Current position: x=%.2f, y=%.2f, z=%.2f", pos_drone(0), pos_drone(1), pos_drone(2));
+            ROS_INFO("Current position (gps): x=%.2f, y=%.2f, z=%.2f", pos_drone_gps(0), pos_drone_gps(1), pos_drone_gps(2));
             ROS_INFO("Current goal:  x=%.2f, y=%.2f, z=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
             ROS_INFO("");
             time_last_print = ros::Time::now();
@@ -145,6 +150,7 @@ int main(int argc, char **argv){
                 ros::spinOnce();
                 rate.sleep();
                 pos_home = conversion_to_vect(est_local_pos);
+                pos_drone_gps = conversion_to_vect_v2(est_global_pos);
 
                 // set goal as 1m higher
                 pos_current_goal = pos_home;
@@ -160,6 +166,7 @@ int main(int argc, char **argv){
                 ros::spinOnce();
                 rate.sleep();
                 pos_drone = conversion_to_vect(est_local_pos);
+                pos_drone_gps = conversion_to_vect_v2(est_global_pos);
                 
                 // FSM
                 switch(state){
@@ -219,6 +226,7 @@ int main(int argc, char **argv){
         ros::spinOnce();
         rate.sleep();
         pos_drone = conversion_to_vect(est_local_pos);
+        pos_drone_gps = conversion_to_vect_v2(est_global_pos);
     }
 
     return 0;
@@ -233,6 +241,10 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg){
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
     est_local_pos = *est_pos;
 }
+void est_global_pos_cb(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr& est_pos){
+    est_global_pos = *est_pos;
+}
+
 
 // convertion functions between Vector3f and PoseStamped ROS message
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f vect){
@@ -249,6 +261,15 @@ Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg){
     vect(2) = msg.pose.position.z;
     ROS_INFO("");
     ROS_INFO("new pose: %f %f %f", vect(0), vect(1), vect(2));
+
+    return vect;
+}
+Vector3f conversion_to_vect_v2(geometry_msgs::PoseWithCovarianceStamped msg){
+    Vector3f vect;
+    vect(0) = msg.pose.pose.position.x;
+    vect(1) = msg.pose.pose.position.y;
+    vect(2) = msg.pose.pose.position.z;
+    ROS_INFO("new gps pose: %f %f %f", vect(0), vect(1), vect(2));
     ROS_INFO("");
 
     return vect;

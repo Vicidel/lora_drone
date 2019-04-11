@@ -103,7 +103,6 @@ int main(int argc, char **argv){
 
     // state booleans
     bool bool_wait_for_offboard = true;
-    bool bool_wait_for_arming = true;
     bool bool_stop_all = false;
 
     
@@ -131,8 +130,8 @@ int main(int argc, char **argv){
         // waiting for OFFBOARD mode
         if(bool_wait_for_offboard){
 
-            // every 2s
-            if((ros::Time::now() - time_last_request) > ros::Duration(2.0) ){
+            // every 1s:
+            if((ros::Time::now() - time_last_request) > ros::Duration(1.0) ){
 
                 // check state
                 if(current_state.mode == "OFFBOARD"){
@@ -148,6 +147,12 @@ int main(int argc, char **argv){
         }
         else{
             // mode was set on OFFBOARD at one point
+
+            // check if we got back to manual mode
+            if(current_state.mode == "MANUAL"){
+                ROS_INFO("Switched back to manual mode");
+                bool_wait_for_offboard = true;
+            }
 
             // every 2s, try to arm drone
             if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){

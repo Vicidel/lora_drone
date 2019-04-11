@@ -135,8 +135,8 @@ int main(int argc, char **argv){
             if((ros::Time::now() - time_last_request) > ros::Duration(2.0) ){
 
                 // check state
-                if(current_state.mode == 'OFFBOARD'){
-                    ROS_INFO("Offboard mode set from RC")
+                if(current_state.mode == "OFFBOARD"){
+                    ROS_INFO("Offboard mode set from RC");
                     bool_wait_for_offboard = false;
                     time_last_request = ros::Time::now();
                 }
@@ -176,7 +176,7 @@ int main(int argc, char **argv){
                         // go to takeoff position
                         if((pos_drone-pos_current_goal).norm()<precision){
                             ROS_INFO("Takeoff position reached!");
-                            ROS_INFO("Will hover for %d seconds", hover_time);
+                            ROS_INFO("Will hover for %.1f seconds", hover_time);
                             time_start_hover = ros::Time::now();
                             state = 1;
                         }

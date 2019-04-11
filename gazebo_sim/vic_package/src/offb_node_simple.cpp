@@ -87,9 +87,7 @@ int main(int argc, char **argv){
         rate.sleep();
     }
 
-    // to set OFFBOARD mode and to arm drone
-    mavros_msgs::SetMode offb_set_mode;
-    offb_set_mode.request.custom_mode = "OFFBOARD";
+    // to arm drone
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
 
@@ -98,16 +96,25 @@ int main(int argc, char **argv){
     ros::Time time_start_hover  = ros::Time::now();
     ros::Time time_last_print   = ros::Time::now();
 
-
     // parameters
     float precision = 0.1f;     // precision to reach the waypoints
     int state = 0;              // FSM state
-    float hover_time = 20.0f;   // hovering time at measure positions
-    bool drone_doing_stuff = true;
+    float hover_time = 4.0f;    // hovering time at measure positions
+
+    // state booleans
+    bool bool_wait_for_offboard = true;
+    bool bool_wait_for_arming = true;
+    bool bool_stop_all = false;
 
     
     // while ROS is online
-    while(ros::ok() && drone_doing_stuff){
+    while(ros::ok()){
+
+        // stop bool
+        if(bool_stop_all){
+            ROS_INFO("Stop condition reached");
+            break;
+        }
 
         // display info
         if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
@@ -121,43 +128,41 @@ int main(int argc, char **argv){
             time_last_print = ros::Time::now();
         }
 
-        // every 1s, try disarm if switch is in MANUAL
-        if(current_state.mode == "MANUAL"){
-            if( (ros::Time::now() - time_last_request) > ros::Duration(1.0) ){
+        // waiting for OFFBOARD mode
+        if(bool_wait_for_offboard){
 
-                // this block for setting OFFBOARD from script
-                //if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
-                //    ROS_INFO("Offboard enabled from script");
-                //    pos_home = pos_drone;
-                //}
+            // every 2s
+            if((ros::Time::now() - time_last_request) > ros::Duration(2.0) ){
 
-                // this block to wait for OFFBOARD from RC
-                ROS_INFO("Waiting for offboard mode from RC, keeping drone disarmed");
-                arm_cmd.request.value = false;
-                arming_client.call(arm_cmd);
-
-                time_last_request = ros::Time::now();
+                // check state
+                if(current_state.mode == 'OFFBOARD'){
+                    ROS_INFO("Offboard mode set from RC")
+                    bool_wait_for_offboard = false;
+                    time_last_request = ros::Time::now();
+                }
+                else{
+                    ROS_INFO("Waiting for offboard mode from RC");
+                    time_last_request = ros::Time::now();
+                }
             }
+        }
+        else{
+            // mode was set on OFFBOARD at one point
 
-        } else{
-            // drone current mode is OFFBOARD (or at least not MANUAL)
-
-            // get arming position
-            ros::spinOnce();
-            rate.sleep();
-            pos_home = conversion_to_vect(est_local_pos);
-            pos_drone_gps = conversion_to_vect_v2(est_gps_pos);
-
-            // every 5s, try to arm drone
+            // every 2s, try to arm drone
             if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
                 arm_cmd.request.value = true;
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
+                    ros::spinOnce();
+                    rate.sleep();
+                    pos_home = conversion_to_vect(est_local_pos);   // store arming position
+                    pos_current_goal = pos_home;
+                    pos_current_goal(2) = pos_current_goal(2) + 1.0f;   // goal 1m above
                 }
-
-                // set goal as 1m higher
-                pos_current_goal = pos_home;
-                pos_current_goal(2) = pos_current_goal(2) + 1.0f;
+                else{
+                    ROS_INFO("Trying to arm drone");
+                }
 
                 time_last_request = ros::Time::now();
             }
@@ -171,6 +176,7 @@ int main(int argc, char **argv){
                         // go to takeoff position
                         if((pos_drone-pos_current_goal).norm()<precision){
                             ROS_INFO("Takeoff position reached!");
+                            ROS_INFO("Will hover for %d seconds", hover_time);
                             time_start_hover = ros::Time::now();
                             state = 1;
                         }
@@ -178,10 +184,7 @@ int main(int argc, char **argv){
                     }
 
                     case 1:{
-                        // hovering 
-                        ROS_INFO("Hovering at takeoff position");
-
-                        // time hovering is passed
+                        // hovering until time hovering is passed
                         if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
                             ROS_INFO("Time spend hovering is over, landing");
                             pos_current_goal = pos_home;
@@ -206,7 +209,7 @@ int main(int argc, char **argv){
                     case 3:{
                         // finished
                         ROS_INFO("Drone landed");
-                        drone_doing_stuff = false;
+                        bool_stop_all = true;
                         break;
                     }
 
@@ -256,8 +259,7 @@ Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg){
     vect(0) = msg.pose.position.x;
     vect(1) = msg.pose.position.y;
     vect(2) = msg.pose.position.z;
-    ROS_INFO("");
-    ROS_INFO("new pose: %f %f %f", vect(0), vect(1), vect(2));
+    //ROS_INFO("new pose: %f %f %f", vect(0), vect(1), vect(2));
 
     return vect;
 }
@@ -266,8 +268,8 @@ Vector3f conversion_to_vect_v2(geometry_msgs::PoseWithCovarianceStamped msg){
     vect(0) = msg.pose.pose.position.x;
     vect(1) = msg.pose.pose.position.y;
     vect(2) = msg.pose.pose.position.z;
-    ROS_INFO("new gps pose: %f %f %f", vect(0), vect(1), vect(2));
-    ROS_INFO("");
+    //ROS_INFO("new gps pose: %f %f %f", vect(0), vect(1), vect(2));
+    //ROS_INFO("");
 
     return vect;
 }

@@ -97,7 +97,7 @@ int main(int argc, char **argv){
     ros::Time time_last_print   = ros::Time::now();
 
     // parameters
-    float precision = 0.1f;     // precision to reach the waypoints
+    float precision = 0.5f;     // precision to reach the waypoints
     int state = 0;              // FSM state
     float hover_time = 4.0f;    // hovering time at measure positions
 
@@ -163,7 +163,7 @@ int main(int argc, char **argv){
                     rate.sleep();
                     pos_home = conversion_to_vect(est_local_pos);   // store arming position
                     pos_current_goal = pos_home;
-                    pos_current_goal(2) = pos_current_goal(2) + 1.0f;   // goal 1m above
+                    pos_current_goal(2) = pos_current_goal(2) + 2.0f;   // goal XXm above home
                 }
                 else{
                     ROS_INFO("Trying to arm drone");

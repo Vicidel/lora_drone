@@ -55,6 +55,8 @@ class drone_datapoint(db.Document):
 # create the class for server memory
 class server_memory(db.Document):
 	state 		 = db.IntField()
+	timestamp    = db.DateTimeField()
+	time 		 = db.StringField()
 
 
 
@@ -68,17 +70,33 @@ gateway_drone   = '004A10EB'
 device_eui      = '78AF580300000493'
 
 # time format
-TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+01:00"
+TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"
 TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
 # waypoint parameters
 flying_altitude   = 10
 takeoff_altitude  = 2
-network_x 		  = 50
-network_y 		  = 0
+network_x 		  = 0
+network_y 		  = 100
 network_z 		  = 0
-circle_radius     = 20
+circle_radius     = 50
 hover_time 		  = 2
+
+
+
+#########################################################################################
+###################################  TRILATERATION  #####################################
+#########################################################################################
+
+# trilateration functions
+def trilateration():
+
+	# dummy position for testing
+	pos_x = -100
+	pos_y = 0
+	pos_z = takeoff_altitude
+
+	return pos_x, pos_y, pos_z
 
 
 
@@ -250,7 +268,7 @@ def drone_receive():
 
 		# set state
 		print('STATE: current state is {}'.format(current_state))
-		memory = server_memory(state=current_state)
+		memory = server_memory(state=current_state, timestamp=r_timestamp, time=r_time)
 		memory.save()
 
 		# send hover time
@@ -270,9 +288,10 @@ def drone_receive():
 			pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
 			pos_z = flying_altitude
 		else:
-			pos_x = network_x
-			pos_y = network_y
-			pos_z = flying_altitude
+			pos_x, pos_y, pos_z = trilateration()
+			#pos_x = network_x
+			#pos_y = network_y
+			#pos_z = flying_altitude
 			return "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		return "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 

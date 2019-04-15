@@ -8,7 +8,7 @@ size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
 }
 
 
-// GET function
+/*// GET function
 std::string get(void){
 
     // create header and response string
@@ -44,9 +44,9 @@ std::string get(void){
         curl_easy_cleanup(curl);
     }
 
-    std::cout << "answer received by GET: " << response_string << std::endl;
+    std::cout << "GET answer: " << response_string << std::endl;
     return response_string;
-}
+}*/
 
 
 // POST the drone GPS coordinates
@@ -110,7 +110,7 @@ std::string send_GPS(Vector3f position, float time, char* payload){
 	}
 	curl_global_cleanup();
 
-    std::cout << "Response received by POST: " << response_string << std::endl;
+    std::cout << "POST answer: " << response_string << std::endl;
 
 	return response_string;
 }

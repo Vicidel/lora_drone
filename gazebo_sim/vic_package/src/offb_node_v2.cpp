@@ -46,9 +46,6 @@ Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_go
     char answer[answer_string.size()+1];
     strcpy(answer, answer_string.c_str());
 
-    // define stuff
-    int length_float = 3+1;       // size taken by each coordinates (plus one space)
-
     if(answer[0]=='N' || answer[0]=='L'){
         // find positions from message
         float pos_x, pos_y, pos_z;
@@ -150,7 +147,7 @@ int main(int argc, char **argv){
 
 
     // parameters
-    float precision = 0.2f;     // precision to reach the waypoints
+    float precision = 0.5f;     // precision to reach the waypoints
     std::string answer;         // string returned by the server when sending position
     int state = 0;              // FSM state
     float hover_time = 10.0f;   // hovering time at measure positions
@@ -244,8 +241,6 @@ int main(int argc, char **argv){
                                     state = 3;
                             }                            
                         }
-
-                        
                         break;
                     }
 

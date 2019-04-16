@@ -5,6 +5,7 @@ import struct
 import math
 import numpy as np
 import datetime as dt
+import localization as lx
 from flask import Flask, Response, request, redirect, url_for, escape, jsonify, make_response
 from flask_mongoengine import MongoEngine
 from itertools import chain
@@ -69,14 +70,12 @@ class drone_datapoint:
 	payload 	 = ''
 	state  		 = 666
 
-# class for trilateration data	 
+# matrix for trilateration data	 
 tri_dataset = []
 class tri_datapoint:
 	pos_x 		= 666
 	pos_y 		= 666
 	pos_z 		= 666
-	rssi 		= 666
-	esp 		= 666
 	distance 	= 666
 
 
@@ -133,8 +132,27 @@ def function_signal_to_distance(esp, rssi):
 	# return a_RSSI * math.exp(b_RSSI * rssi)
 
 
+def trilateration(tri_dataset):
+	# this function uses the localization package by Kamal Shadi:
+	# https://github.com/kamalshadi/Localization
 
-def trilateration(drone_dataset):
+	# create new localization project using CCA method (centroid method)
+	P = lx.Project(mode='2D', solver='CCA')
+
+	# create anchors and distances
+	for i in range(0, len(tri_dataset)):
+		P.add_anchor('anchor_n{}'.format(i), (tri_dataset[i].pos_x, tri_dataset[i].pos_x))
+	t, label = P.add_target()
+	for i in range(0, len(tri_dataset)):
+		t.add_measure('anchor_n{}'.format(i), tri_dataset[i].distance)
+
+	# solve the problem
+	P.solve()
+	print("Found solution at x={}, y={}, z={}".format(t.loc.x, t.loc.y, t.loc.z))
+	return t.loc.x, t.loc.y, t.loc.z
+
+
+def trilateration_main(drone_dataset):
 
 	# matches LoRa and drone datasets
 	for i in range(0, len(drone_dataset)):
@@ -145,33 +163,29 @@ def trilateration(drone_dataset):
 
 		# find matching LoRa points on interval
 		timestamp = (drone_dataset[i].timestamp - dt.datetime(1970,1,1)).total_seconds()
-		start = dt.datetime.fromtimestamp(timestamp-2)
-		end = dt.datetime.fromtimestamp(timestamp+2)
+		start = dt.datetime.fromtimestamp(timestamp-3)
+		end = dt.datetime.fromtimestamp(timestamp+3)
 		lora_data_in_interval = LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start).first()
+		print("Query result: {}".format(lora_data_in_interval))
 
 		# create tri dataset
 		datapoint = tri_datapoint()
 		datapoint.pos_x = drone_dataset[i].pos_x
 		datapoint.pos_y = drone_dataset[i].pos_y
 		datapoint.pos_z = drone_dataset[i].pos_z
-		datapoint.esp   = lora_data_in_interval.gateway_esp
-		datapoint.rssi  = lora_data_in_interval.gateway_rssi
 
 		# get distance estimate
-		datapoint.distance = function_signal_to_distance(datapoint.esp, datapoint.rssi)
+		esp  = lora_data_in_interval.gateway_esp
+		rssi = lora_data_in_interval.gateway_rssi
+		datapoint.distance = function_signal_to_distance(esp, rssi)
 
 		# print stuff
-		print("data: x{} y{} esp{} rssi {} dist {}".format(datapoint.pos_x, datapoint.pos_y, datapoint.esp, datapoint.rssi, datapoint.distance))
+		print("Data: x{} y{} esp{} rssi {} dist {}".format(datapoint.pos_x, datapoint.pos_y, esp, rssi, datapoint.distance))
 
-	# call Pylocus
-	print("TODO: Pylocus")
+	# call trilateration function
+	pos_x_est, pos_y_est, pos_z_est = trilateration(tri_dataset)
 
-	# dummy position for testing
-	pos_x = -100
-	pos_y = 0
-	pos_z = flying_altitude
-
-	return pos_x, pos_y, pos_z
+	return pos_x_est, pos_y_est, pos_z_est
 
 
 
@@ -204,8 +218,8 @@ def lora_receive():
 		return 'Can only receive JSON file'
 
 	# display in log the JSON received
-	#print("JSON received:")
-	#print(j)
+	print("JSON received:")
+	print(j)
 
 	# parse communication parameters
 	r_deveui    = j['DevEUI_uplink']['DevEUI']
@@ -301,6 +315,7 @@ def drone_receive():
 	r_pos_z     = j['pos_z']
 	r_payload   = j['payload']
 	r_ts_temp   = j['timestamp']
+	r_ts_temp   = r_ts_temp + 2*60*60 	# correction for GMT+2h
 	r_time      = dt.datetime.utcfromtimestamp(float(r_ts_temp)).strftime(TIME_FORMAT)
 
 	# type conversion and stuff
@@ -346,7 +361,7 @@ def drone_receive():
 	if r_payload=='waypoint_reached':
 
 		# read old state to increment it
-		current_state = 3#current_state + 1
+		current_state = current_state + 1
 
 		# send hover time
 		return_string = "Hover time set: h{}".format(hover_time)
@@ -366,10 +381,10 @@ def drone_receive():
 			pos_z = flying_altitude
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		elif current_state == 3:
-			pos_x, pos_y, pos_z = trilateration(drone_dataset)
+			pos_x, pos_y, pos_z = trilateration_main(drone_dataset)
 			return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		else:
-			print("ERROR, unknown state")
+			return_string = "ERROR, unknown state"
 
 
 	###################  CREATE MEMORY  ######################
@@ -386,8 +401,6 @@ def drone_receive():
 	# save it
 	indice = len(drone_dataset)
 	drone_dataset.append(datapoint)
-
-	trilateration(drone_dataset)
 
 	# success
 	return return_string

@@ -224,7 +224,7 @@ int main(int argc, char **argv){
                     case 2:{
                         // collect data every second
                         if(ros::Time::now() - time_last_request > ros::Duration(1.0)){
-                            ROS_INFO("Sending current position");
+                            ROS_INFO("Sending current position"); //, ts is %f", ros::Time::now().toSec());
                             answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"data_collected");
                             time_last_request = ros::Time::now();
                             
@@ -252,15 +252,9 @@ int main(int argc, char **argv){
                                 ROS_INFO("Drone landing spot reached!");
                                 send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_landing");
                                 state = 4;
+                                drone_doing_stuff = false;
                             }
                         }
-                        break;
-                    }
-
-                    case 4:{
-                        // finished
-                        ROS_INFO("Drone landed");
-                        drone_doing_stuff = false;
                         break;
                     }
 

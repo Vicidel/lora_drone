@@ -20,7 +20,7 @@ using namespace Eigen; // To use matrix and vector representation
 #define DRONE_POST_GPS_URL "http://victor.scapp.io/drone/receive_message"
 #define DRONE_GET_WAYPOINT_URL "http://victor.scapp.io/drone/send_waypoint"
 
-std::string send_GPS(Vector3f position, float time, char* payload);
+std::string send_GPS(Vector3f position, double time, char* payload);
 std::string get(void);
 
 

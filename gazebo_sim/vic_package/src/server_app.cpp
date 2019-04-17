@@ -50,7 +50,7 @@ std::string get(void){
 
 
 // POST the drone GPS coordinates
-std::string send_GPS(Vector3f position, float time, char* payload){
+std::string send_GPS(Vector3f position, double time, char* payload){
 
     // set response string
     std::string response_string;
@@ -76,7 +76,7 @@ std::string send_GPS(Vector3f position, float time, char* payload){
     cJSON_AddStringToObject(root, "timestamp", str_time);
     cJSON_AddStringToObject(root, "payload", payload);
 	json = cJSON_PrintUnformatted(root);
-	//printf("Sending JSON: %s\n", json);
+    //std::cout << "String sent:" << json << std::endl;
 
 	// init
 	curl_global_init(CURL_GLOBAL_ALL);

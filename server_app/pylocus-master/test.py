@@ -220,30 +220,33 @@ def loc_package():
 	data2 = tri_datapoint()
 	data3 = tri_datapoint()
 
-	data1.pos_x = 100
-	data1.pos_y = 0
-	data1.pos_z = 0
-	data1.distance = 95
+	data1.pos_x = 50
+	data1.pos_y = 100
+	data1.pos_z = 10
+	data1.distance = 10
 	tri_dataset.append(data1)
 
-	data2.pos_x = -100
-	data2.pos_y = 0
-	data2.pos_z = 0
-	data2.distance = 90
+	data2.pos_x = -25
+	data2.pos_y = 143
+	data2.pos_z = 10
+	data2.distance = 12
 	tri_dataset.append(data2)
 
-	data3.pos_x = 0
-	data3.pos_y = 100
-	data3.pos_z = 0
-	data3.distance = 99
+	data3.pos_x = -25
+	data3.pos_y = 57
+	data3.pos_z = 10
+	data3.distance = 11
 	tri_dataset.append(data3)
 
 	print(tri_dataset)
+	print(len(tri_dataset))
 
-	P = lx.Project(mode='2D', solver='CCA')
+	P = lx.Project(mode='2D', solver='LSE')
 
 	for i in range(0, len(tri_dataset)):
-		P.add_anchor('anchor_n{}'.format(i), (tri_dataset[i].pos_x, tri_dataset[i].pos_x))
+		name = "anchor_n{}".format(i)
+		print(i, name, tri_dataset[i].pos_x, tri_dataset[i].pos_y)
+		P.add_anchor(name, (tri_dataset[i].pos_x, tri_dataset[i].pos_y))
 
 	t, label = P.add_target()
 
@@ -259,3 +262,6 @@ def loc_package():
 
 	print(t.loc)
 		
+
+loc_package()
+

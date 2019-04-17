@@ -76,6 +76,8 @@ class tri_datapoint:
 	pos_x 		= 666
 	pos_y 		= 666
 	pos_z 		= 666
+	esp 		= 666
+	rssi 		= 666
 	distance 	= 666
 
 
@@ -85,10 +87,10 @@ class tri_datapoint:
 #########################################################################################
 
 # devices
-gateway_printer = '004A0DB4'
-gateway_corner  = '004A1092'
-gateway_drone   = '004A10EB'
-device_eui      = '78AF580300000493'
+gateway_printer   = '004A0DB4'
+gateway_corner    = '004A1092'
+gateway_drone     = '004A10EB'
+device_eui        = '78AF580300000493'
 
 # time format
 TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"
@@ -107,11 +109,13 @@ network_x 		  = 0
 network_y 		  = 100
 network_z 		  = 0
 circle_radius     = 50
-hover_time 		  = 6
+hover_time 		  = 10
 
-# state and return string
+# storage for state
 current_state 	  = 666
-return_string 	  = 'ERROR, return string not set'
+
+# localization parameters
+loop_todo		  = 1
 
 
 
@@ -127,32 +131,42 @@ def function_signal_to_distance(esp, rssi):
 	a_RSSI = 0.0273
 	b_RSSI = -0.0777
 
-	# return the distance from ESP or RSSI
-	return a_ESP * math.exp(b_ESP * esp)
-	# return a_RSSI * math.exp(b_RSSI * rssi)
+	# compute based on ESP or RSSI
+	distance = a_ESP * math.exp(b_ESP * esp)
+	#distance = a_RSSI * math.exp(b_RSSI * rssi)
+
+	# return the distance
+	return distance
 
 
 def trilateration(tri_dataset):
 	# this function uses the localization package by Kamal Shadi:
 	# https://github.com/kamalshadi/Localization
 
-	# create new localization project using CCA method (centroid method)
-	P = lx.Project(mode='2D', solver='CCA')
+	# print
+	print("LOC: Starting multilateration with {} anchors".format(len(tri_dataset)))
+
+	# create new localization project using CCA method (centroid method) or LSE (least square error)
+	P = lx.Project(mode='2D', solver='LSE')
 
 	# create anchors and distances
 	for i in range(0, len(tri_dataset)):
-		P.add_anchor('anchor_n{}'.format(i), (tri_dataset[i].pos_x, tri_dataset[i].pos_x))
+		P.add_anchor('anchor_n{}'.format(i), (tri_dataset[i].pos_x, tri_dataset[i].pos_y))
 	t, label = P.add_target()
 	for i in range(0, len(tri_dataset)):
 		t.add_measure('anchor_n{}'.format(i), tri_dataset[i].distance)
 
 	# solve the problem
 	P.solve()
-	print("Found solution at x={}, y={}, z={}".format(t.loc.x, t.loc.y, t.loc.z))
+	print("LOC: Found solution at x={}, y={}, z={}".format(t.loc.x, t.loc.y, t.loc.z))
 	return t.loc.x, t.loc.y, t.loc.z
 
 
 def trilateration_main(drone_dataset):
+
+	# clear tri_dataset
+	global tri_dataset
+	tri_dataset = []
 
 	# matches LoRa and drone datasets
 	for i in range(0, len(drone_dataset)):
@@ -162,30 +176,45 @@ def trilateration_main(drone_dataset):
 			continue
 
 		# find matching LoRa points on interval
-		timestamp = (drone_dataset[i].timestamp - dt.datetime(1970,1,1)).total_seconds()
+		timestamp = (drone_dataset[i].timestamp - dt.datetime(1970,1,1)).total_seconds() + 7200
 		start = dt.datetime.fromtimestamp(timestamp-3)
 		end = dt.datetime.fromtimestamp(timestamp+3)
 		lora_data_in_interval = LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start).first()
-		print("Query result: {}".format(lora_data_in_interval))
+		if lora_data_in_interval is None:
+			print("ERROR: no matching LoRa datapoint for timestamp {}".format(timestamp))
+			continue
+		else:
+			# create tri dataset
+			datapoint = tri_datapoint()
+			datapoint.pos_x = float(drone_dataset[i].pos_x)
+			datapoint.pos_y = float(drone_dataset[i].pos_y)
+			datapoint.pos_z = float(drone_dataset[i].pos_z)
 
-		# create tri dataset
-		datapoint = tri_datapoint()
-		datapoint.pos_x = drone_dataset[i].pos_x
-		datapoint.pos_y = drone_dataset[i].pos_y
-		datapoint.pos_z = drone_dataset[i].pos_z
+			# get distance estimate
+			datapoint.esp  = lora_data_in_interval.gateway_esp[0]
+			datapoint.rssi = lora_data_in_interval.gateway_rssi[0]
+			datapoint.distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
 
-		# get distance estimate
-		esp  = lora_data_in_interval.gateway_esp
-		rssi = lora_data_in_interval.gateway_rssi
-		datapoint.distance = function_signal_to_distance(esp, rssi)
+			# save datapoint
+			tri_dataset.append(datapoint)
 
-		# print stuff
-		print("Data: x{} y{} esp{} rssi {} dist {}".format(datapoint.pos_x, datapoint.pos_y, esp, rssi, datapoint.distance))
+	# test if empty (forgot to start LoRa node?)
+	if len(tri_dataset) == 0:
+		print("ERROR: empty trilateration dataset (didn't start LoRa node?)")
+		return 0, 0, 0
 
-	# call trilateration function
-	pos_x_est, pos_y_est, pos_z_est = trilateration(tri_dataset)
+	# test if enough points
+	elif len(tri_dataset) < 3:
+		print("ERROR: not enough datapoint for trilateration")
+		return 0, 0, 0
 
-	return pos_x_est, pos_y_est, pos_z_est
+	# all good
+	else:
+		# call trilateration function
+		pos_x_est, pos_y_est, pos_z_est = trilateration(tri_dataset)
+
+		# return result
+		return pos_x_est, pos_y_est, pos_z_est
 
 
 
@@ -207,7 +236,7 @@ def hello_world():
 # Swisscom LPN listener to POST from actility
 @app.route('/lora/receive_message', methods=['POST'])
 def lora_receive():
-	print("!!! Data received from ThingPark !!!")
+	print("!!!!!!!!! Data received from ThingPark !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -257,7 +286,7 @@ def lora_receive():
 		# if drone gateway not detected
 		if not g_id:
 			print('information not received by set gateway')
-			return 'Datapoint not saved (not received by set gateway)'
+			return 'ERROR: Datapoint not saved (not received by set gateway)'
 	else:
 		# set gateways parameters for transmission arriving on multiple gateways
 		g_id   = []
@@ -295,7 +324,7 @@ def lora_receive():
 def drone_receive():
 
 	###################  DECODE PAYLOAD  ######################
-	print("!!! Data received from drone !!!")
+	print("!!!!!!!!! Data received from drone !!!!!!!!!")
 	
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -314,19 +343,21 @@ def drone_receive():
 	r_pos_y     = j['pos_y']
 	r_pos_z     = j['pos_z']
 	r_payload   = j['payload']
-	r_ts_temp   = j['timestamp']
-	r_ts_temp   = r_ts_temp + 2*60*60 	# correction for GMT+2h
-	r_time      = dt.datetime.utcfromtimestamp(float(r_ts_temp)).strftime(TIME_FORMAT)
+	r_ts_temp   = float(j['timestamp'])
+	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
 
 	# type conversion and stuff
-	r_timestamp = dt.datetime.utcfromtimestamp(float(r_ts_temp))
+	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)
 	r_time 		= str(r_time) 
 
 
 	###################  SWITCH STATE  ######################
-	# get global variables from previous
-	global drone_dataset
-	global current_state
+	# get global variables 
+	global drone_dataset, current_state
+	global network_x, network_y, network_z, circle_radius
+
+	# if it is not set during the next if's
+	return_string = 'ERROR, return string not set'
 
 	# switch to OFFBOARD mode done
 	if r_payload=='drone_offboard':
@@ -345,6 +376,10 @@ def drone_receive():
 
 	# drone took off and is in the air
 	if r_payload=='drone_takeoff':
+
+		# empty drone dataset
+		print("Emptying drone dataset for this mission")
+		drone_dataset = []
 
 		# set state
 		current_state = 0
@@ -370,21 +405,38 @@ def drone_receive():
 	if r_payload=='data_collected':
 
 		# create and send next waypoint
-		if current_state == 1:
+		if (current_state == 1) or (current_state == 4):
 			pos_x = network_x + circle_radius*math.cos(2*math.pi/3)
 			pos_y = network_y + circle_radius*math.sin(2*math.pi/3)
 			pos_z = flying_altitude
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
-		elif current_state == 2:
+		elif (current_state == 2) or (current_state == 5):
 			pos_x = network_x + circle_radius*math.cos(4*math.pi/3)
 			pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
 			pos_z = flying_altitude
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		elif current_state == 3:
 			pos_x, pos_y, pos_z = trilateration_main(drone_dataset)
+			if loop_todo == 1:
+				print("Go for landing at found position")
+				return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+			else:
+				print("Restarting around estimation, smaller parameters")
+				network_x = pos_x
+				network_y = pos_y
+				network_z = pos_z
+				circle_radius = circle_radius / 2
+				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+		elif current_state == 6:
+			pos_x, pos_y, pos_z = trilateration_main(drone_dataset)
+			print("Go for landing at found position")
 			return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		else:
 			return_string = "ERROR, unknown state"
+
+	# drone is landing
+	if r_payload=='drone_landing':
+		return_string = "Congrats on mission!"
 
 
 	###################  CREATE MEMORY  ######################
@@ -399,7 +451,6 @@ def drone_receive():
 	datapoint.state 	= current_state
 
 	# save it
-	indice = len(drone_dataset)
 	drone_dataset.append(datapoint)
 
 	# success

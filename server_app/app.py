@@ -80,6 +80,12 @@ class tri_datapoint:
 	rssi 		= 666
 	distance 	= 666
 
+# to store the solution
+class solution_datapoint:
+	pos_x 		= 6.66
+	pos_y 		= 6.66
+	pos_z 		= 6.66
+
 
 
 #########################################################################################
@@ -105,17 +111,23 @@ TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 # waypoint parameters
 flying_altitude   = 10
 takeoff_altitude  = 2
-network_x 		  = 0
-network_y 		  = 100
-network_z 		  = 0
-circle_radius     = 50
+network_x_v1 	  = 0	 # base parameter when starting the simulation
+network_y_v1 	  = 0	 # base parameter when starting the simulation
+network_z_v1 	  = 0	 # base parameter when starting the simulation
+network_x 		  = 666	 # current parameter
+network_y 		  = 666	 # current parameter
+network_z 		  = 666	 # current parameter
+circle_radius     = 666
+circle_radius_v1  = 100	 # base parameter when starting the simulation
+circle_radius_v2  = 40	 # second parameter for second loop
 hover_time 		  = 10
 
 # storage for state
 current_state 	  = 666
 
 # localization parameters
-loop_todo		  = 1
+loop_todo		  = 2
+solution 		  = solution_datapoint()
 
 
 
@@ -322,6 +334,9 @@ def lora_receive():
 # receive GPS coordinates from offb_node script
 @app.route('/drone/receive_message', methods=['POST'])
 def drone_receive():
+	# get global variables 
+	global drone_dataset, current_state, solution
+	global network_x, network_y, network_z, circle_radius
 
 	###################  DECODE PAYLOAD  ######################
 	print("!!!!!!!!! Data received from drone !!!!!!!!!")
@@ -351,11 +366,15 @@ def drone_receive():
 	r_time 		= str(r_time) 
 
 
-	###################  SWITCH STATE  ######################
-	# get global variables 
-	global drone_dataset, current_state
-	global network_x, network_y, network_z, circle_radius
+	###################  PRINT STUFF  ######################
+	print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+	print("DEBUG: solution", solution.pos_x, solution.pos_y, solution.pos_z)
+	print("DEBUG: param", network_x, network_y, circle_radius)
+	print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
+
+	###################  SWITCH STATE  ######################
+	
 	# if it is not set during the next if's
 	return_string = 'ERROR, return string not set'
 
@@ -381,8 +400,12 @@ def drone_receive():
 		print("Emptying drone dataset for this mission")
 		drone_dataset = []
 
-		# set state
+		# set base parameters
 		current_state = 0
+		network_x 	  = network_x_v1
+		network_y 	  = network_y_v1
+		network_z 	  = network_z_v1
+		circle_radius = circle_radius_v1
 
 		# first waypoint
 		pos_x = network_x + circle_radius*math.cos(0)
@@ -416,16 +439,28 @@ def drone_receive():
 			pos_z = flying_altitude
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		elif current_state == 3:
-			pos_x, pos_y, pos_z = trilateration_main(drone_dataset)
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
+			solution.pos_x = pos_x_est
+			solution.pos_y = pos_y_est
+			solution.pos_z = pos_z_est
+
 			if loop_todo == 1:
 				print("Go for landing at found position")
 				return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 			else:
 				print("Restarting around estimation, smaller parameters")
-				network_x = pos_x
-				network_y = pos_y
-				network_z = pos_z
-				circle_radius = circle_radius / 2
+
+				# new parameters
+				network_x = pos_x_est
+				network_y = pos_y_est
+				network_z = pos_z_est
+				circle_radius = circle_radius_v2
+
+				# new waypoint
+				pos_x = network_x + circle_radius*math.cos(0)
+				pos_y = network_y + circle_radius*math.sin(0)
+				pos_z = flying_altitude
+
 				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		elif current_state == 6:
 			pos_x, pos_y, pos_z = trilateration_main(drone_dataset)

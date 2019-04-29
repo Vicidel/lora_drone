@@ -20,6 +20,7 @@ The folder available are as follows:
 - server_app
 - tuino_lora_calibration
 - tuino_torus_carac
+- tuino_lora_beaconing
 
 #### JSON_BACKUP
 Contains the JSON files received for different data collections. Please refer to the contained *what\_is\_what.txt* for more informations on file contents.
@@ -44,3 +45,6 @@ Contains the Python app running on the Swisscom server to store the incoming mes
 
 #### TUINO_LORA_CALIBRATION and TUINO_TORUS_CARAC
 Contains the Arduino script to run on the Gimasi ONE to send messages using a finite state machine linked to the distances or to the angles.
+
+#### TUINO_LORA_BEACONING
+Arduino script to put the beacon in "lost" mode when the button is pressed.

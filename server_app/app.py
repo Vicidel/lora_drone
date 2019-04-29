@@ -111,12 +111,9 @@ TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 # waypoint parameters
 flying_altitude   = 10
 takeoff_altitude  = 2
-network_x_v1 	  = 0	 # base parameter when starting the simulation
-network_y_v1 	  = 0	 # base parameter when starting the simulation
-network_z_v1 	  = 0	 # base parameter when starting the simulation
-network_x 		  = 666	 # current parameter
-network_y 		  = 666	 # current parameter
-network_z 		  = 666	 # current parameter
+network_x 		  = 666	 # set by Postman
+network_y 		  = 666	 # set by Postman
+network_z 		  = 666	 # set by Postman
 circle_radius     = 666
 circle_radius_v1  = 100	 # base parameter when starting the simulation
 circle_radius_v2  = 40	 # second parameter for second loop
@@ -326,6 +323,57 @@ def lora_receive():
 	return 'Datapoint DevEUI %s saved' %(r_deveui)
 
 
+# to set the network estimation via Postman
+@app.route('/lora/network_estimate', methods=['POST'])
+def lora_network_est():
+	print("!!!!!!!!! Network estimate received from POSTMAN !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the coordinates received
+	print("Positions received: x={}, y={}, z={}".format(j['pos_x'], j['pos_y'], j['pos_z']))
+
+	# set network estimate
+	global network_x, network_y, network_z
+	network_x = j['pos_x']
+	network_y = j['pos_y']
+	network_z = j['pos_z']
+
+	# success
+	return 'Network estimate positions set at {} {} {}'.format(j['pos_x'], j['pos_y'], j['pos_z'])
+
+
+# to set the circle radii
+@app.route('/lora/circle_radius', methods=['POST'])
+def lora_circle_rad():
+	print("!!!!!!!!! Circle radii received from POSTMAN !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the coordinates received
+	print("Radii received: r1={}, r2={}".format(j['radius_v1'], j['radius_v2']))
+
+	# set network estimate
+	global circle_radius_v1, circle_radius_v2
+	circle_radius_v1 = j['radius_v1']
+	circle_radius_v2 = j['radius_v2']
+
+	# success
+	return 'Circle radii set at {} and {}'.format(j['radius_v1'], j['radius_v2'])
+
+
 
 #########################################################################################
 ####################################  DRONE ROUTE  ######################################
@@ -337,6 +385,7 @@ def drone_receive():
 	# get global variables 
 	global drone_dataset, current_state, solution
 	global network_x, network_y, network_z, circle_radius
+
 
 	###################  DECODE PAYLOAD  ######################
 	print("!!!!!!!!! Data received from drone !!!!!!!!!")
@@ -402,9 +451,6 @@ def drone_receive():
 
 		# set base parameters
 		current_state = 0
-		network_x 	  = network_x_v1
-		network_y 	  = network_y_v1
-		network_z 	  = network_z_v1
 		circle_radius = circle_radius_v1
 
 		# first waypoint
@@ -448,7 +494,7 @@ def drone_receive():
 			# only once or more ?
 			if loop_todo == 1:
 				print("Go for landing at found position")
-				return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+				return_string = "Land at position: x{} y{} z{}".format(pos_x_est, pos_y_est, takeoff_altitude)
 			else:
 				print("Restarting around estimation, smaller parameters")
 
@@ -466,13 +512,13 @@ def drone_receive():
 				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		elif current_state == 6:
 			# do multilateration and store position
-			pos_x, pos_y, pos_z = trilateration_main(drone_dataset)
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
 			solution.pos_x = pos_x_est
 			solution.pos_y = pos_y_est
 			solution.pos_z = pos_z_est
 
 			print("Go for landing at found position")
-			return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+			return_string = "Land at position: x{} y{} z{}".format(pos_x_est, pos_y_est, takeoff_altitude)
 		else:
 			return_string = "ERROR, unknown state"
 
@@ -499,12 +545,61 @@ def drone_receive():
 	return return_string
 
 
+# to set the hovering time
+@app.route('/drone/hover_time', methods=['POST'])
+def drone_hover_time():
+	print("!!!!!!!!! Hover time received from POSTMAN !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the coordinates received
+	print("Hovering time received: h={}".format(j['hover_time']))
+
+	# set network estimate
+	global hover_time
+	hover_time = j['hover_time']
+
+	# success
+	return 'Hovering time set at {}'.format(j['hover_time'])
+
+
+# to set the takeoff and flight altitudes
+@app.route('/drone/altitudes', methods=['POST'])
+def drone_altitudes():
+	print("!!!!!!!!! Hover time received from POSTMAN !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the coordinates received
+	print("Altitude received: takeoff={} and flight={}".format(j['takeoff'], j['flight']))
+
+	# set network estimate
+	global flying_altitude, takeoff_altitude
+	flying_altitude = j['flight']
+	takeoff_altitude = j['takeoff']
+
+	# success
+	return 'Altitudes set at takeoff={} and flight={}'.format(j['takeoff'], j['flight'])
+
+
 
 #########################################################################################
 ######################################  QUERIES  ########################################
 #########################################################################################
 
-#querying the database and giving back a JSON file
+# querying the database and giving back a JSON file
 @app.route('/lora/query', methods=['GET'])
 def lora_query():
 	query = request.args

@@ -439,11 +439,13 @@ def drone_receive():
 			pos_z = flying_altitude
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		elif current_state == 3:
+			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
 			solution.pos_x = pos_x_est
 			solution.pos_y = pos_y_est
 			solution.pos_z = pos_z_est
 
+			# only once or more ?
 			if loop_todo == 1:
 				print("Go for landing at found position")
 				return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
@@ -463,7 +465,12 @@ def drone_receive():
 
 				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		elif current_state == 6:
+			# do multilateration and store position
 			pos_x, pos_y, pos_z = trilateration_main(drone_dataset)
+			solution.pos_x = pos_x_est
+			solution.pos_y = pos_y_est
+			solution.pos_z = pos_z_est
+
 			print("Go for landing at found position")
 			return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 		else:

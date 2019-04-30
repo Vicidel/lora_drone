@@ -69,7 +69,7 @@ std::string send_GPS(Vector3f position, double time, char* payload){
     char str_pos_x[10]; sprintf(str_pos_x, "%f", position(0));
     char str_pos_y[10]; sprintf(str_pos_y, "%f", position(1));
     char str_pos_z[10]; sprintf(str_pos_z, "%f", position(2));
-    char str_time[10]; sprintf(str_time, "%f", time);
+    char str_time[30]; sprintf(str_time, "%f", time);
     cJSON_AddStringToObject(root, "pos_x", str_pos_x);
     cJSON_AddStringToObject(root, "pos_y", str_pos_y);
     cJSON_AddStringToObject(root, "pos_z", str_pos_z);

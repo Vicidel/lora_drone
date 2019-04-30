@@ -38,69 +38,16 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos);
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
+Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_goal);
+float parse_hover_time_from_answer(std::string answer_string);
 
-// returns the waypoint based on the received string
-Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_goal){
-
-    // string to char*
-    char answer[answer_string.size()+1];
-    strcpy(answer, answer_string.c_str());
-
-    if(answer[0]=='N' || answer[0]=='L'){
-        // find positions from message
-        float pos_x, pos_y, pos_z;
-        for (int i = 0; i < answer_string.size(); ++i){
-            if(answer[i]=='x'){
-                pos_x = atoi(answer+i+1);
-            }
-            if(answer[i]=='y'){
-                pos_y = atoi(answer+i+1);
-            }
-            if(answer[i]=='z'){
-                pos_z = atoi(answer+i+1);
-            }
-        }
-        // create next waypoint
-        Vector3f pos_new_goal (pos_x, pos_y, pos_z);
-
-        return pos_new_goal;
-    }
-
-    // default, return current goal
-    printf("ERROR: could not find new goal, returning pos_current_goal\n");
-    return pos_current_goal;
-}
-
-// get the hoevering time from received string
-float parse_hover_time_from_answer(std::string answer_string){
-
-    // string to char*
-    char answer[answer_string.size()+1];
-    strcpy(answer, answer_string.c_str());
-
-    // find hover time from message
-    if(answer[0]=='H'){
-        float hover_time;
-        for (int i = 0; i < answer_string.size(); ++i)
-        {
-            if(answer[i]=='h'){
-                hover_time = atoi(answer+i+1);
-                return hover_time;
-            }
-        }
-    }
-
-    // default if nothing was read
-    printf("ERROR: could not get hover time, returning 0.0f\n");
-    return 0.0f;
-}
 
 // main
 int main(int argc, char **argv){    
     //printf("In %s file, %s function\n", __FILE__, __FUNCTION__);
 
     // ROS initialization
-    ros::init(argc, argv, "offb_node");
+    ros::init(argc, argv, "vic_mission");
     ros::NodeHandle nh;
 
     // subscribes to topics 
@@ -128,6 +75,7 @@ int main(int argc, char **argv){
     // fills them
     pos_current_goal = pos_takeoff;
 
+
     //send a few setpoints before starting
     for(int i = 100; ros::ok() && i > 0; --i){
         local_pos_pub.publish(conversion_to_msg(pos_current_goal));
@@ -135,43 +83,71 @@ int main(int argc, char **argv){
         rate.sleep();
     }
 
-    // to set OFFBOARD mode and to arm drone
-    mavros_msgs::SetMode offb_set_mode;
-    offb_set_mode.request.custom_mode = "OFFBOARD";
+
+    // to arm drone
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
 
     // time storage
     ros::Time time_last_request = ros::Time::now();
     ros::Time time_start_hover = ros::Time::now();
+    ros::Time time_last_print   = ros::Time::now();
 
 
     // parameters
     float precision = 0.5f;     // precision to reach the waypoints
     std::string answer;         // string returned by the server when sending position
     int state = 0;              // FSM state
-    float hover_time = 10.0f;   // hovering time at measure positions
-    bool drone_doing_stuff = true;
+    float hover_time = 10.0f;   // default hovering time at measure positions
+
+    // state booleans
+    bool bool_wait_for_offboard = true;
+    bool bool_stop_all = false;
 
     
     // while ROS is online
-    while(ros::ok() && drone_doing_stuff){
+    while(ros::ok()){
 
-        // every 5s, try to set mode as OFFBOARD
-        if(current_state.mode != "OFFBOARD"){// && (ros::Time::now() - time_last_request > ros::Duration(5.0))){
+        // stop bool
+        if(bool_stop_all){
+            ROS_INFO("Stop condition reached");
+            break;
+        }
 
-            //if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
-            //    ROS_INFO("Offboard enabled");
-            //    send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_offboard");
-            //}
-            //time_last_request = ros::Time::now();
-            ROS_INFO("Waiting for offb");
+        // display info
+        /*if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
+            char state_char[current_state.mode.size()+1];
+            strcpy(state_char, current_state.mode.c_str());
+            ROS_INFO("Current state: %s, drone armed: %d", state_char, current_state.armed); 
+            ROS_INFO("Current position: x=%.2f, y=%.2f, z=%.2f", pos_drone(0), pos_drone(1), pos_drone(2));
+            ROS_INFO("Current goal:  x=%.2f, y=%.2f, z=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
+            ROS_INFO("");
+            time_last_print = ros::Time::now();
+        }*/
 
-        } else{
-            // drone current mode is OFFBOARD
+        // waiting for OFFBOARD mode
+        if(bool_wait_for_offboard){
 
-            // every 5s, try to arm drone
-            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(5.0))){
+            // every 1s:
+            if((ros::Time::now() - time_last_request) > ros::Duration(1.0) ){
+
+                // check state
+                if(current_state.mode == "OFFBOARD"){
+                    ROS_INFO("Offboard mode set");
+                    bool_wait_for_offboard = false;
+                    time_last_request = ros::Time::now();
+                }
+                else{
+                    ROS_INFO("Waiting for offboard mode");
+                    time_last_request = ros::Time::now();
+                }
+            }
+        }
+        else{
+            // mode was set on OFFBOARD at one point
+
+            // every 2s, try to arm drone
+            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                     answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_armed");
@@ -184,8 +160,13 @@ int main(int argc, char **argv){
                         drone_doing_stuff = false;
                     }
 
+                    // get next waypoint
                     pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);        
                 }
+                else{
+                    ROS_INFO("Trying to arm drone");
+                }
+
                 time_last_request = ros::Time::now();
             }
             
@@ -253,24 +234,28 @@ int main(int argc, char **argv){
                                 ROS_INFO("Drone landing spot reached!");
                                 send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_landing");
                                 state = 4;
-                                drone_doing_stuff = false;
                             }
                         }
                         break;
                     }
+
+                    case 4:{
+                        // finished
+                        ROS_INFO("Drone landed");
+                        bool_stop_all = true;
+                        break;
+                    }
+
 
                     default:{
                         ROS_INFO("Unknown state");
                         break;
                     }
                 }
-
-                // set new position at 1m in front
-                local_pos_pub.publish(conversion_to_msg(pos_current_goal));
             }
-
         }
 
+        // ROS update
         local_pos_pub.publish(conversion_to_msg(pos_current_goal));
         ros::spinOnce();
         rate.sleep();
@@ -282,6 +267,63 @@ int main(int argc, char **argv){
 
 
 
+// returns the waypoint based on the received string
+Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_goal){
+
+    // string to char*
+    char answer[answer_string.size()+1];
+    strcpy(answer, answer_string.c_str());
+
+    if(answer[0]=='N' || answer[0]=='L'){
+        // find positions from message
+        float pos_x, pos_y, pos_z;
+        for (int i = 0; i < answer_string.size(); ++i){
+            if(answer[i]=='x'){
+                pos_x = atoi(answer+i+1);
+            }
+            if(answer[i]=='y'){
+                pos_y = atoi(answer+i+1);
+            }
+            if(answer[i]=='z'){
+                pos_z = atoi(answer+i+1);
+            }
+        }
+        // create next waypoint
+        Vector3f pos_new_goal (pos_x, pos_y, pos_z);
+
+        return pos_new_goal;
+    }
+
+    // default, return current goal
+    printf("ERROR: could not find new goal, returning pos_current_goal\n");
+    return pos_current_goal;
+}
+
+// get the hoevering time from received string
+float parse_hover_time_from_answer(std::string answer_string){
+
+    // string to char*
+    char answer[answer_string.size()+1];
+    strcpy(answer, answer_string.c_str());
+
+    // find hover time from message
+    if(answer[0]=='H'){
+        float hover_time;
+        for (int i = 0; i < answer_string.size(); ++i)
+        {
+            if(answer[i]=='h'){
+                hover_time = atoi(answer+i+1);
+                return hover_time;
+            }
+        }
+    }
+
+    // default if nothing was read
+    printf("ERROR: could not get hover time, returning 0.0f\n");
+    return 0.0f;
+}
+
+
 // define the callbacks for the received ROS messages
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
     current_state = *msg;
@@ -289,6 +331,7 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg){
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
     est_local_pos = *est_pos;
 }
+
 
 // convertion functions between Vector3f and PoseStamped ROS message
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f vect){

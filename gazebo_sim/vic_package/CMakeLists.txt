@@ -83,6 +83,20 @@ target_link_libraries(offb_node_simple
 	${CMAKE_LIBRARY_PATH}
 ) 
 
+# create executable name
+add_executable(offb_node_simple_v2
+	src/offb_node_simple_v2.cpp
+	src/server_app.cpp
+	src/cJSON.c
+)
+
+# used librairies
+target_link_libraries(offb_node_simple_v2
+	${catkin_LIBRARIES}
+	${CURL_LIBRARY}
+	${CMAKE_LIBRARY_PATH}
+) 
+
 # for curl
 find_package(CURL)
 if(CURL_FOUND)

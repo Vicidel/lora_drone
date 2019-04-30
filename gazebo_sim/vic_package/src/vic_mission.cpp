@@ -157,7 +157,7 @@ int main(int argc, char **argv){
                     strcpy(answer_char, answer.c_str());
                     if(answer_char[0]=='4' && answer_char[1]=='0' && answer_char[2]=='4') {
                         ROS_INFO("ERROR: server is offline");
-                        drone_doing_stuff = false;
+                        bool_stop_all = true;
                     }
 
                     // get next waypoint

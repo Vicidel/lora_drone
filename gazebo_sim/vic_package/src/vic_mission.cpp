@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 // libraries for Vector3f
 #include <eigen3/Eigen/Dense>
@@ -19,6 +20,7 @@ using namespace Eigen; // To use matrix and vector representation
 #include <ros/ros.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
+#include <mavros_msgs/PositionTarget.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
@@ -40,6 +42,7 @@ geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
 Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_goal);
 float parse_hover_time_from_answer(std::string answer_string);
+mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal);
 
 
 // main
@@ -56,6 +59,8 @@ int main(int argc, char **argv){
     ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode> ("mavros/set_mode");
+
+    ros::Publisher target_pub = nh.advertise<mavros_msgs::PositionTarget> ("mavros/setpoint_raw/local", 10);
 
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
@@ -99,6 +104,7 @@ int main(int argc, char **argv){
     std::string answer;         // string returned by the server when sending position
     int state = 0;              // FSM state
     float hover_time = 10.0f;   // default hovering time at measure positions
+    bool bool_fly_straight = true;   // fly in direction of waypoint or just x+
 
     // state booleans
     bool bool_wait_for_offboard = true;
@@ -262,7 +268,8 @@ int main(int argc, char **argv){
         }
 
         // ROS update
-        local_pos_pub.publish(conversion_to_msg(pos_current_goal));
+        if(bool_fly_straight) target_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
+        else local_pos_pub.publish(conversion_to_msg(pos_current_goal));
         ros::spinOnce();
         rate.sleep();
         pos_drone = conversion_to_vect(est_local_pos);
@@ -353,4 +360,29 @@ Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg){
     vect(1) = msg.pose.position.y;
     vect(2) = msg.pose.position.z;
     return vect;
+}
+mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal){
+    // create message and bit_mask
+    mavros_msgs::PositionTarget msg;
+    msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
+    msg.type_mask = mavros_msgs::PositionTarget::IGNORE_AFX |
+                    mavros_msgs::PositionTarget::IGNORE_AFY |
+                    mavros_msgs::PositionTarget::IGNORE_AFZ |
+                    mavros_msgs::PositionTarget::IGNORE_VX |
+                    mavros_msgs::PositionTarget::IGNORE_VY |
+                    mavros_msgs::PositionTarget::IGNORE_VZ |
+                    mavros_msgs::PositionTarget::IGNORE_YAW_RATE;
+
+    // set position target
+    msg.position.x = goal(0);
+    msg.position.y = goal(1);
+    msg.position.z = goal(2);
+
+    // set yaw target
+    double yaw_target = atan((goal(1)-current(1))/(goal(0)-current(0)));
+    if(goal(0)<current(0)) yaw_target = yaw_target + 3.1414592;
+    //ROS_INFO("goal x %f y %f  curretn x %f y %f", goal(0), goal(1), current(0), current(1));
+    //ROS_INFO("yaw degree computed is %f (rad is %f)", yaw_target*180/3.141, yaw_target);
+    msg.yaw = yaw_target;
+    return msg;
 }

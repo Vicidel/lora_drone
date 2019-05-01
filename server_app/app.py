@@ -239,6 +239,58 @@ def hello_world():
 
 
 #########################################################################################
+#####################################  PARAMETERS  ######################################
+#########################################################################################
+
+# batch edit all parameters from POST
+@app.route('/param/change', methods=['POST'])
+def param_change():
+	print("!!!!!!!!! New parameters estimate received from POST !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# set network estimate
+	global network_x, network_y, network_z
+	network_x = j['pos_x']
+	network_y = j['pos_y']
+	network_z = j['pos_z']
+
+	# set network estimate
+	global circle_radius_v1, circle_radius_v2
+	circle_radius_v1 = j['radius_v1']
+	circle_radius_v2 = j['radius_v2']
+
+	# set network estimate
+	global hover_time
+	hover_time = j['hover_time']
+
+	# set network estimate
+	global flying_altitude, takeoff_altitude
+	flying_altitude = j['flight']
+	takeoff_altitude = j['takeoff']
+
+	# set number of loops
+	global loop_todo
+	loop_todo = j['loop_todo']
+
+	return "All parameters changed"
+
+
+# batch print all parameters
+@app.route('/param/print', methods=['GET'])
+def param_print():
+
+	return "<b>Parameters are:</b>\r\nNetwork position: x={}, y={}, z={}\r\nCircle radius: 1st={}, 2nd={}\r\nAltitudes: flying={}, takeoff={}\r\nAlgorithm loops to do: {}".format(network_x, network_y, network_z, circle_radius_v1, circle_radius_v2, flying_altitude, takeoff_altitude, loop_todo)
+
+
+
+#########################################################################################
 #####################################  LORA ROUTE  ######################################
 #########################################################################################
 

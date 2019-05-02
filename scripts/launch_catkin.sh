@@ -24,17 +24,29 @@ fi
 if [ $program -eq $b ]
 then
 	echo "Running vic_takeoff"
+	cd
+	cd rosbag_files
+	rosbag record -a __name:=current_bag > /dev/null 2>&1 &
 	rosrun vic_package vic_takeoff
+	rosnode kill /current_bag > /dev/null 2>&1
 fi
 
 if [ $program -eq $c ]
 then
 	echo "Running vic_mission"
+	cd
+	cd rosbag_files
+	rosbag record -a __name:=current_bag > /dev/null 2>&1 &
 	rosrun vic_package vic_mission
+	rosnode kill /current_bag > /dev/null 2>&1
 fi
 
 if [ $program -eq $d ]
 then
 	echo "Running vic_coordinates"
+	cd
+	cd rosbag_files
+	rosbag record -a __name:=current_bag > /dev/null 2>&1 &
 	rosrun vic_package vic_coordinates
+	rosnode kill /current_bag > /dev/null 2>&1
 fi

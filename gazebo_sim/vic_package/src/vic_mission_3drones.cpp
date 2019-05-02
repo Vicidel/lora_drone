@@ -104,6 +104,7 @@ int main(int argc, char **argv){
     int state = 0;              // FSM state
     float hover_time = 10.0f;   // default hovering time at measure positions
     bool bool_fly_straight = true;   // fly in direction of waypoint or just x+
+    int no_drone = 1;           // depends on the drone
 
     // state booleans
     bool bool_wait_for_offboard = true;
@@ -161,7 +162,7 @@ int main(int argc, char **argv){
             if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
-                    answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_armed");
+                    answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"drone_armed", no_drone);
                     
                     // check if server online
                     char answer_char[answer.size()+1];
@@ -195,7 +196,7 @@ int main(int argc, char **argv){
                         // go to takeoff position
                         if((pos_drone-pos_current_goal).norm()<precision){
                             ROS_INFO("Takeoff position reached!");
-                            answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_takeoff");
+                            answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"drone_takeoff", no_drone);
                             pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
                             state = 1;
                         }
@@ -206,7 +207,7 @@ int main(int argc, char **argv){
                         // go to takeoff position
                         if((pos_drone-pos_current_goal).norm()<precision){
                             ROS_INFO("Waypoint reached!");
-                            answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"waypoint_reached");
+                            answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"waypoint_reached", no_drone);
                             hover_time = parse_hover_time_from_answer(answer);
                             state = 2;
                             time_start_hover = ros::Time::now();
@@ -218,7 +219,7 @@ int main(int argc, char **argv){
                         // collect data every second
                         if(ros::Time::now() - time_last_request > ros::Duration(1.0)){
                             ROS_INFO("Sending current position"); //, ts is %f", ros::Time::now().toSec());
-                            answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"data_collected");
+                            answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"data_collected", no_drone);
                             time_last_request = ros::Time::now();
                             
                             // time hovering is passed
@@ -243,7 +244,7 @@ int main(int argc, char **argv){
                             arm_cmd.request.value = false;
                             if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                                 ROS_INFO("Drone landing spot reached!");
-                                send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_landing");
+                                send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"drone_landing", no_drone);
                                 state = 4;
                             }
                         }

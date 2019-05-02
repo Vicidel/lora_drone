@@ -69,12 +69,40 @@ target_link_libraries(vic_mission
 	${CMAKE_LIBRARY_PATH}
 ) 
 
+# create executable name
+add_executable(vic_mission_3drones
+	src/vic_mission_3drones.cpp
+	src/server_app.cpp
+	src/cJSON.c
+)
+
+# used librairies
+target_link_libraries(vic_mission_3drones
+	${catkin_LIBRARIES}
+	${CURL_LIBRARY}
+	${CMAKE_LIBRARY_PATH}
+) 
+
+# create executable name
+add_executable(vic_coordinates
+	src/vic_coordinates.cpp
+	src/server_app.cpp
+	src/cJSON.c
+)
+
+# used librairies
+target_link_libraries(vic_coordinates
+	${catkin_LIBRARIES}
+	${CURL_LIBRARY}
+	${CMAKE_LIBRARY_PATH}
+) 
+
 # for curl
 find_package(CURL)
 if(CURL_FOUND)
 	include_directories(${CURL_INCLUDE_DIRS})
 	target_link_libraries(vic_mission ${CURL_LIBRARIES})
-	target_link_libraries(vic_takeoff ${CURL_LIBRARIES})
+	target_link_libraries(vic_mission_3drones ${CURL_LIBRARIES})
 else()
 	MESSAGE(FATAL_ERROR "LibCurl is not found in your system.")
 endif(CURL_FOUND)

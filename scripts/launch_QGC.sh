@@ -1,0 +1,2 @@
+cd QGroundControl
+./QGroundControl.AppImage

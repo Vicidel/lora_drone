@@ -218,7 +218,7 @@ int main(int argc, char **argv){
                     case 2:{
                         // collect data every second
                         if(ros::Time::now() - time_last_request > ros::Duration(1.0)){
-                            ROS_INFO("Sending current position"); //, ts is %f", ros::Time::now().toSec());
+                            ROS_INFO("Sending current position"); 
                             answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"data_collected", no_drone);
                             time_last_request = ros::Time::now();
                             
@@ -229,12 +229,29 @@ int main(int argc, char **argv){
                                 
                                 char answer_char[answer.size()+1];
                                 strcpy(answer_char, answer.c_str());
-                                if(answer_char[0]=='N')          // new waypoint
-                                    state = 1;
-                                else if(answer_char[0]=='L')     // go to landing
-                                    state = 3;
+                                if(answer_char[0]=='W')          // waiting for other drones
+                                    state = 25;
                             }                            
                         }
+                        break;
+                    }
+
+                    case 25:{
+                        // waiting state
+                        ROS_INFO("waiting for other drones"); 
+                        answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"waiting_for_command", no_drone);
+                        time_last_request = ros::Time::now();
+                        
+                        // check if all drones are good
+                        char answer_char[answer.size()+1];
+                        strcpy(answer_char, answer.c_str());
+                        if(answer_char[0]=='N')          // new waypoint
+                            state = 1;
+                        else if(answer_char[0]=='L')     // go to landing
+                            state = 3;
+                        else if(answer_char[0]=='W')     // still waiting
+                            state = 25;
+
                         break;
                     }
 

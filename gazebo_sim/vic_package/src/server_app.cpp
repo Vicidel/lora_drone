@@ -101,7 +101,7 @@ std::string send_GPS_drone3(Vector3f position, double time, char* payload, int n
     cJSON_AddStringToObject(root, "pos_z", str_pos_z);
     cJSON_AddStringToObject(root, "timestamp", str_time);
     cJSON_AddStringToObject(root, "payload", payload);
-    cJSON_AddStringToObject(root, "no_drone", str_no_drone)
+    cJSON_AddStringToObject(root, "no_drone", str_no_drone);
     json = cJSON_PrintUnformatted(root);
     //std::cout << "String sent:" << json << std::endl;
 

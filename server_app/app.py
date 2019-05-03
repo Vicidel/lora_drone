@@ -769,8 +769,6 @@ def drone3_receive():
 	r_no_drone  = int(j['no_drone'])
 
 
-	print("DEBUG: bool ready {} {} {}".format(bool_drone1_ready, bool_drone2_ready, bool_drone3_ready))
-
 	###################  SWITCH STATE  ######################
 	
 	# if it is not set during the next if's

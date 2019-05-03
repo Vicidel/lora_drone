@@ -263,4 +263,13 @@ def loc_package():
 	print(t.loc)
 		
 
-loc_package()
+
+d1 = True
+d2 = True
+d3 = True
+
+if d1 == 1 and d2 == 1 and d3 == 1:
+	a = 2
+else:
+	a = 1
+print(a)

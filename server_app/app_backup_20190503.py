@@ -848,6 +848,8 @@ def drone3_receive():
 		if r_no_drone==3:
 			bool_drone3_ready = True
 
+		print("DEBUG2: bool ready {} {} {}".format(bool_drone1_ready, bool_drone2_ready, bool_drone3_ready))
+
 		# all drones have finished their hovering
 		if bool_drone1_ready == True and bool_drone2_ready == True and bool_drone3_ready == True:
 

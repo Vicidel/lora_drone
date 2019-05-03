@@ -104,7 +104,7 @@ int main(int argc, char **argv){
     int state = 0;              // FSM state
     float hover_time = 10.0f;   // default hovering time at measure positions
     bool bool_fly_straight = true;   // fly in direction of waypoint or just x+
-    int no_drone = 1;           // depends on the drone
+    int no_drone = 2;           // depends on the drone
 
     // state booleans
     bool bool_wait_for_offboard = true;
@@ -224,34 +224,40 @@ int main(int argc, char **argv){
                             
                             // time hovering is passed
                             if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
-                                ROS_INFO("Time spend hovering is over, next waypoint");
-                                pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+                                ROS_INFO("Time spend hovering is over, next step");
                                 
                                 char answer_char[answer.size()+1];
                                 strcpy(answer_char, answer.c_str());
-                                if(answer_char[0]=='W')          // waiting for other drones
+                                if(answer_char[0]=='W'){          // waiting for other drones
                                     state = 25;
+                                    pos_current_goal = pos_drone;
+                                }
                             }                            
                         }
                         break;
                     }
 
                     case 25:{
-                        // waiting state
-                        ROS_INFO("waiting for other drones"); 
-                        answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"waiting_for_command", no_drone);
-                        time_last_request = ros::Time::now();
-                        
-                        // check if all drones are good
-                        char answer_char[answer.size()+1];
-                        strcpy(answer_char, answer.c_str());
-                        if(answer_char[0]=='N')          // new waypoint
-                            state = 1;
-                        else if(answer_char[0]=='L')     // go to landing
-                            state = 3;
-                        else if(answer_char[0]=='W')     // still waiting
-                            state = 25;
-
+                        // waiting state, check every second if all drones are good
+                        if(ros::Time::now() - time_last_request > ros::Duration(1.0)){
+                            ROS_INFO("Waiting for other drones"); 
+                            answer = send_GPS_drone3(pos_drone, ros::Time::now().toSec(), (char*)"waiting_for_command", no_drone);
+                            time_last_request = ros::Time::now();
+                            
+                            // check if all drones are good
+                            char answer_char[answer.size()+1];
+                            strcpy(answer_char, answer.c_str());
+                            if(answer_char[0]=='N'){         // new waypoint
+                                pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+                                state = 1;
+                            }
+                            else if(answer_char[0]=='L'){     // go to landing
+                                pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+                                state = 3;
+                            }
+                            else if(answer_char[0]=='W')     // still waiting
+                                state = 25;
+                        }
                         break;
                     }
 

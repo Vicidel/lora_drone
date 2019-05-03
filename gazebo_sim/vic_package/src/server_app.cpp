@@ -117,7 +117,7 @@ std::string send_GPS_drone3(Vector3f position, double time, char* payload, int n
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
         // URL of server app
-        curl_easy_setopt(curl, CURLOPT_URL, DRONE_POST_GPS_URL);
+        curl_easy_setopt(curl, CURLOPT_URL, DRONE3_POST_GPS_URL);
         curl_easy_setopt(curl, CURLOPT_POST, 1L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);

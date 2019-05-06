@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<html>
+    <head>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+        /* Optional: Makes the sample page fill the window.*/
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    </head>
+    <body>
+        <div id="map"></div>
+
+        <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+        <script>
+            // Firebase reference
+            var firebase = new Firebase('https://drone-3bd2a.firebaseio.com/');
+
+            // Data object
+            var data = {
+                sender: null,
+                timestamp: null,
+                lat: null,
+                lng: null
+            };
+
+            // Create base coordinates
+            var lat_start = 46.51587575161965;
+            var lng_start = 6.564940909970005;
+            var lat_prev = lat_start;
+            var lng_prev = lng_start;
+
+            // Creates a map object with a click listener and a heatmap.
+            function initMap() {
+
+                // Define the map itself
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 46.5191, lng: 6.5668},
+                    zoom: 16,
+                    styles: [{
+                        featureType: 'poi',
+                        stylers: [{ visibility: 'off' }]  // Turn off POI.
+                    },
+                    {
+                        featureType: 'transit.station',
+                        stylers: [{ visibility: 'off' }]  // Turn off bus, train stations...
+                    }],
+                    disableDoubleClickZoom: false,
+                    streetViewControl: false,
+                });
+
+                // Custom marker for drone
+                var drone_icon = {
+                    url: 'drone.png',
+                    //size: new google.maps.Size(71, 71),
+                    //origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // Start marker
+                var start_marker = new google.maps.Marker({
+                    position: {lat: lat_start, lng: lng_start},
+                    map: map, 
+                    title: 'Start'
+                });
+
+                // Drone marker
+                var drone_marker = new google.maps.Marker({
+                    map: map,
+                    icon: drone_icon,
+                    title: 'Drone'
+                });
+
+                
+
+                initFirebase(map, drone_icon, drone_marker);
+            }
+
+            // Init Firebase and set listeners
+            function initFirebase(map, drone_icon, drone_marker, flight_path) {
+
+                // 10 minutes before current time.
+                var startTime = new Date().getTime() - (60 * 10 * 1000);
+
+                // Reference to the clicks in Firebase.
+                var drone = firebase.child('drone');
+
+                // Listener for drone points
+                drone.on('child_added',
+                    function(snapshot) {
+
+                        // Get coordinates from firebase
+                        var lat = snapshot.val().lat;
+                        var lng = snapshot.val().lng;
+
+                        // Move marker
+                        drone_marker.setPosition(new google.maps.LatLng(lat, lng));
+
+                        // Create path
+                        var path = [
+                            {lat: lat, lng: lng},
+                            {lat: lat_prev, lng: lng_prev}
+                        ];
+
+                        // Draw path
+                        var flight_path = new google.maps.Polyline({
+                            map: map,
+                            path: path,
+                            geodesic: true,
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 1.0,
+                            strokeWeight: 3
+                        });
+
+                        // Store current coord for next ocurence
+                        lat_prev = lat;
+                        lng_prev = lng;
+                    }
+                );
+            }   
+
+        </script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxXZYRRheu8t7VGerySo98OVrOxjdcZe8&libraries=visualization&callback=initMap">
+        </script>
+    </body>
+</html>

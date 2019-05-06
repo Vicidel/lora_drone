@@ -6,6 +6,9 @@ import math
 import datetime
 import random 
 
+import geopy
+from geopy.distance import VincentyDistance
+
 def timestamp_now():
 	now = datetime.datetime.utcnow()
 	return (now - datetime.datetime(1970,1,1)).total_seconds()
@@ -35,23 +38,31 @@ ref_start.push({
     'timestamp': timestamp_now()
 })
 
+origin = geopy.Point(takeoff_spot_lat, takeoff_spot_lng)
+destination = VincentyDistance(meters=200).destination(origin, 180)
+lat2, lng2 = destination.latitude, destination.longitude
+
+
+input("hj")
+
 ref_drone = db.reference('/drone')
 ref_drone.push({
-	'lat': drone_lat,
-	'lng': drone_lng,
+	'lat': lat2,
+	'lng': lng2,
     'sender': 'test.py',
     'timestamp': timestamp_now()
 })
 
-input("df")
-for i in range(0,10):
-	drone_lat = float(random.uniform(4651, 4652)/100)
-	drone_lng = float(random.uniform(656, 657)/100)
-	ref_drone = db.reference('/drone')
-	ref_drone.push({
-		'lat': drone_lat,
-		'lng': drone_lng,
-	    'sender': 'test.py loop',
-	    'timestamp': timestamp_now()
-	})
-	input('now')
+def stuff():
+	input("df")
+	for i in range(0,10):
+		drone_lat = float(random.uniform(4651, 4652)/100)
+		drone_lng = float(random.uniform(656, 657)/100)
+		ref_drone = db.reference('/drone')
+		ref_drone.push({
+			'lat': drone_lat,
+			'lng': drone_lng,
+		    'sender': 'test.py loop',
+		    'timestamp': timestamp_now()
+		})
+		input('now')

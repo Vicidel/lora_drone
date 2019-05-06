@@ -4,3 +4,5 @@ numpy
 localization
 scipy
 shapely
+geopy
+firebase_admin

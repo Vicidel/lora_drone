@@ -250,3 +250,25 @@ def loc_package():
 
 	print(t.loc)
 		
+def get_dist_bearing(dist_x, dist_y):
+	# compute distance
+	distance = math.sqrt(dist_x*dist_x + dist_y*dist_y)
+
+	# compute bearing
+	if dist_y==0:
+		bearing = 180 if dist_x < 0 else 0
+	elif dist_x==0:
+		bearing = 90 if dist_y > 0 else 270
+	else:
+		bearing = math.degrees(math.atan(float(dist_y)/dist_x))
+	
+	# negative x modifier
+	if dist_x < 0:
+		bearing = -bearing-90
+	else:
+		bearing = -bearing+90
+
+	# return
+	return distance, bearing
+
+print(get_dist_bearing(-100, 100))

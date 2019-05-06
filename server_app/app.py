@@ -1,15 +1,28 @@
-# import dependencies
+# misc dependencies
 import os
 import json
 import struct
 import math
+import random
 import numpy as np
 import datetime as dt
+
+# localization package: https://github.com/kamalshadi/Localization
 import localization as lx
+
+# server database 
 from flask import Flask, Response, request, redirect, url_for, escape, jsonify, make_response
 from flask_mongoengine import MongoEngine
 from itertools import chain
 
+# GMaps API database
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import db as firebase_db
+
+# conversion meters distance and GPS coord
+import geopy
+from geopy.distance import VincentyDistance
 
 
 
@@ -37,6 +50,11 @@ db = MongoEngine(app)
 # set the port dynamically with a default of 3000 for local development
 port = int(os.getenv('PORT', '3000'))
 
+# create the link with Firebase
+cred = credentials.Certificate('drone-3bd2a-firebase-adminsdk-6ju7o-272f41c754.json')
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://drone-3bd2a.firebaseio.com/'
+})
 
 
 #########################################################################################
@@ -87,6 +105,15 @@ class solution_datapoint:
 	pos_y 		= 6.66
 	pos_z 		= 6.66
 
+# to store the home
+class home_datapoint:
+	latitude    = 6.66
+	longitude   = 6.66
+	altitude    = 6.66
+	delta_x     = 6.66
+	delta_x     = 6.66
+	delta_z     = 6.66
+
 
 
 #########################################################################################
@@ -133,6 +160,142 @@ solution 		  = solution_datapoint()
 bool_drone1_ready = False
 bool_drone2_ready = False
 bool_drone3_ready = False
+
+
+
+#########################################################################################
+##################################  GMAPS API THINGS  ###################################
+#########################################################################################
+
+# create latlng
+home = home_datapoint()
+
+# function to get distance and bearing from x and y distance
+def get_dist_bearing(dist_x, dist_y):
+	# compute distance
+	distance = math.sqrt(dist_x*dist_x + dist_y*dist_y)
+
+	# compute bearing
+	if dist_y==0:
+		bearing = 180 if dist_x < 0 else 0
+	elif dist_x==0:
+		bearing = 90 if dist_y > 0 else 270
+	else:
+		bearing = math.degrees(math.atan(float(dist_y)/dist_x))
+	
+	# negative x modifier
+	if dist_x < 0:
+		bearing = -bearing-90
+	else:
+		bearing = -bearing+90
+
+	# return
+	return distance, bearing			# TODO: check if correct depending on axis
+
+
+# store position in Firebase
+@app.route('/drone/store_GPS_firebase', methods=['POST'])
+def store_current_coord():
+
+	###################  DECODE PAYLOAD  ######################
+	print("!!!!!!!!! Data received from drone !!!!!!!!!")
+	
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the JSON received
+	print("JSON received:")
+	print(j)
+
+	# parse received data
+	r_pos_x     = j['pos_x']
+	r_pos_y     = j['pos_y']
+	r_pos_z     = j['pos_z']
+	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
+
+	# get the zero position
+	global home
+	home_latlng = geopy.Point(home.latitude, home.longitude)
+	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(home.delta_x), -float(home.delta_y))
+	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
+
+	# get the drone position
+	distance, bearing = get_dist_bearing(float(r_pos_x), float(r_pos_y))
+	drone_latlng = VincentyDistance(meters=distance).destination(zero_latlng, bearing)
+
+	# push on Firebase
+	print("Pushing new drone position on Firebase {} {}".format(drone_latlng.latitude, drone_latlng.longitude))
+	ref_drone = firebase_db.reference('/drone')
+	ref_drone.push({
+		'lat': drone_latlng.latitude,
+		'lng': drone_latlng.longitude,
+	    'sender': 'app.py',
+	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
+	    'altitude': float(r_pos_z)
+	})
+
+	# return string
+	return 'Data added to Firebase'
+
+
+# store home position in Firebase
+@app.route('/drone/store_home_firebase', methods=['POST'])
+def store_current_home():
+
+	###################  DECODE PAYLOAD  ######################
+	print("!!!!!!!!! Data received from drone !!!!!!!!!")
+	
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the JSON received
+	print("JSON received:")
+	print(j)
+
+	# parse received data
+	r_lat     = j['latitude']
+	r_lng     = j['longitude']
+	r_alt     = j['altitude']
+	r_dx      = j['delta_x']
+	r_dy      = j['delta_y']
+	r_dz      = j['delta_z']
+	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
+
+	# add in memory
+	global home
+	home.latitude = r_lat
+	home.longitude = r_lng
+	home.altitude = r_alt
+	home.delta_x = r_dx
+	home.delta_y = r_dy
+	home.delta_z = r_dz
+
+	# push on Firebase
+	print("Pushing home position on Firebase: lat={}, lng={}, alt={}".format(r_lat, r_lng, r_alt))
+	ref_drone = firebase_db.reference('/home')
+	ref_drone.push({
+		'lat': r_lat,
+		'lng': r_lng,
+		'altitude': r_alt,
+		'delta_x': r_dx,
+		'delta_y': r_dy,
+		'delta_z': r_dz,
+	    'sender': 'app.py',
+	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
+	})
+
+	# return string
+	return 'Data added to Firebase'
 
 
 #########################################################################################

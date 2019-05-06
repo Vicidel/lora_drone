@@ -2,6 +2,13 @@
 <meta charset="utf-8"/>
 <html>
     <head>
+        <form action="#">
+            Drone 1: <input type="checkbox" id="drone1box" onclick="boxclick(this,'d1')"/>
+            Drone 2: <input type="checkbox" id="drone2box" onclick="boxclick(this,'d2')"/>
+            Drone 3: <input type="checkbox" id="drone3box" onclick="boxclick(this,'d3')"/>
+            Play: <input type="checkbox" id="playbox" onclick="boxclick(this,'play')"/>
+            Community: <input type="checkbox" id="communitybox" onclick="boxclick(this,'community')"/>
+        </form> 
     <style>
         /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
@@ -24,7 +31,7 @@
             // Firebase reference
             var firebase = new Firebase('https://drone-3bd2a.firebaseio.com/');
 
-            // Data object
+            // data object
             var data = {
                 sender: null,
                 timestamp: null,
@@ -32,18 +39,59 @@
                 lng: null
             };
 
-            // Create base coordinates
-            var lat_start = 46.51587575161965;
-            var lng_start = 6.564940909970005;
-            var lat_prev = lat_start;
-            var lng_prev = lng_start;
+            // create base coordinates
+            var lat_zurich = 47.398231;
+            var lng_zurich = 8.545426  
+            var lat_start = lat_zurich;
+            var lng_start = lng_zurich;
 
-            // Creates a map object with a click listener and a heatmap.
+            function center_control(control_div, map){
+                // Set CSS for the control border.
+                var controlUI = document.createElement('div');
+                controlUI.style.backgroundColor = '#fff';
+                controlUI.style.border = '2px solid #fff';
+                controlUI.style.borderRadius = '3px';
+                controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+                controlUI.style.cursor = 'pointer';
+                controlUI.style.marginBottom = '22px';
+                controlUI.style.textAlign = 'center';
+                controlUI.title = 'Click to recenter the map';
+                control_div.appendChild(controlUI);
+
+                // Set CSS for the control interior.
+                var controlText = document.createElement('div');
+                controlText.style.color = 'rgb(25,25,25)';
+                controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+                controlText.style.fontSize = '14px';
+                controlText.style.lineHeight = '20px';
+                controlText.style.paddingLeft = '5px';
+                controlText.style.paddingRight = '5px';
+                controlText.innerHTML = 'Center Map';
+                controlUI.appendChild(controlText);
+
+                // Setup the click event listeners: simply set the map to Chicago.
+                controlUI.addEventListener('click', function() {
+                    map.setCenter({lat: lat_start, lng: lng_start});
+                    map.setZoom(16);
+                });
+            }
+
+            // callback for checkboxes
+            function boxclick(box, category) {
+                if(box.checked) {
+                    console.log("Checked box: "+category);
+                }
+                else {
+                    console.log("Unchecked box: "+category);
+                }
+            }
+
+            // creates a map object
             function initMap() {
 
-                // Define the map itself
+                // define the map itself
                 var map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: 46.5191, lng: 6.5668},
+                    center: {lat: lat_start, lng: lng_start},
                     zoom: 16,
                     styles: [{
                         featureType: 'poi',
@@ -57,75 +105,130 @@
                     streetViewControl: false,
                 });
 
-                // Custom marker for drone
+                // create div for centering button
+                var centerControlDiv = document.createElement('div');
+                var centerControl = new center_control(centerControlDiv, map);
+                centerControlDiv.index = 1;
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+      
+                // custom markers icons
                 var drone_icon = {
                     url: 'drone.png',
-                    //size: new google.maps.Size(71, 71),
-                    //origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var zero_icon = {
+                    url: 'zero.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var home_icon = {
+                    url: 'home.png',
                     anchor: new google.maps.Point(13, 13),
                     scaledSize: new google.maps.Size(25, 25)
                 };
 
-                // Start marker
-                var start_marker = new google.maps.Marker({
-                    position: {lat: lat_start, lng: lng_start},
-                    map: map, 
-                    title: 'Start'
-                });
-
-                // Drone marker
+                // markers
                 var drone_marker = new google.maps.Marker({
                     map: map,
                     icon: drone_icon,
                     title: 'Drone'
                 });
+                var zero_marker = new google.maps.Marker({
+                    map: map, 
+                    icon: zero_icon,
+                    title: 'Zero'
+                });
+                var home_marker = new google.maps.Marker({
+                    map: map,
+                    icon: home_icon,
+                    title: 'Home'
+                });
 
+                // flight path
+                var flight_path = new google.maps.Polyline({
+                    map: map,
+                    geodesic: true,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3
+                });
+                var path = [];
+
+                // listener for clicks
+                map.addListener('click', function(e) {
+                    var lat = e.latLng.lat();
+                    var lng = e.latLng.lng();
+
+                    // new Firebase entry
+                    firebase.child('click').push({           
+                        'lat': lat,
+                        'lng': lng,
+                        'sender': 'click'
+                    });
+
+                    // new marker
+                    var marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map,
+                        title: 'Click'
+                    });
+                });
                 
-
-                initFirebase(map, drone_icon, drone_marker);
+                // start Firebase and database listeners
+                initFirebase(map, drone_icon, drone_marker, zero_marker, home_marker, flight_path, path);
             }
 
-            // Init Firebase and set listeners
-            function initFirebase(map, drone_icon, drone_marker, flight_path) {
+            // init Firebase and set listeners
+            function initFirebase(map, drone_icon, drone_marker, zero_marker, home_marker, flight_path, path) {
 
                 // 10 minutes before current time.
                 var startTime = new Date().getTime() - (60 * 10 * 1000);
 
-                // Reference to the clicks in Firebase.
-                var drone = firebase.child('drone');
+                // reference in Firebase
+                var drone_ref = firebase.child('drone');
+                var home_ref = firebase.child('home');
 
-                // Listener for drone points
-                drone.on('child_added',
-                    function(snapshot) {
+                // listener for drone points
+                drone_ref.on('child_added', function(snapshot) {
 
-                        // Get coordinates from firebase
-                        var lat = snapshot.val().lat;
-                        var lng = snapshot.val().lng;
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
 
-                        // Move marker
-                        drone_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    // move marker
+                    drone_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    drone_marker.setMap(map);
 
-                        // Create path
-                        var path = [
-                            {lat: lat, lng: lng},
-                            {lat: lat_prev, lng: lng_prev}
-                        ];
+                    // draw path
+                    path.push({lat: lat, lng: lng});
+                    flight_path.setPath(path);
+                    flight_path.setMap(map)
+                });
 
-                        // Draw path
-                        var flight_path = new google.maps.Polyline({
-                            map: map,
-                            path: path,
-                            geodesic: true,
-                            strokeColor: '#FF0000',
-                            strokeOpacity: 1.0,
-                            strokeWeight: 3
-                        });
+                // for removing drone point
+                drone_ref.on('child_removed', function(snapshot) {
+                    drone_marker.setMap(null)
+                    flight_path.setMap(null)
+                });
 
-                        // Store current coord for next ocurence
-                        lat_prev = lat;
-                        lng_prev = lng;
-                    }
-                );
+                // listener for changes in home
+                home_ref.on('child_added', function(snapshot){
+
+                    // get coordinates
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    home_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    home_marker.setMap(map);
+                });
+
+                // for removing home point
+                home_ref.on('child_removed', function(snapshot) {
+                    home_marker.setMap(null)
+                });
+
             }   
 
         </script>

@@ -20,6 +20,7 @@ using namespace Eigen; // To use matrix and vector representation
 #include <ros/ros.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
+#include <mavros_msgs/HomePosition.h>
 #include <mavros_msgs/PositionTarget.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
@@ -32,12 +33,14 @@ using namespace Eigen; // To use matrix and vector representation
 
 // define the received MAVROS messages
 mavros_msgs::State current_state;               // drone state (for OFFBOARD mode)
-geometry_msgs::PoseStamped  est_local_pos;      // local position (x, y, z)
+mavros_msgs::HomePosition home_position;        // home position 
+geometry_msgs::PoseStamped est_local_pos;       // local position
 
 
 // functions definitions
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
-void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos);
+void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg);
+void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg);
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
 Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_goal);
@@ -54,13 +57,14 @@ int main(int argc, char **argv){
     ros::NodeHandle nh;
 
     // subscribes to topics 
-    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
-    ros::Subscriber est_local_pos_sub = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
-    ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
-    ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
-    ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode> ("mavros/set_mode");
-    ros::Publisher target_pub = nh.advertise<mavros_msgs::PositionTarget> ("mavros/setpoint_raw/local", 10);
-
+    ros::Subscriber state_sub           = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
+    ros::Subscriber est_local_pos_sub   = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
+    ros::Subscriber home_pos_sub        = nh.subscribe<mavros_msgs::HomePosition> ("mavros/home_position/home", 10, home_pos_cb);
+    ros::ServiceClient arming_client    = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
+    ros::ServiceClient set_mode_client  = nh.serviceClient<mavros_msgs::SetMode> ("mavros/set_mode");
+    ros::Publisher target_pub           = nh.advertise<mavros_msgs::PositionTarget> ("mavros/setpoint_raw/local", 10);
+    ros::Publisher local_pos_pub        = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
+    
     //the setpoint publishing rate MUST be faster than 2Hz
     ros::Rate rate(20.0);
 
@@ -88,23 +92,29 @@ int main(int argc, char **argv){
     }
 
 
-    // to arm drone
+    // to arm drone and set OFFBOARD
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
+    mavros_msgs::SetMode offb_set_mode;
+    offb_set_mode.request.custom_mode = "OFFBOARD";
 
     // time storage
-    ros::Time time_last_request = ros::Time::now();
-    ros::Time time_start_hover = ros::Time::now();
-    ros::Time time_last_print   = ros::Time::now();
+    ros::Time time_last_request       = ros::Time::now();
+    ros::Time time_start_hover        = ros::Time::now();
+    ros::Time time_last_print         = ros::Time::now();
+    ros::Time time_last_send_firebase = ros::Time::now();
 
+    // time parameters
+    float time_firebase_period = 1.0f;  // period of sending messages to Firebase
+    float time_check_period    = 1.0f;  // period of check server start / arming
 
     // parameters
     float precision = 0.5f;     // precision to reach the waypoints
     std::string answer;         // string returned by the server when sending position
     int state = 0;              // FSM state
     float hover_time = 10.0f;   // default hovering time at measure positions
-    bool bool_fly_straight = true;   // fly in direction of waypoint or just x+
-
+    bool bool_fly_straight = true;      // fly in direction of waypoint or just x+
+    
     // state booleans
     bool bool_wait_for_offboard = true;
     bool bool_stop_all = false;
@@ -117,6 +127,13 @@ int main(int argc, char **argv){
         if(bool_stop_all){
             ROS_INFO("Stop condition reached");
             break;
+        }
+
+        // send to Firebase
+        if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
+            send_home_firebase(home_position.geo.latitude, home_position.geo.longitude, home_position.geo.altitude, home_position.position.x, home_position.position.y, home_position.position.z, ros::Time::now().toSec());
+            send_GPS_firebase(pos_drone, ros::Time::now().toSec());
+            time_last_send_firebase = ros::Time::now();
         }
 
         // display info
@@ -134,18 +151,26 @@ int main(int argc, char **argv){
         if(bool_wait_for_offboard){
 
             // every 1s:
-            if((ros::Time::now() - time_last_request) > ros::Duration(1.0) ){
+            if((ros::Time::now() - time_last_request) > ros::Duration(time_check_period) ){
 
-                // check state
-                if(current_state.mode == "OFFBOARD"){
-                    ROS_INFO("Offboard mode set");
+                // check from server
+                if(check_server_start()){
+                    if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
+                        ROS_INFO("Offboard enabled from server");
+                        bool_wait_for_offboard = false;
+                    }
+                }
+                // check from RC
+                else if(current_state.mode == "OFFBOARD"){
+                    ROS_INFO("Offboard enabled from RC");
                     bool_wait_for_offboard = false;
-                    time_last_request = ros::Time::now();
                 }
+                // still waiting
                 else{
-                    ROS_INFO("Waiting for offboard mode");
-                    time_last_request = ros::Time::now();
+                    ROS_INFO("Waiting for offboard mode (from server or RC)");
                 }
+
+                time_last_request = ros::Time::now();
             }
         }
         else{
@@ -158,7 +183,7 @@ int main(int argc, char **argv){
             }
 
             // every 2s, try to arm drone
-            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(2.0))){
+            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(time_check_period))) {
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                     answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_armed");
@@ -170,9 +195,10 @@ int main(int argc, char **argv){
                         ROS_INFO("ERROR: server is offline");
                         bool_stop_all = true;
                     }
-
-                    // get next waypoint
-                    pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);        
+                    else{
+                        // get next waypoint
+                        pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+                    }
                 }
                 else{
                     ROS_INFO("Trying to arm drone");
@@ -340,8 +366,11 @@ float parse_hover_time_from_answer(std::string answer_string){
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
     current_state = *msg;
 }
-void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
-    est_local_pos = *est_pos;
+void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg){
+    est_local_pos = *msg;
+}
+void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg){
+    home_position = *msg;
 }
 
 

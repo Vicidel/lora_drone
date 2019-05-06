@@ -1,17 +1,7 @@
-
 import numpy as np
-
-from pylocus.point_set import PointSet
-from pylocus.algorithms import reconstruct_srls
-from pylocus.simulation import create_noisy_edm, create_mask, create_weights
-from pylocus.basics import mse, rmse, get_edm
 import math
-
-
 from datetime import datetime
-
 from mlat import MLAT
-
 import localization as lx
 
 
@@ -205,8 +195,6 @@ def simple_data():
 
 	print(tri_dataset)
 
-	test_pylocus()
-
 def loc_package():
 	print("###################LOCALIZATION PACKAGE TEST###################")
 	tri_dataset = []
@@ -262,14 +250,3 @@ def loc_package():
 
 	print(t.loc)
 		
-
-
-d1 = True
-d2 = True
-d3 = True
-
-if d1 == 1 and d2 == 1 and d3 == 1:
-	a = 2
-else:
-	a = 1
-print(a)

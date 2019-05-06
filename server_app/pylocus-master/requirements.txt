@@ -1,3 +1,0 @@
-cvxpy >= 1.0.6
-cvxopt
-matplotlib

@@ -3,11 +3,18 @@
 <html>
     <head>
         <form action="#">
-            Drone 1: <input type="checkbox" id="drone1box" onclick="boxclick(this,'d1')"/>
-            Drone 2: <input type="checkbox" id="drone2box" onclick="boxclick(this,'d2')"/>
-            Drone 3: <input type="checkbox" id="drone3box" onclick="boxclick(this,'d3')"/>
-            Play: <input type="checkbox" id="playbox" onclick="boxclick(this,'play')"/>
-            Community: <input type="checkbox" id="communitybox" onclick="boxclick(this,'community')"/>
+            <div>
+                <b>Drone to start for takeoff:</b>
+                drone 1: <input type="checkbox" id="drone1box" onclick="checkbox_drone_cb(this,'d1')" autocomplete="off"/>
+                drone 2: <input type="checkbox" id="drone2box" onclick="checkbox_drone_cb(this,'d2')" autocomplete="off"/>
+                drone 3: <input type="checkbox" id="drone3box" onclick="checkbox_drone_cb(this,'d3')" autocomplete="off"/>
+                <button type="submit" onclick="takeoff_button_cb(this)">Takeoff</button>
+            </div>
+            <div>
+                <b>Kill switch:</b>
+                <button type="submit" onclick="kill_button_cb(this)">Kill</button>
+                <button type="submit" onclick="unkill_button_cb(this)">Unkill</button>
+            </div>
         </form> 
     <style>
         /* Always set the map height explicitly to define the size of the div
@@ -27,6 +34,8 @@
         <div id="map"></div>
 
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
             // Firebase reference
             var firebase = new Firebase('https://drone-3bd2a.firebaseio.com/');
@@ -45,6 +54,12 @@
             var lat_start = lat_zurich;
             var lng_start = lng_zurich;
 
+            // for drone start from server
+            var drone1_start = 0;
+            var drone2_start = 0;
+            var drone3_start = 0;
+
+            // creates a GUI for centering map
             function center_control(control_div, map){
                 // Set CSS for the control border.
                 var controlUI = document.createElement('div');
@@ -77,13 +92,47 @@
             }
 
             // callback for checkboxes
-            function boxclick(box, category) {
+            function checkbox_drone_cb(box, drone_id) {
                 if(box.checked) {
-                    console.log("Checked box: "+category);
+                    if(drone_id=='d1') drone1_start = 1;
+                    if(drone_id=='d2') drone2_start = 1;
+                    if(drone_id=='d3') drone3_start = 1;
                 }
                 else {
-                    console.log("Unchecked box: "+category);
+                    if(drone_id=='d1') drone1_start = 0;
+                    if(drone_id=='d2') drone2_start = 0;
+                    if(drone_id=='d3') drone3_start = 0;
                 }
+            }
+
+            // callback for killswitch button
+            function kill_button_cb(){
+                console.log("Killing all drones now")
+
+                // POST on server
+                const url='http://victor.scapp.io/param/drone_start';
+                const data={'kill': 1, 'bool_drone1_start': 666, 'bool_drone2_start': 666, 'bool_drone3_start': 666}
+                axios({method: 'POST', url: url, data: data})
+            }
+
+            // callback for unkillswitch button
+            function unkill_button_cb(){
+                console.log("Unkilling all drones now!")
+
+                // POST on server
+                const url='http://victor.scapp.io/param/drone_start';
+                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
+                axios({method: 'POST', url: url, data: data})
+            }
+
+            // callback for takeoff button
+            function takeoff_button_cb() {
+                console.log("Setting drone start state to desired values")
+
+                // POST on server
+                const url='http://victor.scapp.io/param/drone_start';
+                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
+                axios({method: 'POST', url: url, data: data})
             }
 
             // creates a map object
@@ -109,7 +158,7 @@
                 var centerControlDiv = document.createElement('div');
                 var centerControl = new center_control(centerControlDiv, map);
                 centerControlDiv.index = 1;
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
       
                 // custom markers icons
                 var drone_icon = {
@@ -228,8 +277,12 @@
                 home_ref.on('child_removed', function(snapshot) {
                     home_marker.setMap(null)
                 });
-
             }   
+
+            // POST drone start from GMaps GUI
+            function post_drone_status(no_drone) {
+
+            }
 
         </script>
         <script async defer

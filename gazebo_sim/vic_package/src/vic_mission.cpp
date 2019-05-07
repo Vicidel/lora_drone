@@ -103,10 +103,12 @@ int main(int argc, char **argv){
     ros::Time time_start_hover        = ros::Time::now();
     ros::Time time_last_print         = ros::Time::now();
     ros::Time time_last_send_firebase = ros::Time::now();
+    ros::Time time_last_server_check  = ros::Time::now();
 
     // time parameters
-    float time_firebase_period = 1.0f;  // period of sending messages to Firebase
-    float time_check_period    = 1.0f;  // period of check server start / arming
+    float time_firebase_period        = 3.0f;  // period of sending messages to Firebase
+    float time_offboard_arm_period    = 2.0f;  // period to check offboard and arming
+    float time_server_check_period    = 2.0f;  // period for kill switch and server offboard
 
     // parameters
     float precision = 0.5f;     // precision to reach the waypoints
@@ -114,6 +116,8 @@ int main(int argc, char **argv){
     int state = 0;              // FSM state
     float hover_time = 10.0f;   // default hovering time at measure positions
     bool bool_fly_straight = true;      // fly in direction of waypoint or just x+
+    int server_answer;
+    int no_drone = 3;
     
     // state booleans
     bool bool_wait_for_offboard = true;
@@ -122,6 +126,22 @@ int main(int argc, char **argv){
     
     // while ROS is online
     while(ros::ok()){
+
+        // check from server
+        if(ros::Time::now() - time_last_server_check > ros::Duration(time_server_check_period)) {
+            server_answer = check_server(no_drone);    // 0:nothing, 1:go into offboard, 666:kill
+            ROS_INFO("Answer from server check: %d", server_answer);
+            if(server_answer==666) {
+                // disarm drone and stop program
+                arm_cmd.request.value = false;
+                if(arming_client.call(arm_cmd) && arm_cmd.response.success){
+                    bool_stop_all = true;
+                    ROS_INFO("Server kill switch activated!");
+                    break;
+                }
+            }
+            time_last_server_check = ros::Time::now();
+        }
 
         // stop bool
         if(bool_stop_all){
@@ -151,10 +171,10 @@ int main(int argc, char **argv){
         if(bool_wait_for_offboard){
 
             // every 1s:
-            if((ros::Time::now() - time_last_request) > ros::Duration(time_check_period) ){
+            if((ros::Time::now() - time_last_request) > ros::Duration(time_offboard_arm_period) ){
 
                 // check from server
-                if(check_server_start()){
+                if(server_answer==1){
                     if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
                         ROS_INFO("Offboard enabled from server");
                         bool_wait_for_offboard = false;
@@ -183,7 +203,7 @@ int main(int argc, char **argv){
             }
 
             // every 2s, try to arm drone
-            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(time_check_period))) {
+            if(!current_state.armed && (ros::Time::now() - time_last_request > ros::Duration(time_offboard_arm_period))) {
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                     answer = send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_armed");

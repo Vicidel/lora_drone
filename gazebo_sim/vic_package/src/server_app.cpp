@@ -125,11 +125,6 @@ void send_GPS_firebase(Vector3f position, double time){
     // set response string
     std::string response_string;
 
-    // create curl object
-    CURL *curl = NULL;
-    CURLcode res = CURLE_FAILED_INIT; 
-    struct curl_slist *headers = NULL;
-
     // create JSON to send
     cJSON *root = NULL;
     char *json = NULL;
@@ -155,11 +150,6 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
 
     // set response string
     std::string response_string;
-
-    // create curl object
-    CURL *curl = NULL;
-    CURLcode res = CURLE_FAILED_INIT; 
-    struct curl_slist *headers = NULL;
 
     // create JSON to send
     cJSON *root = NULL;
@@ -188,6 +178,29 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
 }
 
 // check if start signal sent from server
-bool check_server_start(){
-    return false;       // TODO: implement checking server
+int check_server(int no_drone){
+
+    // set response string
+    std::string response_string;
+
+    // create JSON to send
+    cJSON *root = NULL;
+    char *json = NULL;
+    root = cJSON_CreateObject();
+
+    // fils json
+    char str_no_drone[10]; sprintf(str_no_drone, "%d", no_drone);
+    cJSON_AddStringToObject(root, "no_drone", str_no_drone);
+    json = cJSON_PrintUnformatted(root);
+
+    // POST JSON on URL
+    response_string = post_JSON(DRONE_STATUS_URL, json);
+    char answer_char[response_string.size()+1];
+    strcpy(answer_char, response_string.c_str());
+
+    // return 
+    if(answer_char[0]=='K') return 666;          // kill switch
+    else if(answer_char[0]=='Y') return 1;       // drone can go to offboard
+    else if(answer_char[0]=='N') return 0;       // drone stays idle
+    else return 999;                             // unknown
 }

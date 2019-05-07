@@ -109,12 +109,12 @@ class solution_datapoint:
 
 # to store the home
 class home_datapoint:
-	latitude    = 6.66
-	longitude   = 6.66
-	altitude    = 6.66
-	delta_x     = 6.66
-	delta_x     = 6.66
-	delta_z     = 6.66
+	latitude    = 47.397751 	# Zurich
+	longitude   = 8.545607 		# Zurich
+	altitude    = 500 			# Zurich
+	delta_x     = 0				# home is at zero
+	delta_x     = 0				# home is at zero		
+	delta_z     = 0				# home is at zero
 
 
 
@@ -546,6 +546,36 @@ def lora_network_est():
 	return 'Network estimate positions set at {} {} {}'.format(j['pos_x'], j['pos_y'], j['pos_z'])
 
 
+# to set the network estimation via server
+@app.route('/lora/network_estimate_latlng', methods=['POST'])
+def lora_network_est_latlng():
+	print("!!!!!!!!! Network estimate received from POST !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the coordinates received
+	print("Coordinates received: lat={}, lng={}".format(j['lat'], j['lng']))
+
+	# convert in x, y
+	x, y = conversion_latlng_xy(float(j['lat']), float(j['lng']))
+	print("Position computed: x={}, y={}".format(x, y))
+
+	# set network estimate
+	global network_x, network_y, network_z
+	network_x = x
+	network_y = y
+	network_z = 0
+
+	# success
+	return 'Network estimate positions set at {} {} {}'.format(x, y, 0)
+
+
 # to set the circle radii
 @app.route('/lora/circle_radius', methods=['POST'])
 def lora_circle_rad():
@@ -611,10 +641,8 @@ def param_drone_start():
 	j = []
 	try:
 		j = request.json
-		print(j)
 	except:
 		print("ERROR: file is not a JSON")
-		print(j)
 		return 'Can only receive JSON file'
 
 	# display in log the param received
@@ -658,9 +686,9 @@ def param_drone_for_takeoff():
 	# for each drone, return Y(es) or (N)o
 	if no_drone == 1:
 		if bool_drone1_start:
-			return 'Y: drone {} ready for takeoff'.format(no_drone)
+			return 'Y: drone {} ready for takeoff'.format(j['no_drone'])
 		else:
-			return 'N: drone {} not ready for takeoff'.format(no_drone)
+			return 'N: drone {} not ready for takeoff'.format(j['no_drone'])
 	elif no_drone == 2:
 		if bool_drone2_start:
 			return 'Y: drone {} ready for takeoff'.format(no_drone)
@@ -672,9 +700,36 @@ def param_drone_for_takeoff():
 		else:
 			return 'N: drone {} not ready for takeoff'.format(no_drone)
 	else:
-		print('ERROR: drone number unknown ({})'.format(no_drone))
-		return 'E: drone number unknown ({})'.format(no_drone)
+		print('ERROR: drone number unknown ({})'.format(j['no_drone']))
+		return 'E: drone number unknown ({})'.format(j['no_drone'])
 	
+
+
+#########################################################################################
+######################################  MISC ROUTE  #####################################
+#########################################################################################
+
+# conversion between latlng and xy
+def conversion_latlng_xy(lat, lng):
+
+	# get home data
+	home_lat = float(home.latitude)
+	home_lng = float(home.longitude)		# home coordinates
+	dx   	 = float(home.delta_x)
+	dy 	 	 = float(home.delta_x)			# as home is not zero
+
+	# math stuff for bearing 
+	delta_lon = home_lng - lng
+	bearing_y = math.sin(delta_lon) * math.cos(home_lat)
+	bearing_x = math.cos(lat) * math.sin(home_lat) - math.sin(lat) * math.cos(home_lat) * math.cos(delta_lon)
+	bearing = math.atan2(bearing_y, bearing_x)
+
+	# distance geopy
+	dist = geopy.distance.vincenty((lat, lng), (home_lat, home_lng)).m
+
+	# return result
+	return math.sin(bearing)*dist+dx, -math.cos(bearing)*dist+dy
+
 
 
 #########################################################################################

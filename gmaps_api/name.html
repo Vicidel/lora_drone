@@ -20,7 +20,7 @@
         /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
         #map {
-            height: 100%;
+            height: 93%;
         }
         /* Optional: Makes the sample page fill the window.*/
         html, body {
@@ -86,7 +86,7 @@
 
                 // Setup the click event listeners: simply set the map to Chicago.
                 controlUI.addEventListener('click', function() {
-                    map.setCenter({lat: lat_start, lng: lng_start});
+                    map.setCenter(new google.maps.LatLng(lat_start, lng_start));
                     map.setZoom(16);
                 });
             }
@@ -166,11 +166,6 @@
                     anchor: new google.maps.Point(13, 13),
                     scaledSize: new google.maps.Size(25, 25)
                 };
-                var zero_icon = {
-                    url: 'zero.png',
-                    anchor: new google.maps.Point(13, 13),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
                 var home_icon = {
                     url: 'home.png',
                     anchor: new google.maps.Point(13, 13),
@@ -183,15 +178,14 @@
                     icon: drone_icon,
                     title: 'Drone'
                 });
-                var zero_marker = new google.maps.Marker({
-                    map: map, 
-                    icon: zero_icon,
-                    title: 'Zero'
-                });
                 var home_marker = new google.maps.Marker({
                     map: map,
                     icon: home_icon,
                     title: 'Home'
+                });
+                var click_marker = new google.maps.Marker({
+                    map:map,
+                    title: 'Click'
                 });
 
                 // flight path
@@ -215,28 +209,22 @@
                         'lng': lng,
                         'sender': 'click'
                     });
-
-                    // new marker
-                    var marker = new google.maps.Marker({
-                        position: e.latLng,
-                        map: map,
-                        title: 'Click'
-                    });
                 });
                 
                 // start Firebase and database listeners
-                initFirebase(map, drone_icon, drone_marker, zero_marker, home_marker, flight_path, path);
+                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, click_marker);
             }
 
             // init Firebase and set listeners
-            function initFirebase(map, drone_icon, drone_marker, zero_marker, home_marker, flight_path, path) {
+            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, click_marker) {
 
                 // 10 minutes before current time.
                 var startTime = new Date().getTime() - (60 * 10 * 1000);
 
                 // reference in Firebase
                 var drone_ref = firebase.child('drone');
-                var home_ref = firebase.child('home');
+                var home_ref  = firebase.child('home');
+                var click_ref = firebase.child('click');
 
                 // listener for drone points
                 drone_ref.on('child_added', function(snapshot) {
@@ -271,18 +259,40 @@
                     // move marker
                     home_marker.setPosition(new google.maps.LatLng(lat, lng));
                     home_marker.setMap(map);
+
+                    // set start as home
+                    lat_start = lat;
+                    lng_start = lng;
                 });
 
                 // for removing home point
                 home_ref.on('child_removed', function(snapshot) {
                     home_marker.setMap(null)
                 });
+
+                // listener for click points
+                click_ref.on('child_added', function(snapshot) {
+
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    click_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    click_marker.setMap(map);
+
+                    // post network estimate on server
+                    const url='http://victor.scapp.io/lora/network_estimate_latlng';
+                    const data={'lat': lat, 'lng': lng}
+                    axios({method: 'POST', url: url, data: data})
+                });
+
+                // for removing drone point
+                click_ref.on('child_removed', function(snapshot) {
+                    click_marker.setMap(null)
+                });
+
             }   
-
-            // POST drone start from GMaps GUI
-            function post_drone_status(no_drone) {
-
-            }
 
         </script>
         <script async defer

@@ -49,8 +49,8 @@
             };
 
             // create base coordinates
-            var lat_zurich = 47.398231;
-            var lng_zurich = 8.545426  
+            var lat_zurich = 47.39784;
+            var lng_zurich = 8.54558  
             var lat_start = lat_zurich;
             var lng_start = lng_zurich;
 
@@ -81,12 +81,44 @@
                 controlText.style.lineHeight = '20px';
                 controlText.style.paddingLeft = '5px';
                 controlText.style.paddingRight = '5px';
-                controlText.innerHTML = 'Center Map';
+                controlText.innerHTML = 'Center map on Home';
                 controlUI.appendChild(controlText);
 
                 // Setup the click event listeners: simply set the map to Chicago.
                 controlUI.addEventListener('click', function() {
                     map.setCenter(new google.maps.LatLng(lat_start, lng_start));
+                    map.setZoom(16);
+                });
+            }
+
+            // creates a GUI for centering map
+            function center_control2(control_div, map){
+                // Set CSS for the control border.
+                var controlUI = document.createElement('div');
+                controlUI.style.backgroundColor = '#fff';
+                controlUI.style.border = '2px solid #fff';
+                controlUI.style.borderRadius = '3px';
+                controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+                controlUI.style.cursor = 'pointer';
+                controlUI.style.marginBottom = '22px';
+                controlUI.style.textAlign = 'center';
+                controlUI.title = 'Click to recenter the map';
+                control_div.appendChild(controlUI);
+
+                // Set CSS for the control interior.
+                var controlText = document.createElement('div');
+                controlText.style.color = 'rgb(25,25,25)';
+                controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+                controlText.style.fontSize = '14px';
+                controlText.style.lineHeight = '20px';
+                controlText.style.paddingLeft = '5px';
+                controlText.style.paddingRight = '5px';
+                controlText.innerHTML = 'Center map on Zurich';
+                controlUI.appendChild(controlText);
+
+                // Setup the click event listeners: simply set the map to Chicago.
+                controlUI.addEventListener('click', function() {
+                    map.setCenter(new google.maps.LatLng(lat_zurich, lng_zurich));
                     map.setZoom(16);
                 });
             }
@@ -160,6 +192,12 @@
                 centerControlDiv.index = 1;
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
       
+                // create div for centering button
+                var centerControlDiv2 = document.createElement('div');
+                var centerControl2 = new center_control2(centerControlDiv2, map);
+                centerControlDiv2.index = 1;
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
+      
                 // custom markers icons
                 var drone_icon = {
                     url: 'drone.png',
@@ -183,10 +221,35 @@
                     icon: home_icon,
                     title: 'Home'
                 });
-                var click_marker = new google.maps.Marker({
-                    map:map,
-                    title: 'Click'
+                var network_marker = new google.maps.Marker({
+                    map: map,
+                    title: 'Network estimate',
+                    //draggable: true
                 });
+                var network_circle1 = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.1,
+                    //editable: true
+                })
+                var network_circle2 = new google.maps.Circle({
+                    strokeColor: '#FFBB00',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 2,
+                    fillColor: '#FF9900',
+                    fillOpacity: 0.2,
+                    //editable: true
+                })
+                var network_circle3 = new google.maps.Circle({
+                    strokeColor: '#00FF00',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 2,
+                    fillColor: '#00FF00',
+                    fillOpacity: 0.1,
+                    //editable: true
+                })
 
                 // flight path
                 var flight_path = new google.maps.Polyline({
@@ -212,19 +275,17 @@
                 });
                 
                 // start Firebase and database listeners
-                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, click_marker);
+                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, network_circle1, network_circle2, network_circle3);
             }
 
             // init Firebase and set listeners
-            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, click_marker) {
-
-                // 10 minutes before current time.
-                var startTime = new Date().getTime() - (60 * 10 * 1000);
+            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, network_circle1, network_circle2, network_circle3) {
 
                 // reference in Firebase
                 var drone_ref = firebase.child('drone');
                 var home_ref  = firebase.child('home');
                 var click_ref = firebase.child('click');
+                var est_ref   = firebase.child('estimate');
 
                 // listener for drone points
                 drone_ref.on('child_added', function(snapshot) {
@@ -279,8 +340,8 @@
                     var lng = snapshot.val().lng;
 
                     // move marker
-                    click_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    click_marker.setMap(map);
+                    network_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    network_marker.setMap(map);
 
                     // post network estimate on server
                     const url='http://victor.scapp.io/lora/network_estimate_latlng';
@@ -290,7 +351,39 @@
 
                 // for removing drone point
                 click_ref.on('child_removed', function(snapshot) {
-                    click_marker.setMap(null)
+                    network_marker.setMap(null)
+                });
+
+                // listener for new estimation
+                est_ref.on('child_added', function(snapshot) {
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+                    var rad = snapshot.val().radius;
+
+                    // different colors based on radius
+                    if(rad==150) {
+                        network_circle1.setCenter(new google.maps.LatLng(lat, lng));
+                        network_circle1.setMap(map);
+                        network_circle1.setRadius(rad);
+                    }
+                    if(rad==25) {
+                        network_circle2.setCenter(new google.maps.LatLng(lat, lng));
+                        network_circle2.setMap(map);
+                        network_circle2.setRadius(rad);
+                    }
+                    if(rad==10) {
+                        network_circle3.setCenter(new google.maps.LatLng(lat, lng));
+                        network_circle3.setMap(map);
+                        network_circle3.setRadius(rad);
+                    }
+                });
+
+                // for removing estimations
+                est_ref.on('child_removed', function(snapshot) {
+                    network_circle1.setMap(null);
+                    network_circle2.setMap(null);
+                    network_circle3.setMap(null);
                 });
 
             }   

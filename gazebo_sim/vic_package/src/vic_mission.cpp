@@ -106,9 +106,9 @@ int main(int argc, char **argv){
     ros::Time time_last_server_check  = ros::Time::now();
 
     // time parameters
-    float time_firebase_period        = 3.0f;  // period of sending messages to Firebase
-    float time_offboard_arm_period    = 2.0f;  // period to check offboard and arming
-    float time_server_check_period    = 2.0f;  // period for kill switch and server offboard
+    float time_firebase_period        = 0.5f;  // period of sending messages to Firebase
+    float time_offboard_arm_period    = 4.0f;  // period to check offboard and arming
+    float time_server_check_period    = 4.0f;  // period for kill switch and server offboard
 
     // parameters
     float precision = 0.5f;     // precision to reach the waypoints
@@ -151,7 +151,7 @@ int main(int argc, char **argv){
 
         // send to Firebase
         if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
-            send_home_firebase(home_position.geo.latitude, home_position.geo.longitude, home_position.geo.altitude, home_position.position.x, home_position.position.y, home_position.position.z, ros::Time::now().toSec());
+            if(bool_wait_for_offboard) send_home_firebase(home_position.geo.latitude, home_position.geo.longitude, home_position.geo.altitude, home_position.position.x, home_position.position.y, home_position.position.z, ros::Time::now().toSec());
             send_GPS_firebase(pos_drone, ros::Time::now().toSec());
             time_last_send_firebase = ros::Time::now();
         }
@@ -290,19 +290,11 @@ int main(int argc, char **argv){
                             if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                                 ROS_INFO("Drone landing spot reached!");
                                 send_GPS(pos_drone, ros::Time::now().toSec(), (char*)"drone_landing");
-                                state = 4;
+                                bool_stop_all = true;
                             }
                         }
                         break;
                     }
-
-                    case 4:{
-                        // finished
-                        ROS_INFO("Drone landed");
-                        bool_stop_all = true;
-                        break;
-                    }
-
 
                     default:{
                         ROS_INFO("Unknown state");

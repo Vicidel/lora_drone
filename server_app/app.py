@@ -115,6 +115,7 @@ class home_datapoint:
 	delta_x     = 0				# home is at zero
 	delta_x     = 0				# home is at zero		
 	delta_z     = 0				# home is at zero
+home = home_datapoint()
 
 
 
@@ -141,22 +142,13 @@ TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 # waypoint parameters
 flying_altitude   = 10
 takeoff_altitude  = 2
-network_x 		  = 666	 # set by Postman
-network_y 		  = 666	 # set by Postman
-network_z 		  = 666	 # set by Postman
-circle_radius     = 666
-circle_radius_v1  = 100	 # base parameter when starting the simulation
-circle_radius_v2  = 40	 # second parameter for second loop
 landing_radius    = 2    # circle around landing positions
-hover_time 		  = 10
+hover_time 		  = 4
 
 # storage for state
 current_state 	  = 666
 nb_est_made       = 666
 
-# localization parameters
-loop_todo		  = 2
-solution 		  = solution_datapoint()
 
 # for 3 drone: are the drones ready for next step
 bool_drone1_ready = False
@@ -172,34 +164,33 @@ bool_kill_switch  = False
 
 
 #########################################################################################
-##################################  GMAPS API THINGS  ###################################
+###############################  LOCALIZATION PARAMETERS  ###############################
 #########################################################################################
 
-# create latlng
-home = home_datapoint()
+# localization parameters
+loop_todo		  = 1
+solution 		  = solution_datapoint()
 
-# function to get distance and bearing from x and y distance
-def get_dist_bearing(dist_x, dist_y):
-	# compute distance
-	distance = math.sqrt(dist_x*dist_x + dist_y*dist_y)
+# network position
+network_x 		  = 666	 # set by Postman
+network_y 		  = 666	 # set by Postman
+network_z 		  = 666	 # set by Postman
 
-	# compute bearing
-	if dist_y==0:
-		bearing = 180 if dist_x < 0 else 0
-	elif dist_x==0:
-		bearing = 90 if dist_y > 0 else 270
-	else:
-		bearing = math.degrees(math.atan(float(dist_y)/dist_x))
-	
-	# negative x modifier
-	if dist_x < 0:
-		bearing = -bearing-90
-	else:
-		bearing = -bearing+90
+# radius of waypoints around est
+circle_radius     = 666
+circle_radius_v1  = 40 	 # base parameter when starting the simulation
+circle_radius_v2  = 20	 # second parameter for second loop
 
-	# return
-	return distance, bearing			# TODO: check if correct depending on axis
+# uncertainties radius
+est_uncertainty1  = 150
+est_uncertainty2  = 25
+est_uncertainty3  = 10
 
+
+
+#########################################################################################
+##################################  GMAPS API THINGS  ###################################
+#########################################################################################
 
 # store position in Firebase
 @app.route('/drone/store_GPS_firebase', methods=['POST'])
@@ -227,7 +218,6 @@ def store_current_coord():
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
 	# get the zero position
-	global home
 	home_latlng = geopy.Point(home.latitude, home.longitude)
 	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(home.delta_x), -float(home.delta_y))
 	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
@@ -407,6 +397,23 @@ def trilateration_main(drone_dataset):
 		# return result
 		return pos_x_est, pos_y_est, pos_z_est
 
+
+# add estimation to maps
+def add_estimation_maps(pos_x, pos_y, radius):
+
+	# convert in latlng
+	lat, lng = conversion_xy_latlng(pos_x, pos_y)
+
+	# push on Firebase
+	ref_est = firebase_db.reference('/estimate')
+	ref_est.push({
+		'lat': lat,
+		'lng': lng,
+	    'sender': 'app.py',
+	    'radius': radius
+	})
+
+	return 'Success'
 
 
 #########################################################################################
@@ -731,6 +738,44 @@ def conversion_latlng_xy(lat, lng):
 	return math.sin(bearing)*dist+dx, -math.cos(bearing)*dist+dy
 
 
+# conversion between xy and latlng
+def conversion_xy_latlng(x, y):
+	
+	# home to zero
+	home_latlng = geopy.Point(home.latitude, home.longitude)
+	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(home.delta_x), -float(home.delta_y))
+	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
+
+	# zero to drone
+	distance, bearing = get_dist_bearing(x, y)
+	latlng = VincentyDistance(meters=distance).destination(zero_latlng, bearing)
+
+	return latlng.latitude, latlng.longitude
+
+
+# function to get distance and bearing from x and y distance
+def get_dist_bearing(dist_x, dist_y):
+	# compute distance
+	distance = math.sqrt(dist_x*dist_x + dist_y*dist_y)
+
+	# compute bearing
+	if dist_y==0:
+		bearing = 180 if dist_x < 0 else 0
+	elif dist_x==0:
+		bearing = 90 if dist_y > 0 else 270
+	else:
+		bearing = math.degrees(math.atan(float(dist_y)/dist_x))
+	
+	# negative x modifier
+	if dist_x < 0:
+		bearing = -bearing-90
+	else:
+		bearing = -bearing+90
+
+	# return
+	return distance, bearing
+
+
 
 #########################################################################################
 #####################################  LORA ROUTE  ######################################
@@ -931,6 +976,12 @@ def drone_receive():
 		pos_y = float(r_pos_y)
 		pos_z = float(r_pos_z) + float(takeoff_altitude)
 
+		# delete database entries
+		ref_drone = firebase_db.reference('drone')
+		ref_est = firebase_db.reference('estimate')
+		ref_drone.delete()
+		ref_est.delete()
+
 		# return string with takeoff coordinates
 		return_string = "New waypoint (takeoff): x{} y{} z{}".format(pos_x, pos_y, pos_z)
 
@@ -949,6 +1000,9 @@ def drone_receive():
 		pos_x = network_x + circle_radius*math.cos(0)
 		pos_y = network_y + circle_radius*math.sin(0)
 		pos_z = flying_altitude
+
+		# save network on map
+		add_estimation_maps(network_x, network_y, est_uncertainty1)
 
 		# return string with new coordinates
 		return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
@@ -988,6 +1042,9 @@ def drone_receive():
 				solution.pos_x = pos_x_est
 				solution.pos_y = pos_y_est 		# new calculated position
 				solution.pos_z = pos_z_est
+			
+			# save on map
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty2)
 
 			# only once or more ?
 			if loop_todo == 1:
@@ -1011,9 +1068,18 @@ def drone_receive():
 		elif current_state == 6:
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
-			solution.pos_x = pos_x_est
-			solution.pos_y = pos_y_est
-			solution.pos_z = pos_z_est
+			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+				print("LOC: Reusing old network estimate")
+				solution.pos_x = pos_x_est
+				solution.pos_y = pos_y_est		# reusing old network est
+				solution.pos_z = pos_z_est
+			else:
+				solution.pos_x = pos_x_est
+				solution.pos_y = pos_y_est 		# new calculated position
+				solution.pos_z = pos_z_est
+
+			# save on map
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty3)
 
 			print("Go for landing at found position")
 			return_string = "Land at position: x{} y{} z{}".format(pos_x_est, pos_y_est, takeoff_altitude)

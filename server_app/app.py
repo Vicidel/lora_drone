@@ -161,6 +161,11 @@ bool_drone1_ready = False
 bool_drone2_ready = False
 bool_drone3_ready = False
 
+# for one or three drones: should the drone(s) start the algo (start from server)
+bool_drone1_start = False
+bool_drone2_start = False
+bool_drone3_start = False
+
 
 
 #########################################################################################
@@ -298,10 +303,12 @@ def store_current_home():
 	return 'Data added to Firebase'
 
 
+
 #########################################################################################
 ###################################  TRILATERATION  #####################################
 #########################################################################################
 
+# converts the signal data to a distance
 def function_signal_to_distance(esp, rssi):
 
 	# exponential coefficents
@@ -318,6 +325,7 @@ def function_signal_to_distance(esp, rssi):
 	return distance
 
 
+# uses the multilateration package on the created dataset
 def trilateration(tri_dataset):
 	# this function uses the localization package by Kamal Shadi:
 	# https://github.com/kamalshadi/Localization
@@ -341,6 +349,7 @@ def trilateration(tri_dataset):
 	return t.loc.x, t.loc.y, t.loc.z
 
 
+# matches LoRa and drone data
 def trilateration_main(drone_dataset):
 
 	# clear tri_dataset
@@ -462,7 +471,7 @@ def param_print():
 # to set the hovering time
 @app.route('/drone/hover_time', methods=['POST'])
 def drone_hover_time():
-	print("!!!!!!!!! Hover time received from POSTMAN !!!!!!!!!")
+	print("!!!!!!!!! Hover time received from POST !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -486,7 +495,7 @@ def drone_hover_time():
 # to set the takeoff and flight altitudes
 @app.route('/drone/altitudes', methods=['POST'])
 def drone_altitudes():
-	print("!!!!!!!!! Hover time received from POSTMAN !!!!!!!!!")
+	print("!!!!!!!!! Hover time received from POST !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -496,7 +505,7 @@ def drone_altitudes():
 		print("ERROR: file is not a JSON")
 		return 'Can only receive JSON file'
 
-	# display in log the coordinates received
+	# display in log the param received
 	print("Altitude received: takeoff={} and flight={}".format(j['takeoff'], j['flight']))
 
 	# set altitudes
@@ -511,7 +520,7 @@ def drone_altitudes():
 # to set the network estimation via Postman
 @app.route('/lora/network_estimate', methods=['POST'])
 def lora_network_est():
-	print("!!!!!!!!! Network estimate received from POSTMAN !!!!!!!!!")
+	print("!!!!!!!!! Network estimate received from POST !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -537,7 +546,7 @@ def lora_network_est():
 # to set the circle radii
 @app.route('/lora/circle_radius', methods=['POST'])
 def lora_circle_rad():
-	print("!!!!!!!!! Circle radii received from POSTMAN !!!!!!!!!")
+	print("!!!!!!!!! Circle radii received from POST !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -547,7 +556,7 @@ def lora_circle_rad():
 		print("ERROR: file is not a JSON")
 		return 'Can only receive JSON file'
 
-	# display in log the coordinates received
+	# display in log the param received
 	print("Radii received: r1={}, r2={}".format(j['radius_v1'], j['radius_v2']))
 
 	# set circle radii
@@ -559,10 +568,15 @@ def lora_circle_rad():
 	return 'Circle radii set at {} and {}'.format(j['radius_v1'], j['radius_v2'])
 
 
+
+#########################################################################################
+#####################################  DRONE STATUS  ####################################
+#########################################################################################
+
 # to set the drone ready manually for testing
 @app.route('/param/drone_ready', methods=['POST'])
 def param_drone_ready():
-	print("!!!!!!!!! Drone status received from POSTMAN !!!!!!!!!")
+	print("!!!!!!!!! Drone status for next step received from POST !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -572,18 +586,81 @@ def param_drone_ready():
 		print("ERROR: file is not a JSON")
 		return 'Can only receive JSON file'
 
-	# display in log the coordinates received
-	print("Drone status received: 1={}, 2={}, 3={}".format(j['drone1_status'], j['drone2_status'], j['drone3_status']))
+	# display in log the param received
+	print("Drone status received: 1={}, 2={}, 3={}".format(j['bool_drone1_ready'], j['bool_drone2_ready'], j['bool_drone3_ready']))
 
 	# set drone status
 	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
-	bool_drone1_ready = j['drone1_status']
-	bool_drone2_ready = j['drone2_status']
-	bool_drone3_ready = j['drone3_status']
+	bool_drone1_ready = j['bool_drone1_ready']
+	bool_drone2_ready = j['bool_drone2_ready']
+	bool_drone3_ready = j['bool_drone3_ready']
 
 	# success
 	return 'Drones set at desired states'
 
+
+# to start the drone from the server 
+@app.route('/param/drone_start', methods=['POST'])
+def param_drone_start():
+	print("!!!!!!!!! Drone start received from POST !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the param received
+	print("Drone start received: d1={}, d2={}, d3={}".format(j['bool_drone1_start'], j['bool_drone3_start'], j['bool_drone3_start']))
+
+	# set drone status
+	global bool_drone1_start, bool_drone2_start, bool_drone3_start
+	bool_drone1_start = j['bool_drone1_start']
+	bool_drone2_start = j['bool_drone2_start']
+	bool_drone3_start = j['bool_drone3_start']
+
+	# success
+	return 'Drones starting modes set'
+
+
+# GET method called from the drone to know if it should start
+@app.route('/param/drone_ready_to_takeoff', methods=['POST'])
+def param_drone_for_takeoff():
+	print("!!!!!!!!! Drone is asking for permission to takeoff !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display info 
+	print("Asking for drone {}, params are d1={}, d2={}, d3={}".format(j['no_drone'], bool_drone1_start, bool_drone3_start, bool_drone3_start))
+
+	# for each drone, return Y(es) or (N)o
+	if j['no_drone'] == 1:
+		if bool_drone1_start == True:
+			return 'Y: drone {} ready for takeoff'.format(j['no_drone'])
+		else:
+			return 'N: drone {} not ready for takeoff'.format(j['no_drone'])
+	elif j['no_drone'] == 2:
+		if bool_drone2_start == True:
+			return 'Y: drone {} ready for takeoff'.format(j['no_drone'])
+		else:
+			return 'N: drone {} not ready for takeoff'.format(j['no_drone'])
+	elif j['no_drone'] == 3:
+		if bool_drone3_start == True:
+			return 'Y: drone {} ready for takeoff'.format(j['no_drone'])
+		else:
+			return 'N: drone {} not ready for takeoff'.format(j['no_drone'])
+	else:
+		print('ERROR: drone number unknown ({})'.format(j['no_drone']))
+		return 'E: drone number unknown ({})'.format(j['no_drone'])
+	
 
 
 #########################################################################################

@@ -706,7 +706,7 @@ def param_drone_for_takeoff():
 
 
 #########################################################################################
-######################################  MISC ROUTE  #####################################
+####################################  MISC FUNCTIONS  ###################################
 #########################################################################################
 
 # conversion between latlng and xy
@@ -979,21 +979,27 @@ def drone_receive():
 		elif current_state == 3:
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
-			solution.pos_x = pos_x_est
-			solution.pos_y = pos_y_est
-			solution.pos_z = pos_z_est
+			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+				print("LOC: Reusing old network estimate")
+				solution.pos_x = pos_x_est
+				solution.pos_y = pos_y_est		# reusing old network est
+				solution.pos_z = pos_z_est
+			else:
+				solution.pos_x = pos_x_est
+				solution.pos_y = pos_y_est 		# new calculated position
+				solution.pos_z = pos_z_est
 
 			# only once or more ?
 			if loop_todo == 1:
-				print("Go for landing at found position")
+				print("DRONE: Go for landing at found position")
 				return_string = "Land at position: x{} y{} z{}".format(pos_x_est, pos_y_est, takeoff_altitude)
 			else:
 				print("Restarting around estimation, smaller parameters")
 
 				# new parameters
-				network_x = pos_x_est
-				network_y = pos_y_est
-				network_z = pos_z_est
+				network_x = solution.pos_x
+				network_y = solution.pos_y
+				network_z = solution.pos_z
 				circle_radius = circle_radius_v2
 
 				# new waypoint

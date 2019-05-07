@@ -247,6 +247,7 @@
                 drone_ref.on('child_removed', function(snapshot) {
                     drone_marker.setMap(null)
                     flight_path.setMap(null)
+                    path = []
                 });
 
                 // listener for changes in home

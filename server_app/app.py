@@ -13,6 +13,7 @@ import localization as lx
 # server database 
 from flask import Flask, Response, request, redirect, url_for, escape, jsonify, make_response
 from flask_mongoengine import MongoEngine
+from flask_cors import CORS
 from itertools import chain
 
 # GMaps API database
@@ -33,6 +34,7 @@ from geopy.distance import VincentyDistance
 
 # bootstrap the app
 app = Flask(__name__)
+CORS(app)		# enable CORS things: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin
 
 # check if running in the cloud and set MongoDB settings accordingly
 if 'VCAP_SERVICES' in os.environ:
@@ -165,6 +167,7 @@ bool_drone3_ready = False
 bool_drone1_start = False
 bool_drone2_start = False
 bool_drone3_start = False
+bool_kill_switch  = False
 
 
 
@@ -608,21 +611,27 @@ def param_drone_start():
 	j = []
 	try:
 		j = request.json
+		print(j)
 	except:
 		print("ERROR: file is not a JSON")
+		print(j)
 		return 'Can only receive JSON file'
 
 	# display in log the param received
-	print("Drone start received: d1={}, d2={}, d3={}".format(j['bool_drone1_start'], j['bool_drone3_start'], j['bool_drone3_start']))
+	print("Drone start received: d1={}, d2={}, d3={} (kill={})".format(j['bool_drone1_start'], j['bool_drone3_start'], j['bool_drone3_start'], j['kill']))
 
 	# set drone status
-	global bool_drone1_start, bool_drone2_start, bool_drone3_start
+	global bool_kill_switch, bool_drone1_start, bool_drone2_start, bool_drone3_start
+	bool_kill_switch  = j['kill']
 	bool_drone1_start = j['bool_drone1_start']
 	bool_drone2_start = j['bool_drone2_start']
 	bool_drone3_start = j['bool_drone3_start']
 
-	# success
-	return 'Drones starting modes set'
+	# return string
+	if bool_kill_switch:
+		return 'Set to kill the drones when possible!'
+	else:
+		return 'Drones starting modes set'
 
 
 # GET method called from the drone to know if it should start
@@ -639,27 +648,32 @@ def param_drone_for_takeoff():
 		return 'Can only receive JSON file'
 
 	# display info 
-	print("Asking for drone {}, params are d1={}, d2={}, d3={}".format(j['no_drone'], bool_drone1_start, bool_drone3_start, bool_drone3_start))
+	no_drone = int(j['no_drone'])
+	print("Asking for drone {}, params are d1={}, d2={}, d3={}".format(no_drone, bool_drone1_start, bool_drone2_start, bool_drone3_start))
+
+	# kill switch is active, kill drone
+	if bool_kill_switch:
+		return 'Kill drone now'
 
 	# for each drone, return Y(es) or (N)o
-	if j['no_drone'] == 1:
-		if bool_drone1_start == True:
-			return 'Y: drone {} ready for takeoff'.format(j['no_drone'])
+	if no_drone == 1:
+		if bool_drone1_start:
+			return 'Y: drone {} ready for takeoff'.format(no_drone)
 		else:
-			return 'N: drone {} not ready for takeoff'.format(j['no_drone'])
-	elif j['no_drone'] == 2:
-		if bool_drone2_start == True:
-			return 'Y: drone {} ready for takeoff'.format(j['no_drone'])
+			return 'N: drone {} not ready for takeoff'.format(no_drone)
+	elif no_drone == 2:
+		if bool_drone2_start:
+			return 'Y: drone {} ready for takeoff'.format(no_drone)
 		else:
-			return 'N: drone {} not ready for takeoff'.format(j['no_drone'])
-	elif j['no_drone'] == 3:
-		if bool_drone3_start == True:
-			return 'Y: drone {} ready for takeoff'.format(j['no_drone'])
+			return 'N: drone {} not ready for takeoff'.format(no_drone)
+	elif no_drone == 3:
+		if bool_drone3_start:
+			return 'Y: drone {} ready for takeoff'.format(no_drone)
 		else:
-			return 'N: drone {} not ready for takeoff'.format(j['no_drone'])
+			return 'N: drone {} not ready for takeoff'.format(no_drone)
 	else:
-		print('ERROR: drone number unknown ({})'.format(j['no_drone']))
-		return 'E: drone number unknown ({})'.format(j['no_drone'])
+		print('ERROR: drone number unknown ({})'.format(no_drone))
+		return 'E: drone number unknown ({})'.format(no_drone)
 	
 
 

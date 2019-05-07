@@ -1,5 +1,6 @@
 Flask>=0.12
 Flask-MongoEngine>=0.8
+flask_cors
 numpy
 localization
 scipy

@@ -1100,15 +1100,12 @@ def drone_receive():
 
 			# only once or more ?
 			if loop_todo == 1:
-				if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
-					print("DRONE: Go for landing at home position (no solution found)")
-					add_waypoint_maps(home.delta_x, home.delta_y)
-					return_string = "Land at position: x{} y{} z{} (home, no solution found)".format(home.delta_x, home.delta_y, takeoff_altitude)
-				else:
-					print("DRONE: Go for landing at found position")
-					add_waypoint_maps(pos_x_est, pos_y_est)
-					return_string = "Land at position: x{} y{} z{} (solution found)".format(pos_x_est, pos_y_est, takeoff_altitude)
+				# got for landing
+				add_waypoint_maps(solution.pos_x, solution.pos_y)
+				return_string = "Land at position: x{} y{} z{}".format(solution.pos_x, solution.pos_x, flying_altitude)
+
 			else:
+				# restart program
 				print("Restarting around estimation, smaller parameters")
 
 				# new parameters
@@ -1144,14 +1141,8 @@ def drone_receive():
 			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty3)
 
 			# go for landing
-			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
-				print("DRONE: Go for landing at home position (no solution found)")
-				add_waypoint_maps(home.delta_x, home.delta_y)
-				return_string = "Land at position: x{} y{} z{} (home, no solution found)".format(home.delta_x, home.delta_y, takeoff_altitude)
-			else:
-				print("DRONE: Go for landing at found position")
-				add_waypoint_maps(pos_x_est, pos_y_est)
-				return_string = "Land at position: x{} y{} z{} (solution found)".format(pos_x_est, pos_y_est, takeoff_altitude)
+			add_waypoint_maps(solution.pos_x, solution.pos_y)
+			return_string = "Land at position: x{} y{} z{}".format(solution.pos_x, solution.pos_y, flying_altitude)
 
 		else:
 			return_string = "ERROR, unknown state"

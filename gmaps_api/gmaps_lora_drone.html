@@ -6,15 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
         <style>
-            html, body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
+            #map {
+                height: 95%;
                 width: 100%;
             }
-            #map {
-                height: 400px;
-                width: 100%;
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
             }
             #legend {
                 font-family: Arial, sans-serif;
@@ -44,19 +43,6 @@
                 <button type="submit" onclick="unkill_button_cb(this)">Unkill</button>
             </div>
         </form> 
-    <style>
-        /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
-        #map {
-            height: 93%;
-        }
-        /* Optional: Makes the sample page fill the window.*/
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
     </head>
     <body>
         <div id="map"></div>

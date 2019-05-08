@@ -2,6 +2,34 @@
 <meta charset="utf-8"/>
 <html>
     <head>
+        <title>LoRa drone GUI</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+            }
+            #map {
+                height: 400px;
+                width: 100%;
+            }
+            #legend {
+                font-family: Arial, sans-serif;
+                background: #fff;
+                padding: 10px;
+                margin: 10px;
+                border: 3px solid #000;
+            }
+            #legend h3 {
+                margin-top: 0;
+            }
+            #legend img {
+                vertical-align: middle;
+            }
+        </style>
         <form action="#">
             <div>
                 <b>Drone to start for takeoff:</b>
@@ -32,6 +60,7 @@
     </head>
     <body>
         <div id="map"></div>
+        <div id="legend"><h3>Legend</h3></div>
 
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
@@ -200,12 +229,12 @@
       
                 // custom markers icons
                 var drone_icon = {
-                    url: 'drone.png',
+                    url: 'marker/drone.png',
                     anchor: new google.maps.Point(13, 13),
                     scaledSize: new google.maps.Size(25, 25)
                 };
                 var home_icon = {
-                    url: 'home.png',
+                    url: 'marker/home.png',
                     anchor: new google.maps.Point(13, 13),
                     scaledSize: new google.maps.Size(25, 25)
                 };
@@ -236,11 +265,7 @@
                     icon: 'marker/green_MarkerE.png',
                     title: 'Second estimation',
                 });
-                var waypoint_marker = new google.maps.Marker({
-                    map: map,
-                    icon: 'marker/paleblue_MarkerW.png',
-                    title: 'Waypoint',
-                });
+                var waypoint_marker_list = [];
 
                 // circles
                 var network_circle1 = new google.maps.Circle({
@@ -291,12 +316,62 @@
                     });
                 });
                 
+                // legend
+                initLegend(map);
+
                 // start Firebase and database listeners
-                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker, network_circle1, network_circle2, network_circle3);
+                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker_list, network_circle1, network_circle2, network_circle3);
+            }
+
+            // init legend
+            function initLegend(map){
+                // create legend object
+                var legend = document.getElementById('legend');
+
+                // add drone
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/drone.png width=20>: Drone'
+                legend.appendChild(div);
+
+                // add home
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/home.png width=20>: Home'
+                legend.appendChild(div);
+
+                // add waypoint past
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/paleblue_MarkerW.png width=20>: Waypoint (past)'
+                legend.appendChild(div);
+
+                // add waypoint current
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/blue_MarkerW.png width=20>: Waypoint (current)'
+                legend.appendChild(div);
+
+                // add network
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/red_MarkerN.png width=20>: Network estimate'
+                legend.appendChild(div);
+
+                // add est1
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/orange_MarkerE.png width=20>: Estimation 1'
+                legend.appendChild(div);
+
+                // add est2
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/green_MarkerE.png width=20>: Estimation 2'
+                legend.appendChild(div);
+
+
+
+
+                // push on map
+                map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
             }
 
             // init Firebase and set listeners
-            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker, network_circle1, network_circle2, network_circle3) {
+            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker_list, network_circle1, network_circle2, network_circle3) {
 
                 // reference in Firebase
                 var drone_ref = firebase.child('drone');
@@ -408,6 +483,7 @@
                     network_circle1.setMap(null);
                     network_circle2.setMap(null);
                     network_circle3.setMap(null);
+                    network_marker.setMap(null);
                     est_marker1.setMap(null);
                     est_marker2.setMap(null);
                 });
@@ -418,15 +494,28 @@
                     var lat = snapshot.val().lat;
                     var lng = snapshot.val().lng;
 
-                    // move marker
-                    waypoint_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    waypoint_marker.setMap(map);
+                    // change color of last waypoints
+                    waypoint_marker_list.forEach(function(item, index, array){
+                        item.setIcon('marker/paleblue_MarkerW.png');
+                    });
 
+                    // create new marker
+                    var waypoint_marker = new google.maps.Marker({
+                        position: {lat: lat, lng: lng},
+                        map: map,
+                        icon: 'marker/blue_MarkerW.png',
+                        title: 'Waypoint',
+                    });
+
+                    // add it to list
+                    waypoint_marker_list.push(waypoint_marker);
                 });
 
                 // for removing waypoints
                 wayp_ref.on('child_removed', function(snapshot) {
-                    waypoint_marker.setMap(null)
+                    waypoint_marker_list.forEach(function(item, index, array){
+                        item.setMap(null)
+                    });  
                 });
 
 

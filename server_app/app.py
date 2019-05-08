@@ -106,6 +106,7 @@ class solution_datapoint:
 	pos_x 		= 6.66
 	pos_y 		= 6.66
 	pos_z 		= 6.66
+solution = solution_datapoint()
 
 # to store the home
 class home_datapoint:
@@ -130,7 +131,7 @@ gateway_drone     = '004A10EB'
 device_eui        = '78AF580300000493'
 
 # time format
-TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"
+TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"		# change that to +01:00 in winter time
 TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
 
@@ -149,7 +150,6 @@ hover_time 		  = 4
 current_state 	  = 666
 nb_est_made       = 666
 
-
 # for 3 drone: are the drones ready for next step
 bool_drone1_ready = False
 bool_drone2_ready = False
@@ -159,6 +159,8 @@ bool_drone3_ready = False
 bool_drone1_start = False
 bool_drone2_start = False
 bool_drone3_start = False
+
+# kill switch
 bool_kill_switch  = False
 
 
@@ -169,17 +171,19 @@ bool_kill_switch  = False
 
 # localization parameters
 loop_todo		  = 1
-solution 		  = solution_datapoint()
 
 # network position
-network_x 		  = *100	# set by Postman
-network_y 		  = 100	 	# set by Postman
-network_z 		  = 0	 	# set by Postman
+network_x 		  = 666 
+network_y 		  = 666	 	# used parameters (will be changed)
+network_z 		  = 666
+network_x_v1 	  = -100
+network_y_v1 	  = 100		# base parameters when starting the simulation
+network_z_v1 	  = 0
 
 # radius of waypoints around est
-circle_radius     = 666
-circle_radius_v1  = 40 	 # base parameter when starting the simulation
-circle_radius_v2  = 20	 # second parameter for second loop
+circle_radius     = 666     # used parameters (will be changed)
+circle_radius_v1  = 40 	    # base parameter when starting the simulation
+circle_radius_v2  = 20	    # second parameter for second loop
 
 # uncertainties radius
 est_uncertainty1  = 150
@@ -305,6 +309,11 @@ def empty_firebase():
 	ref_est.delete()
 	ref_wayp.delete()
 
+	# set network to default
+	network_x = network_x_v1
+	network_y = network_y_v1
+	network_z = network_z_v1
+
 	return 'Success'
 
 
@@ -341,6 +350,8 @@ def add_waypoint_maps(pos_x, pos_y):
 	})
 
 	return 'Success'
+
+
 
 #########################################################################################
 ###################################  TRILATERATION  #####################################
@@ -503,7 +514,7 @@ def param_change():
 @app.route('/param/print', methods=['GET'])
 def param_print():
 
-	return "<b>Parameters are:</b>\r\nNetwork position: x={}, y={}, z={}\r\nCircle radius: 1st={}, 2nd={}\r\nAltitudes: flying={}, takeoff={}\r\nAlgorithm loops to do: {}\r\nDrone status: {} {} {}".format(network_x, network_y, network_z, circle_radius_v1, circle_radius_v2, flying_altitude, takeoff_altitude, loop_todo, bool_drone1_ready, bool_drone2_ready, bool_drone3_ready)
+	return "<b>Parameters are:</b>\r\nNetwork position: x={}, y={}, z={}\r\nCircle radius: 1st={}, 2nd={}\r\nAltitudes: flying={}, takeoff={}\r\nAlgorithm loops to do: {}\r\nDrone status: {} {} {}\r\nSolution: x={}, y={}, z={}".format(network_x, network_y, network_z, circle_radius_v1, circle_radius_v2, flying_altitude, takeoff_altitude, loop_todo, bool_drone1_ready, bool_drone2_ready, bool_drone3_ready, solution.pos_x, solution.pos_y, solution.pos_z)
 
 
 # to set the hovering time
@@ -1021,10 +1032,21 @@ def drone_receive():
 		current_state = 0
 		circle_radius = circle_radius_v1
 
+		# fills network if it's not set yet (value of 666)
+		if network_x==666:
+			network_x = network_x_v1
+			network_y = network_y_v1
+			network_z = network_z_v1
+
 		# first waypoint
 		pos_x = network_x + circle_radius*math.cos(0)
 		pos_y = network_y + circle_radius*math.sin(0)
 		pos_z = flying_altitude
+
+		# set base solution at network estimate
+		solution.pos_x = network_x
+		solution.pos_y = network_y
+		solution.pos_z = 0
 
 		# save on map
 		add_estimation_maps(network_x, network_y, est_uncertainty1)
@@ -1065,9 +1087,9 @@ def drone_receive():
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				print("LOC: Reusing old network estimate")
-				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est		# reusing old network est
-				solution.pos_z = pos_z_est
+				solution.pos_x = solution.pos_x
+				solution.pos_y = solution.pos_y		# reusing old estimation
+				solution.pos_z = solution.pos_z
 			else:
 				solution.pos_x = pos_x_est
 				solution.pos_y = pos_y_est 		# new calculated position
@@ -1110,9 +1132,9 @@ def drone_receive():
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				print("LOC: Reusing old network estimate")
-				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est		# reusing old network est
-				solution.pos_z = pos_z_est
+				solution.pos_x = solution.pos_x
+				solution.pos_y = solution.pos_y		# reusing old network est
+				solution.pos_z = solution.pos_z
 			else:
 				solution.pos_x = pos_x_est
 				solution.pos_y = pos_y_est 		# new calculated position

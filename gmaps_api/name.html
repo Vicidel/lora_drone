@@ -18,10 +18,10 @@
             }
             #legend {
                 font-family: Arial, sans-serif;
-                background: #fff;
+                background: #fafafa;
                 padding: 10px;
                 margin: 10px;
-                border: 3px solid #000;
+                border: 2px solid #555;
             }
             #legend h3 {
                 margin-top: 0;
@@ -330,37 +330,37 @@
 
                 // add drone
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/drone.png width=20>: Drone'
+                div.innerHTML = '<img src=marker/drone.png width=20> Drone'
                 legend.appendChild(div);
 
                 // add home
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/home.png width=20>: Home'
+                div.innerHTML = '<img src=marker/home.png width=20> Home'
                 legend.appendChild(div);
 
                 // add waypoint past
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/paleblue_MarkerW.png width=20>: Waypoint (past)'
+                div.innerHTML = '<img src=marker/paleblue_circleW.png width=20> Waypoint (past)'
                 legend.appendChild(div);
 
                 // add waypoint current
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/blue_MarkerW.png width=20>: Waypoint (current)'
+                div.innerHTML = '<img src=marker/blue_circleW.png width=20> Waypoint (current)'
                 legend.appendChild(div);
 
                 // add network
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/red_MarkerN.png width=20>: Network estimate'
+                div.innerHTML = '<img src=marker/red_circleN.png width=20> Network estimate'
                 legend.appendChild(div);
 
                 // add est1
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/orange_MarkerE.png width=20>: Estimation 1'
+                div.innerHTML = '<img src=marker/orange_circleE.png width=20> First estimation'
                 legend.appendChild(div);
 
                 // add est2
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/green_MarkerE.png width=20>: Estimation 2'
+                div.innerHTML = '<img src=marker/green_circleE.png width=20> Second estimation'
                 legend.appendChild(div);
 
 

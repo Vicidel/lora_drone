@@ -217,24 +217,18 @@ def store_current_coord():
 	r_pos_z     = j['pos_z']
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
-	# get the zero position
-	home_latlng = geopy.Point(home.latitude, home.longitude)
-	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(home.delta_x), -float(home.delta_y))
-	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
-
-	# get the drone position
-	distance, bearing = get_dist_bearing(float(r_pos_x), float(r_pos_y))
-	drone_latlng = VincentyDistance(meters=distance).destination(zero_latlng, bearing)
-
+	# convert to latlng
+	lat, lng = conversion_xy_latlng(r_pos_x, r_pos_y)
+	
 	# push on Firebase
-	print("Pushing new drone position on Firebase {} {}".format(drone_latlng.latitude, drone_latlng.longitude))
+	print("Pushing new drone position on Firebase {} {}".format(lat, lng))
 	ref_drone = firebase_db.reference('/drone')
 	ref_drone.push({
-		'lat': drone_latlng.latitude,
-		'lng': drone_latlng.longitude,
+		'lat': lat,
+		'lng': lng,
 	    'sender': 'app.py',
 	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
-	    'altitude': float(r_pos_z)
+	    'altitude': float(r_pos_z)+home.altitude+home.delta_z
 	})
 
 	# return string

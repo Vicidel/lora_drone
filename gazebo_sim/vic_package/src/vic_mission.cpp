@@ -7,18 +7,19 @@
 // standard libraries
 #include <stdio.h>
 #include <iostream>
+#include <thread>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
 // libraries for Vector3f
+#include <vector>
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Sparse> 
 using namespace Eigen; // To use matrix and vector representation
 
 // ROS libraries
 #include <ros/ros.h>
-#include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/HomePosition.h>
 #include <mavros_msgs/PositionTarget.h>
@@ -37,15 +38,22 @@ mavros_msgs::HomePosition home_position;        // home position
 geometry_msgs::PoseStamped est_local_pos;       // local position
 
 
-// functions definitions
+// ROS callbacks
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg);
 void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg);
+
+// conversion functions
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
+mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal);
+
+// parse POST answer
 Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_goal);
 float parse_hover_time_from_answer(std::string answer_string);
-mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal);
+
+// function for threading
+float send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, Vector3f pos_drone);
 
 
 // main
@@ -69,11 +77,12 @@ int main(int argc, char **argv){
     ros::Rate rate(20.0);
 
     // wait for FCU connection
+    ROS_INFO("Waiting for FCU connection");
     while(ros::ok() && !current_state.connected){
         ros::spinOnce();
         rate.sleep();
     }
-
+    ROS_INFO("Connection done!");
 
     // create position vectors
     Vector3f pos_takeoff       (0.0f,  0.0f, 2.0f);
@@ -149,12 +158,8 @@ int main(int argc, char **argv){
             break;
         }
 
-        // send to Firebase
-        if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
-            if(bool_wait_for_offboard) send_home_firebase(home_position.geo.latitude, home_position.geo.longitude, home_position.geo.altitude, home_position.position.x, home_position.position.y, home_position.position.z, ros::Time::now().toSec());
-            send_GPS_firebase(pos_drone, ros::Time::now().toSec());
-            time_last_send_firebase = ros::Time::now();
-        }
+        // send to Firebase in a new thread
+        std::thread firebase_thread(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, pos_drone);
 
         // display info
         /*if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
@@ -304,6 +309,9 @@ int main(int argc, char **argv){
             }
         }
 
+        // rejoin threads
+        firebase_thread.join();
+        
         // ROS update
         if(bool_fly_straight) target_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
         else local_pos_pub.publish(conversion_to_msg(pos_current_goal));
@@ -425,4 +433,14 @@ mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal
     //ROS_INFO("yaw degree computed is %f (rad is %f)", yaw_target*180/3.141, yaw_target);
     msg.yaw = yaw_target;
     return msg;
+}
+
+
+// function for threading
+float send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, Vector3f pos_drone){
+    if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
+        if(bool_wait_for_offboard) send_home_firebase(home_position.geo.latitude, home_position.geo.longitude, home_position.geo.altitude, home_position.position.x, home_position.position.y, home_position.position.z, ros::Time::now().toSec());
+        send_GPS_firebase(pos_drone, ros::Time::now().toSec());
+        time_last_send_firebase = ros::Time::now();
+    }
 }

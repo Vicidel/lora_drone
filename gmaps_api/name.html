@@ -223,9 +223,26 @@
                 });
                 var network_marker = new google.maps.Marker({
                     map: map,
+                    icon: 'marker/red_MarkerN.png',
                     title: 'Network estimate',
-                    //draggable: true
                 });
+                var est_marker1 = new google.maps.Marker({
+                    map: map,
+                    icon: 'marker/orange_MarkerE.png',
+                    title: 'First estimation',
+                });
+                var est_marker2 = new google.maps.Marker({
+                    map: map,
+                    icon: 'marker/green_MarkerE.png',
+                    title: 'Second estimation',
+                });
+                var waypoint_marker = new google.maps.Marker({
+                    map: map,
+                    icon: 'marker/paleblue_MarkerW.png',
+                    title: 'Waypoint',
+                });
+
+                // circles
                 var network_circle1 = new google.maps.Circle({
                     strokeColor: '#FF0000',
                     strokeOpacity: 0.5,
@@ -275,17 +292,18 @@
                 });
                 
                 // start Firebase and database listeners
-                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, network_circle1, network_circle2, network_circle3);
+                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker, network_circle1, network_circle2, network_circle3);
             }
 
             // init Firebase and set listeners
-            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, network_circle1, network_circle2, network_circle3) {
+            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker, network_circle1, network_circle2, network_circle3) {
 
                 // reference in Firebase
                 var drone_ref = firebase.child('drone');
                 var home_ref  = firebase.child('home');
                 var click_ref = firebase.child('click');
                 var est_ref   = firebase.child('estimate');
+                var wayp_ref  = firebase.child('waypoint');
 
                 // listener for drone points
                 drone_ref.on('child_added', function(snapshot) {
@@ -366,16 +384,22 @@
                         network_circle1.setCenter(new google.maps.LatLng(lat, lng));
                         network_circle1.setMap(map);
                         network_circle1.setRadius(rad);
+                        network_marker.setPosition(new google.maps.LatLng(lat, lng));
+                        network_marker.setMap(map);
                     }
                     if(rad==25) {
                         network_circle2.setCenter(new google.maps.LatLng(lat, lng));
                         network_circle2.setMap(map);
                         network_circle2.setRadius(rad);
+                        est_marker1.setPosition(new google.maps.LatLng(lat, lng));
+                        est_marker1.setMap(map);
                     }
                     if(rad==10) {
                         network_circle3.setCenter(new google.maps.LatLng(lat, lng));
                         network_circle3.setMap(map);
                         network_circle3.setRadius(rad);
+                        est_marker2.setPosition(new google.maps.LatLng(lat, lng));
+                        est_marker2.setMap(map);
                     }
                 });
 
@@ -384,7 +408,27 @@
                     network_circle1.setMap(null);
                     network_circle2.setMap(null);
                     network_circle3.setMap(null);
+                    est_marker1.setMap(null);
+                    est_marker2.setMap(null);
                 });
+
+                // listener for new waypoints
+                wayp_ref.on('child_added', function(snapshot) {
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    waypoint_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    waypoint_marker.setMap(map);
+
+                });
+
+                // for removing waypoints
+                wayp_ref.on('child_removed', function(snapshot) {
+                    waypoint_marker.setMap(null)
+                });
+
 
             }   
 

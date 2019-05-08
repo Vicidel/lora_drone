@@ -172,9 +172,9 @@ loop_todo		  = 1
 solution 		  = solution_datapoint()
 
 # network position
-network_x 		  = 666	 # set by Postman
-network_y 		  = 666	 # set by Postman
-network_z 		  = 666	 # set by Postman
+network_x 		  = *100	# set by Postman
+network_y 		  = 100	 	# set by Postman
+network_z 		  = 0	 	# set by Postman
 
 # radius of waypoints around est
 circle_radius     = 666
@@ -298,14 +298,49 @@ def empty_firebase():
 	ref_home  = firebase_db.reference('home')
 	ref_click = firebase_db.reference('click')
 	ref_est   = firebase_db.reference('estimate')
+	ref_wayp  = firebase_db.reference('waypoint')
 	ref_drone.delete()
 	ref_home.delete()
 	ref_click.delete()
 	ref_est.delete()
+	ref_wayp.delete()
 
 	return 'Success'
 
 
+# add estimation to maps
+def add_estimation_maps(pos_x, pos_y, radius):
+
+	# convert in latlng
+	lat, lng = conversion_xy_latlng(pos_x, pos_y)
+
+	# push on Firebase
+	ref_est = firebase_db.reference('estimate')
+	ref_est.push({
+		'lat': lat,
+		'lng': lng,
+	    'sender': 'app.py: add_estimation',
+	    'radius': radius
+	})
+
+	return 'Success'
+
+
+# add waypoint on map
+def add_waypoint_maps(pos_x, pos_y):
+
+	# convert in latlng
+	lat, lng = conversion_xy_latlng(pos_x, pos_y)
+
+	# push on Firebase
+	ref_wayp = firebase_db.reference('waypoint')
+	ref_wayp.push({
+		'lat': lat,
+		'lng': lng,
+	    'sender': 'app.py: add_waypoint',
+	})
+
+	return 'Success'
 
 #########################################################################################
 ###################################  TRILATERATION  #####################################
@@ -407,23 +442,6 @@ def trilateration_main(drone_dataset):
 		# return result
 		return pos_x_est, pos_y_est, pos_z_est
 
-
-# add estimation to maps
-def add_estimation_maps(pos_x, pos_y, radius):
-
-	# convert in latlng
-	lat, lng = conversion_xy_latlng(pos_x, pos_y)
-
-	# push on Firebase
-	ref_est = firebase_db.reference('/estimate')
-	ref_est.push({
-		'lat': lat,
-		'lng': lng,
-	    'sender': 'app.py: add_estimation',
-	    'radius': radius
-	})
-
-	return 'Success'
 
 
 #########################################################################################
@@ -985,11 +1003,9 @@ def drone_receive():
 		pos_x = float(r_pos_x)
 		pos_y = float(r_pos_y)
 		pos_z = float(r_pos_z) + float(takeoff_altitude)
-		# delete database entries
-		ref_drone = firebase_db.reference('drone')
-		ref_est = firebase_db.reference('estimate')
-		ref_drone.delete()
-		ref_est.delete()
+
+		# add waypoint to Firebase
+		add_waypoint_maps(pos_x, pos_y)
 
 		# return string with takeoff coordinates
 		return_string = "New waypoint (takeoff): x{} y{} z{}".format(pos_x, pos_y, pos_z)
@@ -1010,8 +1026,9 @@ def drone_receive():
 		pos_y = network_y + circle_radius*math.sin(0)
 		pos_z = flying_altitude
 
-		# save network on map
+		# save on map
 		add_estimation_maps(network_x, network_y, est_uncertainty1)
+		add_waypoint_maps(pos_x, pos_y)
 
 		# return string with new coordinates
 		return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
@@ -1033,12 +1050,14 @@ def drone_receive():
 			pos_x = network_x + circle_radius*math.cos(2*math.pi/3)
 			pos_y = network_y + circle_radius*math.sin(2*math.pi/3)
 			pos_z = flying_altitude
+			add_waypoint_maps(pos_x, pos_y)
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 
 		elif (current_state == 2) or (current_state == 5):
 			pos_x = network_x + circle_radius*math.cos(4*math.pi/3)
 			pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
 			pos_z = flying_altitude
+			add_waypoint_maps(pos_x, pos_y)
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 
 		elif current_state == 3:
@@ -1061,9 +1080,11 @@ def drone_receive():
 			if loop_todo == 1:
 				if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 					print("DRONE: Go for landing at home position (no solution found)")
+					add_waypoint_maps(home.delta_x, home.delta_y)
 					return_string = "Land at position: x{} y{} z{} (home, no solution found)".format(home.delta_x, home.delta_y, takeoff_altitude)
 				else:
 					print("DRONE: Go for landing at found position")
+					add_waypoint_maps(pos_x_est, pos_y_est)
 					return_string = "Land at position: x{} y{} z{} (solution found)".format(pos_x_est, pos_y_est, takeoff_altitude)
 			else:
 				print("Restarting around estimation, smaller parameters")
@@ -1078,6 +1099,9 @@ def drone_receive():
 				pos_x = network_x + circle_radius*math.cos(0)
 				pos_y = network_y + circle_radius*math.sin(0)
 				pos_z = flying_altitude
+
+				# add waypoint on map
+				add_waypoint_maps(pos_x, pos_y)
 
 				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
 
@@ -1100,9 +1124,11 @@ def drone_receive():
 			# go for landing
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				print("DRONE: Go for landing at home position (no solution found)")
+				add_waypoint_maps(home.delta_x, home.delta_y)
 				return_string = "Land at position: x{} y{} z{} (home, no solution found)".format(home.delta_x, home.delta_y, takeoff_altitude)
 			else:
 				print("DRONE: Go for landing at found position")
+				add_waypoint_maps(pos_x_est, pos_y_est)
 				return_string = "Land at position: x{} y{} z{} (solution found)".format(pos_x_est, pos_y_est, takeoff_altitude)
 
 		else:

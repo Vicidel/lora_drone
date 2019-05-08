@@ -120,7 +120,7 @@ std::string send_GPS_drone3(Vector3f position, double time, char* payload, int n
 }
 
 // POST drone GPS coordinates on Firebase
-void send_GPS_firebase(Vector3f position, double time){
+void send_GPS_firebase(double latitude, double longitude, double altitude, double time){
 
     // set response string
     std::string response_string;
@@ -131,18 +131,18 @@ void send_GPS_firebase(Vector3f position, double time){
     root = cJSON_CreateObject();
 
     // fils json
-    char str_pos_x[10]; sprintf(str_pos_x, "%f", position(0));
-    char str_pos_y[10]; sprintf(str_pos_y, "%f", position(1));
-    char str_pos_z[10]; sprintf(str_pos_z, "%f", position(2));
+    char str_lat[10]; sprintf(str_lat, "%f", latitude);
+    char str_lng[10]; sprintf(str_lng, "%f", longitude);
+    char str_alt[10]; sprintf(str_alt, "%f", altitude);
     char str_time[30]; sprintf(str_time, "%f", time);
-    cJSON_AddStringToObject(root, "pos_x", str_pos_x);
-    cJSON_AddStringToObject(root, "pos_y", str_pos_y);
-    cJSON_AddStringToObject(root, "pos_z", str_pos_z);
+    cJSON_AddStringToObject(root, "latitude", str_lat);
+    cJSON_AddStringToObject(root, "longitude", str_lng);
+    cJSON_AddStringToObject(root, "altitude", str_alt);
     cJSON_AddStringToObject(root, "timestamp", str_time);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL
-    response_string = post_JSON(DRONE_POST_GPS_FIREBASE_URL, json);
+    response_string = post_JSON(FIREBASE_STORE_GPS_URL, json);
 }
 
 // POST home coordinates 
@@ -174,7 +174,25 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL
-    response_string = post_JSON(DRONE_POST_HOME_FIREBASE_URL, json);
+    response_string = post_JSON(FIREBASE_STORE_HOME_URL, json);
+}
+
+// POST home coordinates 
+void empty_firebase(void){
+
+    // set response string
+    std::string response_string;
+
+    // create JSON to send
+    cJSON *root = NULL;
+    char *json = NULL;
+    root = cJSON_CreateObject();
+
+    // fils json
+    json = cJSON_PrintUnformatted(root);
+
+    // POST JSON on URL
+    response_string = post_JSON(FIREBASE_EMPTY_URL, json);
 }
 
 // check if start signal sent from server

@@ -193,7 +193,7 @@ est_uncertainty3  = 10
 #########################################################################################
 
 # store position in Firebase
-@app.route('/drone/store_GPS_firebase', methods=['POST'])
+@app.route('/firebase/store_GPS', methods=['POST'])
 def store_current_coord():
 
 	###################  DECODE PAYLOAD  ######################
@@ -212,23 +212,20 @@ def store_current_coord():
 	print(j)
 
 	# parse received data
-	r_pos_x     = j['pos_x']
-	r_pos_y     = j['pos_y']
-	r_pos_z     = j['pos_z']
+	lat = float(j['latitude'])
+	lng = float(j['longitude'])
+	alt = float(j['altitude'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
-	# convert to latlng
-	lat, lng = conversion_xy_latlng(r_pos_x, r_pos_y)
-	
 	# push on Firebase
 	print("Pushing new drone position on Firebase {} {}".format(lat, lng))
-	ref_drone = firebase_db.reference('/drone')
+	ref_drone = firebase_db.reference('drone')
 	ref_drone.push({
 		'lat': lat,
 		'lng': lng,
-	    'sender': 'app.py',
+	    'sender': 'app.py: store_GPS',
 	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
-	    'altitude': float(r_pos_z)+home.altitude+home.delta_z
+	    'altitude': alt
 	})
 
 	# return string
@@ -236,7 +233,7 @@ def store_current_coord():
 
 
 # store home position in Firebase
-@app.route('/drone/store_home_firebase', methods=['POST'])
+@app.route('/firebase/store_home', methods=['POST'])
 def store_current_home():
 
 	###################  DECODE PAYLOAD  ######################
@@ -255,12 +252,12 @@ def store_current_home():
 	print(j)
 
 	# parse received data
-	r_lat     = j['latitude']
-	r_lng     = j['longitude']
-	r_alt     = j['altitude']
-	r_dx      = j['delta_x']
-	r_dy      = j['delta_y']
-	r_dz      = j['delta_z']
+	r_lat     = float(j['latitude'])
+	r_lng     = float(j['longitude'])
+	r_alt     = float(j['altitude'])
+	r_dx      = float(j['delta_x'])
+	r_dy      = float(j['delta_y'])
+	r_dz      = float(j['delta_z'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
 	# add in memory
@@ -274,7 +271,7 @@ def store_current_home():
 
 	# push on Firebase
 	print("Pushing home position on Firebase: lat={}, lng={}, alt={}".format(r_lat, r_lng, r_alt))
-	ref_drone = firebase_db.reference('/home')
+	ref_drone = firebase_db.reference('home')
 	ref_drone.push({
 		'lat': r_lat,
 		'lng': r_lng,
@@ -282,12 +279,31 @@ def store_current_home():
 		'delta_x': r_dx,
 		'delta_y': r_dy,
 		'delta_z': r_dz,
-	    'sender': 'app.py',
+	    'sender': 'app.py: store_home',
 	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
 	})
 
 	# return string
 	return 'Data added to Firebase'
+
+
+# empty Firebase when starting new run
+@app.route('/firebase/empty', methods=['POST'])
+def empty_firebase():
+
+	print("!!!!!!!!! Deleting Firebase !!!!!!!!!")
+
+	# delete database entries
+	ref_drone = firebase_db.reference('drone')
+	ref_home  = firebase_db.reference('home')
+	ref_click = firebase_db.reference('click')
+	ref_est   = firebase_db.reference('estimate')
+	ref_drone.delete()
+	ref_home.delete()
+	ref_click.delete()
+	ref_est.delete()
+
+	return 'Success'
 
 
 
@@ -403,7 +419,7 @@ def add_estimation_maps(pos_x, pos_y, radius):
 	ref_est.push({
 		'lat': lat,
 		'lng': lng,
-	    'sender': 'app.py',
+	    'sender': 'app.py: add_estimation',
 	    'radius': radius
 	})
 
@@ -969,7 +985,6 @@ def drone_receive():
 		pos_x = float(r_pos_x)
 		pos_y = float(r_pos_y)
 		pos_z = float(r_pos_z) + float(takeoff_altitude)
-
 		# delete database entries
 		ref_drone = firebase_db.reference('drone')
 		ref_est = firebase_db.reference('estimate')
@@ -1019,11 +1034,13 @@ def drone_receive():
 			pos_y = network_y + circle_radius*math.sin(2*math.pi/3)
 			pos_z = flying_altitude
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
 		elif (current_state == 2) or (current_state == 5):
 			pos_x = network_x + circle_radius*math.cos(4*math.pi/3)
 			pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
 			pos_z = flying_altitude
 			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
 		elif current_state == 3:
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
@@ -1042,8 +1059,12 @@ def drone_receive():
 
 			# only once or more ?
 			if loop_todo == 1:
-				print("DRONE: Go for landing at found position")
-				return_string = "Land at position: x{} y{} z{}".format(pos_x_est, pos_y_est, takeoff_altitude)
+				if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+					print("DRONE: Go for landing at home position (no solution found)")
+					return_string = "Land at position: x{} y{} z{} (home, no solution found)".format(home.delta_x, home.delta_y, takeoff_altitude)
+				else:
+					print("DRONE: Go for landing at found position")
+					return_string = "Land at position: x{} y{} z{} (solution found)".format(pos_x_est, pos_y_est, takeoff_altitude)
 			else:
 				print("Restarting around estimation, smaller parameters")
 
@@ -1059,6 +1080,7 @@ def drone_receive():
 				pos_z = flying_altitude
 
 				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
 		elif current_state == 6:
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
@@ -1075,8 +1097,14 @@ def drone_receive():
 			# save on map
 			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty3)
 
-			print("Go for landing at found position")
-			return_string = "Land at position: x{} y{} z{}".format(pos_x_est, pos_y_est, takeoff_altitude)
+			# go for landing
+			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+				print("DRONE: Go for landing at home position (no solution found)")
+				return_string = "Land at position: x{} y{} z{} (home, no solution found)".format(home.delta_x, home.delta_y, takeoff_altitude)
+			else:
+				print("DRONE: Go for landing at found position")
+				return_string = "Land at position: x{} y{} z{} (solution found)".format(pos_x_est, pos_y_est, takeoff_altitude)
+
 		else:
 			return_string = "ERROR, unknown state"
 

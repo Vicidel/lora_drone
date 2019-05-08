@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <thread>
+#include <future>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -21,9 +22,11 @@ using namespace Eigen; // To use matrix and vector representation
 // ROS libraries
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <sensor_msgs/NavSatFix.h>
 #include <mavros_msgs/HomePosition.h>
 #include <mavros_msgs/PositionTarget.h>
 #include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include <mavros_msgs/HilGPS.h>
@@ -35,13 +38,15 @@ using namespace Eigen; // To use matrix and vector representation
 // define the received MAVROS messages
 mavros_msgs::State current_state;               // drone state (for OFFBOARD mode)
 mavros_msgs::HomePosition home_position;        // home position 
-geometry_msgs::PoseStamped est_local_pos;       // local position
+geometry_msgs::PoseStamped est_local_pos;       // local position (xyz)
+sensor_msgs::NavSatFix est_global_pos;         // global position (GPS)
 
 
 // ROS callbacks
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg);
 void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg);
+void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg);
 
 // conversion functions
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
@@ -53,7 +58,7 @@ Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_go
 float parse_hover_time_from_answer(std::string answer_string);
 
 // function for threading
-float send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, Vector3f pos_drone);
+ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, sensor_msgs::NavSatFix est_global_pos);
 
 
 // main
@@ -64,16 +69,23 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "vic_mission");
     ros::NodeHandle nh;
 
-    // subscribes to topics 
+    // ROS topic subscriptions (get)
     ros::Subscriber state_sub           = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
     ros::Subscriber est_local_pos_sub   = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
     ros::Subscriber home_pos_sub        = nh.subscribe<mavros_msgs::HomePosition> ("mavros/home_position/home", 10, home_pos_cb);
+    ros::Subscriber global_pos_sub      = nh.subscribe<sensor_msgs::NavSatFix> ("mavros/global_position/global", 10, est_global_pos_cb);
+
+    // ROS services
     ros::ServiceClient arming_client    = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
     ros::ServiceClient set_mode_client  = nh.serviceClient<mavros_msgs::SetMode> ("mavros/set_mode");
+    ros::ServiceClient takeoff_client   = nh.serviceClient<mavros_msgs::CommandTOL> ("mavros/cmd/takeoff");
+    ros::ServiceClient landing_client   = nh.serviceClient<mavros_msgs::CommandTOL> ("mavros/cmd/land");
+
+    // ROS publishers (post)
     ros::Publisher target_pub           = nh.advertise<mavros_msgs::PositionTarget> ("mavros/setpoint_raw/local", 10);
     ros::Publisher local_pos_pub        = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
     
-    //the setpoint publishing rate MUST be faster than 2Hz
+    // ROS rate (MUST be faster than 2Hz)
     ros::Rate rate(20.0);
 
     // wait for FCU connection
@@ -85,18 +97,16 @@ int main(int argc, char **argv){
     ROS_INFO("Connection done!");
 
     // create position vectors
-    Vector3f pos_takeoff       (0.0f,  0.0f, 2.0f);
     Vector3f pos_drone         (0.0f,  0.0f, 0.0f);
-    Vector3f pos_current_goal;
-
-    // fills them
-    pos_current_goal = pos_takeoff;
+    Vector3f pos_current_goal = pos_drone;
 
 
     //send a few setpoints before starting
+    ROS_INFO("Sending few waypoints before start");
     for(int i = 100; ros::ok() && i > 0; --i){
         local_pos_pub.publish(conversion_to_msg(pos_current_goal));
         ros::spinOnce();
+        pos_drone = conversion_to_vect(est_local_pos);
         rate.sleep();
     }
 
@@ -115,7 +125,7 @@ int main(int argc, char **argv){
     ros::Time time_last_server_check  = ros::Time::now();
 
     // time parameters
-    float time_firebase_period        = 0.5f;  // period of sending messages to Firebase
+    float time_firebase_period        = 2.0f;  // period of sending messages to Firebase
     float time_offboard_arm_period    = 4.0f;  // period to check offboard and arming
     float time_server_check_period    = 4.0f;  // period for kill switch and server offboard
 
@@ -132,14 +142,18 @@ int main(int argc, char **argv){
     bool bool_wait_for_offboard = true;
     bool bool_stop_all = false;
 
+    // empty Firebase
+    empty_firebase();
+
     
     // while ROS is online
+    ROS_INFO("Starting the ROS loop");
     while(ros::ok()){
 
         // check from server
         if(ros::Time::now() - time_last_server_check > ros::Duration(time_server_check_period)) {
             server_answer = check_server(no_drone);    // 0:nothing, 1:go into offboard, 666:kill
-            ROS_INFO("Answer from server check: %d", server_answer);
+            //ROS_INFO("Answer from server check: %d", server_answer);
             if(server_answer==666) {
                 // disarm drone and stop program
                 arm_cmd.request.value = false;
@@ -159,7 +173,8 @@ int main(int argc, char **argv){
         }
 
         // send to Firebase in a new thread
-        std::thread firebase_thread(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, pos_drone);
+        auto future = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos);
+        time_last_send_firebase = future.get();
 
         // display info
         /*if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
@@ -309,15 +324,13 @@ int main(int argc, char **argv){
             }
         }
 
-        // rejoin threads
-        firebase_thread.join();
-        
+
         // ROS update
         if(bool_fly_straight) target_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
         else local_pos_pub.publish(conversion_to_msg(pos_current_goal));
         ros::spinOnce();
-        rate.sleep();
         pos_drone = conversion_to_vect(est_local_pos);
+        rate.sleep();
     }
 
     return 0;
@@ -392,6 +405,9 @@ void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg){
 void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg){
     home_position = *msg;
 }
+void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg){
+    est_global_pos = *msg;
+}
 
 
 // convertion functions between Vector3f and PoseStamped ROS message
@@ -437,10 +453,11 @@ mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal
 
 
 // function for threading
-float send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, Vector3f pos_drone){
+ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, sensor_msgs::NavSatFix est_global_pos){
     if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
         if(bool_wait_for_offboard) send_home_firebase(home_position.geo.latitude, home_position.geo.longitude, home_position.geo.altitude, home_position.position.x, home_position.position.y, home_position.position.z, ros::Time::now().toSec());
-        send_GPS_firebase(pos_drone, ros::Time::now().toSec());
+        send_GPS_firebase(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec());
         time_last_send_firebase = ros::Time::now();
     }
+    return time_last_send_firebase;
 }

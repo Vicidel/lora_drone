@@ -19,14 +19,16 @@ using namespace Eigen; // To use matrix and vector representation
 
 #define DRONE_POST_GPS_URL "http://victor.scapp.io/drone/receive_message"
 #define DRONE3_POST_GPS_URL "http://victor.scapp.io/drone3/receive_message"
-#define DRONE_POST_HOME_FIREBASE_URL "http://victor.scapp.io/drone/store_home_firebase"
-#define DRONE_POST_GPS_FIREBASE_URL "http://victor.scapp.io/drone/store_GPS_firebase"
 #define DRONE_STATUS_URL "http://victor.scapp.io/param/drone_ready_to_takeoff"
+#define FIREBASE_EMPTY_URL "http://victor.scapp.io/firebase/empty"
+#define FIREBASE_STORE_HOME_URL "http://victor.scapp.io/firebase/store_home"
+#define FIREBASE_STORE_GPS_URL "http://victor.scapp.io/firebase/store_GPS"
 
 std::string send_GPS(Vector3f position, double time, char* payload);
 std::string send_GPS_drone3(Vector3f position, double time, char* payload, int no_drone);
-void send_GPS_firebase(Vector3f position, double time);
+void send_GPS_firebase(double latitude, double longitude, double altitude, double time);
 void send_home_firebase(double latitude, double longitude, double altitude, double delta_x, double delta_y, double delta_z, double time);
 int check_server(int no_drone);
+void empty_firebase(void);
 
 #endif

@@ -172,10 +172,6 @@ int main(int argc, char **argv){
             break;
         }
 
-        // send to Firebase in a new thread
-        auto future = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos);
-        time_last_send_firebase = future.get();
-
         // display info
         /*if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
             char state_char[current_state.mode.size()+1];
@@ -324,13 +320,16 @@ int main(int argc, char **argv){
             }
         }
 
-
         // ROS update
         if(bool_fly_straight) target_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
         else local_pos_pub.publish(conversion_to_msg(pos_current_goal));
         ros::spinOnce();
         pos_drone = conversion_to_vect(est_local_pos);
         rate.sleep();
+
+        // send to Firebase in a new thread
+        auto future = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos);
+        time_last_send_firebase = future.get();
     }
 
     return 0;

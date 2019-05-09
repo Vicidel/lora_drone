@@ -17,8 +17,6 @@
 using namespace Eigen; // To use matrix and vector representation
 
 
-#define DRONE_POST_GPS_URL "http://victor.scapp.io/drone/receive_message"
-#define DRONE3_POST_GPS_URL "http://victor.scapp.io/drone3/receive_message"
 #define DRONE_STATUS_URL "http://victor.scapp.io/param/drone_ready_to_takeoff"
 #define FIREBASE_EMPTY_URL "http://victor.scapp.io/firebase/empty"
 #define FIREBASE_STORE_HOME_URL "http://victor.scapp.io/firebase/store_home"

@@ -50,6 +50,7 @@
 
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
             // Firebase reference
@@ -201,6 +202,16 @@
                     streetViewControl: false,
                 });
 
+                // define an information window
+                var info_window = new google.maps.InfoWindow();
+
+                // for overlapping markers
+                var oms = new OverlappingMarkerSpiderfier(map, {
+                    markersWontMove: true,
+                    markersWontHide: true,
+                    basicFormatEvents: true
+                });
+
                 // create div for centering button
                 var centerControlDiv = document.createElement('div');
                 var centerControl = new center_control(centerControlDiv, map);
@@ -293,10 +304,10 @@
                     //editable: true
                 })
                 var network_circle3 = new google.maps.Circle({
-                    strokeColor: '#00FF00',
+                    strokeColor: '#FFFF00',
                     strokeOpacity: 0.5,
                     strokeWeight: 2,
-                    fillColor: '#00FF00',
+                    fillColor: '#FFFF00',
                     fillOpacity: 0.1,
                     //editable: true
                 })
@@ -337,7 +348,7 @@
                     const data={'lat': lat, 'lng': lng}
                     axios({method: 'POST', url: url, data: data})
                 });
-                
+
                 // legend
                 initLegend(map);
 

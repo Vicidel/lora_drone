@@ -50,7 +50,6 @@
 
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
             // Firebase reference
@@ -74,6 +73,71 @@
             var drone1_start = 0;
             var drone2_start = 0;
             var drone3_start = 0;
+
+            // creates a map object
+            function init_map() {
+
+                // define the map itself
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: lat_start, lng: lng_start},
+                    zoom: 16,
+                    styles: [{
+                        featureType: 'poi',
+                        stylers: [{ visibility: 'off' }]  // Turn off POI.
+                    },
+                    {
+                        featureType: 'transit.station',
+                        stylers: [{ visibility: 'off' }]  // Turn off bus, train stations...
+                    }],
+                    disableDoubleClickZoom: false,
+                    streetViewControl: false,
+                });
+
+                // centering controls
+                init_centering_controls(map);
+
+                // things on the map
+                var markers = create_markers(map);      // create marker
+                var wp_lists = create_waypoint_lists(); // create waypoint lists
+                var circles = create_circles();         // create circles
+                var paths = create_paths(map);          // create paths
+
+                // listener for clicks
+                map.addListener('click', function(e) {
+                    var lat = e.latLng.lat();
+                    var lng = e.latLng.lng();
+
+                    // post network estimate on server
+                    const url='http://victor.scapp.io/lora/network_estimate_latlng';
+                    const data={'lat': lat, 'lng': lng}
+                    axios({method: 'POST', url: url, data: data})
+                });
+
+                // legend
+                init_legend(map);
+
+                // start Firebase and database listeners
+                init_firebase_drones(map, markers, paths);          // home, drones, paths
+                init_firebase_waypoints(map, wp_lists);             // waypoints
+                init_firebase_estimations(map, markers, circles);   // estimations
+            }
+
+            // init centering controls
+            function init_centering_controls(map) {
+
+                // create div for centering button
+                var centerControlDiv = document.createElement('div');
+                var centerControl = new center_control(centerControlDiv, map);
+                centerControlDiv.index = 1;
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+      
+                // create div for centering button
+                var centerControlDiv2 = document.createElement('div');
+                var centerControl2 = new center_control2(centerControlDiv2, map);
+                centerControlDiv2.index = 1;
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
+      
+            }
 
             // creates a GUI for centering map
             function center_control(control_div, map){
@@ -139,225 +203,8 @@
                 });
             }
 
-            // callback for checkboxes
-            function checkbox_drone_cb(box, drone_id) {
-                if(box.checked) {
-                    if(drone_id=='d1') drone1_start = 1;
-                    if(drone_id=='d2') drone2_start = 1;
-                    if(drone_id=='d3') drone3_start = 1;
-                }
-                else {
-                    if(drone_id=='d1') drone1_start = 0;
-                    if(drone_id=='d2') drone2_start = 0;
-                    if(drone_id=='d3') drone3_start = 0;
-                }
-            }
-
-            // callback for killswitch button
-            function kill_button_cb(){
-                console.log("Killing all drones now")
-
-                // POST on server
-                const url='http://victor.scapp.io/param/drone_start';
-                const data={'kill': 1, 'bool_drone1_start': 666, 'bool_drone2_start': 666, 'bool_drone3_start': 666}
-                axios({method: 'POST', url: url, data: data})
-            }
-
-            // callback for unkillswitch button
-            function unkill_button_cb(){
-                console.log("Unkilling all drones now!")
-
-                // POST on server
-                const url='http://victor.scapp.io/param/drone_start';
-                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
-                axios({method: 'POST', url: url, data: data})
-            }
-
-            // callback for takeoff button
-            function takeoff_button_cb() {
-                console.log("Setting drone start state to desired values")
-
-                // POST on server
-                const url='http://victor.scapp.io/param/drone_start';
-                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
-                axios({method: 'POST', url: url, data: data})
-            }
-
-            // creates a map object
-            function initMap() {
-
-                // define the map itself
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: lat_start, lng: lng_start},
-                    zoom: 16,
-                    styles: [{
-                        featureType: 'poi',
-                        stylers: [{ visibility: 'off' }]  // Turn off POI.
-                    },
-                    {
-                        featureType: 'transit.station',
-                        stylers: [{ visibility: 'off' }]  // Turn off bus, train stations...
-                    }],
-                    disableDoubleClickZoom: false,
-                    streetViewControl: false,
-                });
-
-                // define an information window
-                var info_window = new google.maps.InfoWindow();
-
-                // for overlapping markers
-                var oms = new OverlappingMarkerSpiderfier(map, {
-                    markersWontMove: true,
-                    markersWontHide: true,
-                    basicFormatEvents: true
-                });
-
-                // create div for centering button
-                var centerControlDiv = document.createElement('div');
-                var centerControl = new center_control(centerControlDiv, map);
-                centerControlDiv.index = 1;
-                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-      
-                // create div for centering button
-                var centerControlDiv2 = document.createElement('div');
-                var centerControl2 = new center_control2(centerControlDiv2, map);
-                centerControlDiv2.index = 1;
-                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
-      
-                // custom markers icons
-                var droneR_icon = {
-                    url: 'marker/droneR.png',
-                    anchor: new google.maps.Point(13, 13),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
-                var droneG_icon = {
-                    url: 'marker/droneG.png',
-                    anchor: new google.maps.Point(13, 13),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
-                var droneB_icon = {
-                    url: 'marker/droneB.png',
-                    anchor: new google.maps.Point(13, 13),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
-                var home_icon = {
-                    url: 'marker/home.png',
-                    anchor: new google.maps.Point(13, 13),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
-
-                // markers
-                var droneR_marker = new google.maps.Marker({
-                    map: map,
-                    icon: droneR_icon,
-                    title: 'Drone'
-                });
-                var droneG_marker = new google.maps.Marker({
-                    map: map,
-                    icon: droneG_icon,
-                    title: 'Drone'
-                });
-                var droneB_marker = new google.maps.Marker({
-                    map: map,
-                    icon: droneB_icon,
-                    title: 'Drone'
-                });
-                var home_marker = new google.maps.Marker({
-                    map: map,
-                    icon: home_icon,
-                    title: 'Home'
-                });
-                var network_marker = new google.maps.Marker({
-                    map: map,
-                    icon: 'marker/network.png',
-                    title: 'Network estimate',
-                });
-                var est_marker1 = new google.maps.Marker({
-                    map: map,
-                    icon: 'marker/estimate2.png',
-                    title: 'First estimation',
-                });
-                var est_marker2 = new google.maps.Marker({
-                    map: map,
-                    icon: 'marker/estimate.png',
-                    title: 'Second estimation',
-                });
-                var waypointR_marker_list = [];
-                var waypointG_marker_list = [];
-                var waypointB_marker_list = [];
-
-                // circles
-                var network_circle1 = new google.maps.Circle({
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 0.5,
-                    strokeWeight: 2,
-                    fillColor: '#FF0000',
-                    fillOpacity: 0.1,
-                    //editable: true
-                })
-                var network_circle2 = new google.maps.Circle({
-                    strokeColor: '#FFBB00',
-                    strokeOpacity: 0.5,
-                    strokeWeight: 2,
-                    fillColor: '#FF9900',
-                    fillOpacity: 0.2,
-                    //editable: true
-                })
-                var network_circle3 = new google.maps.Circle({
-                    strokeColor: '#FFFF00',
-                    strokeOpacity: 0.5,
-                    strokeWeight: 2,
-                    fillColor: '#FFFF00',
-                    fillOpacity: 0.1,
-                    //editable: true
-                })
-
-                // flight path
-                var flight_pathR = new google.maps.Polyline({
-                    map: map,
-                    geodesic: true,
-                    strokeColor: '#DD0000',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3
-                });
-                var pathR = [];
-                var flight_pathG = new google.maps.Polyline({
-                    map: map,
-                    geodesic: true,
-                    strokeColor: '#00CC00',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3
-                });
-                var pathG = [];
-                var flight_pathB = new google.maps.Polyline({
-                    map: map,
-                    geodesic: true,
-                    strokeColor: '#0000DD',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3
-                });
-                var pathB = [];
-
-                // listener for clicks
-                map.addListener('click', function(e) {
-                    var lat = e.latLng.lat();
-                    var lng = e.latLng.lng();
-
-                    // post network estimate on server
-                    const url='http://victor.scapp.io/lora/network_estimate_latlng';
-                    const data={'lat': lat, 'lng': lng}
-                    axios({method: 'POST', url: url, data: data})
-                });
-
-                // legend
-                initLegend(map);
-
-                // start Firebase and database listeners
-                initFirebase(map, droneR_marker, droneG_marker, droneB_marker, home_marker, flight_pathR, pathR, flight_pathG, pathG, flight_pathB, pathB, network_marker, est_marker1, est_marker2, waypointR_marker_list, waypointG_marker_list, waypointB_marker_list, network_circle1, network_circle2, network_circle3);
-            }
-
             // init legend
-            function initLegend(map){
+            function init_legend(map){
                 // create legend object
                 var legend = document.getElementById('legend');
 
@@ -430,19 +277,14 @@
                 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
             }
 
-            // init Firebase and set listeners
-            function initFirebase(map, droneR_marker, droneG_marker, droneB_marker, home_marker, flight_pathR, pathR, flight_pathG, pathG, flight_pathB, pathB, network_marker, est_marker1, est_marker2, waypointR_marker_list, waypointG_marker_list, waypointB_marker_list, network_circle1, network_circle2, network_circle3) {
+            // init Firebase for home, drones and paths
+            function init_firebase_drones(map, markers, paths) {
 
                 // reference in Firebase
                 var drone_refR = firebase.child('droneR');
                 var drone_refG = firebase.child('droneG');
                 var drone_refB = firebase.child('droneB');
                 var home_ref   = firebase.child('home');
-                var netw_ref   = firebase.child('network');
-                var est_ref    = firebase.child('estimate');
-                var wayp_refR  = firebase.child('waypointR');
-                var wayp_refG  = firebase.child('waypointG');
-                var wayp_refB  = firebase.child('waypointB');
 
                 // for droneR
                 drone_refR.on('child_added', function(snapshot) {
@@ -452,18 +294,18 @@
                     var lng = snapshot.val().lng;
 
                     // move marker
-                    droneR_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    droneR_marker.setMap(map);
+                    markers.droneR.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.droneR.setMap(map);
 
                     // draw path
-                    pathR.push({lat: lat, lng: lng});
-                    flight_pathR.setPath(pathR);
-                    flight_pathR.setMap(map)
+                    paths.listR.push({lat: lat, lng: lng});
+                    paths.lineR.setPath(paths.listR);
+                    paths.lineR.setMap(map)
                 });
                 drone_refR.on('child_removed', function(snapshot) {
-                    droneR_marker.setMap(null)
-                    flight_pathR.setMap(null)
-                    pathR = []
+                    markers.droneR.setMap(null)
+                    paths.lineR.setMap(null)
+                    paths.listR = []
                 });
 
                 // for droneG
@@ -474,18 +316,18 @@
                     var lng = snapshot.val().lng;
 
                     // move marker
-                    droneG_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    droneG_marker.setMap(map);
+                    markers.droneG.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.droneG.setMap(map);
 
                     // draw path
-                    pathG.push({lat: lat, lng: lng});
-                    flight_pathG.setPath(pathG);
-                    flight_pathG.setMap(map)
+                    paths.listG.push({lat: lat, lng: lng});
+                    paths.lineG.setPath(paths.listG);
+                    paths.lineG.setMap(map)
                 });
                 drone_refG.on('child_removed', function(snapshot) {
-                    droneG_marker.setMap(null)
+                    markers.droneG.setMap(null)
                     flight_pathG.setMap(null)
-                    pathG = []
+                    paths.listG = []
                 });
 
                 // for droneB
@@ -500,14 +342,14 @@
                     droneB_marker.setMap(map);
 
                     // draw path
-                    pathB.push({lat: lat, lng: lng});
-                    flight_pathB.setPath(pathB);
-                    flight_pathB.setMap(map)
+                    paths.listB.push({lat: lat, lng: lng});
+                    paths.lineB.setPath(paths.listB);
+                    paths.lineB.setMap(map)
                 });
                 drone_refB.on('child_removed', function(snapshot) {
-                    droneB_marker.setMap(null)
-                    flight_pathB.setMap(null)
-                    pathB = []
+                    markers.droneB.setMap(null)
+                    paths.lineB.setMap(null)
+                    paths.listB = []
                 });
 
                 // for home
@@ -518,69 +360,25 @@
                     var lng = snapshot.val().lng;
 
                     // move marker
-                    home_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    home_marker.setMap(map);
+                    markers.home.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.home.setMap(map);
 
                     // set start as home
                     lat_start = lat;
                     lng_start = lng;
                 });
                 home_ref.on('child_removed', function(snapshot) {
-                    home_marker.setMap(null)
+                    markers.home.setMap(null)
                 });
+            }
 
-                // for network points
-                netw_ref.on('child_added', function(snapshot) {
+            // init Firebase for waypoints
+            function init_firebase_waypoints(map, wp_lists) {
 
-                    // get coordinates from firebase
-                    var lat = snapshot.val().lat;
-                    var lng = snapshot.val().lng;
-
-                    // move marker
-                    network_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    network_marker.setMap(map);
-                });
-                netw_ref.on('child_removed', function(snapshot) {
-                    //network_marker.setMap(null)
-                });
-
-                // for new estimation
-                est_ref.on('child_added', function(snapshot) {
-                    // get coordinates from firebase
-                    var lat = snapshot.val().lat;
-                    var lng = snapshot.val().lng;
-                    var rad = snapshot.val().radius;
-
-                    // different colors based on radius
-                    if(rad==150) {
-                        network_circle1.setCenter(new google.maps.LatLng(lat, lng));
-                        network_circle1.setMap(map);
-                        network_circle1.setRadius(rad);
-                        network_marker.setPosition(new google.maps.LatLng(lat, lng));
-                        network_marker.setMap(map);
-                    }
-                    if(rad==25) {
-                        network_circle2.setCenter(new google.maps.LatLng(lat, lng));
-                        network_circle2.setMap(map);
-                        network_circle2.setRadius(rad);
-                        est_marker1.setPosition(new google.maps.LatLng(lat, lng));
-                        est_marker1.setMap(map);
-                    }
-                    if(rad==10) {
-                        network_circle3.setCenter(new google.maps.LatLng(lat, lng));
-                        network_circle3.setMap(map);
-                        network_circle3.setRadius(rad);
-                        est_marker2.setPosition(new google.maps.LatLng(lat, lng));
-                        est_marker2.setMap(map);
-                    }
-                });
-                est_ref.on('child_removed', function(snapshot) {
-                    network_circle1.setMap(null);
-                    network_circle2.setMap(null);
-                    network_circle3.setMap(null);
-                    est_marker1.setMap(null);
-                    est_marker2.setMap(null);
-                });
+                // reference in Firebase
+                var wayp_refR  = firebase.child('waypointR');
+                var wayp_refG  = firebase.child('waypointG');
+                var wayp_refB  = firebase.child('waypointB');
 
                 // for waypoint R
                 wayp_refR.on('child_added', function(snapshot) {
@@ -589,7 +387,7 @@
                     var lng = snapshot.val().lng;
 
                     // change color of last waypoints
-                    waypointR_marker_list.forEach(function(item, index, array){
+                    wp_lists.wpR.forEach(function(item, index, array){
                         item.setIcon('marker/waypointR_old.png');
                     });
 
@@ -602,10 +400,10 @@
                     });
 
                     // add it to list
-                    waypointR_marker_list.push(waypoint_marker);
+                    wp_lists.wpR.push(waypoint_marker);
                 });
                 wayp_refR.on('child_removed', function(snapshot) {
-                    waypointR_marker_list.forEach(function(item, index, array){
+                    wp_lists.wpR.forEach(function(item, index, array){
                         item.setMap(null)
                     });  
                 });
@@ -617,7 +415,7 @@
                     var lng = snapshot.val().lng;
 
                     // change color of last waypoints
-                    waypointG_marker_list.forEach(function(item, index, array){
+                    wp_lists.wpG.forEach(function(item, index, array){
                         item.setIcon('marker/waypointG_old.png');
                     });
 
@@ -630,10 +428,10 @@
                     });
 
                     // add it to list
-                    waypointG_marker_list.push(waypoint_marker);
+                    wp_lists.wpG.push(waypoint_marker);
                 });
                 wayp_refG.on('child_removed', function(snapshot) {
-                    waypointG_marker_list.forEach(function(item, index, array){
+                    wp_lists.wpG.forEach(function(item, index, array){
                         item.setMap(null)
                     });  
                 });
@@ -645,7 +443,7 @@
                     var lng = snapshot.val().lng;
 
                     // change color of last waypoints
-                    waypointB_marker_list.forEach(function(item, index, array){
+                    wp_lists.wpB.forEach(function(item, index, array){
                         item.setIcon('marker/waypointB_current.png');
                     });
 
@@ -658,20 +456,277 @@
                     });
 
                     // add it to list
-                    waypointB_marker_list.push(waypoint_marker);
+                    wp_lists.wpB.push(waypoint_marker);
                 });
                 wayp_refB.on('child_removed', function(snapshot) {
-                    waypointB_marker_list.forEach(function(item, index, array){
+                    wp_lists.wpB.forEach(function(item, index, array){
                         item.setMap(null)
                     });  
                 });
+            }
 
+            // init Firebase for estimations
+            function init_firebase_estimations(map, markers, circles) {
 
+                // reference in Firebase
+                var netw_ref   = firebase.child('network');
+                var est_ref    = firebase.child('estimate');
+
+                // for network points
+                netw_ref.on('child_added', function(snapshot) {
+
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    markers.network.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.network.setMap(map);
+                });
+                netw_ref.on('child_removed', function(snapshot) {
+                    //markers.network.setMap(null)
+                });
+
+                // for new estimation
+                est_ref.on('child_added', function(snapshot) {
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+                    var rad = snapshot.val().radius;
+
+                    // different colors based on radius
+                    if(rad==150) {
+                        circles.c1.setCenter(new google.maps.LatLng(lat, lng));
+                        circles.c1.setMap(map);
+                        circles.c1.setRadius(rad);
+                        markers.network.setPosition(new google.maps.LatLng(lat, lng));
+                        markers.network.setMap(map);
+                    }
+                    if(rad==25) {
+                        circles.c2.setCenter(new google.maps.LatLng(lat, lng));
+                        circles.c2.setMap(map);
+                        circles.c2.setRadius(rad);
+                        markers.est1.setPosition(new google.maps.LatLng(lat, lng));
+                        markers.est1.setMap(map);
+                    }
+                    if(rad==10) {
+                        circles.c3.setCenter(new google.maps.LatLng(lat, lng));
+                        circles.c3.setMap(map);
+                        circles.c3.setRadius(rad);
+                        markers.est2.setPosition(new google.maps.LatLng(lat, lng));
+                        markers.est2.setMap(map);
+                    }
+                });
+                est_ref.on('child_removed', function(snapshot) {
+                    circles.c1.setMap(null);
+                    circles.c2.setMap(null);
+                    circles.c3.setMap(null);
+                    markers.est1.setMap(null);
+                    markers.est2.setMap(null);
+                });
             }   
+
+            // callback for checkboxes
+            function checkbox_drone_cb(box, drone_id) {
+                if(box.checked) {
+                    if(drone_id=='d1') drone1_start = 1;
+                    if(drone_id=='d2') drone2_start = 1;
+                    if(drone_id=='d3') drone3_start = 1;
+                }
+                else {
+                    if(drone_id=='d1') drone1_start = 0;
+                    if(drone_id=='d2') drone2_start = 0;
+                    if(drone_id=='d3') drone3_start = 0;
+                }
+            }
+
+            // callback for killswitch button
+            function kill_button_cb(){
+                console.log("Killing all drones now")
+
+                // POST on server
+                const url='http://victor.scapp.io/param/drone_start';
+                const data={'kill': 1, 'bool_drone1_start': 666, 'bool_drone2_start': 666, 'bool_drone3_start': 666}
+                axios({method: 'POST', url: url, data: data})
+            }
+
+            // callback for unkillswitch button
+            function unkill_button_cb(){
+                console.log("Unkilling all drones now!")
+
+                // POST on server
+                const url='http://victor.scapp.io/param/drone_start';
+                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
+                axios({method: 'POST', url: url, data: data})
+            }
+
+            // callback for takeoff button
+            function takeoff_button_cb() {
+                console.log("Setting drone start state to desired values")
+
+                // POST on server
+                const url='http://victor.scapp.io/param/drone_start';
+                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
+                axios({method: 'POST', url: url, data: data})
+            }
+
+            // creates the custom icons
+            function create_icons() {
+                
+                // drone icons
+                var droneR_icon = {
+                    url: 'marker/droneR.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var droneG_icon = {
+                    url: 'marker/droneG.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var droneB_icon = {
+                    url: 'marker/droneB.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // home icon
+                var home_icon = {
+                    url: 'marker/home.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // return them
+                return {droneR: droneR_icon, droneG: droneG_icon, droneB: droneB_icon, home: home_icon};
+            }
+
+            // creates the markers
+            function create_markers(map, icons) {
+
+                // create custom markers icons
+                var icons = create_icons();
+
+                // for drones
+                var droneR_marker = new google.maps.Marker({
+                    map: map,
+                    icon: icons.droneR,
+                    title: 'Drone'
+                });
+                var droneG_marker = new google.maps.Marker({
+                    map: map,
+                    icon: icons.droneG,
+                    title: 'Drone'
+                });
+                var droneB_marker = new google.maps.Marker({
+                    map: map,
+                    icon: icons.droneB,
+                    title: 'Drone'
+                });
+
+                // for home
+                var home_marker = new google.maps.Marker({
+                    map: map,
+                    icon: icons.home,
+                    title: 'Home'
+                });
+
+                // for estimations
+                var network_marker = new google.maps.Marker({
+                    map: map,
+                    icon: 'marker/network.png',
+                    title: 'Network estimate',
+                });
+                var est_marker1 = new google.maps.Marker({
+                    map: map,
+                    icon: 'marker/estimate2.png',
+                    title: 'First estimation',
+                });
+                var est_marker2 = new google.maps.Marker({
+                    map: map,
+                    icon: 'marker/estimate.png',
+                    title: 'Second estimation',
+                });
+
+                // return them 
+                return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, home: home_marker, network: network_marker, est1: est_marker1, est2: est_marker2};
+            }
+
+            // creates the circles
+            function create_circles() {
+
+                var network_circle1 = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.1,
+                })
+
+                var network_circle2 = new google.maps.Circle({
+                    strokeColor: '#FFBB00',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 2,
+                    fillColor: '#FF9900',
+                    fillOpacity: 0.2,
+                })
+
+                var network_circle3 = new google.maps.Circle({
+                    strokeColor: '#FFFF00',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 2,
+                    fillColor: '#FFFF00',
+                    fillOpacity: 0.1,
+                })
+
+                return {c1: network_circle1, c2: network_circle2, c3: network_circle3};
+            }
+
+            // creates the waypoints lists (empty)
+            function create_waypoint_lists() {
+
+                // return empty
+                return {wpR: [], wpG: [], wpB: []};
+            }
+
+            // creates the drone paths lines and the list 
+            function create_paths(map) { 
+
+                // flight path
+                var flight_pathR = new google.maps.Polyline({
+                    map: map,
+                    geodesic: true,
+                    strokeColor: '#DD0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3
+                });
+                var pathR = [];
+
+                var flight_pathG = new google.maps.Polyline({
+                    map: map,
+                    geodesic: true,
+                    strokeColor: '#00CC00',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3
+                });
+                var pathG = [];
+
+                var flight_pathB = new google.maps.Polyline({
+                    map: map,
+                    geodesic: true,
+                    strokeColor: '#0000DD',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3
+                });
+                var pathB = [];
+
+                // return
+                return {listR: [], lineR: flight_pathR, listG: [], lineG: flight_pathG, listB: [], lineB: flight_pathB};
+            }
 
         </script>
         <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxXZYRRheu8t7VGerySo98OVrOxjdcZe8&libraries=visualization&callback=initMap">
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxXZYRRheu8t7VGerySo98OVrOxjdcZe8&libraries=visualization&callback=init_map">
         </script>
     </body>
 </html>

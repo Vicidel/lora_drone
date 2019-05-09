@@ -219,17 +219,26 @@ def store_current_coord():
 	lat = float(j['latitude'])
 	lng = float(j['longitude'])
 	alt = float(j['altitude'])
+	drone_id = int(j['drone_id'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
 	# push on Firebase
 	print("Pushing new drone position on Firebase {} {}".format(lat, lng))
-	ref_drone = firebase_db.reference('drone')
+
+	if drone_id==1:
+		ref_drone = firebase_db.reference('droneR')
+	if drone_id==2:
+		ref_drone = firebase_db.reference('droneG')
+	if drone_id==3:
+		ref_drone = firebase_db.reference('droneB')
+
 	ref_drone.push({
 		'lat': lat,
 		'lng': lng,
 	    'sender': 'app.py: store_GPS',
 	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
-	    'altitude': alt
+	    'altitude': alt,
+	    'drone_id': drone_id
 	})
 
 	# return string
@@ -298,16 +307,28 @@ def empty_firebase():
 	print("!!!!!!!!! Deleting Firebase !!!!!!!!!")
 
 	# delete database entries
-	ref_drone = firebase_db.reference('drone')
-	ref_home  = firebase_db.reference('home')
-	ref_netw  = firebase_db.reference('network')
-	ref_est   = firebase_db.reference('estimate')
-	ref_wayp  = firebase_db.reference('waypoint')
+	ref_drone  = firebase_db.reference('drone')
+	ref_droneR = firebase_db.reference('droneR')
+	ref_droneG = firebase_db.reference('droneG')
+	ref_droneB = firebase_db.reference('droneB')
+	ref_home   = firebase_db.reference('home')
+	ref_netw   = firebase_db.reference('network')
+	ref_est    = firebase_db.reference('estimate')
+	ref_wayp   = firebase_db.reference('waypoint')
+	ref_waypR  = firebase_db.reference('waypointR')
+	ref_waypG  = firebase_db.reference('waypointG')
+	ref_waypB  = firebase_db.reference('waypointB')
 	ref_drone.delete()
+	ref_droneR.delete()
+	ref_droneG.delete()
+	ref_droneB.delete()
 	ref_home.delete()
 	ref_netw.delete()
 	ref_est.delete()
 	ref_wayp.delete()
+	ref_waypR.delete()
+	ref_waypG.delete()
+	ref_waypB.delete()
 
 	return 'Success'
 
@@ -331,17 +352,24 @@ def add_estimation_maps(pos_x, pos_y, radius):
 
 
 # add waypoint on map
-def add_waypoint_maps(pos_x, pos_y):
+def add_waypoint_maps(pos_x, pos_y, drone_id):
 
 	# convert in latlng
 	lat, lng = conversion_xy_latlng(pos_x, pos_y)
 
 	# push on Firebase
-	ref_wayp = firebase_db.reference('waypoint')
+	if drone_id==1:
+		ref_wayp = firebase_db.reference('waypointR')
+	if drone_id==2:
+		ref_wayp = firebase_db.reference('waypointG')
+	if drone_id==3:
+		ref_wayp = firebase_db.reference('waypointB')
+
 	ref_wayp.push({
 		'lat': lat,
 		'lng': lng,
 	    'sender': 'app.py: add_waypoint',
+	    'drone_id': drone_id
 	})
 
 	return 'Success'
@@ -1149,7 +1177,7 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 					bool_drone3_ready = False
 
 	# save on map
-	add_waypoint_maps(wp_x, wp_y)
+	add_waypoint_maps(wp_x, wp_y, drone_id)
 
 	return wp_x, wp_y, wp_z, bool_landing_waypoint
 
@@ -1206,7 +1234,7 @@ def drone_receive_state():
 	if r_payload=='drone_armed':
 
 		# add waypoint for takeoff to Firebase
-		add_waypoint_maps(r_pos_x, r_pos_y)
+		add_waypoint_maps(r_pos_x, r_pos_y, r_drone_id)
 
 		# return string with takeoff coordinates
 		return_string = "Takeoff at current position: h{}".format(takeoff_altitude)

@@ -58,7 +58,7 @@ Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_go
 float parse_hover_time_from_answer(std::string answer_string);
 
 // function for threading
-ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, sensor_msgs::NavSatFix est_global_pos);
+ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, sensor_msgs::NavSatFix est_global_pos, int drone_id);
 
 
 // main
@@ -363,8 +363,8 @@ int main(int argc, char **argv){
         rate.sleep();
 
         // send to Firebase in a new thread
-        //auto future = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos);
-        //time_last_send_firebase = future.get();
+        auto future = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos, drone_id);
+        time_last_send_firebase = future.get();
     }
 
     return 0;
@@ -509,10 +509,10 @@ mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal
 
 
 // function for threading
-ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, sensor_msgs::NavSatFix est_global_pos){
+ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, float time_firebase_period, mavros_msgs::HomePosition home_position, sensor_msgs::NavSatFix est_global_pos, int drone_id){
     if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
         if(bool_wait_for_offboard) send_home_firebase(home_position.geo.latitude, home_position.geo.longitude, home_position.geo.altitude, home_position.position.x, home_position.position.y, home_position.position.z, ros::Time::now().toSec());
-        send_GPS_firebase(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec());
+        send_GPS_firebase(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), drone_id);
         time_last_send_firebase = ros::Time::now();
     }
     return time_last_send_firebase;

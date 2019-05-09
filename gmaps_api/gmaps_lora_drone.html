@@ -214,8 +214,18 @@
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
       
                 // custom markers icons
-                var drone_icon = {
-                    url: 'marker/drone.png',
+                var droneR_icon = {
+                    url: 'marker/droneR.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var droneG_icon = {
+                    url: 'marker/droneG.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var droneB_icon = {
+                    url: 'marker/droneB.png',
                     anchor: new google.maps.Point(13, 13),
                     scaledSize: new google.maps.Size(25, 25)
                 };
@@ -226,9 +236,19 @@
                 };
 
                 // markers
-                var drone_marker = new google.maps.Marker({
+                var droneR_marker = new google.maps.Marker({
                     map: map,
-                    icon: drone_icon,
+                    icon: droneR_icon,
+                    title: 'Drone'
+                });
+                var droneG_marker = new google.maps.Marker({
+                    map: map,
+                    icon: droneG_icon,
+                    title: 'Drone'
+                });
+                var droneB_marker = new google.maps.Marker({
+                    map: map,
+                    icon: droneB_icon,
                     title: 'Drone'
                 });
                 var home_marker = new google.maps.Marker({
@@ -238,20 +258,22 @@
                 });
                 var network_marker = new google.maps.Marker({
                     map: map,
-                    icon: 'marker/red_MarkerN.png',
+                    icon: 'marker/network.png',
                     title: 'Network estimate',
                 });
                 var est_marker1 = new google.maps.Marker({
                     map: map,
-                    icon: 'marker/orange_MarkerE.png',
+                    icon: 'marker/estimate2.png',
                     title: 'First estimation',
                 });
                 var est_marker2 = new google.maps.Marker({
                     map: map,
-                    icon: 'marker/green_MarkerE.png',
+                    icon: 'marker/estimate.png',
                     title: 'Second estimation',
                 });
-                var waypoint_marker_list = [];
+                var waypointR_marker_list = [];
+                var waypointG_marker_list = [];
+                var waypointB_marker_list = [];
 
                 // circles
                 var network_circle1 = new google.maps.Circle({
@@ -280,14 +302,30 @@
                 })
 
                 // flight path
-                var flight_path = new google.maps.Polyline({
+                var flight_pathR = new google.maps.Polyline({
                     map: map,
                     geodesic: true,
-                    strokeColor: '#FF0000',
+                    strokeColor: '#DD0000',
                     strokeOpacity: 1.0,
                     strokeWeight: 3
                 });
-                var path = [];
+                var pathR = [];
+                var flight_pathG = new google.maps.Polyline({
+                    map: map,
+                    geodesic: true,
+                    strokeColor: '#00CC00',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3
+                });
+                var pathG = [];
+                var flight_pathB = new google.maps.Polyline({
+                    map: map,
+                    geodesic: true,
+                    strokeColor: '#0000DD',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3
+                });
+                var pathB = [];
 
                 // listener for clicks
                 map.addListener('click', function(e) {
@@ -304,7 +342,7 @@
                 initLegend(map);
 
                 // start Firebase and database listeners
-                initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker_list, network_circle1, network_circle2, network_circle3);
+                initFirebase(map, droneR_marker, droneG_marker, droneB_marker, home_marker, flight_pathR, pathR, flight_pathG, pathG, flight_pathB, pathB, network_marker, est_marker1, est_marker2, waypointR_marker_list, waypointG_marker_list, waypointB_marker_list, network_circle1, network_circle2, network_circle3);
             }
 
             // init legend
@@ -312,39 +350,69 @@
                 // create legend object
                 var legend = document.getElementById('legend');
 
-                // add drone
-                var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/drone.png width=20> Drone'
-                legend.appendChild(div);
-
                 // add home
                 var div = document.createElement('div');
                 div.innerHTML = '<img src=marker/home.png width=20> Home'
                 legend.appendChild(div);
 
+                // add droneR
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/droneR.png width=20> Drone 1'
+                legend.appendChild(div);
+
+                // add droneG
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/droneG.png width=20> Drone 2'
+                legend.appendChild(div);
+
+                // add droneB
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/droneB.png width=20> Drone 3'
+                legend.appendChild(div);
+
                 // add waypoint past
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/paleblue_circleW.png width=20> Waypoint (past)'
+                div.innerHTML = '<img src=marker/waypointR_old_circle.png width=20> Drone 1 past waypoint'
                 legend.appendChild(div);
 
                 // add waypoint current
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/blue_circleW.png width=20> Waypoint (current)'
+                div.innerHTML = '<img src=marker/waypointR_current_circle.png width=20> Drone 1 current waypoint'
+                legend.appendChild(div);
+
+                // add waypoint past
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/waypointG_old_circle.png width=20> Drone 2 past waypoint'
+                legend.appendChild(div);
+
+                // add waypoint current
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/waypointG_current_circle.png width=20> Drone 2 current waypoint'
+                legend.appendChild(div);
+
+                // add waypoint past
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/waypointB_old_circle.png width=20> Drone 3 past waypoint'
+                legend.appendChild(div);
+
+                // add waypoint current
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/waypointB_current_circle.png width=20> Drone 3 current waypoint'
                 legend.appendChild(div);
 
                 // add network
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/red_circleN.png width=20> Network estimate'
+                div.innerHTML = '<img src=marker/network_circle.png width=20> Network estimate'
                 legend.appendChild(div);
 
                 // add est1
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/orange_circleE.png width=20> First estimation'
+                div.innerHTML = '<img src=marker/estimate2_circle.png width=20> First estimation'
                 legend.appendChild(div);
 
                 // add est2
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/green_circleE.png width=20> Second estimation'
+                div.innerHTML = '<img src=marker/estimate_circle.png width=20> Second estimation'
                 legend.appendChild(div);
 
                 // push on map
@@ -352,40 +420,86 @@
             }
 
             // init Firebase and set listeners
-            function initFirebase(map, drone_icon, drone_marker, home_marker, flight_path, path, network_marker, est_marker1, est_marker2, waypoint_marker_list, network_circle1, network_circle2, network_circle3) {
+            function initFirebase(map, droneR_marker, droneG_marker, droneB_marker, home_marker, flight_pathR, pathR, flight_pathG, pathG, flight_pathB, pathB, network_marker, est_marker1, est_marker2, waypointR_marker_list, waypointG_marker_list, waypointB_marker_list, network_circle1, network_circle2, network_circle3) {
 
                 // reference in Firebase
-                var drone_ref = firebase.child('drone');
-                var home_ref  = firebase.child('home');
-                var netw_ref  = firebase.child('network');
-                var est_ref   = firebase.child('estimate');
-                var wayp_ref  = firebase.child('waypoint');
+                var drone_refR = firebase.child('droneR');
+                var drone_refG = firebase.child('droneG');
+                var drone_refB = firebase.child('droneB');
+                var home_ref   = firebase.child('home');
+                var netw_ref   = firebase.child('network');
+                var est_ref    = firebase.child('estimate');
+                var wayp_refR  = firebase.child('waypointR');
+                var wayp_refG  = firebase.child('waypointG');
+                var wayp_refB  = firebase.child('waypointB');
 
-                // listener for drone points
-                drone_ref.on('child_added', function(snapshot) {
+                // for droneR
+                drone_refR.on('child_added', function(snapshot) {
 
                     // get coordinates from firebase
                     var lat = snapshot.val().lat;
                     var lng = snapshot.val().lng;
 
                     // move marker
-                    drone_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    drone_marker.setMap(map);
+                    droneR_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    droneR_marker.setMap(map);
 
                     // draw path
-                    path.push({lat: lat, lng: lng});
-                    flight_path.setPath(path);
-                    flight_path.setMap(map)
+                    pathR.push({lat: lat, lng: lng});
+                    flight_pathR.setPath(pathR);
+                    flight_pathR.setMap(map)
+                });
+                drone_refR.on('child_removed', function(snapshot) {
+                    droneR_marker.setMap(null)
+                    flight_pathR.setMap(null)
+                    pathR = []
                 });
 
-                // for removing drone point
-                drone_ref.on('child_removed', function(snapshot) {
-                    drone_marker.setMap(null)
-                    flight_path.setMap(null)
-                    path = []
+                // for droneG
+                drone_refG.on('child_added', function(snapshot) {
+
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    droneG_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    droneG_marker.setMap(map);
+
+                    // draw path
+                    pathG.push({lat: lat, lng: lng});
+                    flight_pathG.setPath(pathG);
+                    flight_pathG.setMap(map)
+                });
+                drone_refG.on('child_removed', function(snapshot) {
+                    droneG_marker.setMap(null)
+                    flight_pathG.setMap(null)
+                    pathG = []
                 });
 
-                // listener for changes in home
+                // for droneB
+                drone_refB.on('child_added', function(snapshot) {
+
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    droneB_marker.setPosition(new google.maps.LatLng(lat, lng));
+                    droneB_marker.setMap(map);
+
+                    // draw path
+                    pathB.push({lat: lat, lng: lng});
+                    flight_pathB.setPath(pathB);
+                    flight_pathB.setMap(map)
+                });
+                drone_refB.on('child_removed', function(snapshot) {
+                    droneB_marker.setMap(null)
+                    flight_pathB.setMap(null)
+                    pathB = []
+                });
+
+                // for home
                 home_ref.on('child_added', function(snapshot){
 
                     // get coordinates
@@ -400,13 +514,11 @@
                     lat_start = lat;
                     lng_start = lng;
                 });
-
-                // for removing home point
                 home_ref.on('child_removed', function(snapshot) {
                     home_marker.setMap(null)
                 });
 
-                // listener for network points
+                // for network points
                 netw_ref.on('child_added', function(snapshot) {
 
                     // get coordinates from firebase
@@ -417,13 +529,11 @@
                     network_marker.setPosition(new google.maps.LatLng(lat, lng));
                     network_marker.setMap(map);
                 });
-
-                // for removing network point
                 netw_ref.on('child_removed', function(snapshot) {
                     //network_marker.setMap(null)
                 });
 
-                // listener for new estimation
+                // for new estimation
                 est_ref.on('child_added', function(snapshot) {
                     // get coordinates from firebase
                     var lat = snapshot.val().lat;
@@ -453,8 +563,6 @@
                         est_marker2.setMap(map);
                     }
                 });
-
-                // for removing estimations
                 est_ref.on('child_removed', function(snapshot) {
                     network_circle1.setMap(null);
                     network_circle2.setMap(null);
@@ -463,32 +571,86 @@
                     est_marker2.setMap(null);
                 });
 
-                // listener for new waypoints
-                wayp_ref.on('child_added', function(snapshot) {
+                // for waypoint R
+                wayp_refR.on('child_added', function(snapshot) {
                     // get coordinates from firebase
                     var lat = snapshot.val().lat;
                     var lng = snapshot.val().lng;
 
                     // change color of last waypoints
-                    waypoint_marker_list.forEach(function(item, index, array){
-                        item.setIcon('marker/paleblue_MarkerW.png');
+                    waypointR_marker_list.forEach(function(item, index, array){
+                        item.setIcon('marker/waypointR_old.png');
                     });
 
                     // create new marker
                     var waypoint_marker = new google.maps.Marker({
                         position: {lat: lat, lng: lng},
                         map: map,
-                        icon: 'marker/blue_MarkerW.png',
+                        icon: 'marker/waypointR_current.png',
                         title: 'Waypoint',
                     });
 
                     // add it to list
-                    waypoint_marker_list.push(waypoint_marker);
+                    waypointR_marker_list.push(waypoint_marker);
+                });
+                wayp_refR.on('child_removed', function(snapshot) {
+                    waypointR_marker_list.forEach(function(item, index, array){
+                        item.setMap(null)
+                    });  
                 });
 
-                // for removing waypoints
-                wayp_ref.on('child_removed', function(snapshot) {
-                    waypoint_marker_list.forEach(function(item, index, array){
+                // for waypoint G
+                wayp_refG.on('child_added', function(snapshot) {
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // change color of last waypoints
+                    waypointG_marker_list.forEach(function(item, index, array){
+                        item.setIcon('marker/waypointG_old.png');
+                    });
+
+                    // create new marker
+                    var waypoint_marker = new google.maps.Marker({
+                        position: {lat: lat, lng: lng},
+                        map: map,
+                        icon: 'marker/waypointG_current.png',
+                        title: 'Waypoint',
+                    });
+
+                    // add it to list
+                    waypointG_marker_list.push(waypoint_marker);
+                });
+                wayp_refG.on('child_removed', function(snapshot) {
+                    waypointG_marker_list.forEach(function(item, index, array){
+                        item.setMap(null)
+                    });  
+                });
+
+                // for waypoint B
+                wayp_refB.on('child_added', function(snapshot) {
+                    // get coordinates from firebase
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // change color of last waypoints
+                    waypointB_marker_list.forEach(function(item, index, array){
+                        item.setIcon('marker/waypointB_current.png');
+                    });
+
+                    // create new marker
+                    var waypoint_marker = new google.maps.Marker({
+                        position: {lat: lat, lng: lng},
+                        map: map,
+                        icon: 'marker/waypointB_old.png',
+                        title: 'Waypoint',
+                    });
+
+                    // add it to list
+                    waypointB_marker_list.push(waypoint_marker);
+                });
+                wayp_refB.on('child_removed', function(snapshot) {
+                    waypointB_marker_list.forEach(function(item, index, array){
                         item.setMap(null)
                     });  
                 });

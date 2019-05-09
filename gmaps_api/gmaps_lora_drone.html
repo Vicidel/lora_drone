@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <style>
             #map {
-                height: 95%;
+                height: 90%;
                 width: 100%;
             }
             html, body {
@@ -294,12 +294,10 @@
                     var lat = e.latLng.lat();
                     var lng = e.latLng.lng();
 
-                    // new Firebase entry
-                    firebase.child('click').push({           
-                        'lat': lat,
-                        'lng': lng,
-                        'sender': 'click'
-                    });
+                    // post network estimate on server
+                    const url='http://victor.scapp.io/lora/network_estimate_latlng';
+                    const data={'lat': lat, 'lng': lng}
+                    axios({method: 'POST', url: url, data: data})
                 });
                 
                 // legend
@@ -349,9 +347,6 @@
                 div.innerHTML = '<img src=marker/green_circleE.png width=20> Second estimation'
                 legend.appendChild(div);
 
-
-
-
                 // push on map
                 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
             }
@@ -362,7 +357,7 @@
                 // reference in Firebase
                 var drone_ref = firebase.child('drone');
                 var home_ref  = firebase.child('home');
-                var click_ref = firebase.child('click');
+                var netw_ref  = firebase.child('network');
                 var est_ref   = firebase.child('estimate');
                 var wayp_ref  = firebase.child('waypoint');
 
@@ -411,8 +406,8 @@
                     home_marker.setMap(null)
                 });
 
-                // listener for click points
-                click_ref.on('child_added', function(snapshot) {
+                // listener for network points
+                netw_ref.on('child_added', function(snapshot) {
 
                     // get coordinates from firebase
                     var lat = snapshot.val().lat;
@@ -421,16 +416,11 @@
                     // move marker
                     network_marker.setPosition(new google.maps.LatLng(lat, lng));
                     network_marker.setMap(map);
-
-                    // post network estimate on server
-                    const url='http://victor.scapp.io/lora/network_estimate_latlng';
-                    const data={'lat': lat, 'lng': lng}
-                    axios({method: 'POST', url: url, data: data})
                 });
 
-                // for removing drone point
-                click_ref.on('child_removed', function(snapshot) {
-                    network_marker.setMap(null)
+                // for removing network point
+                netw_ref.on('child_removed', function(snapshot) {
+                    //network_marker.setMap(null)
                 });
 
                 // listener for new estimation
@@ -469,7 +459,6 @@
                     network_circle1.setMap(null);
                     network_circle2.setMap(null);
                     network_circle3.setMap(null);
-                    network_marker.setMap(null);
                     est_marker1.setMap(null);
                     est_marker2.setMap(null);
                 });

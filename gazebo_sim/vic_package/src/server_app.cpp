@@ -86,7 +86,7 @@ std::string send_GPS(Vector3f position, double time, char* payload){
 }
 
 // POST the drone GPS coordinates and drone number
-std::string send_GPS_drone3(Vector3f position, double time, char* payload, int no_drone){
+std::string send_GPS_drone3(Vector3f position, double time, char* payload, int drone_id){
 
     // set response string
     std::string response_string;
@@ -101,19 +101,56 @@ std::string send_GPS_drone3(Vector3f position, double time, char* payload, int n
     char str_pos_y[10];    sprintf(str_pos_y, "%f", position(1));
     char str_pos_z[10];    sprintf(str_pos_z, "%f", position(2));
     char str_time[30];     sprintf(str_time, "%f", time);
-    char str_no_drone[10]; sprintf(str_no_drone, "%d", no_drone);
+    char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
     cJSON_AddStringToObject(root, "pos_x", str_pos_x);
     cJSON_AddStringToObject(root, "pos_y", str_pos_y);
     cJSON_AddStringToObject(root, "pos_z", str_pos_z);
     cJSON_AddStringToObject(root, "timestamp", str_time);
     cJSON_AddStringToObject(root, "payload", payload);
-    cJSON_AddStringToObject(root, "no_drone", str_no_drone);
+    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
     json = cJSON_PrintUnformatted(root);
     //std::cout << "String sent:" << json << std::endl;
 
     // POST JSON on URL
     response_string = post_JSON(DRONE3_POST_GPS_URL, json);
 
+    std::cout << "POST answer: " << response_string << std::endl;
+
+    return response_string;
+}
+
+// POST the drone GPS coordinates and drone number
+std::string send_drone_state(Vector3f position, double time, char* payload, int drone_id, int nb_drone){
+
+    // set response string
+    std::string response_string;
+
+    // create JSON to send
+    cJSON *root = NULL;
+    char *json = NULL;
+    root = cJSON_CreateObject();
+
+    // fils json
+    char str_pos_x[10];    sprintf(str_pos_x, "%f", position(0));
+    char str_pos_y[10];    sprintf(str_pos_y, "%f", position(1));
+    char str_pos_z[10];    sprintf(str_pos_z, "%f", position(2));
+    char str_time[30];     sprintf(str_time, "%f", time);
+    char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
+    char str_nb_drone[10]; sprintf(str_nb_drone, "%d", nb_drone);
+    cJSON_AddStringToObject(root, "pos_x", str_pos_x);
+    cJSON_AddStringToObject(root, "pos_y", str_pos_y);
+    cJSON_AddStringToObject(root, "pos_z", str_pos_z);
+    cJSON_AddStringToObject(root, "timestamp", str_time);
+    cJSON_AddStringToObject(root, "payload", payload);
+    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
+    cJSON_AddStringToObject(root, "nb_drone", str_nb_drone);
+    json = cJSON_PrintUnformatted(root);
+    //std::cout << "String sent:" << json << std::endl;
+
+    // POST JSON on URL
+    response_string = post_JSON(DRONE_SEND_CURRENT_STATE_URL, json);
+
+    // print for debugging
     std::cout << "POST answer: " << response_string << std::endl;
 
     return response_string;
@@ -196,7 +233,7 @@ void empty_firebase(void){
 }
 
 // check if start signal sent from server
-int check_server(int no_drone){
+int check_server(int drone_id){
 
     // set response string
     std::string response_string;
@@ -207,8 +244,8 @@ int check_server(int no_drone){
     root = cJSON_CreateObject();
 
     // fils json
-    char str_no_drone[10]; sprintf(str_no_drone, "%d", no_drone);
-    cJSON_AddStringToObject(root, "no_drone", str_no_drone);
+    char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
+    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL

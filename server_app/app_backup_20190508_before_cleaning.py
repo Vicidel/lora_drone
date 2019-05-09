@@ -983,8 +983,430 @@ def lora_print_json():
 ####################################  DRONE ROUTE  ######################################
 #########################################################################################
 
+# receive GPS coordinates from offboard script
+@app.route('/drone/receive_message', methods=['POST'])
+def drone_receive():
+	# get global variables 
+	global drone_dataset, current_state, solution
+	global network_x, network_y, network_z, circle_radius
 
-# returns the waypoint based on drone id, total number of drone and state
+
+	###################  DECODE PAYLOAD  ######################
+	print("!!!!!!!!! Data received from drone !!!!!!!!!")
+	
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the JSON received
+	print("JSON received:")
+	print(j)
+
+	# parse received data
+	r_pos_x     = j['pos_x']
+	r_pos_y     = j['pos_y']
+	r_pos_z     = j['pos_z']
+	r_payload   = j['payload']
+	r_ts_temp   = float(j['timestamp'])
+	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
+
+	# type conversion and stuff
+	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)
+	r_time 		= str(r_time) 
+
+
+	###################  SWITCH STATE  ######################
+	
+	# if it is not set during the next if's
+	return_string = 'ERROR, return string not set'
+
+	# switch to OFFBOARD mode done
+	if r_payload=='drone_offboard':
+		return_string = "Congrats on offboard mode"
+
+	# drone was just armed
+	if r_payload=='drone_armed':
+
+		# set takeoff position as 2m above current position
+		pos_x = float(r_pos_x)
+		pos_y = float(r_pos_y)
+		pos_z = float(r_pos_z) + float(takeoff_altitude)
+
+		# add waypoint to Firebase
+		add_waypoint_maps(pos_x, pos_y)
+
+		# return string with takeoff coordinates
+		return_string = "New waypoint (takeoff): x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+	# drone took off and is in the air
+	if r_payload=='drone_takeoff':
+
+		# empty drone dataset
+		print("Emptying drone dataset for this mission")
+		drone_dataset = []
+
+		# set base parameters
+		current_state = 0
+		circle_radius = circle_radius_v1
+
+		# fills network if it's not set yet (value of 666)
+		if network_x==666:
+			network_x = network_x_v1
+			network_y = network_y_v1
+			network_z = network_z_v1
+			add_network_maps(network_x, network_y)
+
+		# first waypoint
+		pos_x = network_x + circle_radius*math.cos(0)
+		pos_y = network_y + circle_radius*math.sin(0)
+		pos_z = flying_altitude
+
+		# set base solution at network estimate
+		solution.pos_x = network_x
+		solution.pos_y = network_y
+		solution.pos_z = 0
+
+		# save on map
+		add_estimation_maps(network_x, network_y, est_uncertainty1)
+		add_waypoint_maps(pos_x, pos_y)
+
+		# return string with new coordinates
+		return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+	# drone reached its previous (unknown) waypoint
+	if r_payload=='waypoint_reached':
+
+		# read old state to increment it
+		current_state = current_state + 1
+
+		# send hover time
+		return_string = "Hover time set: h{}".format(hover_time)
+
+	# drone is hovering in position
+	if r_payload=='data_collected':
+
+		# create and send next waypoint
+		if (current_state == 1) or (current_state == 4):
+			pos_x = network_x + circle_radius*math.cos(2*math.pi/3)
+			pos_y = network_y + circle_radius*math.sin(2*math.pi/3)
+			pos_z = flying_altitude
+			add_waypoint_maps(pos_x, pos_y)
+			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+		elif (current_state == 2) or (current_state == 5):
+			pos_x = network_x + circle_radius*math.cos(4*math.pi/3)
+			pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
+			pos_z = flying_altitude
+			add_waypoint_maps(pos_x, pos_y)
+			return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+		elif current_state == 3:
+			# do multilateration and store position
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
+			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+				print("LOC: Reusing old network estimate")
+				solution.pos_x = solution.pos_x
+				solution.pos_y = solution.pos_y		# reusing old estimation
+				solution.pos_z = solution.pos_z
+			else:
+				solution.pos_x = pos_x_est
+				solution.pos_y = pos_y_est 		# new calculated position
+				solution.pos_z = pos_z_est
+			
+			# save on map
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty2)
+
+			# only once or more ?
+			if loop_todo == 1:
+				# got for landing
+				add_waypoint_maps(solution.pos_x, solution.pos_y)
+				return_string = "Land at position: x{} y{} z{}".format(solution.pos_x, solution.pos_x, flying_altitude)
+
+			else:
+				# restart program
+				print("Restarting around estimation, smaller parameters")
+
+				# new parameters
+				network_x = solution.pos_x
+				network_y = solution.pos_y
+				network_z = solution.pos_z
+				circle_radius = circle_radius_v2
+
+				# new waypoint
+				pos_x = network_x + circle_radius*math.cos(0)
+				pos_y = network_y + circle_radius*math.sin(0)
+				pos_z = flying_altitude
+
+				# add waypoint on map
+				add_waypoint_maps(pos_x, pos_y)
+
+				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+		elif current_state == 6:
+			# do multilateration and store position
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
+			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+				print("LOC: Reusing old network estimate")
+				solution.pos_x = solution.pos_x
+				solution.pos_y = solution.pos_y		# reusing old network est
+				solution.pos_z = solution.pos_z
+			else:
+				solution.pos_x = pos_x_est
+				solution.pos_y = pos_y_est 		# new calculated position
+				solution.pos_z = pos_z_est
+
+			# save on map
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty3)
+
+			# go for landing
+			add_waypoint_maps(solution.pos_x, solution.pos_y)
+			return_string = "Land at position: x{} y{} z{}".format(solution.pos_x, solution.pos_y, flying_altitude)
+
+		else:
+			return_string = "ERROR, unknown state"
+
+	# drone is landing
+	if r_payload=='drone_landing':
+		return_string = "Congrats on mission!"
+
+
+	###################  CREATE MEMORY  ######################
+	# create new datapoint with parsed data
+	datapoint = drone_datapoint()
+	datapoint.pos_x 	= r_pos_x
+	datapoint.pos_y 	= r_pos_y
+	datapoint.pos_z 	= r_pos_z
+	datapoint.time 		= r_time
+	datapoint.timestamp = r_timestamp
+	datapoint.payload   = r_payload
+	datapoint.state 	= current_state
+	datapoint.drone_id  = 1
+
+	# save it
+	drone_dataset.append(datapoint)
+
+	# success
+	return return_string
+
+
+# receive GPS coordinates from offboard script
+@app.route('/drone3/receive_message', methods=['POST'])
+def drone3_receive():
+	# get global variables 
+	global drone_dataset, solution, nb_est_made
+	global network_x, network_y, network_z, circle_radius
+	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
+
+
+	###################  DECODE PAYLOAD  ######################
+	print("!!!!!!!!! Data received from drone !!!!!!!!!")
+	
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the JSON received
+	print("JSON received:")
+	print(j)
+
+	# parse received data
+	r_pos_x     = j['pos_x']
+	r_pos_y     = j['pos_y']
+	r_pos_z     = j['pos_z']
+	r_payload   = j['payload']
+	r_ts_temp   = float(j['timestamp'])
+	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
+
+	# type conversion and stuff
+	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)
+	r_time 		= str(r_time) 
+
+	# drone number
+	r_drone_id  = int(j['drone_id'])
+
+
+	###################  SWITCH STATE  ######################
+	
+	# if it is not set during the next if's
+	return_string = 'ERROR, return string not set'
+
+	# switch to OFFBOARD mode done
+	if r_payload=='drone_offboard':
+		return_string = "Congrats on offboard mode"
+
+	# drone was just armed
+	if r_payload=='drone_armed':
+
+		# set takeoff position as 2m above current position
+		pos_x = float(r_pos_x)
+		pos_y = float(r_pos_y)
+		pos_z = float(r_pos_z) + float(takeoff_altitude)
+
+		# return string with takeoff coordinates
+		return_string = "New waypoint (takeoff): x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+	# drone took off and is in the air
+	if r_payload=='drone_takeoff':
+
+		# empty drone dataset
+		print("Emptying drone dataset for this mission")
+		drone_dataset = []
+		circle_radius = circle_radius_v1
+		nb_est_made = 0
+
+		# first waypoints
+		if r_drone_id==1:
+			pos_x = network_x + circle_radius*math.cos(0)
+			pos_y = network_y + circle_radius*math.sin(0)
+			pos_z = flying_altitude
+			bool_drone1_ready = False
+		elif r_drone_id==2:
+			pos_x = network_x + circle_radius*math.cos(2*math.pi/3)
+			pos_y = network_y + circle_radius*math.sin(2*math.pi/3)
+			pos_z = flying_altitude
+			bool_drone2_ready = False
+		elif r_drone_id==3:
+			pos_x = network_x + circle_radius*math.cos(4*math.pi/3)
+			pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
+			pos_z = flying_altitude
+			bool_drone3_ready = False
+		else:
+			print("ERROR: unknown drone number (not 1/2/3)")
+			pos_x = 0
+			pos_y = 0
+			pos_z = flying_altitude
+
+		# return string with new coordinates
+		return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+	# drone reached its previous (unknown) waypoint
+	if r_payload=='waypoint_reached':
+
+		# send hover time
+		return_string = "Hover time set: h{}".format(hover_time)
+
+	# drone is hovering in position
+	if r_payload=='data_collected':
+
+		# send waiting command
+		return_string = "Wait at this position"
+
+	# drone is waiting for next commands
+	if r_payload=='waiting_for_command':
+
+		# fill bool_ready
+		if r_drone_id==1:
+			bool_drone1_ready = True
+		if r_drone_id==2:
+			bool_drone2_ready = True
+		if r_drone_id==3:
+			bool_drone3_ready = True
+
+		# all drones have finished their hovering
+		if bool_drone1_ready == True and bool_drone2_ready == True and bool_drone3_ready == True:
+
+			# print things
+			print("All drones are ready, doing multilateration")
+
+			# do multilateration and store position
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
+			solution.pos_x = pos_x_est
+			solution.pos_y = pos_y_est
+			solution.pos_z = pos_z_est
+
+			# one more estimation made
+			nb_est_made = nb_est_made + 1
+
+			# next waypoint is landing one
+			if nb_est_made == loop_todo:
+				print("Go for landing around found position")
+
+				# landing waypoints
+				if r_drone_id==1:
+					pos_x = pos_x_est + landing_radius*math.cos(0)
+					pos_y = pos_y_est + landing_radius*math.sin(0)
+					pos_z = takeoff_altitude
+				elif r_drone_id==2:
+					pos_x = pos_x_est + landing_radius*math.cos(2*math.pi/3)
+					pos_y = pos_y_est + landing_radius*math.sin(2*math.pi/3)
+					pos_z = takeoff_altitude
+				elif r_drone_id==3:
+					pos_x = pos_x_est + landing_radius*math.cos(4*math.pi/3)
+					pos_y = pos_y_est + landing_radius*math.sin(4*math.pi/3)
+					pos_z = takeoff_altitude
+				return_string = "Land at position: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+			
+			# redo one loop
+			else:
+				print("Restarting around estimation, smaller parameters")
+
+				# new parameters
+				network_x = pos_x_est
+				network_y = pos_y_est
+				network_z = pos_z_est
+				circle_radius = circle_radius_v2
+
+				# new waypoint
+				if r_drone_id==1:
+					pos_x = network_x + circle_radius*math.cos(0)
+					pos_y = network_y + circle_radius*math.sin(0)
+					pos_z = flying_altitude
+					bool_drone1_ready = False
+				elif r_drone_id==2:
+					pos_x = network_x + circle_radius*math.cos(2*math.pi/3)
+					pos_y = network_y + circle_radius*math.sin(2*math.pi/3)
+					pos_z = flying_altitude
+					bool_drone2_ready = False
+				elif r_drone_id==3:
+					pos_x = network_x + circle_radius*math.cos(4*math.pi/3)
+					pos_y = network_y + circle_radius*math.sin(4*math.pi/3)
+					pos_z = flying_altitude
+					bool_drone3_ready = False
+				else:
+					print("ERROR: unknown drone number (not 1/2/3")
+					pos_x = 0
+					pos_y = 0
+					pos_z = flying_altitude
+
+				return_string = "New waypoint: x{} y{} z{}".format(pos_x, pos_y, pos_z)
+
+		# all drones are not ready, still waiting
+		else:
+			return_string = "Wait at this position"
+
+	# drone is landing
+	if r_payload=='drone_landing':
+		return_string = "Congrats on mission!"
+
+
+	###################  CREATE MEMORY  ######################
+	# create new datapoint with parsed data
+	datapoint = drone_datapoint()
+	datapoint.pos_x 	= r_pos_x
+	datapoint.pos_y 	= r_pos_y
+	datapoint.pos_z 	= r_pos_z
+	datapoint.time 		= r_time
+	datapoint.timestamp = r_timestamp
+	datapoint.payload   = r_payload
+	datapoint.state 	= current_state
+	datapoint.drone_id  = r_drone_id
+
+	# save it
+	drone_dataset.append(datapoint)
+
+	# success
+	print("Return string is: {}".format(return_string))
+	return return_string
+
+
 def get_waypoint(drone_id, nb_drone, drone_dataset):
 
 	# global variables

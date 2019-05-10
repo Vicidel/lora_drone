@@ -106,7 +106,7 @@ std::string send_drone_state(Vector3f position, double time, char* payload, int 
 }
 
 // POST drone GPS coordinates on Firebase
-void send_GPS_firebase(double latitude, double longitude, double altitude, double time, int drone_id){
+void send_GPS_firebase(double latitude, double longitude, double altitude, double time, int drone_id, std::string state){
 
     // set response string
     std::string response_string;
@@ -122,11 +122,13 @@ void send_GPS_firebase(double latitude, double longitude, double altitude, doubl
     char str_alt[10]; sprintf(str_alt, "%f", altitude);
     char str_time[30]; sprintf(str_time, "%f", time);
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
+    char str_state[20]; strcpy(str_state, state.c_str());
     cJSON_AddStringToObject(root, "latitude", str_lat);
     cJSON_AddStringToObject(root, "longitude", str_lng);
     cJSON_AddStringToObject(root, "altitude", str_alt);
     cJSON_AddStringToObject(root, "timestamp", str_time);
     cJSON_AddStringToObject(root, "drone_id", str_drone_id);
+    cJSON_AddStringToObject(root, "state", str_state);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL

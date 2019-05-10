@@ -220,6 +220,7 @@ def store_current_coord():
 	lng = float(j['longitude'])
 	alt = float(j['altitude'])
 	drone_id = int(j['drone_id'])
+	state = str(j['state'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
 	# push on Firebase
@@ -238,7 +239,8 @@ def store_current_coord():
 	    'sender': 'app.py: store_GPS',
 	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
 	    'altitude': alt,
-	    'drone_id': drone_id
+	    'drone_id': drone_id,
+	    'state': state
 	})
 
 	# return string

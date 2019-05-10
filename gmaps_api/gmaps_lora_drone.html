@@ -32,9 +32,9 @@
         <form action="#">
             <div>
                 <b>Drone to start for takeoff:</b>
-                drone 1: <input type="checkbox" id="drone1box" onclick="checkbox_drone_cb(this,'d1')" autocomplete="off"/>
-                drone 2: <input type="checkbox" id="drone2box" onclick="checkbox_drone_cb(this,'d2')" autocomplete="off"/>
-                drone 3: <input type="checkbox" id="drone3box" onclick="checkbox_drone_cb(this,'d3')" autocomplete="off"/>
+                droneR: <input type="checkbox" id="drone1box" onclick="checkbox_drone_cb(this,'d1')" autocomplete="off"/>
+                droneG: <input type="checkbox" id="drone2box" onclick="checkbox_drone_cb(this,'d2')" autocomplete="off"/>
+                droneG: <input type="checkbox" id="drone3box" onclick="checkbox_drone_cb(this,'d3')" autocomplete="off"/>
                 <button type="submit" onclick="takeoff_button_cb(this)">Takeoff</button>
             </div>
             <div>
@@ -42,6 +42,7 @@
                 <button type="submit" onclick="kill_button_cb(this)">Kill</button>
                 <button type="submit" onclick="unkill_button_cb(this)">Unkill</button>
             </div>
+            <div class="states"></div>
         </form> 
     </head>
     <body>
@@ -73,6 +74,12 @@
             var drone1_start = 0;
             var drone2_start = 0;
             var drone3_start = 0;
+
+            // drones states
+            var stateR = "UNKNOWN";
+            var stateG = "UNKNOWN";
+            var stateB = "UNKNOWN";
+            change_states(stateR, stateG, stateB)
 
             // creates a map object
             function init_map() {
@@ -122,6 +129,12 @@
                 init_firebase_estimations(map, markers, circles);   // estimations
             }
 
+            // set the states in GUI
+            function change_states(stateR, stateG, stateB){
+                // change the string in HTML stuff
+                document.querySelector('.states').innerHTML = "<b>Drone states: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
+            }
+
             // init centering controls
             function init_centering_controls(map) {
 
@@ -136,7 +149,6 @@
                 var centerControl2 = new center_control2(centerControlDiv2, map);
                 centerControlDiv2.index = 1;
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
-      
             }
 
             // creates a GUI for centering map
@@ -301,6 +313,9 @@
                     paths.listR.push({lat: lat, lng: lng});
                     paths.lineR.setPath(paths.listR);
                     paths.lineR.setMap(map)
+
+                    // change state in HTML
+                    TODO !!!! 
                 });
                 drone_refR.on('child_removed', function(snapshot) {
                     markers.droneR.setMap(null)

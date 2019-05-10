@@ -141,8 +141,8 @@ TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 #########################################################################################
 
 # waypoint parameters
-flying_altitude   = 10
-takeoff_altitude  = 2
+flying_altitude   = 20
+takeoff_altitude  = 5
 landing_radius    = 2    # circle around landing positions
 hover_time 		  = 4
 

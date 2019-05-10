@@ -53,6 +53,21 @@ std::string post_JSON(const char* url, char* json){
     return response_string;
 }
 
+// method for cURL POST of JSON file
+void post_JSON_noanswer(const char* url, char* post_array){
+
+    // create a command
+    std::string cmd = "curl -X POST -H 'Content-Type: application/json' -d '";
+    cmd.append(post_array);
+    cmd.append("' '");
+    cmd.append(url);
+    cmd.append("' > /dev/null 2>&1 &");
+    //std::cout << "Produced command: " << cmd << std::endl;
+
+    // execute it shell like
+    system(cmd.c_str());
+}
+
 // POST the drone GPS coordinates and drone number
 std::string send_drone_state(Vector3f position, double time, char* payload, int drone_id, int nb_drone){
 
@@ -115,7 +130,7 @@ void send_GPS_firebase(double latitude, double longitude, double altitude, doubl
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL
-    response_string = post_JSON(FIREBASE_STORE_GPS_URL, json);
+    post_JSON_noanswer(FIREBASE_STORE_GPS_URL, json);
 }
 
 // POST home coordinates 
@@ -147,7 +162,7 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL
-    response_string = post_JSON(FIREBASE_STORE_HOME_URL, json);
+    post_JSON_noanswer(FIREBASE_STORE_HOME_URL, json);
 }
 
 // POST home coordinates 

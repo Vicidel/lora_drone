@@ -1,3 +1,13 @@
+#
+# File: app.py
+# Author: Victor Delafontaine
+# Date: May 2019
+# 
+# Swisscom server app to create the commands sent to the drone.
+# Also relays information to the GMaps API.
+#
+
+
 # misc dependencies
 import os
 import json

@@ -1,3 +1,12 @@
+<!--
+    File: gmaps_lora_drone.html
+    Author: Victor Delafontaine
+    Date: May 2019
+    
+    Google Maps API code to create the GUI for the drone.
+    Receives information from the Swisscom server app.
+-->
+
 <!DOCTYPE html>
 <meta charset="utf-8"/>
 <html>
@@ -132,7 +141,7 @@
             // set the states in GUI
             function change_states(stateR, stateG, stateB){
                 // change the string in HTML stuff
-                document.querySelector('.states').innerHTML = "<b>Drone states: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
+                document.querySelector('.states').innerHTML = "<b>Last received state: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
             }
 
             // init centering controls

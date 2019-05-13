@@ -22,7 +22,7 @@ This folder contains:
 Contains the files relative to the LoRa signal characterization.
 
 #### 02_MATLAB_simulations
-Contains the files relative to the MATALB simualtions based on the signal model obtained in the LoRa signal characterization.
+Contains the files relative to the MATALB simulations based on the signal model obtained in the LoRa signal characterization.
 
 #### 03_drone_implementation
 Contains the files relative to the drone implementation.

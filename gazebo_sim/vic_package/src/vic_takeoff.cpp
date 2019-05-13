@@ -23,7 +23,8 @@ Used to test functionality and kill switch.
 #include <eigen3/Eigen/Sparse> 
 using namespace Eigen; // To use matrix and vector representation
 
-// ROS main library and messages #include <ros/ros.h>
+// ROS main library and messages 
+#include <ros/ros.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/CommandBool.h>

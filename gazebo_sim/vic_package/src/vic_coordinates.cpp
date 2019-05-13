@@ -23,7 +23,8 @@ Used for testing where is positive/negative x/y.
 #include <eigen3/Eigen/Sparse> 
 using namespace Eigen; // To use matrix and vector representation
 
-// ROS main library and messages #include <ros/ros.h>
+// ROS main library and messages 
+#include <ros/ros.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/CommandBool.h>
@@ -65,7 +66,7 @@ int main(int argc, char **argv){
     //printf("In %s file, %s function\n", __FILE__, __FUNCTION__);
 
     // ROS initialization
-    ros::init(argc, argv, "vic_takeoff");
+    ros::init(argc, argv, "vic_coordinates");
     ros::NodeHandle nh;
 
     // ROS topic subscriptions ("get information")

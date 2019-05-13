@@ -21,7 +21,6 @@
                 border: 1px solid #000;
                 color: #000;
                 text-decoration: none;
-                font-size: 11pt;
             }
             #map {
                 height: 90%;
@@ -59,7 +58,7 @@
                 <button class="button" id="kill" type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
                 <button class="button" id="unkill" type="submit" onclick="kill_button_cb(this, 0)">Unkill</button>
             </div>
-            <div class="states" size='10px'></div>
+            <div class="states"></div>
         </form> 
     </head>
     <body>
@@ -143,7 +142,8 @@
                 init_legend(map);
 
                 // start Firebase and database listeners
-                init_firebase_drones(map, markers, paths);          // home, drones, paths
+                init_firebase_homes(map, markers);                  // homes
+                init_firebase_drones(map, markers, paths);          // drones, paths
                 init_firebase_waypoints(map, wp_lists);             // waypoints
                 init_firebase_estimations(map, markers, circles);   // estimations
             }
@@ -151,7 +151,7 @@
             // set the states in GUI
             function change_states(stateR, stateG, stateB){
                 // change the string in HTML stuff
-                document.querySelector('.states').innerHTML = "<b>Last received state: </b>Drone 1/R: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
+                document.querySelector('.states').innerHTML = "<b>Last received state: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
             }
 
             // init centering controls
@@ -239,54 +239,64 @@
                 // create legend object
                 var legend = document.getElementById('legend');
 
-                // add home
+                // add homeR
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/home.png width=20> Home and geofence'
+                div.innerHTML = '<img src=marker/home.png width=20> Home 1/R'
+                legend.appendChild(div);
+
+                // add homeG
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/home.png width=20> Home 2/G'
+                legend.appendChild(div);
+
+                // add homeB
+                var div = document.createElement('div');
+                div.innerHTML = '<img src=marker/home.png width=20> Home 3/B'
                 legend.appendChild(div);
 
                 // add droneR
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/droneR.png width=20> Drone 1'
+                div.innerHTML = '<img src=marker/droneR.png width=20> Drone 1/R'
                 legend.appendChild(div);
 
                 // add droneG
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/droneG.png width=20> Drone 2'
+                div.innerHTML = '<img src=marker/droneG.png width=20> Drone 2/G'
                 legend.appendChild(div);
 
                 // add droneB
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/droneB.png width=20> Drone 3'
+                div.innerHTML = '<img src=marker/droneB.png width=20> Drone 3/B'
                 legend.appendChild(div);
 
                 // add waypoint past
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/waypointR_old_circle.png width=20> Drone 1 past waypoint'
+                div.innerHTML = '<img src=marker/waypointR_old_circle.png width=20> Drone 1/R past waypoint'
                 legend.appendChild(div);
 
                 // add waypoint current
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/waypointR_current_circle.png width=20> Drone 1 current waypoint'
+                div.innerHTML = '<img src=marker/waypointR_current_circle.png width=20> Drone 1/R current waypoint'
                 legend.appendChild(div);
 
                 // add waypoint past
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/waypointG_old_circle.png width=20> Drone 2 past waypoint'
+                div.innerHTML = '<img src=marker/waypointG_old_circle.png width=20> Drone 2/G past waypoint'
                 legend.appendChild(div);
 
                 // add waypoint current
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/waypointG_current_circle.png width=20> Drone 2 current waypoint'
+                div.innerHTML = '<img src=marker/waypointG_current_circle.png width=20> Drone 2/G current waypoint'
                 legend.appendChild(div);
 
                 // add waypoint past
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/waypointB_old_circle.png width=20> Drone 3 past waypoint'
+                div.innerHTML = '<img src=marker/waypointB_old_circle.png width=20> Drone 3/B past waypoint'
                 legend.appendChild(div);
 
                 // add waypoint current
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/waypointB_current_circle.png width=20> Drone 3 current waypoint'
+                div.innerHTML = '<img src=marker/waypointB_current_circle.png width=20> Drone 3/B current waypoint'
                 legend.appendChild(div);
 
                 // add network
@@ -308,14 +318,97 @@
                 map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
             }
 
-            // init Firebase for home, drones and paths
+            // init Firebase for home
+            function init_firebase_homes(map, markers) {
+
+                // reference in Firebase
+                var home_refR = firebase.child('homeR');
+                var home_refG = firebase.child('homeG');
+                var home_refB = firebase.child('homeB');
+
+                // for homeR
+                home_refR.on('child_added', function(snapshot){
+
+                    // get coordinates
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    markers.homeR.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.homeR.setMap(map);
+
+                    // move geofence circle
+                    //markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
+                    //markers.home_circle.setRadius(geofence_radius);
+                    //markers.home_circle.setMap(map);
+
+                    // set start as home
+                    lat_start = lat;
+                    lng_start = lng;
+                });
+                home_refR.on('child_removed', function(snapshot) {
+                    markers.homeR.setMap(null)
+                    //markers.home_circle.setMap(null)
+                });
+
+                // for homeG
+                home_refG.on('child_added', function(snapshot){
+
+                    // get coordinates
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    markers.homeG.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.homeG.setMap(map);
+
+                    // move geofence circle
+                    //markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
+                    //markers.home_circle.setRadius(geofence_radius);
+                    //markers.home_circle.setMap(map);
+
+                    // set start as home
+                    lat_start = lat;
+                    lng_start = lng;
+                });
+                home_refG.on('child_removed', function(snapshot) {
+                    markers.homeG.setMap(null)
+                    //markers.home_circle.setMap(null)
+                });
+
+                // for homeB
+                home_refB.on('child_added', function(snapshot){
+
+                    // get coordinates
+                    var lat = snapshot.val().lat;
+                    var lng = snapshot.val().lng;
+
+                    // move marker
+                    markers.homeB.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.homeB.setMap(map);
+
+                    // move geofence circle
+                    //markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
+                    //markers.home_circle.setRadius(geofence_radius);
+                    //markers.home_circle.setMap(map);
+
+                    // set start as home
+                    lat_start = lat;
+                    lng_start = lng;
+                });
+                home_refB.on('child_removed', function(snapshot) {
+                    markers.homeB.setMap(null)
+                    //markers.home_circle.setMap(null)
+                });
+            }
+
+            // init Firebase for drones and paths
             function init_firebase_drones(map, markers, paths) {
 
                 // reference in Firebase
                 var drone_refR = firebase.child('droneR');
                 var drone_refG = firebase.child('droneG');
                 var drone_refB = firebase.child('droneB');
-                var home_ref   = firebase.child('home');
 
                 // for droneR
                 drone_refR.on('child_added', function(snapshot) {
@@ -393,31 +486,6 @@
                     markers.droneB.setMap(null)
                     paths.lineB.setMap(null)
                     paths.listB = []
-                });
-
-                // for home
-                home_ref.on('child_added', function(snapshot){
-
-                    // get coordinates
-                    var lat = snapshot.val().lat;
-                    var lng = snapshot.val().lng;
-
-                    // move marker
-                    markers.home.setPosition(new google.maps.LatLng(lat, lng));
-                    markers.home.setMap(map);
-
-                    // move geofence circle
-                    markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
-                    markers.home_circle.setRadius(geofence_radius);
-                    markers.home_circle.setMap(map);
-
-                    // set start as home
-                    lat_start = lat;
-                    lng_start = lng;
-                });
-                home_ref.on('child_removed', function(snapshot) {
-                    markers.home.setMap(null)
-                    markers.home_circle.setMap(null)
                 });
             }
 
@@ -675,24 +743,34 @@
                 var droneR_marker = new google.maps.Marker({
                     map: map,
                     icon: icons.droneR,
-                    title: 'Drone'
+                    title: 'Drone 1/R'
                 });
                 var droneG_marker = new google.maps.Marker({
                     map: map,
                     icon: icons.droneG,
-                    title: 'Drone'
+                    title: 'Drone 2/G'
                 });
                 var droneB_marker = new google.maps.Marker({
                     map: map,
                     icon: icons.droneB,
-                    title: 'Drone'
+                    title: 'Drone 3/B'
                 });
 
                 // for home
-                var home_marker = new google.maps.Marker({
+                var home_markerR = new google.maps.Marker({
                     map: map,
                     icon: icons.home,
-                    title: 'Home'
+                    title: 'Home 1/R'
+                });
+                var home_markerG = new google.maps.Marker({
+                    map: map,
+                    icon: icons.home,
+                    title: 'Home 2/G'
+                });
+                var home_markerB = new google.maps.Marker({
+                    map: map,
+                    icon: icons.home,
+                    title: 'Home 3/B'
                 });
                 var home_circle = new google.maps.Circle({
                     strokeColor: '#000000',
@@ -720,7 +798,7 @@
                 });
 
                 // return them 
-                return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, home: home_marker, home_circle: home_circle, network: network_marker, est1: est_marker1, est2: est_marker2};
+                return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, home_circle: home_circle, network: network_marker, est1: est_marker1, est2: est_marker2};
             }
 
             // creates the circles

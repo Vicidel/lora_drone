@@ -126,7 +126,10 @@ class home_datapoint:
 	delta_x     = 0				# home is at zero
 	delta_y     = 0				# home is at zero		
 	delta_z     = 0				# home is at zero
-home = home_datapoint()
+homeR = home_datapoint()
+homeG = home_datapoint()
+homeB = home_datapoint()
+home  = home_datapoint() 		# needed for conversion, for now home 2/G (TODO: change that)
 
 
 
@@ -226,11 +229,11 @@ def store_current_coord():
 	print(j)
 
 	# parse received data
-	lat = float(j['latitude'])
-	lng = float(j['longitude'])
-	alt = float(j['altitude'])
-	drone_id = int(j['drone_id'])
-	state = str(j['state'])
+	lat         = float(j['latitude'])
+	lng         = float(j['longitude'])
+	alt         = float(j['altitude'])
+	drone_id    = int(j['drone_id'])
+	state       = str(j['state'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
 	# push on Firebase
@@ -277,27 +280,55 @@ def store_current_home():
 	print(j)
 
 	# parse received data
-	r_lat     = float(j['latitude'])
-	r_lng     = float(j['longitude'])
-	r_alt     = float(j['altitude'])
-	r_dx      = float(j['delta_x'])
-	r_dy      = float(j['delta_y'])
-	r_dz      = float(j['delta_z'])
+	r_lat       = float(j['latitude'])
+	r_lng       = float(j['longitude'])
+	r_alt       = float(j['altitude'])
+	r_dx        = float(j['delta_x'])
+	r_dy        = float(j['delta_y'])
+	r_dz        = float(j['delta_z'])
+	r_drone_id  = int(j['drone_id'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
-	# add in memory
-	global home
-	home.latitude = r_lat
-	home.longitude = r_lng
-	home.altitude = r_alt
-	home.delta_x = r_dx
-	home.delta_y = r_dy
-	home.delta_z = r_dz
+	# add in server memory
+	global homeR, homeG, homeB, home
+	if r_drone_id==1:
+		homeR.latitude  = r_lat
+		homeR.longitude = r_lng
+		homeR.altitude  = r_alt
+		homeR.delta_x   = r_dx
+		homeR.delta_y   = r_dy
+		homeR.delta_z   = r_dz
+		homeR.drone_id  = r_drone_id
+	if r_drone_id==2:
+		homeG.latitude  = r_lat
+		homeG.longitude = r_lng
+		homeG.altitude  = r_alt
+		homeG.delta_x   = r_dx
+		homeG.delta_y   = r_dy
+		homeG.delta_z   = r_dz
+		homeG.drone_id  = r_drone_id
+	if r_drone_id==3:
+		homeB.latitude  = r_lat
+		homeB.longitude = r_lng
+		homeB.altitude  = r_alt
+		homeB.delta_x   = r_dx
+		homeB.delta_y   = r_dy
+		homeB.delta_z   = r_dz
+		homeB.drone_id  = r_drone_id
+
+	# home used for conversion, for now home 2/G
+	home = home_G  	# TODO: change that
 
 	# push on Firebase
 	print("Pushing home position on Firebase: lat={}, lng={}, alt={}".format(r_lat, r_lng, r_alt))
-	ref_drone = firebase_db.reference('home')
-	ref_drone.push({
+	ref_home = None
+	if r_drone_id==1:
+		ref_home = firebase_db.reference('homeR')
+	if r_drone_id==2:
+		ref_home = firebase_db.reference('homeG')
+	if r_drone_id==3:
+		ref_home = firebase_db.reference('homeB')
+	ref_home.push({
 		'lat': r_lat,
 		'lng': r_lng,
 		'altitude': r_alt,
@@ -306,10 +337,11 @@ def store_current_home():
 		'delta_z': r_dz,
 	    'sender': 'app.py: store_home',
 	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
+	    'drone_id': r_drone_id
 	})
 
 	# return string
-	return 'Data added to Firebase'
+	return 'Data added to Firebase and Swisscom server'
 
 
 # empty Firebase when starting new run

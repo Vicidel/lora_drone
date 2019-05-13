@@ -1,5 +1,5 @@
 cd catkin_ws
-catkin build vic_package
+catkin build vic_package -j2
 source devel/setup.bash
 
 echo " "

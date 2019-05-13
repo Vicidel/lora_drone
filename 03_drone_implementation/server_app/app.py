@@ -130,12 +130,6 @@ homeR = home_datapoint()
 homeG = home_datapoint()
 homeB = home_datapoint()
 
-# to store the 0
-class zero_datapoint:
-	latitude    = 47.397751 	# Zurich
-	longitude   = 8.545607 		# Zurich
-	altitude    = 500 			# Zurich
-zero = zero_datapoint()
 
 
 
@@ -306,6 +300,7 @@ def store_current_home():
 	r_drone_id  = int(j['drone_id'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
+
 	# add in server memory
 	global homeR, homeG, homeB
 	if r_drone_id==1:
@@ -332,23 +327,6 @@ def store_current_home():
 		homeB.delta_y   = r_dy
 		homeB.delta_z   = r_dz
 		homeB.drone_id  = r_drone_id
-
-	# zero used for conversion
-	global zero
-	home_latlng = geopy.Point(homeG.latitude, homeG.longitude)
-	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(homeG.delta_x), -float(homeG.delta_y))
-	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
-	zero.latitude = zero_latlng.latitude
-	zero.longitude = zero_latlng.longitude
-	
-	# print for debug
-	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-	#print("Home latlng is {} {}".format(homeG.latitude, homeG.longitude))
-	#print("Home delta is {} {}".format(homeG.delta_x, homeG.delta_y))
-	#print("Zero latlng is {} {}".format(zero.latitude, zero.longitude))
-	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
 
 	# push on Firebase
@@ -906,14 +884,26 @@ def param_check_kill():
 # conversion between latlng and xy
 def conversion_latlng_xy(lat, lng):
 
+	# get one home, first G. then R, then B, then new default is nothing is defined...
+	home = None
+	if homeG is not None:
+		home = homeG
+	elif homeR is not None:
+		home = homeR
+	elif homeB is not None:
+		home = homeB
+	else:
+		print("ERROR: no home was defined, using default values")
+		home = home_datapoint()
+
 	# math stuff for bearing 
-	delta_lon = zero.longitude - lng
-	bearing_y = math.sin(delta_lon) * math.cos(zero.latitude)
-	bearing_x = math.cos(lat) * math.sin(zero.latitude) - math.sin(lat) * math.cos(zero.latitude) * math.cos(delta_lon)
+	delta_lon = home.longitude - lng
+	bearing_y = math.sin(delta_lon) * math.cos(home.latitude)
+	bearing_x = math.cos(lat) * math.sin(home.latitude) - math.sin(lat) * math.cos(home.latitude) * math.cos(delta_lon)
 	bearing = math.atan2(bearing_y, bearing_x)
 
 	# distance through geopy
-	dist = geopy.distance.vincenty((lat, lng), (zero.latitude, zero.longitude)).m
+	dist = geopy.distance.vincenty((lat, lng), (home.latitude, home.longitude)).m
 
 	# debug print
 	#print("*******************************************************************")
@@ -925,14 +915,30 @@ def conversion_latlng_xy(lat, lng):
 	#print("*******************************************************************")
 
 	# return result
-	return math.sin(bearing)*dist, -math.cos(bearing)*dist
+	return math.sin(bearing)*dist + home.delta_x, -math.cos(bearing)*dist + home.delta_y
 
 
 # conversion between xy and latlng
 def conversion_xy_latlng(x, y):
 	
+	# get one home, first G. then R, then B, then new default is nothing is defined...
+	home = None
+	if homeG is not None:
+		home = homeG
+	elif homeR is not None:
+		home = homeR
+	elif homeB is not None:
+		home = homeB
+	else:
+		print("ERROR: no home was defined, using default values")
+		home = home_datapoint()
+
+	# home to zero
+	home_latlng = geopy.Point(home.latitude, home.longitude)
+	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(home.delta_x), -float(home.delta_y))
+	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
+
 	# zero to drone
-	zero_latlng = geopy.Point(zero.latitude, zero.longitude)
 	distance, bearing = get_dist_bearing(x, y)
 	latlng = VincentyDistance(meters=distance).destination(zero_latlng, bearing)
 

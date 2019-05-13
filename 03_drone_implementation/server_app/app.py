@@ -713,7 +713,7 @@ def lora_circle_rad():
 #####################################  DRONE STATUS  ####################################
 #########################################################################################
 
-# to set the drone ready manually for testing
+# to set the drone ready manually for testing with three drones, but only one in Gazebo
 @app.route('/param/drone_ready', methods=['POST'])
 def param_drone_ready():
 	print("!!!!!!!!! Drone status for next step received from POST !!!!!!!!!")
@@ -753,26 +753,46 @@ def param_drone_start():
 		return 'Can only receive JSON file'
 
 	# display in log the param received
-	print("Drone start received: d1={}, d2={}, d3={} (kill={})".format(j['bool_drone1_start'], j['bool_drone3_start'], j['bool_drone3_start'], j['kill']))
+	print("Drone start received: d1={}, d2={}, d3={}".format(j['bool_drone1_start'], j['bool_drone2_start'], j['bool_drone3_start']))
 
 	# set drone status
-	global bool_kill_switch, bool_drone1_start, bool_drone2_start, bool_drone3_start
-	bool_kill_switch  = j['kill']
+	global bool_drone1_start, bool_drone2_start, bool_drone3_start
 	bool_drone1_start = j['bool_drone1_start']
 	bool_drone2_start = j['bool_drone2_start']
 	bool_drone3_start = j['bool_drone3_start']
 
 	# return string
-	if bool_kill_switch:
-		return 'Set to kill the drones when possible!'
-	else:
-		return 'Drones starting modes set'
+	return 'Drones starting modes set'
 
 
-# GET method called from the drone to know if it should start
-@app.route('/param/drone_ready_to_takeoff', methods=['POST'])
+# to kill the drone from the server 
+@app.route('/param/drone_kill', methods=['POST'])
+def param_drone_kill():
+	print("!!!!!!!!! Drone kill received from POST !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# display in log the param received
+	print("Drone kill received: {}".format(j['kill']))
+
+	# set drone status
+	global bool_kill_switch
+	bool_kill_switch  = j['kill']
+
+	# return string
+	return 'Drones kill switch set'
+
+
+# called from the drone to know if it should start
+@app.route('/param/check_offboard', methods=['POST'])
 def param_drone_for_takeoff():
-	print("!!!!!!!!! Drone is checking takeoff and kill switch !!!!!!!!!")
+	print("!!!!!!!!! Drone is checking takeoff !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -784,11 +804,7 @@ def param_drone_for_takeoff():
 
 	# display info 
 	drone_id = int(j['drone_id'])
-	print("Asking for drone {}, params are d1={}, d2={}, d3={}, kill is {}".format(drone_id, bool_drone1_start, bool_drone2_start, bool_drone3_start, bool_kill_switch))
-
-	# kill switch is active, kill drone
-	if bool_kill_switch:
-		return 'Kill drone now'
+	print("Asking for drone {}, params are d1={}, d2={}, d3={}".format(drone_id, bool_drone1_start, bool_drone2_start, bool_drone3_start))
 
 	# for each drone, return Y(es) or (N)o
 	if drone_id == 1:
@@ -810,6 +826,18 @@ def param_drone_for_takeoff():
 		print('ERROR: drone number unknown ({})'.format(j['drone_id']))
 		return 'E: drone number unknown ({})'.format(j['drone_id'])
 	
+
+# called from the drone for kill switch
+@app.route('/param/check_kill', methods=['POST'])
+def param_check_kill():
+	print("!!!!!!!!! Drone is checking kill !!!!!!!!!")
+
+	# return directly kill switch status
+	if bool_kill_switch:
+		return 'Kill'
+	else:
+		return 'OK'
+
 
 
 #########################################################################################

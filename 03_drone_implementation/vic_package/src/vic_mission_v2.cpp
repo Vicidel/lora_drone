@@ -156,8 +156,8 @@ int main(int argc, char **argv){
 
     // time parameters
     float time_firebase_period        = 0.5f;     // period of sending messages to Firebase
-    float time_offboard_arm_period    = 4.0f;     // period to check offboard and arming
-    float time_server_check_period    = 4.0f;     // period for kill switch and server offboard
+    float time_offboard_arm_period    = 4.0f;     // period to check RC offboard and arming
+    float time_kill_check_period      = 1.0f;     // period for server kill switch
     float time_data_collection_period = 1.0f;     // period for data collection when hovering
 
 
@@ -166,7 +166,6 @@ int main(int argc, char **argv){
     std::string answer;         // string returned by the server when sending position
     int state = 0;              // FSM state
     float hover_time;           // hovering time at measure positions
-    int server_answer;          // can be 0:wait, 1:fly or 666:kill
     int drone_id = 2;           // can be 1, 2 or 3
     int nb_drone = 1;           // can be 1 or 3
     bool bool_fly_straight = true;      // fly in direction of waypoint or just x+
@@ -174,39 +173,40 @@ int main(int argc, char **argv){
     // state booleans
     bool bool_wait_for_offboard = true;     // waiting for offboard mode activation from RC or server app
     bool bool_stop_all = false;             // stop all when simulation is ended or kill switch
-
+    bool bool_kill_switch = false;          // kill switch
+    
 
     // while ROS is online
     ROS_INFO("Starting the ROS loop");
     while(ros::ok()){
 
         // check offboard mode and kill switch from GMaps API through server
-        if(ros::Time::now() - time_last_server_check > ros::Duration(time_server_check_period)) {
-            server_answer = check_server(drone_id);    // 0:nothing, 1:go into offboard, 666:kill
-            //ROS_INFO("Answer from server check: %d", server_answer);
+        if(ros::Time::now() - time_last_server_check > ros::Duration(time_kill_check_period)) {
+            // get value from server
+            bool_kill_switch = check_kill_server();
             
-            // kill switch value: 666 
-            if(server_answer==666) {
-                // disarm drone and stop program
-                arm_cmd.request.value = false;
-                if(arming_client.call(arm_cmd) && arm_cmd.response.success){
-                    bool_stop_all = true;
-                    ROS_INFO("Server kill switch activated!");
-                    break;
-                }
-            }
-
             // store current time
             time_last_server_check = ros::Time::now();
         }
 
-        // stop boolean, when program ended or kill switch
-        if(bool_stop_all){
-            // continuously try to disarm drone
+        // kill switch
+        if(bool_kill_switch){
+            // disarm drone and stop program
             arm_cmd.request.value = false;
-            arming_client.call(arm_cmd);
-            ROS_INFO("Stop condition reached");
-            break;
+            if(arming_client.call(arm_cmd) && arm_cmd.response.success){
+                ROS_INFO("Server kill switch activated!");
+                break;
+            }
+        }
+
+        // stop boolean, when program ended
+        if(bool_stop_all){
+            // disarm drone and stop program
+            arm_cmd.request.value = false;
+            if(arming_client.call(arm_cmd) && arm_cmd.response.success){
+                ROS_INFO("Stop condition reached");
+                break;
+            }
         }
 
         // display info
@@ -228,7 +228,7 @@ int main(int argc, char **argv){
             if((ros::Time::now() - time_last_request) > ros::Duration(time_offboard_arm_period) ){
 
                 // check from server
-                if(server_answer==1){
+                if(check_offboard_server(drone_id)){
                     if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
                         ROS_INFO("Offboard enabled from server");
                         send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_offboard", drone_id, nb_drone);

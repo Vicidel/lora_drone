@@ -212,7 +212,7 @@ void empty_firebase(void){
 }
 
 // check if start signal sent from server
-int check_server(int drone_id){
+int check_offboard_server(int drone_id){
 
     // set response string
     std::string response_string;
@@ -233,8 +233,31 @@ int check_server(int drone_id){
     strcpy(answer_char, response_string.c_str());
 
     // return 
-    if(answer_char[0]=='K') return 666;          // kill switch
-    else if(answer_char[0]=='Y') return 1;       // drone can go to offboard
+    if(answer_char[0]=='Y') return 1;            // drone can go to offboard
     else if(answer_char[0]=='N') return 0;       // drone stays idle
     else return 999;                             // unknown
+}
+
+// chec if kill switch sent from server
+int check_kill_server(void){
+
+    // set response string
+    std::string response_string;
+
+    // create JSON to send
+    cJSON *root = NULL;
+    char *json = NULL;
+    root = cJSON_CreateObject();
+
+    // fils json
+    json = cJSON_PrintUnformatted(root);
+
+    // POST JSON on URL
+    response_string = post_JSON(DRONE_KILL_URL, json);
+    char answer_char[response_string.size()+1];
+    strcpy(answer_char, response_string.c_str());
+
+    // return 
+    if(answer_char[0]=='K') return 1;       // kill drone
+    else return 0;                          // ok
 }

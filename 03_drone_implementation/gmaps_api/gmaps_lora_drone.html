@@ -40,14 +40,14 @@
         </style>
         <form action="#">
             <div>
-                <b>Drone to start for takeoff:</b>
-                droneR: <input type="checkbox" id="drone1box" onclick="checkbox_drone_cb(this,'d1')" autocomplete="off"/>
-                droneG: <input type="checkbox" id="drone2box" onclick="checkbox_drone_cb(this,'d2')" autocomplete="off"/>
-                droneG: <input type="checkbox" id="drone3box" onclick="checkbox_drone_cb(this,'d3')" autocomplete="off"/>
-                <button type="submit" onclick="takeoff_button_cb(this)">Takeoff</button>
+                <b>Takeoff buttons:</b>
+                <button type="submit" onclick="takeoff_button_cb(this, 'R')">droneR</button>
+                <button type="submit" onclick="takeoff_button_cb(this, 'G')">droneG</button>
+                <button type="submit" onclick="takeoff_button_cb(this, 'B')">droneB</button>
+                <button type="submit" onclick="takeoff_button_cb(this, 'X')">none</button>
             </div>
             <div>
-                <b>Kill switch:</b>
+                <b>Common kill switch:</b>
                 <button type="submit" onclick="kill_button_cb(this)">Kill</button>
                 <button type="submit" onclick="unkill_button_cb(this)">Unkill</button>
             </div>
@@ -79,11 +79,6 @@
             var lat_start = lat_zurich;
             var lng_start = lng_zurich;
 
-            // for drone start from server
-            var drone1_start = 0;
-            var drone2_start = 0;
-            var drone3_start = 0;
-
             // drones states
             var stateR = "UNKNOWN";
             var stateG = "UNKNOWN";
@@ -91,7 +86,7 @@
             change_states(stateR, stateG, stateB);
 
             // geofence
-            var geofence_radius = 400;
+            var geofence_radius = 0;
 
             // creates a map object
             function init_map() {
@@ -568,27 +563,13 @@
                 });
             }   
 
-            // callback for checkboxes
-            function checkbox_drone_cb(box, drone_id) {
-                if(box.checked) {
-                    if(drone_id=='d1') drone1_start = 1;
-                    if(drone_id=='d2') drone2_start = 1;
-                    if(drone_id=='d3') drone3_start = 1;
-                }
-                else {
-                    if(drone_id=='d1') drone1_start = 0;
-                    if(drone_id=='d2') drone2_start = 0;
-                    if(drone_id=='d3') drone3_start = 0;
-                }
-            }
-
             // callback for killswitch button
             function kill_button_cb(){
                 console.log("Killing all drones now")
 
                 // POST on server
-                const url='http://victor.scapp.io/param/drone_start';
-                const data={'kill': 1, 'bool_drone1_start': 666, 'bool_drone2_start': 666, 'bool_drone3_start': 666}
+                const url='http://victor.scapp.io/param/drone_kill';
+                const data={'kill': 1}
                 axios({method: 'POST', url: url, data: data})
             }
 
@@ -597,18 +578,24 @@
                 console.log("Unkilling all drones now!")
 
                 // POST on server
-                const url='http://victor.scapp.io/param/drone_start';
-                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
+                const url='http://victor.scapp.io/param/drone_kill';
+                const data={'kill': 0}
                 axios({method: 'POST', url: url, data: data})
             }
 
             // callback for takeoff button
-            function takeoff_button_cb() {
-                console.log("Setting drone start state to desired values")
+            function takeoff_button_cb(button, drone_id) {
+                console.log("Starting drone: "+drone_id)
+
+                // create data according to which button was pressed
+                var data;
+                if(drone_id=='R') data={'bool_drone1_start': 1, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
+                if(drone_id=='G') data={'bool_drone1_start': 0, 'bool_drone2_start': 1, 'bool_drone3_start': 0};
+                if(drone_id=='B') data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 1};
+                if(drone_id=='X') data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
 
                 // POST on server
                 const url='http://victor.scapp.io/param/drone_start';
-                const data={'kill': 0, 'bool_drone1_start': drone1_start, 'bool_drone2_start': drone2_start, 'bool_drone3_start': drone3_start}
                 axios({method: 'POST', url: url, data: data})
             }
 

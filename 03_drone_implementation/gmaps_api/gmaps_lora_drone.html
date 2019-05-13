@@ -15,6 +15,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
         <style>
+            .button {
+                border-radius: 5px;
+                padding: 5px;
+                border: 1px solid #000;
+                color: #000;
+                text-decoration: none;
+                font-size: 11pt;
+            }
             #map {
                 height: 90%;
                 width: 100%;
@@ -41,17 +49,17 @@
         <form action="#">
             <div>
                 <b>Takeoff buttons:</b>
-                <button type="submit" onclick="takeoff_button_cb(this, 'R')">droneR</button>
-                <button type="submit" onclick="takeoff_button_cb(this, 'G')">droneG</button>
-                <button type="submit" onclick="takeoff_button_cb(this, 'B')">droneB</button>
-                <button type="submit" onclick="takeoff_button_cb(this, 'X')">none</button>
+                <button class="button" id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
+                <button class="button" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
+                <button class="button" id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
+                <button class="button" id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None (click here when drone took off)</button>
             </div>
             <div>
                 <b>Common kill switch:</b>
-                <button type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
-                <button type="submit" onclick="kill_button_cb(this, 0)">Unkill</button>
+                <button class="button" id="kill" type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
+                <button class="button" id="unkill" type="submit" onclick="kill_button_cb(this, 0)">Unkill</button>
             </div>
-            <div class="states"></div>
+            <div class="states" size='10px'></div>
         </form> 
     </head>
     <body>
@@ -87,6 +95,10 @@
 
             // geofence
             var geofence_radius = 0;
+
+            // initial button colors: call callbacks as if clicked
+            takeoff_button_cb(this, 'X');
+            kill_button_cb(this, 0);
 
             // creates a map object
             function init_map() {
@@ -139,7 +151,7 @@
             // set the states in GUI
             function change_states(stateR, stateG, stateB){
                 // change the string in HTML stuff
-                document.querySelector('.states').innerHTML = "<b>Last received state: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
+                document.querySelector('.states').innerHTML = "<b>Last received state: </b>Drone 1/R: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
             }
 
             // init centering controls
@@ -564,11 +576,17 @@
             }   
 
             // callback for killswitch button
-            function kill_button_cb(button, kill){
-                if(kill==1)
-                    console.log("Killing all drones now");
-                else
-                    console.log("Unkilling all drones now")
+            function kill_button_cb(obj, kill){
+                if(kill==1){
+                    //console.log("Killing all drones now");
+                    document.getElementById('unkill').style.backgroundColor='#fff';
+                    document.getElementById('kill').style.backgroundColor='#aaa';
+                }
+                else{
+                    //console.log("Unkilling all drones now");
+                    document.getElementById('unkill').style.backgroundColor='#aaa';
+                    document.getElementById('kill').style.backgroundColor='#fff';
+                }
 
                 // POST on server
                 const url='http://victor.scapp.io/param/drone_kill';
@@ -578,14 +596,38 @@
 
             // callback for takeoff button
             function takeoff_button_cb(button, drone_id) {
-                console.log("Starting drone: "+drone_id)
+                //console.log("Starting drone: "+drone_id)
 
                 // create data according to which button was pressed
                 var data;
-                if(drone_id=='R') data={'bool_drone1_start': 1, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
-                if(drone_id=='G') data={'bool_drone1_start': 0, 'bool_drone2_start': 1, 'bool_drone3_start': 0};
-                if(drone_id=='B') data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 1};
-                if(drone_id=='X') data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
+                if(drone_id=='R') {
+                    data={'bool_drone1_start': 1, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
+                    document.getElementById('R').style.backgroundColor='#aaa';
+                    document.getElementById('G').style.backgroundColor='#fff';
+                    document.getElementById('B').style.backgroundColor='#fff';
+                    document.getElementById('X').style.backgroundColor='#fff';
+                }
+                if(drone_id=='G') {
+                    data={'bool_drone1_start': 0, 'bool_drone2_start': 1, 'bool_drone3_start': 0};
+                    document.getElementById('R').style.backgroundColor='#fff';
+                    document.getElementById('G').style.backgroundColor='#aaa';
+                    document.getElementById('B').style.backgroundColor='#fff';
+                    document.getElementById('X').style.backgroundColor='#fff';
+                }
+                if(drone_id=='B') {
+                    data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 1};
+                    document.getElementById('R').style.backgroundColor='#fff';
+                    document.getElementById('G').style.backgroundColor='#fff';
+                    document.getElementById('B').style.backgroundColor='#aaa';
+                    document.getElementById('X').style.backgroundColor='#fff';
+                }
+                if(drone_id=='X') {
+                    data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
+                    document.getElementById('R').style.backgroundColor='#fff';
+                    document.getElementById('G').style.backgroundColor='#fff';
+                    document.getElementById('B').style.backgroundColor='#fff';
+                    document.getElementById('X').style.backgroundColor='#aaa';
+                }
 
                 // POST on server
                 const url='http://victor.scapp.io/param/drone_start';

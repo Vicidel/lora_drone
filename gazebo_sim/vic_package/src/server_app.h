@@ -1,3 +1,11 @@
+/*
+File: server_app.h
+Author: Victor Delafontaine
+Date: May 2019
+
+Define the URL on which to post different messages as well as the different functions.
+*/
+
 #ifndef TCP_CLIENT_H_
 #define TCP_CLIENT_H_
 

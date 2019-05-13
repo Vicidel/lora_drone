@@ -1,8 +1,16 @@
-/**
- * @file offb_node.cpp
- * @brief Offboard control example node, written with MAVROS version 0.19.x, PX4 Pro Flight
- * Stack and tested in Gazebo SITL
- */
+/*
+File: vic_coordinates.cpp
+Author: Victor Delafontaine
+Date: May 2019
+
+The drone takes off and goes into the different cardinal coordinates. 
+Used for testing where is positive/negative x/y.
+*/
+
+
+/**************************************************************************
+******************************   INCLUDE   ********************************
+***************************************************************************/
 
 // standard libraries
 #include <stdio.h>
@@ -15,8 +23,7 @@
 #include <eigen3/Eigen/Sparse> 
 using namespace Eigen; // To use matrix and vector representation
 
-// ROS libraries
-#include <ros/ros.h>
+// ROS main library and messages #include <ros/ros.h>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/CommandBool.h>
@@ -25,19 +32,35 @@ using namespace Eigen; // To use matrix and vector representation
 #include <mavros_msgs/HilGPS.h>
 
 
+
+/**************************************************************************
+**************************   GLOBAL VARIABLES   ***************************
+***************************************************************************/
+
 // define the received MAVROS messages
 mavros_msgs::State current_state;               // drone state (for OFFBOARD mode)
 geometry_msgs::PoseStamped  est_local_pos;      // local position (x, y, z)
 
 
-// functions definitions
+
+/**************************************************************************
+************************   FUNCTION DECLARATION   *************************
+***************************************************************************/
+
+// ROS callbacks
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg);
+
+// conversion functions
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg);
 
 
-// main
+
+/**************************************************************************
+***************************   MAIN FUNCTION   *****************************
+***************************************************************************/
+
 int main(int argc, char **argv){    
     //printf("In %s file, %s function\n", __FILE__, __FUNCTION__);
 
@@ -45,21 +68,28 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "vic_takeoff");
     ros::NodeHandle nh;
 
-    // subscribes to topics 
+    // ROS topic subscriptions ("get information")
     ros::Subscriber state_sub          = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
     ros::Subscriber est_local_pos_sub  = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
-    ros::Publisher local_pos_pub       = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
+    
+    // ROS services ("do something")
     ros::ServiceClient arming_client   = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode> ("mavros/set_mode");
 
-    //the setpoint publishing rate MUST be faster than 2Hz
+    // ROS publishers ("post information")
+    ros::Publisher local_pos_pub       = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
+
+    // ROS publishing rate (MUST be faster than 2Hz)
     ros::Rate rate(20.0);
 
-    // wait for FCU connection
+
+    // waiting for FCU connection with drone
+    ROS_INFO("Waiting for FCU connection");
     while(ros::ok() && !current_state.connected){
         ros::spinOnce();
         rate.sleep();
     }
+    ROS_INFO("Connection done!");
 
 
     // create position vectors
@@ -68,21 +98,21 @@ int main(int argc, char **argv){
     Vector3f pos_takeoff       (0.0f,  0.0f, altitude_takeoff);
     Vector3f pos_drone         (0.0f,  0.0f, 0.0f);
     Vector3f pos_home          (0.0f,  0.0f, 0.0f);
-    Vector3f pos_current_goal, pos_x_plus, pos_x_minus, pos_y_plus, pos_y_minus;
-
-    // fills them
-    pos_current_goal = pos_takeoff;
+    Vector3f pos_current_goal = pos_takeoff;
+    Vector3f pos_x_plus, pos_x_minus, pos_y_plus, pos_y_minus;
 
 
-    //send a few setpoints before starting
+    // send a few setpoints before starting
+    ROS_INFO("Sending a few waypoints before start");
     for(int i = 100; ros::ok() && i > 0; --i){
         local_pos_pub.publish(conversion_to_msg(pos_current_goal));
         ros::spinOnce();
+        pos_drone = conversion_to_vect(est_local_pos);
         rate.sleep();
     }
 
 
-    // to arm drone
+    // variable for ROS services to arm drone
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
 
@@ -103,6 +133,7 @@ int main(int argc, char **argv){
 
     
     // while ROS is online
+    ROS_INFO("Starting the ROS loop");
     while(ros::ok()){
 
         // stop bool
@@ -335,6 +366,10 @@ int main(int argc, char **argv){
 }
 
 
+
+/**************************************************************************
+**************************   OTHER FUNCTIONS   ****************************
+***************************************************************************/
 
 // define the callbacks for the received ROS messages
 void state_cb(const mavros_msgs::State::ConstPtr& msg){

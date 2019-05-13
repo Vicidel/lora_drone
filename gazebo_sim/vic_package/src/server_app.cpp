@@ -1,5 +1,20 @@
+/*
+File: server_app.cpp
+Author: Victor Delafontaine
+Date: May 2019
+
+Creates function for communication with the Swisscom server. 
+Sends the current position as JSON file through HTTP POST on the server.
+The commands to follow are given in the return string.
+*/
+
 #include "server_app.h"
 
+
+
+/**************************************************************************
+**************************   POST FUNCTIONS   *****************************
+***************************************************************************/
 
 // callback for POST
 size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
@@ -67,6 +82,11 @@ void post_JSON_noanswer(const char* url, char* post_array){
     // execute it shell like
     system(cmd.c_str());
 }
+
+
+/**************************************************************************
+***********************   SEND INFO FUNCTIONS   ***************************
+***************************************************************************/
 
 // POST the drone GPS coordinates and drone number
 std::string send_drone_state(Vector3f position, double time, char* payload, int drone_id, int nb_drone){
@@ -166,6 +186,12 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
     // POST JSON on URL
     post_JSON_noanswer(FIREBASE_STORE_HOME_URL, json);
 }
+
+
+
+/**************************************************************************
+***********************   CHECK THINGS FUNCTIONS   ************************
+***************************************************************************/
 
 // POST home coordinates 
 void empty_firebase(void){

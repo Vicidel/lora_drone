@@ -79,7 +79,7 @@
             var stateR = "UNKNOWN";
             var stateG = "UNKNOWN";
             var stateB = "UNKNOWN";
-            change_states(stateR, stateG, stateB)
+            change_states(stateR, stateG, stateB);
 
             // creates a map object
             function init_map() {
@@ -315,7 +315,8 @@
                     paths.lineR.setMap(map)
 
                     // change state in HTML
-                    TODO !!!! 
+                    stateR = snapshot.val().state;
+                    change_states(stateR, stateG, stateB);
                 });
                 drone_refR.on('child_removed', function(snapshot) {
                     markers.droneR.setMap(null)
@@ -338,6 +339,10 @@
                     paths.listG.push({lat: lat, lng: lng});
                     paths.lineG.setPath(paths.listG);
                     paths.lineG.setMap(map)
+
+                    // change state in HTML
+                    stateG = snapshot.val().state;
+                    change_states(stateR, stateG, stateB);
                 });
                 drone_refG.on('child_removed', function(snapshot) {
                     markers.droneG.setMap(null)
@@ -360,6 +365,10 @@
                     paths.listB.push({lat: lat, lng: lng});
                     paths.lineB.setPath(paths.listB);
                     paths.lineB.setMap(map)
+
+                    // change state in HTML
+                    stateB = snapshot.val().state;
+                    change_states(stateR, stateG, stateB);
                 });
                 drone_refB.on('child_removed', function(snapshot) {
                     markers.droneB.setMap(null)

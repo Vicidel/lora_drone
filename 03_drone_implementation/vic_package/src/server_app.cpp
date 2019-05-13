@@ -156,7 +156,7 @@ void send_GPS_firebase(double latitude, double longitude, double altitude, doubl
 }
 
 // POST home coordinates 
-void send_home_firebase(double latitude, double longitude, double altitude, double delta_x, double delta_y, double delta_z, double time){
+void send_home_firebase(double latitude, double longitude, double altitude, double delta_x, double delta_y, double delta_z, double time, int drone_id){
 
     // set response string
     std::string response_string;
@@ -174,6 +174,7 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
     char str_dx[10]; sprintf(str_dx, "%f", delta_x);
     char str_dy[10]; sprintf(str_dy, "%f", delta_y);
     char str_dz[10]; sprintf(str_dz, "%f", delta_z);
+    char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
     cJSON_AddStringToObject(root, "latitude", str_lat);
     cJSON_AddStringToObject(root, "longitude", str_lng);
     cJSON_AddStringToObject(root, "altitude", str_alt);
@@ -181,6 +182,7 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
     cJSON_AddStringToObject(root, "delta_x", str_dx);
     cJSON_AddStringToObject(root, "delta_y", str_dy);
     cJSON_AddStringToObject(root, "delta_z", str_dz);
+    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL

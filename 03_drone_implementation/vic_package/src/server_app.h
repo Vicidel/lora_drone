@@ -35,8 +35,10 @@ using namespace Eigen; // To use matrix and vector representation
 
 // store on Firebase
 void empty_firebase(void);
-void send_GPS_firebase(double latitude, double longitude, double altitude, double time, int drone_id, std::string state);
-void send_home_firebase(double latitude, double longitude, double altitude, double delta_x, double delta_y, double delta_z, double time);
+void send_GPS_firebase(double latitude, double longitude, double altitude, double time, 
+	int drone_id, std::string state);
+void send_home_firebase(double latitude, double longitude, double altitude, double delta_x, 
+	double delta_y, double delta_z, double time, int drone_id);
 
 // check for start or kill
 int check_offboard_server(int drone_id);

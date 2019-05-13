@@ -81,7 +81,7 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
 
 
 
-/**************************************************************************
+/***************************************************************************
 ***************************   MAIN FUNCTION   *****************************
 ***************************************************************************/
 
@@ -166,7 +166,7 @@ int main(int argc, char **argv){
     std::string answer;         // string returned by the server when sending position
     int state = 0;              // FSM state
     float hover_time;           // hovering time at measure positions
-    int drone_id = 2;           // can be 1, 2 or 3
+    int drone_id = 1;           // can be 1, 2 or 3
     int nb_drone = 1;           // can be 1 or 3
     bool bool_fly_straight = true;      // fly in direction of waypoint or just x+
 
@@ -592,7 +592,7 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
         if(bool_wait_for_offboard) send_home_firebase(home_position.geo.latitude, 
             home_position.geo.longitude, home_position.geo.altitude, 
             home_position.position.x, home_position.position.y, home_position.position.z, 
-            ros::Time::now().toSec());
+            ros::Time::now().toSec(), drone_id);
 
         // send drone position
         send_GPS_firebase(est_global_pos.latitude, est_global_pos.longitude, 

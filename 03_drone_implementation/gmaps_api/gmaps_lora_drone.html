@@ -90,6 +90,9 @@
             var stateB = "UNKNOWN";
             change_states(stateR, stateG, stateB);
 
+            // geofence
+            var geofence_radius = 400;
+
             // creates a map object
             function init_map() {
 
@@ -231,7 +234,7 @@
 
                 // add home
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/home.png width=20> Home'
+                div.innerHTML = '<img src=marker/home.png width=20> Home and geofence'
                 legend.appendChild(div);
 
                 // add droneR
@@ -396,12 +399,18 @@
                     markers.home.setPosition(new google.maps.LatLng(lat, lng));
                     markers.home.setMap(map);
 
+                    // move geofence circle
+                    markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
+                    markers.home_circle.setRadius(geofence_radius);
+                    markers.home_circle.setMap(map);
+
                     // set start as home
                     lat_start = lat;
                     lng_start = lng;
                 });
                 home_ref.on('child_removed', function(snapshot) {
                     markers.home.setMap(null)
+                    markers.home_circle.setMap(null)
                 });
             }
 
@@ -663,6 +672,13 @@
                     icon: icons.home,
                     title: 'Home'
                 });
+                var home_circle = new google.maps.Circle({
+                    strokeColor: '#000000',
+                    strokeOpacity: 1,
+                    strokeWeight: 1,
+                    fillColor: '#FFF',
+                    fillOpacity: 0,
+                });
 
                 // for estimations
                 var network_marker = new google.maps.Marker({
@@ -682,7 +698,7 @@
                 });
 
                 // return them 
-                return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, home: home_marker, network: network_marker, est1: est_marker1, est2: est_marker2};
+                return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, home: home_marker, home_circle: home_circle, network: network_marker, est1: est_marker1, est2: est_marker2};
             }
 
             // creates the circles

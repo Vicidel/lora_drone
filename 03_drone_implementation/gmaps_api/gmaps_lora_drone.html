@@ -241,17 +241,17 @@
 
                 // add homeR
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/home.png width=20> Home 1/R'
+                div.innerHTML = '<img src=marker/homeR.png width=20> Home 1/R'
                 legend.appendChild(div);
 
                 // add homeG
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/home.png width=20> Home 2/G'
+                div.innerHTML = '<img src=marker/homeG.png width=20> Home 2/G'
                 legend.appendChild(div);
 
                 // add homeB
                 var div = document.createElement('div');
-                div.innerHTML = '<img src=marker/home.png width=20> Home 3/B'
+                div.innerHTML = '<img src=marker/homeB.png width=20> Home 3/B'
                 legend.appendChild(div);
 
                 // add droneR
@@ -434,6 +434,7 @@
                     markers.droneR.setMap(null)
                     paths.lineR.setMap(null)
                     paths.listR = []
+                    change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN');
                 });
 
                 // for droneG
@@ -460,6 +461,7 @@
                     markers.droneG.setMap(null)
                     paths.lineG.setMap(null)
                     paths.listG = []
+                    change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN');
                 });
 
                 // for droneB
@@ -486,6 +488,7 @@
                     markers.droneB.setMap(null)
                     paths.lineB.setMap(null)
                     paths.listB = []
+                    change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN');
                 });
             }
 
@@ -723,14 +726,24 @@
                 };
 
                 // home icon
-                var home_icon = {
-                    url: 'marker/home.png',
+                var homeR_icon = {
+                    url: 'marker/homeR.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var homeG_icon = {
+                    url: 'marker/homeG.png',
+                    anchor: new google.maps.Point(13, 13),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+                var homeB_icon = {
+                    url: 'marker/homeB.png',
                     anchor: new google.maps.Point(13, 13),
                     scaledSize: new google.maps.Size(25, 25)
                 };
 
                 // return them
-                return {droneR: droneR_icon, droneG: droneG_icon, droneB: droneB_icon, home: home_icon};
+                return {droneR: droneR_icon, droneG: droneG_icon, droneB: droneB_icon, homeR: homeR_icon, homeB: homeB_icon, homeG: homeG_icon};
             }
 
             // creates the markers
@@ -759,17 +772,17 @@
                 // for home
                 var home_markerR = new google.maps.Marker({
                     map: map,
-                    icon: icons.home,
+                    icon: icons.homeR,
                     title: 'Home 1/R'
                 });
                 var home_markerG = new google.maps.Marker({
                     map: map,
-                    icon: icons.home,
+                    icon: icons.homeG,
                     title: 'Home 2/G'
                 });
                 var home_markerB = new google.maps.Marker({
                     map: map,
-                    icon: icons.home,
+                    icon: icons.homeB,
                     title: 'Home 3/B'
                 });
                 var home_circle = new google.maps.Circle({

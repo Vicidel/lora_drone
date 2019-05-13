@@ -129,7 +129,13 @@ class home_datapoint:
 homeR = home_datapoint()
 homeG = home_datapoint()
 homeB = home_datapoint()
-home  = home_datapoint() 		# needed for conversion, for now home 2/G (TODO: change that)
+
+# to store the 0
+class zero_datapoint:
+	latitude    = 47.397751 	# Zurich
+	longitude   = 8.545607 		# Zurich
+	altitude    = 500 			# Zurich
+zero = zero_datapoint()
 
 
 
@@ -206,6 +212,17 @@ est_uncertainty3  = 10
 
 
 #########################################################################################
+###################################  DEFAULT ROUTE  #####################################
+#########################################################################################
+
+# base route which just returns a string
+@app.route('/')
+def hello_world():
+	return '<b>Welcome to the Drone application!</b>'
+
+
+
+#########################################################################################
 ##################################  GMAPS API THINGS  ###################################
 #########################################################################################
 
@@ -214,7 +231,7 @@ est_uncertainty3  = 10
 def store_current_coord():
 
 	###################  DECODE PAYLOAD  ######################
-	print("!!!!!!!!! Data received from drone !!!!!!!!!")
+	print("!!!!!!!!! GPS received from drone !!!!!!!!!")
 	
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -265,7 +282,7 @@ def store_current_coord():
 def store_current_home():
 
 	###################  DECODE PAYLOAD  ######################
-	print("!!!!!!!!! Data received from drone !!!!!!!!!")
+	print("!!!!!!!!! Home received from drone !!!!!!!!!")
 	
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -290,7 +307,7 @@ def store_current_home():
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
 
 	# add in server memory
-	global homeR, homeG, homeB, home
+	global homeR, homeG, homeB
 	if r_drone_id==1:
 		homeR.latitude  = r_lat
 		homeR.longitude = r_lng
@@ -316,8 +333,23 @@ def store_current_home():
 		homeB.delta_z   = r_dz
 		homeB.drone_id  = r_drone_id
 
-	# home used for conversion, for now home 2/G
-	home = home_G  	# TODO: change that
+	# zero used for conversion
+	global zero
+	home_latlng = geopy.Point(homeG.latitude, homeG.longitude)
+	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(homeG.delta_x), -float(homeG.delta_y))
+	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
+	zero.latitude = zero_latlng.latitude
+	zero.longitude = zero_latlng.longitude
+	
+	# print for debug
+	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+	#print("Home latlng is {} {}".format(homeG.latitude, homeG.longitude))
+	#print("Home delta is {} {}".format(homeG.delta_x, homeG.delta_y))
+	#print("Zero latlng is {} {}".format(zero.latitude, zero.longitude))
+	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+	#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
 
 	# push on Firebase
 	print("Pushing home position on Firebase: lat={}, lng={}, alt={}".format(r_lat, r_lng, r_alt))
@@ -356,6 +388,9 @@ def empty_firebase():
 	ref_droneG = firebase_db.reference('droneG')
 	ref_droneB = firebase_db.reference('droneB')
 	ref_home   = firebase_db.reference('home')
+	ref_homeR  = firebase_db.reference('homeR')
+	ref_homeG  = firebase_db.reference('homeG')
+	ref_homeB  = firebase_db.reference('homeB')
 	ref_netw   = firebase_db.reference('network')
 	ref_est    = firebase_db.reference('estimate')
 	ref_wayp   = firebase_db.reference('waypoint')
@@ -367,6 +402,9 @@ def empty_firebase():
 	ref_droneG.delete()
 	ref_droneB.delete()
 	ref_home.delete()
+	ref_homeR.delete()
+	ref_homeG.delete()
+	ref_homeB.delete()
 	ref_netw.delete()
 	ref_est.delete()
 	ref_wayp.delete()
@@ -536,17 +574,6 @@ def trilateration_main(drone_dataset):
 
 		# return result
 		return pos_x_est, pos_y_est, pos_z_est
-
-
-
-#########################################################################################
-###################################  DEFAULT ROUTE  #####################################
-#########################################################################################
-
-# base route which just returns a string
-@app.route('/')
-def hello_world():
-	return '<b>Welcome to the Drone application!</b>'
 
 
 
@@ -879,37 +906,45 @@ def param_check_kill():
 # conversion between latlng and xy
 def conversion_latlng_xy(lat, lng):
 
-	# get home data
-	home_lat = float(home.latitude)
-	home_lng = float(home.longitude)		# home coordinates
-	dx   	 = float(home.delta_x)
-	dy 	 	 = float(home.delta_y)			# as home is not zero
-
 	# math stuff for bearing 
-	delta_lon = home_lng - lng
-	bearing_y = math.sin(delta_lon) * math.cos(home_lat)
-	bearing_x = math.cos(lat) * math.sin(home_lat) - math.sin(lat) * math.cos(home_lat) * math.cos(delta_lon)
+	delta_lon = zero.longitude - lng
+	bearing_y = math.sin(delta_lon) * math.cos(zero.latitude)
+	bearing_x = math.cos(lat) * math.sin(zero.latitude) - math.sin(lat) * math.cos(zero.latitude) * math.cos(delta_lon)
 	bearing = math.atan2(bearing_y, bearing_x)
 
-	# distance geopy
-	dist = geopy.distance.vincenty((lat, lng), (home_lat, home_lng)).m
+	# distance through geopy
+	dist = geopy.distance.vincenty((lat, lng), (zero.latitude, zero.longitude)).m
+
+	# debug print
+	#print("*******************************************************************")
+	#print("*******************************************************************")
+	#print("Conversion latlng->xy: latlng {} {}".format(lat, lng))
+	#print("  dist {} bearing {}".format(dist, bearing*180/(math.pi/2)))
+	#print("  xy {} {}".format(math.sin(bearing)*dist, -math.cos(bearing)*dist))
+	#print("*******************************************************************")
+	#print("*******************************************************************")
 
 	# return result
-	return math.sin(bearing)*dist+dx, -math.cos(bearing)*dist+dy
+	return math.sin(bearing)*dist, -math.cos(bearing)*dist
 
 
 # conversion between xy and latlng
 def conversion_xy_latlng(x, y):
 	
-	# home to zero
-	home_latlng = geopy.Point(home.latitude, home.longitude)
-	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(home.delta_x), -float(home.delta_y))
-	zero_latlng = VincentyDistance(meters=dist_to_zero).destination(home_latlng, bearing_to_zero)
-
 	# zero to drone
+	zero_latlng = geopy.Point(zero.latitude, zero.longitude)
 	distance, bearing = get_dist_bearing(x, y)
 	latlng = VincentyDistance(meters=distance).destination(zero_latlng, bearing)
 
+	# debug print
+	#print("*******************************************************************")
+	#print("*******************************************************************")
+	#print("Conversion xy-->latlng: xy {} {}".format(x, y))
+	#print("	 latlng {} {}".format(latlng.latitude, latlng.longitude))
+	#print("*******************************************************************")
+	#print("*******************************************************************")
+
+	# return result
 	return latlng.latitude, latlng.longitude
 
 
@@ -924,7 +959,7 @@ def get_dist_bearing(dist_x, dist_y):
 	elif dist_x==0:
 		bearing = 90 if dist_y > 0 else 270
 	else:
-		bearing = math.degrees(math.atan(float(dist_y)/dist_x))
+		bearing = math.degrees(math.atan(dist_y/dist_x))
 	
 	# negative x modifier
 	if dist_x < 0:

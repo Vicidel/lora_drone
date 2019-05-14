@@ -57,7 +57,7 @@
                 <button class="button" id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
                 <button class="button" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
                 <button class="button" id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
-                <button class="button" id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None (click here when drone took off)</button>
+                <button class="button" id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None</button>
             </div>
             <div>
                 <b>Common kill switch:</b>
@@ -108,6 +108,9 @@
 
             // listener active for click
             click_listener_active = false
+
+            // after click on RGB takeoff, go in none mode after X milliseconds 
+            var delay_after_takeoff = 5000;
 
 
             // creates a map object
@@ -687,28 +690,52 @@
                 // create data according to which button was pressed
                 var data;
                 if(drone_id=='R') {
+                    // data to send 
                     data={'bool_drone1_start': 1, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
+
+                    // buttons color
                     document.getElementById('R').style.backgroundColor='#aaa';
                     document.getElementById('G').style.backgroundColor='#fff';
                     document.getElementById('B').style.backgroundColor='#fff';
                     document.getElementById('X').style.backgroundColor='#fff';
+
+                    // go back in None after X seconds
+                    console.log("Setting drone "+drone_id+" to takeoff");
+                    setTimeout(function(){console.log("Setting drone takeoff back to none");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
                 }
                 if(drone_id=='G') {
+                    // data to send 
                     data={'bool_drone1_start': 0, 'bool_drone2_start': 1, 'bool_drone3_start': 0};
+
+                    // buttons color
                     document.getElementById('R').style.backgroundColor='#fff';
                     document.getElementById('G').style.backgroundColor='#aaa';
                     document.getElementById('B').style.backgroundColor='#fff';
                     document.getElementById('X').style.backgroundColor='#fff';
+
+                    // go back in None after X seconds
+                    console.log("Setting drone "+drone_id+" to takeoff");
+                    setTimeout(function(){console.log("Setting drone takeoff back to none");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
                 }
                 if(drone_id=='B') {
+                    // data to send 
                     data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 1};
+
+                    // buttons color
                     document.getElementById('R').style.backgroundColor='#fff';
                     document.getElementById('G').style.backgroundColor='#fff';
                     document.getElementById('B').style.backgroundColor='#aaa';
                     document.getElementById('X').style.backgroundColor='#fff';
+
+                    // go back in None after X seconds
+                    console.log("Setting drone "+drone_id+" to takeoff");
+                    setTimeout(function(){console.log("Setting drone takeoff back to none");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
                 }
                 if(drone_id=='X') {
+                    // data to send 
                     data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
+
+                    // buttons color
                     document.getElementById('R').style.backgroundColor='#fff';
                     document.getElementById('G').style.backgroundColor='#fff';
                     document.getElementById('B').style.backgroundColor='#fff';

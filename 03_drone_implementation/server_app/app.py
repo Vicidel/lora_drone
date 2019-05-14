@@ -147,6 +147,9 @@ device_eui        = '78AF580300000493'
 TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"		# change that to +01:00 in winter time
 TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
+# gateways on drones
+gateway_id_RGB 	  = ['004A0DB4', '004A0DB4', '004A0DB4']
+
 
 
 #########################################################################################
@@ -517,23 +520,32 @@ def trilateration_main(drone_dataset):
 		start = dt.datetime.fromtimestamp(timestamp-3)
 		end = dt.datetime.fromtimestamp(timestamp+3)
 		lora_data_in_interval = LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start).first()
+
+		# no datapoint exists with this timestamp
 		if lora_data_in_interval is None:
 			print("ERROR: no matching LoRa datapoint for timestamp {}".format(timestamp))
 			continue
+		# we got something for timestamp
 		else:
-			# create tri dataset
-			datapoint = tri_datapoint()
-			datapoint.pos_x = float(drone_dataset[i].pos_x)
-			datapoint.pos_y = float(drone_dataset[i].pos_y)
-			datapoint.pos_z = float(drone_dataset[i].pos_z)
+			for gateway_id_looper in lora_data_in_interval.gateway_id:
+				# checks if the gateway id is the one on the corresponding drone
+				if gateway_id_looper == gateway_id_RGB[int(drone_dataset[i].drone_id)-1]:
+					
+					# create tri dataset
+					datapoint = tri_datapoint()
+					datapoint.pos_x = float(drone_dataset[i].pos_x)
+					datapoint.pos_y = float(drone_dataset[i].pos_y)
+					datapoint.pos_z = float(drone_dataset[i].pos_z)
 
-			# get distance estimate
-			datapoint.esp  = lora_data_in_interval.gateway_esp[0]
-			datapoint.rssi = lora_data_in_interval.gateway_rssi[0]
-			datapoint.distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
+					# get distance estimate
+					datapoint.esp  = lora_data_in_interval.gateway_esp[0]
+					datapoint.rssi = lora_data_in_interval.gateway_rssi[0]
+					datapoint.distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
 
-			# save datapoint
-			tri_dataset.append(datapoint)
+					# save datapoint
+					tri_dataset.append(datapoint)
+				else:
+					continue
 
 	# test if empty (forgot to start LoRa node?)
 	if len(tri_dataset) == 0:
@@ -1015,7 +1027,7 @@ def lora_receive():
 	r_real_dist   = r_payload_int         # for now just distance in payload
 
 	# store only one gateway information or all gateways
-	store_only_one = True
+	store_only_one = False
 	unique_gateway = gateway_corner
 	if store_only_one:
 		# set gateways parameters for transmission arriving on multiple gateways

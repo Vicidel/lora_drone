@@ -190,6 +190,12 @@
                 var centerControl2 = new center_control(centerControlDiv2, map, lat_zurich, lng_zurich, "Zurich");
                 centerControlDiv2.index = 1;
                 map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
+
+                // create div for centering button
+                var centerControlDiv3 = document.createElement('div');
+                var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
+                centerControlDiv3.index = 1;
+                map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
             }
 
             // creates a GUI for centering map
@@ -220,6 +226,7 @@
 
                 // Setup the click event listeners: simply set the map to Chicago.
                 controlUI.addEventListener('click', function() {
+                    console.log("Centering on "+string)
                     map.setCenter(new google.maps.LatLng(lat, lng));
                     map.setZoom(16);
                 });

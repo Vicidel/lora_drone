@@ -50,7 +50,7 @@
                 <b>Network estimate:</b>
                 <button class="button" id="network_place" type="submit" onclick="network_button_cb(this, 'place')">Place on map</button>
                 <button class="button" id="network_get" type="submit" onclick="network_button_cb(this, 'get')">Get from LoRa (based on last messages)</button>
-                <button class="button" id="network_none" type="submit" onclick="network_button_cb(this, 'none')">None</button>
+                <button class="button" id="network_none" type="submit" onclick="network_button_cb(this, 'none')">Disable change (for during drone flight)</button>
             </div>
             <div>
                 <b>Takeoff buttons:</b>
@@ -667,12 +667,12 @@
             // callback for killswitch button
             function kill_button_cb(obj, kill){
                 if(kill==1){
-                    //console.log("Killing all drones now");
+                    console.log("Killing all drones now");
                     document.getElementById('unkill').style.backgroundColor='#fff';
                     document.getElementById('kill').style.backgroundColor='#aaa';
                 }
                 else{
-                    //console.log("Unkilling all drones now");
+                    console.log("Unkilling all drones now");
                     document.getElementById('unkill').style.backgroundColor='#aaa';
                     document.getElementById('kill').style.backgroundColor='#fff';
                 }
@@ -700,8 +700,11 @@
                     document.getElementById('X').style.backgroundColor='#fff';
 
                     // go back in None after X seconds
-                    console.log("Setting drone "+drone_id+" to takeoff");
-                    setTimeout(function(){console.log("Setting drone takeoff back to none");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+                    console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
+                    setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+
+                    // disable network estimate change
+                    network_button_cb(this, 'none');
                 }
                 if(drone_id=='G') {
                     // data to send 
@@ -714,8 +717,11 @@
                     document.getElementById('X').style.backgroundColor='#fff';
 
                     // go back in None after X seconds
-                    console.log("Setting drone "+drone_id+" to takeoff");
-                    setTimeout(function(){console.log("Setting drone takeoff back to none");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+                    console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
+                    setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+
+                    // disable network estimate change
+                    network_button_cb(this, 'none');
                 }
                 if(drone_id=='B') {
                     // data to send 
@@ -728,8 +734,11 @@
                     document.getElementById('X').style.backgroundColor='#fff';
 
                     // go back in None after X seconds
-                    console.log("Setting drone "+drone_id+" to takeoff");
-                    setTimeout(function(){console.log("Setting drone takeoff back to none");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+                    console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
+                    setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+
+                    // disable network estimate change
+                    network_button_cb(this, 'none');
                 }
                 if(drone_id=='X') {
                     // data to send 

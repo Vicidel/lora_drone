@@ -47,6 +47,12 @@
         </style>
         <form action="#">
             <div>
+                <b>Network estimate:</b>
+                <button class="button" id="network_place" type="submit" onclick="network_button_cb(this, 'place')">Place on map</button>
+                <button class="button" id="network_get" type="submit" onclick="network_button_cb(this, 'get')">Get from LoRa (based on last messages)</button>
+                <button class="button" id="network_none" type="submit" onclick="network_button_cb(this, 'none')">None</button>
+            </div>
+            <div>
                 <b>Takeoff buttons:</b>
                 <button class="button" id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
                 <button class="button" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
@@ -98,6 +104,11 @@
             // initial button colors: call callbacks as if clicked
             takeoff_button_cb(this, 'X');
             kill_button_cb(this, 0);
+            network_button_cb(this, 'none');
+
+            // listener active for click
+            click_listener_active = false
+
 
             // creates a map object
             function init_map() {
@@ -129,13 +140,17 @@
 
                 // listener for clicks
                 map.addListener('click', function(e) {
-                    var lat = e.latLng.lat();
-                    var lng = e.latLng.lng();
+                    // check is listener is active
+                    if(click_listener_active){
+                        // get coordinates 
+                        var lat = e.latLng.lat();
+                        var lng = e.latLng.lng();
 
-                    // post network estimate on server
-                    const url='http://victor.scapp.io/lora/network_estimate_latlng';
-                    const data={'lat': lat, 'lng': lng}
-                    axios({method: 'POST', url: url, data: data})
+                        // post network estimate on server
+                        const url='http://victor.scapp.io/lora/network_estimate_latlng';
+                        const data={'lat': lat, 'lng': lng}
+                        axios({method: 'POST', url: url, data: data})
+                    }
                 });
 
                 // legend
@@ -666,7 +681,7 @@
             }
 
             // callback for takeoff button
-            function takeoff_button_cb(button, drone_id) {
+            function takeoff_button_cb(obj, drone_id) {
                 //console.log("Starting drone: "+drone_id)
 
                 // create data according to which button was pressed
@@ -702,6 +717,55 @@
 
                 // POST on server
                 const url='http://victor.scapp.io/param/drone_start';
+                axios({method: 'POST', url: url, data: data})
+            }
+
+            // callback for network estimate button
+            function network_button_cb(obj, type, map) {
+
+                // 
+                if(type=='get') {
+                    // button color
+                    document.getElementById('network_get').style.backgroundColor='#aaa';
+                    document.getElementById('network_place').style.backgroundColor='#fff';
+                    document.getElementById('network_none').style.backgroundColor='#fff';
+
+                    // click listener
+                    click_listener_active = false
+
+                    // call function
+                    get_lora_network_estimate();
+                }
+                if(type=='place') {
+                    // button color
+                    document.getElementById('network_get').style.backgroundColor='#fff';
+                    document.getElementById('network_place').style.backgroundColor='#aaa';
+                    document.getElementById('network_none').style.backgroundColor='#fff';
+
+                    // click listener
+                    click_listener_active = true
+                }
+                if(type=='none') {
+                    // button color
+                    document.getElementById('network_get').style.backgroundColor='#fff';
+                    document.getElementById('network_place').style.backgroundColor='#fff';
+                    document.getElementById('network_none').style.backgroundColor='#aaa';
+
+                    // click listener
+                    click_listener_active = false
+                }
+            }
+
+            // get lora network estimate
+            function get_lora_network_estimate() {
+                // get coordinates 
+                console.log("TODO !!")
+                lat = 47.4
+                lng = 8.54
+
+                // post network estimate on server
+                const url='http://victor.scapp.io/lora/network_estimate_latlng';
+                const data={'lat': lat, 'lng': lng}
                 axios({method: 'POST', url: url, data: data})
             }
 

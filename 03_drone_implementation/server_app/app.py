@@ -1175,15 +1175,28 @@ def lora_print_json():
 @app.route('/lora/compute_network_est', methods=['GET'])
 def lora_net_est():
 
-	# dummy for return
+	# dummy for return, TODO: compute it
 	lat = 47.4
 	lng = 8.54
-	alt = 400
-	data = json.dumps({'lat': lat, 'lng': lng, 'alt': alt})
+
+	# display in log the coordinates received
+	print("Coordinates computed: lat={}, lng={}".format(lat, lng))
+
+	# convert in x, y
+	x, y = conversion_latlng_xy(lat, lng)
+	print("Position computed: x={}, y={}".format(x, y))
+
+	# add on map
+	add_network_maps(x, y)
+
+	# set network estimate
+	global network_x, network_y, network_z
+	network_x = x
+	network_y = y
+	network_z = 0
 
 	# return 
-	return Response(data,mimetype='application/json',headers={'Content-Disposition':'attachment;filename=database.json'})
-
+ 	return 'Network estimate positions set at {} {} {}'.format(x, y, 0)
 
 
 #########################################################################################

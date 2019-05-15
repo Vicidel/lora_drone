@@ -1066,7 +1066,7 @@ def lora_receive():
 		r_course = ((payload_int & 0x0000000000000000000000000000000000ff0000) >> bitshift(size_payload,17)) * 2
 
 	# store only one gateway information or all gateways
-	store_only_one = False
+	store_only_one = True
 	unique_gateway = gateway_corner
 	if store_only_one:
 		# set gateways parameters for transmission arriving on multiple gateways
@@ -1169,6 +1169,20 @@ def lora_export_json():
 def lora_print_json():
 	print('Printing LoRa database as JSON')
 	return LoRa_datapoint.objects.to_json()
+
+
+# get network estimate
+@app.route('/lora/compute_network_est', methods=['GET'])
+def lora_net_est():
+
+	# dummy for return
+	lat = 47.4
+	lng = 8.54
+	alt = 400
+	data = json.dumps({'lat': lat, 'lng': lng, 'alt': alt})
+
+	# return 
+	return Response(data,mimetype='application/json',headers={'Content-Disposition':'attachment;filename=database.json'})
 
 
 

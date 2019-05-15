@@ -786,15 +786,22 @@
 
             // get lora network estimate
             function get_lora_network_estimate() {
-                // get coordinates 
-                console.log("TODO !!")
-                lat = 47.4
-                lng = 8.54
 
-                // post network estimate on server
-                const url='http://victor.scapp.io/lora/network_estimate_latlng';
-                const data={'lat': lat, 'lng': lng}
-                axios({method: 'POST', url: url, data: data})
+                // TODO: improve that to avoid back and forth between server and gmaps
+
+                // get network est from server
+                const url_get='http://victor.scapp.io/lora/compute_network_est';
+                axios({method: 'GET', url: url_get}).then(function(response){
+                    
+                    // extract data
+                    var lat = response.data.lat;
+                    var lng = response.data.lng;
+
+                    // post network estimate back on server
+                    const url='http://victor.scapp.io/lora/network_estimate_latlng';
+                    const data={'lat': lat, 'lng': lng}
+                    axios({method: 'POST', url: url, data: data})
+                });
             }
 
             // creates the custom icons

@@ -271,4 +271,25 @@ def get_dist_bearing(dist_x, dist_y):
 	# return
 	return distance, bearing
 
-print(get_dist_bearing(-100, 100))
+
+
+import localization as lx
+
+P=lx.Project(mode='Earth1',solver='LSE')
+
+
+P.add_anchor('anchore_A',(46.1,6.5))
+P.add_anchor('anchore_B',(46.5,6.5))
+P.add_anchor('anchore_C',(46.3,7.5))
+
+t,label=P.add_target()
+
+t.add_measure('anchore_A',50)
+t.add_measure('anchore_B',50)
+t.add_measure('anchore_C',50)
+
+P.solve()
+
+# Then the target location is:
+
+print(t.loc)

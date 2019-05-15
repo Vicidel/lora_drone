@@ -75,6 +75,7 @@ firebase_admin.initialize_app(cred, {
 
 # class for LoRa messages
 class LoRa_datapoint(db.Document):
+	# common to GPS and no-GPS
 	devEUI       = db.StringField(required=True)
 	deviceType   = db.StringField()
 	timestamp    = db.DateTimeField()
@@ -87,7 +88,17 @@ class LoRa_datapoint(db.Document):
 	gateway_snr  = db.ListField(db.FloatField())
 	gateway_esp  = db.ListField(db.FloatField())
 	tx_power     = db.FloatField()
+
+	# only for no-GPS method
 	real_dist 	 = db.IntField()
+
+	# only for GPS method
+	gps_lat 	 = db.FloatField()
+	gps_lon 	 = db.FloatField()
+	gps_sat 	 = db.IntField()
+	gps_hdop 	 = db.FloatField()
+	gps_speed 	 = db.FloatField()
+	gps_course 	 = db.IntField()
 
 # class and dataset for drone messages 
 drone_dataset = []
@@ -141,7 +152,8 @@ homeB = home_datapoint()
 gateway_printer   = '004A0DB4'
 gateway_corner    = '004A1092'
 gateway_drone     = '004A10EB'
-device_eui        = '78AF580300000493'
+victor_beacon     = '78AF580300000493'		# no gps
+micha_beacon      = '78AF580300000485'		# gps
 
 # time format
 TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"		# change that to +01:00 in winter time
@@ -530,7 +542,7 @@ def trilateration_main(drone_dataset):
 			for gateway_id_looper in lora_data_in_interval.gateway_id:
 				# checks if the gateway id is the one on the corresponding drone
 				if gateway_id_looper == gateway_id_RGB[int(drone_dataset[i].drone_id)-1]:
-					
+
 					# create tri dataset
 					datapoint = tri_datapoint()
 					datapoint.pos_x = float(drone_dataset[i].pos_x)
@@ -994,6 +1006,11 @@ def get_dist_bearing(dist_x, dist_y):
 #####################################  LORA ROUTE  ######################################
 #########################################################################################
 
+# functions for decoding payload
+def bitshift (payload, lastbyte):
+	return 8*(payload-lastbyte-1)
+
+
 # Swisscom LPN listener to POST from actility
 @app.route('/lora/receive_message', methods=['POST'])
 def lora_receive():
@@ -1021,10 +1038,32 @@ def lora_receive():
 	r_devtype   = "tuino-v3"
 	r_tx_power  = j['DevEUI_uplink']['TxPower']
 
-	# decode real calibration distance from payload info: possible 10,20,50,100,150,200, if not in calibration 255
-	r_payload     = j['DevEUI_uplink']['payload_hex']
-	r_payload_int = int(r_payload, 16)	# 16 as payload info in hexadecimal
-	r_real_dist   = r_payload_int         # for now just distance in payload
+	# decode payload based on which device is sending
+	payload_int = int(j['DevEUI_uplink']['payload_hex'], 16)	# 16 as payload info in hexadecimal
+	size_payload = 20
+	if r_deveui==victor_beacon:
+		# real distance (for calibration measures)
+		r_real_dist   = payload_int
+
+		# empty GPS
+		r_lat    = 666
+		r_lon    = 666
+		r_sat    = 666
+		r_hdop   = 666
+		r_speed  = 666
+		r_course = 666
+
+	elif r_deveui==micha_beacon:
+		# empty real distance
+		r_real_dist = 666
+
+		# GPS stuff
+		r_lat    = ((payload_int & 0x0000000000ffffffff0000000000000000000000) >> bitshift(size_payload,8))/10000000.0
+		r_lon    = ((payload_int & 0x000000000000000000ffffffff00000000000000) >> bitshift(size_payload,12))/10000000.0
+		r_sat    = ((payload_int & 0x00000000000000000000000000ff000000000000) >> bitshift(size_payload,13))
+		r_hdop   = ((payload_int & 0x0000000000000000000000000000ffff00000000) >> bitshift(size_payload,15))
+		r_speed  = ((payload_int & 0x00000000000000000000000000000000ff000000) >> bitshift(size_payload,16)) / 2
+		r_course = ((payload_int & 0x0000000000000000000000000000000000ff0000) >> bitshift(size_payload,17)) * 2
 
 	# store only one gateway information or all gateways
 	store_only_one = False
@@ -1063,9 +1102,10 @@ def lora_receive():
 			g_esp.append(item['LrrESP'])
 
 	# create new datapoint with parsed data
-	datapoint = LoRa_datapoint(devEUI=r_deveui, time=r_time, timestamp=r_timestamp, deviceType=r_devtype, sp_fact=r_sp_fact, 
-		channel=r_channel, sub_band=r_band, gateway_id=g_id, gateway_rssi=g_rssi, gateway_snr=g_snr, 
-		gateway_esp=g_esp, real_dist=r_real_dist, tx_power=r_tx_power)
+	datapoint = LoRa_datapoint(devEUI=r_deveui, time=r_time, timestamp=r_timestamp, deviceType=r_devtype, 
+		sp_fact=r_sp_fact, channel=r_channel, sub_band=r_band, gateway_id=g_id, gateway_rssi=g_rssi, 
+		gateway_snr=g_snr, gateway_esp=g_esp, real_dist=r_real_dist, tx_power=r_tx_power, 
+		gps_lat=r_lat, gps_lon=r_lon, gps_sat=r_sat, gps_hdop=r_hdop, gps_speed=r_speed, gps_course=r_course)
 
 	# save it to database
 	datapoint.save()

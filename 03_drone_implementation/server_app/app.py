@@ -641,6 +641,12 @@ def trilateration_main(drone_dataset):
 		return pos_x_est, pos_y_est, pos_z_est
 
 
+# same as above with latlng
+def trilateration_main_latlng(drone_dataset):
+
+	# TODO
+	return 0, 0, 0
+
 
 #########################################################################################
 #####################################  PARAMETERS  ######################################
@@ -1098,8 +1104,23 @@ def get_dist_bearing(dist_x, dist_y):
 
 
 # function for decoding payload
-def bitshift (payload, lastbyte):
+def bitshift(payload, lastbyte):
+	# just return value
 	return 8*(payload-lastbyte-1)
+
+
+# function to compute latlng based on latlng and distance
+def latlng_shift(origin_lat, origin_lng, dist_x, dist_y):
+
+	# create point with latlng
+	origin = geopy.Point(origin_lat, origin_lng)
+
+	# compute distance and bearing of distance
+	distance, bearing = get_dist_bearing(dist_x, dist_y)
+	destination = VincentyDistance(meters=distance).destination(origin, bearing)
+
+	# return
+	return destination.lat, destination.lng
 
 
 
@@ -1467,63 +1488,59 @@ def get_waypoint_latlng(drone_id, nb_drone, drone_dataset):
 		# no need for multilateration
 		if state==0:
 			# east of estimate
-			wp_x = solution.pos_x + circle_radius*math.cos(0)
-			wp_y = solution.pos_y + circle_radius*math.sin(0)
-			wp_z = flying_altitude
+			wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(0), circle_radius*math.sin(0))
+			wp_alt = solution_latlng.alt + flying_altitude
 		if state==1 or state==4:
 			# north-west of estimate
-			wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
-			wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
-			wp_z = flying_altitude
+			wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(2*math.pi/3), circle_radius*math.sin(2*math.pi/3))
+			wp_alt = solution_latlng.alt + flying_altitude
 		if state==2 or state==5:
 			# south-west of estimate
-			wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
-			wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
-			wp_z = flying_altitude
+			wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(4*math.pi/3), circle_radius*math.sin(4*math.pi/3))
+			wp_alt = solution_latlng.alt + flying_altitude
 
 		# need multilateration
 		if state==3 or state==6:
 			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
+			est_lat, est_lng, est_alt = trilateration_main_latlng(drone_dataset)
 			nb_est_made = nb_est_made + 1
-			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+			if est_lat == 0 and est_lng == 0 and est_alt == 0:
 				print("LOC: Reusing previous estimate")
-				solution.pos_x = solution.pos_x
-				solution.pos_y = solution.pos_y		# reusing old estimation
-				solution.pos_z = solution.pos_z
+				solution_latlng.lat = solution_latlng.lat
+				solution_latlng.lng = solution_latlng.lng		# reusing old estimation
+				solution_latlng.alt = solution_latlng.alt
 			else:
-				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est 		# new calculated position
-				solution.pos_z = pos_z_est
+				solution_latlng.lat = est_lat
+				solution_latlng.lng = est_lng 		# new calculated position
+				solution_latlng.alt = est_alt
 			
 			# add estimate to map
 			if state==3:
-				add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty2)
+				add_estimation_maps_latlng(solution_latlng.lat, solution_latlng.lng, est_uncertainty2)
 			if state==6:
-				add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty3)	
+				add_estimation_maps_latlng(solution_latlng.lat, solution_latlng.lng, est_uncertainty3)	
 
 			# check if end is now
 			if nb_est_made==loop_todo:
 				# finish program, return landing waypoint above estimate
-				wp_x = solution.pos_x
-				wp_y = solution.pos_y
-				wp_z = flying_altitude
+				wp_lat = solution_latlng.lat
+				wp_lng = solution_latlng.lng
+				wp_alt = solution_latlng.alt + flying_altitude
 				bool_landing_waypoint = True
 			else:
 				# program still running, new parameters
 				circle_radius = circle_radius_v2
 
 				# east of (new) estimate
-				wp_x = solution.pos_x + circle_radius*math.cos(0)
-				wp_y = solution.pos_y + circle_radius*math.sin(0)
-				wp_z = flying_altitude
+				wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(0), circle_radius*math.sin(0))
+				wp_alt = solution_latlng.alt + flying_altitude
 
 		# too high state
 		if state > 6:
 			print("ERROR: too high state")
-			wp_x = 0
-			wp_y = 0
-			wp_z = flying_altitude
+			wp_lat = 0
+			wp_lng = 0
+			wp_alt = solution_latlng.alt + flying_altitude
 
 	# three drones
 	if nb_drone==3:
@@ -1531,42 +1548,39 @@ def get_waypoint_latlng(drone_id, nb_drone, drone_dataset):
 		# if unknown drone number
 		if drone_id>3 or drone_id<1:
 			print("ERROR: unknown drone number (not 1/2/3)")
-			wp_x = 0
-			wp_y = 0
-			wp_z = flying_altitude
+			wp_lat = 0
+			wp_lng = 0
+			wp_alt = solution_latlng.alt + flying_altitude
 
 		# first waypoints
 		if state==0:
 			if drone_id==1:
 				# east of estimate
-				wp_x = solution.pos_x + circle_radius*math.cos(0)
-				wp_y = solution.pos_y + circle_radius*math.sin(0)
-				wp_z = flying_altitude
+				wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(0), circle_radius*math.sin(0))
+				wp_alt = solution_latlng.alt + flying_altitude
 			elif drone_id==2:
 				# north-west of estimate
-				wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
-				wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
-				wp_z = flying_altitude
+				wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(2*math.pi/3), circle_radius*math.sin(2*math.pi/3))
+				wp_alt = solution_latlng.alt + flying_altitude
 			elif drone_id==3:
 				# south-west of estimate
-				wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
-				wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
-				wp_z = flying_altitude
+				wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(4*math.pi/3), circle_radius*math.sin(4*math.pi/3))
+				wp_alt = solution_latlng.alt + flying_altitude
 
 		# estimations
 		if state>0:
 			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
-			nb_est_made = state
-			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+			est_lat, est_lng, est_alt = trilateration_main_latlng(drone_dataset)
+			nb_est_made = nb_est_made + 1
+			if est_lat == 0 and est_lng == 0 and est_alt == 0:
 				print("LOC: Reusing previous estimate")
-				solution.pos_x = solution.pos_x
-				solution.pos_y = solution.pos_y		# reusing old estimation
-				solution.pos_z = solution.pos_z
+				solution_latlng.lat = solution_latlng.lat
+				solution_latlng.lng = solution_latlng.lng		# reusing old estimation
+				solution_latlng.alt = solution_latlng.alt
 			else:
-				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est 		# new calculated position
-				solution.pos_z = pos_z_est
+				solution_latlng.lat = est_lat
+				solution_latlng.lng = est_lng 		# new calculated position
+				solution_latlng.alt = est_alt
 
 			# add estimate to map
 			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty2)
@@ -1575,43 +1589,36 @@ def get_waypoint_latlng(drone_id, nb_drone, drone_dataset):
 			if nb_est_made==loop_todo:
 				# finish program, return landing waypoint above estimate
 				if drone_id==1:
-					wp_x = solution.pos_x + landing_radius*math.cos(0)
-					wp_y = solution.pos_y + landing_radius*math.sin(0)
-					wp_z = flying_altitude
+					wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, landing_radius*math.cos(0), landing_radius*math.sin(0))
+					wp_alt = solution_latlng.alt + flying_altitude
 				elif drone_id==2:
-					wp_x = solution.pos_x + landing_radius*math.cos(2*math.pi/3)
-					wp_y = solution.pos_y + landing_radius*math.sin(2*math.pi/3)
-					wp_z = flying_altitude
+					wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, landing_radius*math.cos(2*math.pi/3), landing_radius*math.sin(2*math.pi/3))
+					wp_alt = solution_latlng.alt + flying_altitude
 				elif drone_id==3:
-					wp_x = solution.pos_x + landing_radius*math.cos(4*math.pi/3)
-					wp_y = solution.pos_y + landing_radius*math.sin(4*math.pi/3)
-					wp_z = flying_altitude
+					wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, landing_radius*math.cos(4*math.pi/3), landing_radius*math.sin(4*math.pi/3))
+					wp_alt = solution_latlng.alt + flying_altitude
 				bool_landing_waypoint = True
 			else:
 				# program still running, new parameters
 				circle_radius = circle_radius_v2
 
-				# new waypoint
 				if drone_id==1:
-					wp_x = solution.pos_x + circle_radius*math.cos(0)
-					wp_y = solution.pos_y + circle_radius*math.sin(0)
-					wp_z = flying_altitude
-					bool_drone1_ready = False
+					# east of estimate
+					wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(0), circle_radius*math.sin(0))
+					wp_alt = solution_latlng.alt + flying_altitude
 				elif drone_id==2:
-					wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
-					wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
-					wp_z = flying_altitude
-					bool_drone2_ready = False
+					# north-west of estimate
+					wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(2*math.pi/3), circle_radius*math.sin(2*math.pi/3))
+					wp_alt = solution_latlng.alt + flying_altitude
 				elif drone_id==3:
-					wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
-					wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
-					wp_z = flying_altitude
-					bool_drone3_ready = False
+					# south-west of estimate
+					wp_lat, wp_lng = latlng_shift(solution_latlng.lat, solution_latlng.lng, circle_radius*math.cos(4*math.pi/3), circle_radius*math.sin(4*math.pi/3))
+					wp_alt = solution_latlng.alt + flying_altitude
 
 	# save on map
-	add_waypoint_maps(wp_x, wp_y, drone_id)
+	add_waypoint_maps_latlng(wp_lat, wp_lng, drone_id)
 
-	return wp_x, wp_y, wp_z, bool_landing_waypoint
+	return wp_lat, wp_lng, wp_alt, bool_landing_waypoint
 
 
 # receive GPS coordinates from offboard script (v2)

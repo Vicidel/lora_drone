@@ -56,3 +56,8 @@
 	1000 messages to carac the noise
 	distance of 100m, 200m (v2) and 50m (v3)
 	100m is not normal, 200 is approximately, 50 []
+
+20190515_new_antenna
+	distances of 20 to 200 with new antenna
+	smaller RSSI
+

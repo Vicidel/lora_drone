@@ -58,6 +58,7 @@
                 <button class="button" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
                 <button class="button" id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
                 <button class="button" id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None</button>
+                <button class="button" id="all" type="submit" onclick="takeoff_button_cb(this, 'all')">Alex's button (all drones!)</button>
             </div>
             <div>
                 <b>Common kill switch:</b>
@@ -712,6 +713,7 @@
                     document.getElementById('G').style.backgroundColor='#fff';
                     document.getElementById('B').style.backgroundColor='#fff';
                     document.getElementById('X').style.backgroundColor='#fff';
+                    document.getElementById('all').style.backgroundColor='#fff';
 
                     // go back in None after X seconds
                     console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
@@ -729,6 +731,7 @@
                     document.getElementById('G').style.backgroundColor='#aaa';
                     document.getElementById('B').style.backgroundColor='#fff';
                     document.getElementById('X').style.backgroundColor='#fff';
+                    document.getElementById('all').style.backgroundColor='#fff';
 
                     // go back in None after X seconds
                     console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
@@ -746,6 +749,7 @@
                     document.getElementById('G').style.backgroundColor='#fff';
                     document.getElementById('B').style.backgroundColor='#aaa';
                     document.getElementById('X').style.backgroundColor='#fff';
+                    document.getElementById('all').style.backgroundColor='#fff';
 
                     // go back in None after X seconds
                     console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
@@ -763,7 +767,27 @@
                     document.getElementById('G').style.backgroundColor='#fff';
                     document.getElementById('B').style.backgroundColor='#fff';
                     document.getElementById('X').style.backgroundColor='#aaa';
+                    document.getElementById('all').style.backgroundColor='#fff';
                 }
+                if(drone_id=='all') {
+                    // data to send 
+                    data={'bool_drone1_start': 1, 'bool_drone2_start': 1, 'bool_drone3_start': 1};
+
+                    // buttons color
+                    document.getElementById('R').style.backgroundColor='#fff';
+                    document.getElementById('G').style.backgroundColor='#fff';
+                    document.getElementById('B').style.backgroundColor='#fff';
+                    document.getElementById('X').style.backgroundColor='#fff';
+                    document.getElementById('all').style.backgroundColor='#aaa';
+
+                    // go back in None after X seconds
+                    console.log("Setting all drones to takeoff, disabling network estimate change");
+                    setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+
+                    // disable network estimate change
+                    network_button_cb(this, 'none');
+                }
+
 
                 // POST on server
                 const url='http://victor.scapp.io/param/drone_start';

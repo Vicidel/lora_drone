@@ -64,6 +64,14 @@
                 <button class="button" id="kill" type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
                 <button class="button" id="unkill" type="submit" onclick="kill_button_cb(this, 0)">Unkill</button>
             </div>
+            <form id="form">
+                <b>Parameters:</b> 
+                loop(s):<input type="text" size="1" id="loop_todo" value="1">, 
+                radius 1:<input type="text" size="1" id="rad1" value="40">, 
+                radius 2:<input type="text" size="1" id="rad2" value="20">, 
+                hover time:<input type="text" size="1" id="hover" value="4"> 
+                <button id="send" type="submit" onclick="param_change()">Submit</button>
+            </form>
             <div class="states"></div>
         </form> 
     </head>
@@ -103,7 +111,7 @@
             change_states(stateR, stateG, stateB);
 
             // geofence
-            var geofence_radius = 0;
+            var geofence_radius = 200;
 
             // initial button colors: call callbacks as if clicked
             takeoff_button_cb(this, 'X');
@@ -116,6 +124,20 @@
             // after click on RGB takeoff, go in none mode after X milliseconds 
             var delay_after_takeoff = 5000;
 
+
+            // function when parameter is changed
+            function param_change(){
+                // get from HTML elements
+                var loop_todo = document.getElementById("loop_todo").value;
+                var rad1 = document.getElementById("rad1").value;
+                var rad2 = document.getElementById("rad2").value;
+                var hover = document.getElementById("hover").value;
+
+                // POST on server
+                const url='http://victor.scapp.io/param/change_from_maps';
+                const data={'rad1': rad1, 'rad2': rad2, 'hover': hover, 'loop_todo': loop_todo};
+                axios({method: 'POST', url: url, data: data})
+            }
 
             // creates a map object
             function init_map() {
@@ -164,7 +186,7 @@
                 init_legend(map);
 
                 // start Firebase and database listeners
-                init_firebase_homes(map, markers);                  // homes
+                init_firebase_homes(map, markers, circles);                  // homes
                 init_firebase_drones(map, markers, paths);          // drones, paths
                 init_firebase_waypoints(map, wp_lists);             // waypoints
                 init_firebase_estimations(map, markers, circles);   // estimations
@@ -317,7 +339,7 @@
             }
 
             // init Firebase for home
-            function init_firebase_homes(map, markers) {
+            function init_firebase_homes(map, markers, circles) {
 
                 // reference in Firebase
                 var home_refR = firebase.child('homeR');
@@ -336,9 +358,9 @@
                     markers.homeR.setMap(map);
 
                     // move geofence circle
-                    //markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
-                    //markers.home_circle.setRadius(geofence_radius);
-                    //markers.home_circle.setMap(map);
+                    circles.geoR.setCenter(new google.maps.LatLng(lat, lng));
+                    circles.geoR.setRadius(geofence_radius);
+                    circles.geoR.setMap(map);
 
                     // set start as home
                     lat_homeR = lat;
@@ -346,7 +368,7 @@
                 });
                 home_refR.on('child_removed', function(snapshot) {
                     markers.homeR.setMap(null)
-                    //markers.home_circle.setMap(null)
+                    circles.geoR.setMap(null)
                 });
 
                 // for homeG
@@ -361,9 +383,9 @@
                     markers.homeG.setMap(map);
 
                     // move geofence circle
-                    //markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
-                    //markers.home_circle.setRadius(geofence_radius);
-                    //markers.home_circle.setMap(map);
+                    circles.geoG.setCenter(new google.maps.LatLng(lat, lng));
+                    circles.geoG.setRadius(geofence_radius);
+                    circles.geoG.setMap(map);
 
                     // set start as home
                     lat_homeG = lat;
@@ -371,7 +393,7 @@
                 });
                 home_refG.on('child_removed', function(snapshot) {
                     markers.homeG.setMap(null)
-                    //markers.home_circle.setMap(null)
+                    circles.geoG.setMap(null)
                 });
 
                 // for homeB
@@ -386,9 +408,9 @@
                     markers.homeB.setMap(map);
 
                     // move geofence circle
-                    //markers.home_circle.setCenter(new google.maps.LatLng(lat, lng));
-                    //markers.home_circle.setRadius(geofence_radius);
-                    //markers.home_circle.setMap(map);
+                    circles.geoB.setCenter(new google.maps.LatLng(lat, lng));
+                    circles.geoB.setRadius(geofence_radius);
+                    circles.geoB.setMap(map);
 
                     // set start as home
                     lng_homeB = lat;
@@ -396,7 +418,7 @@
                 });
                 home_refB.on('child_removed', function(snapshot) {
                     markers.homeB.setMap(null)
-                    //markers.home_circle.setMap(null)
+                    circles.geoB.setMap(null)
                 });
             }
 
@@ -872,13 +894,6 @@
                     icon: icons.homeB,
                     title: 'Home 3/B'
                 });
-                var home_circle = new google.maps.Circle({
-                    strokeColor: '#000000',
-                    strokeOpacity: 1,
-                    strokeWeight: 1,
-                    fillColor: '#FFF',
-                    fillOpacity: 0,
-                });
 
                 // for estimations
                 var network_marker = new google.maps.Marker({
@@ -898,12 +913,13 @@
                 });
 
                 // return them 
-                return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, home_circle: home_circle, network: network_marker, est1: est_marker1, est2: est_marker2};
+                return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, network: network_marker, est1: est_marker1, est2: est_marker2};
             }
 
             // creates the circles
             function create_circles() {
 
+                // for network estimations
                 var network_circle1 = new google.maps.Circle({
                     strokeColor: '#FF0000',
                     strokeOpacity: 0.5,
@@ -911,7 +927,6 @@
                     fillColor: '#FF0000',
                     fillOpacity: 0.1,
                 })
-
                 var network_circle2 = new google.maps.Circle({
                     strokeColor: '#FFBB00',
                     strokeOpacity: 0.5,
@@ -919,7 +934,6 @@
                     fillColor: '#FF9900',
                     fillOpacity: 0.2,
                 })
-
                 var network_circle3 = new google.maps.Circle({
                     strokeColor: '#FFFF00',
                     strokeOpacity: 0.5,
@@ -928,7 +942,30 @@
                     fillOpacity: 0.1,
                 })
 
-                return {c1: network_circle1, c2: network_circle2, c3: network_circle3};
+                // for geofences
+                var home_circleR = new google.maps.Circle({
+                    strokeColor: '#550000',
+                    strokeOpacity: 1,
+                    strokeWeight: 1,
+                    fillColor: '#FFF',
+                    fillOpacity: 0,
+                });
+                var home_circleG = new google.maps.Circle({
+                    strokeColor: '#005500',
+                    strokeOpacity: 1,
+                    strokeWeight: 1,
+                    fillColor: '#FFF',
+                    fillOpacity: 0,
+                });
+                var home_circleB = new google.maps.Circle({
+                    strokeColor: '#000055',
+                    strokeOpacity: 1,
+                    strokeWeight: 1,
+                    fillColor: '#FFF',
+                    fillOpacity: 0,
+                });
+
+                return {c1: network_circle1, c2: network_circle2, c3: network_circle3, geoR: home_circleR, geoG: home_circleG, geoB: home_circleB};
             }
 
             // creates the waypoints lists (empty)

@@ -695,11 +695,40 @@ def param_change():
 	return "All parameters changed"
 
 
+# batch edit all parameters from GMAPS
+@app.route('/param/change_from_maps', methods=['POST'])
+def param_change_gmaps():
+	print("!!!!!!!!! New parameters estimate received from GMAPS !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# set network estimate
+	global circle_radius_v1, circle_radius_v2
+	circle_radius_v1 = j['rad1']
+	circle_radius_v2 = j['rad2']
+
+	# set hovering time
+	global hover_time
+	hover_time = j['hover']
+
+	# set number of loops
+	global loop_todo
+	loop_todo = j['loop_todo']
+
+	return "All parameters changed"
+
+
 # batch print all parameters
 @app.route('/param/print', methods=['GET'])
 def param_print():
 
-	return "<b>Parameters are:</b>\r\nNetwork position: x={}, y={}, z={}\r\nCircle radius: 1st={}, 2nd={}\r\nAltitudes: flying={}, takeoff={}\r\nAlgorithm loops to do: {}\r\nDrone status: {} {} {}\r\nSolution: x={}, y={}, z={}".format(network_x, network_y, network_z, circle_radius_v1, circle_radius_v2, flying_altitude, takeoff_altitude, loop_todo, bool_drone1_ready, bool_drone2_ready, bool_drone3_ready, solution.pos_x, solution.pos_y, solution.pos_z)
+	return "<b>Parameters are:</b>\r\nNetwork position: x={}, y={}, z={}\r\nCircle radius: 1st={}, 2nd={}\r\nAltitudes: flying={}, takeoff={}\r\nAlgorithm loops to do: {}\r\nDrone status: {} {} {}\r\nSolution: x={}, y={}, z={}\r\nHover time: {}".format(network_x, network_y, network_z, circle_radius_v1, circle_radius_v2, flying_altitude, takeoff_altitude, loop_todo, bool_drone1_ready, bool_drone2_ready, bool_drone3_ready, solution.pos_x, solution.pos_y, solution.pos_z, hover_time)
 
 
 # to set the hovering time

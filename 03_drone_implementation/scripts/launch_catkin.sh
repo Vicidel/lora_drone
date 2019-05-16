@@ -1,4 +1,4 @@
-cd catkin_ws
+cd ~/catkin_ws
 catkin build vic_package -j2
 source devel/setup.bash
 

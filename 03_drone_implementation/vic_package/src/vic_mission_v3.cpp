@@ -31,7 +31,7 @@ using namespace Eigen; // To use matrix and vector representation
 #include <geometry_msgs/PoseStamped.h>
 #include <sensor_msgs/NavSatFix.h>
 #include <mavros_msgs/HomePosition.h>
-#include <mavros_msgs/PositionTarget.h>
+#include <mavros_msgs/GlobalPositionTarget.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/SetMode.h>
@@ -66,9 +66,8 @@ void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg);
 void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg);
 
 // conversion functions
-geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
-Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
-mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal);
+Vector3f conversion_to_vect(sensor_msgs::NavSatFix msg);
+mavros_msgs::GlobalPositionTarget conversion_to_target(Vector3f current, Vector3f goal);
 
 // parse POST answer
 Vector3f parse_WP_from_answer(std::string answer_string, Vector3f pos_current_goal);
@@ -94,7 +93,6 @@ int main(int argc, char **argv){
 
     // ROS topic subscriptions ("get information")
     ros::Subscriber state_sub           = nh.subscribe<mavros_msgs::State> ("mavros/state", 10, state_cb);
-    ros::Subscriber est_local_pos_sub   = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
     ros::Subscriber home_pos_sub        = nh.subscribe<mavros_msgs::HomePosition> ("mavros/home_position/home", 10, home_pos_cb);
     ros::Subscriber global_pos_sub      = nh.subscribe<sensor_msgs::NavSatFix> ("mavros/global_position/global", 10, est_global_pos_cb);
 
@@ -105,8 +103,7 @@ int main(int argc, char **argv){
     ros::ServiceClient landing_client   = nh.serviceClient<mavros_msgs::CommandTOL> ("mavros/cmd/land");
 
     // ROS publishers ("post information")
-    ros::Publisher target_pub           = nh.advertise<mavros_msgs::PositionTarget> ("mavros/setpoint_raw/local", 10);
-    ros::Publisher local_pos_pub        = nh.advertise<geometry_msgs::PoseStamped> ("mavros/setpoint_position/local", 10);
+    ros::Publisher global_pos_pub       = nh.advertise<mavros_msgs::GlobalPositionTarget> ("mavros/setpoint_position/global", 10);
     
     // ROS publishing rate (MUST be faster than 2Hz)
     ros::Rate rate(20.0);
@@ -133,9 +130,9 @@ int main(int argc, char **argv){
     // send a few setpoints before starting
     ROS_INFO("Sending a few waypoints before start");
     for(int i = 100; ros::ok() && i > 0; --i){
-        local_pos_pub.publish(conversion_to_msg(pos_current_goal));
+        global_pos_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
         ros::spinOnce();
-        pos_drone = conversion_to_vect(est_local_pos);
+        pos_drone = conversion_to_vect(est_global_pos);
         rate.sleep();
     }
 
@@ -210,16 +207,15 @@ int main(int argc, char **argv){
         }
 
         // display info
-        /*if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
+        if( (ros::Time::now() - time_last_print) > ros::Duration(1.0) ){
             char state_char[current_state.mode.size()+1];
             strcpy(state_char, current_state.mode.c_str());
             ROS_INFO("Current state: %s, drone armed: %d", state_char, current_state.armed); 
-            ROS_INFO("Current position: x=%.2f, y=%.2f, z=%.2f", pos_drone(0), pos_drone(1), pos_drone(2));
-            ROS_INFO("Current position GPS: lat=%.2f, lng=%.2f", est_global_pos.latitude, est_global_pos.longitude);
-            ROS_INFO("Current goal:  x=%.2f, y=%.2f, z=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
+            ROS_INFO("Current position GPS: lat=%.2f, lng=%.2f, alt=%.2f", est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude);
+            ROS_INFO("Current goal:  lat=%.2f, lng=%.2f, alt=%.2f", pos_current_goal(0), pos_current_goal(1), pos_current_goal(2));
             ROS_INFO("");
             time_last_print = ros::Time::now();
-        }*/
+        }
 
         // waiting for OFFBOARD mode
         if(bool_wait_for_offboard){
@@ -231,19 +227,20 @@ int main(int argc, char **argv){
                 if(check_offboard_server(drone_id)){
                     if(set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent){
                         ROS_INFO("Offboard enabled from server");
-                        send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_offboard", drone_id, nb_drone);
+                        send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"drone_offboard", drone_id, nb_drone);
                         bool_wait_for_offboard = false;
                     }
                 }
                 // check from RC
                 else if(current_state.mode == "OFFBOARD"){
                     ROS_INFO("Offboard enabled from RC");
-                    send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_offboard", drone_id, nb_drone);
+                    send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"drone_offboard", drone_id, nb_drone);
                     bool_wait_for_offboard = false;
                 }
                 // still waiting
                 else{
                     ROS_INFO("Waiting for offboard mode (from server or RC)");
+                    pos_current_goal = pos_drone;
                 }
 
                 // store current time
@@ -271,7 +268,7 @@ int main(int argc, char **argv){
                 // success
                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
-                    answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_armed", drone_id, nb_drone);
+                    answer = send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"drone_armed", drone_id, nb_drone);
                     
                     // check if server offline (if answer begins by "404")
                     char answer_char[answer.size()+1];
@@ -305,7 +302,7 @@ int main(int argc, char **argv){
                 // get new drone position
                 ros::spinOnce();
                 rate.sleep();
-                pos_drone = conversion_to_vect(est_local_pos);
+                pos_drone = conversion_to_vect(est_global_pos);
 
                 // FSM
                 switch(state){
@@ -315,7 +312,7 @@ int main(int argc, char **argv){
                         if((pos_drone-pos_current_goal).norm()<precision){
                             // position reached, getting first waypoint
                             ROS_INFO("Takeoff position reached!");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_takeoff", drone_id, nb_drone);
+                            answer = send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"drone_takeoff", drone_id, nb_drone);
                             pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
                             state = 1;
                         }
@@ -327,7 +324,7 @@ int main(int argc, char **argv){
                         if((pos_drone-pos_current_goal).norm()<precision){
                             // position reached, sending position to drone_dataset and start hovering
                             ROS_INFO("Waypoint reached!");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waypoint_reached", drone_id, nb_drone);
+                            answer = send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"waypoint_reached", drone_id, nb_drone);
                             hover_time = parse_hover_time_from_answer(answer);
 
                             // next state is hovering
@@ -342,7 +339,7 @@ int main(int argc, char **argv){
                         if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                             // X seconds passed, sending posiion again
                             ROS_INFO("Sending current position");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"data_collected", drone_id, nb_drone);
+                            answer = send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"data_collected", drone_id, nb_drone);
 
                             // time hovering is passed
                             if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
@@ -362,7 +359,7 @@ int main(int argc, char **argv){
                     case 25:{
                         if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                             ROS_INFO("Waiting, sending current position"); //, ts is %f", ros::Time::now().toSec());
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waiting_for_command", drone_id, nb_drone);
+                            answer = send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"waiting_for_command", drone_id, nb_drone);
                             pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
                             
                             // check if answer is landing, new waypoint or waiting again
@@ -386,7 +383,7 @@ int main(int argc, char **argv){
                         if((pos_drone-pos_current_goal).norm()<precision){
                             // reached position, start going down
                             ROS_INFO("Drone above landing spot, going down");
-                            pos_current_goal(2) = pos_current_goal(2) - pos_drone(2);
+                            pos_current_goal(2) = pos_current_goal(2) - pos_drone(2) + home_position.geo.altitude;
                             state = 4;
                         }
                         break;
@@ -408,7 +405,7 @@ int main(int argc, char **argv){
                     // drone is disarmed on the ground
                     case 5:{
                         ROS_INFO("Drone landed");
-                        send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_landing", drone_id, nb_drone);
+                        send_drone_state_latlng(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, ros::Time::now().toSec(), (char*)"drone_landing", drone_id, nb_drone);
                         bool_stop_all = true;
                         break;
                     }
@@ -423,10 +420,9 @@ int main(int argc, char **argv){
         }
 
         // ROS update
-        if(bool_fly_straight) target_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
-        else local_pos_pub.publish(conversion_to_msg(pos_current_goal));
+        global_pos_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
         ros::spinOnce();
-        pos_drone = conversion_to_vect(est_local_pos);
+        pos_drone = conversion_to_vect(est_global_pos);
         rate.sleep();
 
         // sending to Firebase
@@ -527,9 +523,6 @@ float parse_hover_time_from_answer(std::string answer_string){
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
     current_state = *msg;
 }
-void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg){
-    est_local_pos = *msg;
-}
 void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg){
     home_position = *msg;
 }
@@ -539,43 +532,38 @@ void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg){
 
 
 // convertion functions between Vector3f and PoseStamped ROS message
-geometry_msgs::PoseStamped conversion_to_msg(Vector3f vect){
-    geometry_msgs::PoseStamped msg;
-    msg.pose.position.x = vect(0);
-    msg.pose.position.y = vect(1);
-    msg.pose.position.z = vect(2);
-    return msg;
-}
-Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg){
+Vector3f conversion_to_vect(sensor_msgs::NavSatFix msg){
     Vector3f vect;
-    vect(0) = msg.pose.position.x;
-    vect(1) = msg.pose.position.y;
-    vect(2) = msg.pose.position.z;
+    vect(0) = msg.latitude;
+    vect(1) = msg.longitude;
+    vect(2) = msg.altitude;
     return vect;
 }
-mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal){
+mavros_msgs::GlobalPositionTarget conversion_to_target(Vector3f current, Vector3f goal){
     // create message and bit_mask
-    mavros_msgs::PositionTarget msg;
-    msg.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
-    msg.type_mask = mavros_msgs::PositionTarget::IGNORE_AFX |
-                    mavros_msgs::PositionTarget::IGNORE_AFY |
-                    mavros_msgs::PositionTarget::IGNORE_AFZ |
-                    mavros_msgs::PositionTarget::IGNORE_VX |
-                    mavros_msgs::PositionTarget::IGNORE_VY |
-                    mavros_msgs::PositionTarget::IGNORE_VZ |
-                    mavros_msgs::PositionTarget::IGNORE_YAW_RATE;
+    mavros_msgs::GlobalPositionTarget msg;
+    msg.coordinate_frame = mavros_msgs::GlobalPositionTarget::FRAME_GLOBAL_TERRAIN_ALT;
+    msg.type_mask = mavros_msgs::GlobalPositionTarget::IGNORE_AFX |
+                    mavros_msgs::GlobalPositionTarget::IGNORE_AFY |
+                    mavros_msgs::GlobalPositionTarget::IGNORE_AFZ |
+                    mavros_msgs::GlobalPositionTarget::IGNORE_VX |
+                    mavros_msgs::GlobalPositionTarget::IGNORE_VY |
+                    mavros_msgs::GlobalPositionTarget::IGNORE_VZ |
+                    mavros_msgs::GlobalPositionTarget::IGNORE_YAW_RATE;
 
     // set position target
-    msg.position.x = goal(0);
-    msg.position.y = goal(1);
-    msg.position.z = goal(2);
+    msg.latitude = goal(0);
+    msg.longitude = goal(1);
+    msg.altitude = goal(2);
 
     // set yaw target
-    double yaw_target = atan((goal(1)-current(1))/(goal(0)-current(0)));
+    double yaw_target = atan((goal(1)-current(1))/(goal(0)-current(0)));        // TODO: recompute yaw with latitude
     if(goal(0)<current(0)) yaw_target = yaw_target + 3.1414592;
+    msg.yaw = yaw_target;
+
     //ROS_INFO("goal x %f y %f  curretn x %f y %f", goal(0), goal(1), current(0), current(1));
     //ROS_INFO("yaw degree computed is %f (rad is %f)", yaw_target*180/3.141, yaw_target);
-    msg.yaw = yaw_target;
+
     return msg;
 }
 

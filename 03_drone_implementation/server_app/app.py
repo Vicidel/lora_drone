@@ -843,6 +843,7 @@ def lora_network_est_latlng():
 	# success
 	return 'Network estimate positions set at {} {} {}'.format(x, y, 0)
 
+
 # get network estimate
 @app.route('/lora/compute_network_est', methods=['GET'])
 def lora_net_est():
@@ -1799,7 +1800,7 @@ def drone_receive_state():
 	return return_string
 
 
-# receive GPS coordinates from offboard script (v2)
+# receive GPS coordinates from offboard script (v2, from latlng)
 @app.route('/drone/receive_state_latlng', methods=['POST'])
 def drone_receive_state_latlng():
 	# get global variables 

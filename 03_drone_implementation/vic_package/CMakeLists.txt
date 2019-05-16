@@ -70,6 +70,20 @@ target_link_libraries(vic_mission_v2
 ) 
 
 # create executable name
+add_executable(vic_mission_v3
+	src/vic_mission_v3.cpp
+	src/server_app.cpp
+	src/cJSON.c
+)
+
+# used librairies
+target_link_libraries(vic_mission_v3
+	${catkin_LIBRARIES}
+	${CURL_LIBRARY}
+	${CMAKE_LIBRARY_PATH}
+) 
+
+# create executable name
 add_executable(vic_coordinates
 	src/vic_coordinates.cpp
 	src/server_app.cpp
@@ -88,6 +102,7 @@ find_package(CURL)
 if(CURL_FOUND)
 	include_directories(${CURL_INCLUDE_DIRS})
 	target_link_libraries(vic_mission_v2 ${CURL_LIBRARIES})
+	target_link_libraries(vic_mission_v3 ${CURL_LIBRARIES})
 else()
 	MESSAGE(FATAL_ERROR "LibCurl is not found in your system.")
 endif(CURL_FOUND)
@@ -97,3 +112,4 @@ SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(vic_mission_v2 ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(vic_mission_v3 ${CMAKE_THREAD_LIBS_INIT})

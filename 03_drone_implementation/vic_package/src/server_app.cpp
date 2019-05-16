@@ -88,7 +88,7 @@ void post_JSON_noanswer(const char* url, char* post_array){
 ***********************   SEND INFO FUNCTIONS   ***************************
 ***************************************************************************/
 
-// POST the drone GPS coordinates and drone number
+// POST the drone xy coordinates and drone number
 std::string send_drone_state(Vector3f position, double time, char* payload, int drone_id, int nb_drone){
 
     // set response string
@@ -118,6 +118,43 @@ std::string send_drone_state(Vector3f position, double time, char* payload, int 
 
     // POST JSON on URL
     response_string = post_JSON(DRONE_SEND_CURRENT_STATE_URL, json);
+
+    // print for debugging
+    std::cout << "POST answer: " << response_string << std::endl;
+
+    return response_string;
+}
+
+// POST the drone latlng coordinates and drone number
+std::string send_drone_state_latlng(double lat, double lng, double alt, double time, char* payload, int drone_id, int nb_drone){
+
+    // set response string
+    std::string response_string;
+
+    // create JSON to send
+    cJSON *root = NULL;
+    char *json = NULL;
+    root = cJSON_CreateObject();
+
+    // fils json
+    char str_lat[10];    sprintf(str_lat, "%f", lat);
+    char str_lng[10];    sprintf(str_lng, "%f", lng);
+    char str_alt[10];    sprintf(str_alt, "%f", alt);
+    char str_time[30];     sprintf(str_time, "%f", time);
+    char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
+    char str_nb_drone[10]; sprintf(str_nb_drone, "%d", nb_drone);
+    cJSON_AddStringToObject(root, "lat", str_lat);
+    cJSON_AddStringToObject(root, "lng", str_lng);
+    cJSON_AddStringToObject(root, "alt", str_alt);
+    cJSON_AddStringToObject(root, "timestamp", str_time);
+    cJSON_AddStringToObject(root, "payload", payload);
+    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
+    cJSON_AddStringToObject(root, "nb_drone", str_nb_drone);
+    json = cJSON_PrintUnformatted(root);
+    //std::cout << "String sent:" << json << std::endl;
+
+    // POST JSON on URL
+    response_string = post_JSON(DRONE_SERVER_URL, json);
 
     // print for debugging
     std::cout << "POST answer: " << response_string << std::endl;

@@ -728,7 +728,36 @@ def param_change_gmaps():
 @app.route('/param/print', methods=['GET'])
 def param_print():
 
-	return "<b>Parameters are:</b>\r\nNetwork position: x={}, y={}, z={}\r\nCircle radius: 1st={}, 2nd={}\r\nAltitudes: flying={}, takeoff={}\r\nAlgorithm loops to do: {}\r\nDrone status: {} {} {}\r\nSolution: x={}, y={}, z={}\r\nHover time: {}".format(network_x, network_y, network_z, circle_radius_v1, circle_radius_v2, flying_altitude, takeoff_altitude, loop_todo, bool_drone1_ready, bool_drone2_ready, bool_drone3_ready, solution.pos_x, solution.pos_y, solution.pos_z, hover_time)
+	# create dict
+	data={'network':{
+			'x': network_x,
+			'y': network_y,
+			'z': network_z,
+		},
+		'solution':{
+			'x': solution.pos_x,
+			'y': solution.pos_y,
+			'z': solution.pos_z,
+		},
+		'radius':{
+			'v1': circle_radius_v1,
+			'v2': circle_radius_v2,
+		},
+		'altitude':{
+			'flying': flying_altitude,
+			'takeoff': takeoff_altitude,
+		},
+		'hovering time': hover_time,
+		'loops to do': loop_todo,
+		'drone status':{
+			'droneR': bool_drone1_ready,
+			'droneG': bool_drone2_ready,
+			'droneB': bool_drone3_ready,
+		}
+	}
+
+	# return	
+	return Response(json.dumps(data), mimetype='application/json', headers={'Content-Disposition':'attachment;filename=query.json'})
 
 
 # to set the hovering time

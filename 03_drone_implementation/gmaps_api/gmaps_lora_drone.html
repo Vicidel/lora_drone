@@ -67,10 +67,10 @@
             </div>
             <form id="form">
                 <b>Parameters:</b> 
-                loop(s):<input type="text" size="1" id="loop_todo" value="1">, 
-                radius 1:<input type="text" size="1" id="rad1" value="40">, 
-                radius 2:<input type="text" size="1" id="rad2" value="20">, 
-                hover time:<input type="text" size="1" id="hover" value="4"> 
+                loop(s):<input type="text" size="1" id="loop_todo" value="0">, 
+                radius 1:<input type="text" size="1" id="rad1" value="0">, 
+                radius 2:<input type="text" size="1" id="rad2" value="0">, 
+                hover time:<input type="text" size="1" id="hover" value="0"> 
                 <button id="send" type="submit" onclick="param_change()">Submit</button>
             </form>
             <div class="states"></div>
@@ -125,6 +125,9 @@
             // after click on RGB takeoff, go in none mode after X milliseconds 
             var delay_after_takeoff = 5000;
 
+            // fills the param fields
+            get_base_param();
+
 
             // function when parameter is changed
             function param_change(){
@@ -138,6 +141,19 @@
                 const url='http://victor.scapp.io/param/change_from_maps';
                 const data={'rad1': rad1, 'rad2': rad2, 'hover': hover, 'loop_todo': loop_todo};
                 axios({method: 'POST', url: url, data: data})
+            }
+
+            // init the params with real server values
+            function get_base_param(){
+
+                // get params from server
+                const url='http://victor.scapp.io/param/print';
+                axios({method: 'GET', url: url}).then(function(response){
+                    document.getElementById("loop_todo").value = response.data['loops to do'];
+                    document.getElementById("rad1").value = response.data['radius']['v1'];
+                    document.getElementById("rad2").value = response.data['radius']['v2'];
+                    document.getElementById("hover").value = response.data['hovering time'];
+                });
             }
 
             // creates a map object

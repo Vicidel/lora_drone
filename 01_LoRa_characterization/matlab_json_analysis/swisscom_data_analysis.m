@@ -2,8 +2,8 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190219pm_data.json';
-[time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
+fname = 'json_backup/20190516_new_antenna_v2.json';
+[time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR, tx_power] = decode_json(fname);
 
 % calibration distances
 d_calib = [10 20 50 100 150 200];
@@ -38,6 +38,13 @@ plot(distances, SNR, 'x'); grid on;
 xlabel('Real distance [m]');
 ylabel('SNR [-]');
 title('SNR function of distance');
+
+% plotting tx_power against time
+figure();
+plot(time, tx_power, 'x'); grid on;
+xlabel('Time [s]');
+ylabel('TX power [-]');
+title('TX power function of time');
 
 % plotting ESP against time
 figure();
@@ -120,9 +127,9 @@ title('Noise of ESP and RSSI');
 %% ANALYSIS SECTION
 
 % remove all the 10
-fit_dist = distances(nb_10+1:end);     
-fit_ESP = ESP(nb_10+1:end);
-fit_RSSI = RSSI(nb_10+1:end);
+fit_dist = distances(1+nb_10:end-nb_200);     
+fit_ESP = ESP(1+nb_10:end-nb_200);
+fit_RSSI = RSSI(1+nb_10:end-nb_200);
 
 % % fit ESP as function of distance
 % x = fit_dist; y = fit_ESP;
@@ -155,7 +162,8 @@ legend('ESP signal', 'Exponential fit dist=a*exp(b*ESP)');
 ylabel('Distance [m]');
 xlabel('ESP [dBm]');
 title('Fit of distance as function of ESP');
-save('matlab_json_analyse/func_ESP_to_distance.mat', 'fitresult_ESPd', 'gof_ESPd');
+fitresult_ESPd
+%save('matlab_json_analyse/func_ESP_to_distance.mat', 'fitresult_ESPd', 'gof_ESPd');
 
 % fit distance as function of RSSI 
 x = fit_RSSI; y = fit_dist;
@@ -166,4 +174,5 @@ legend('RSSI signal', 'Exponential fit dist=a*exp(b*RSSI)');
 ylabel('Distance [m]');
 xlabel('RSSI [dBm]');
 title('Fit of distance as function of RSSI');
-save('matlab_json_analyse/func_RSSI_to_dist.mat', 'fitresult_RSSId', 'gof_RSSId');
+fitresult_RSSId
+%save('matlab_json_analyse/func_RSSI_to_dist.mat', 'fitresult_RSSId', 'gof_RSSId');

@@ -2,7 +2,7 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190312am_noise_carac_v2.json';
+fname = 'json_backup/20190516_new_antenna_v2.json';
 [time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
 
 

@@ -4,7 +4,7 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190219pm_data.json';
+fname = 'json_backup/20190516_new_antenna_v2.json';
 [time, distances, SF, RSSI, ESP, SNR, means_RSSI, means_ESP, means_SNR] = decode_json(fname);
 
 % calibration distances
@@ -19,17 +19,17 @@ nb_150 = sum(distances==150);
 nb_200 = sum(distances==200);
 
 % get noise
-signal_d10  = RSSI(distances==10);
+signal_d10  = ESP(distances==10);
 noise_d10   = signal_d10 - mean(signal_d10);
-signal_d20  = RSSI(distances==20);
+signal_d20  = ESP(distances==20);
 noise_d20   = signal_d20 - mean(signal_d20);
-signal_d50  = RSSI(distances==50);
+signal_d50  = ESP(distances==50);
 noise_d50   = signal_d50 - mean(signal_d50);
-signal_d100 = RSSI(distances==100);
+signal_d100 = ESP(distances==100);
 noise_d100  = signal_d100 - mean(signal_d100);
-signal_d150 = RSSI(distances==150);
+signal_d150 = ESP(distances==150);
 noise_d150  = signal_d150 - mean(signal_d150);
-signal_d200 = RSSI(distances==200); 
+signal_d200 = ESP(distances==200); 
 noise_d200  = signal_d200 - mean(signal_d200);
 
 % get normal fir
@@ -119,34 +119,60 @@ noise_normal_fit_v2 = noise_normal_fit(2:end);
 % ylabel('Occurences');
 % title('Distance of 200m');
 
+% figure();
+% h(1) = subplot(2,3,1);
+% histfit(noise_d20); grid on;
+% xlabel('Deviation from mean [dBm]');
+% ylabel('Occurences');
+% title('Distance of 20m');
+% h(2) = subplot(2,3,2);
+% histfit(noise_d50); grid on;
+% xlabel('Deviation from mean [dBm]');
+% ylabel('Occurences');
+% title('Distance of 50m');
+% h(3) = subplot(2,3,3);
+% histfit(noise_d100); grid on;
+% xlabel('Deviation from mean [dBm]');
+% ylabel('Occurences');
+% title('Distance of 100m');
+% h(4) = subplot(2,3,4);
+% histfit(noise_d150); grid on;
+% xlabel('Deviation from mean [dBm]');
+% ylabel('Occurences');
+% title('Distance of 150m');
+% h(5) = subplot(2,3,5);
+% histfit(noise_d200); grid on;
+% xlabel('Deviation from mean [dBm]');
+% ylabel('Occurences');
+% title('Distance of 200m');
+% pos = get(h, 'Position');
+% new = mean(cellfun(@(v)v(1),pos(1:2)));
+% set(h(4),'Position',[new,pos{end}(2:end)])
+% new = mean(cellfun(@(v)v(1),pos(2:3)));
+% set(h(5),'Position',[new,pos{end}(2:end)])
+
 figure();
-h(1) = subplot(2,3,1);
-histfit(noise_d20); grid on;
+h(1) = subplot(2,2,1);
+histfit(noise_d10); grid on;
 xlabel('Deviation from mean [dBm]');
 ylabel('Occurences');
-title('Distance of 20m');
-h(2) = subplot(2,3,2);
+title('Distance of 10m');
+axis([-7 7 0 22])
+h(2) = subplot(2,2,2);
 histfit(noise_d50); grid on;
 xlabel('Deviation from mean [dBm]');
 ylabel('Occurences');
 title('Distance of 50m');
-h(3) = subplot(2,3,3);
+axis([-7 7 0 29])
+h(3) = subplot(2,2,3);
 histfit(noise_d100); grid on;
 xlabel('Deviation from mean [dBm]');
 ylabel('Occurences');
 title('Distance of 100m');
-h(4) = subplot(2,3,4);
+axis([-7 7 0 29])
+h(4) = subplot(2,2,4);
 histfit(noise_d150); grid on;
 xlabel('Deviation from mean [dBm]');
 ylabel('Occurences');
 title('Distance of 150m');
-h(5) = subplot(2,3,5);
-histfit(noise_d200); grid on;
-xlabel('Deviation from mean [dBm]');
-ylabel('Occurences');
-title('Distance of 200m');
-pos = get(h, 'Position');
-new = mean(cellfun(@(v)v(1),pos(1:2)));
-set(h(4),'Position',[new,pos{end}(2:end)])
-new = mean(cellfun(@(v)v(1),pos(2:3)));
-set(h(5),'Position',[new,pos{end}(2:end)])
+axis([-7 7 0 26])

@@ -8,6 +8,7 @@ fi
 REMOTE_ADDR=$1
 REMOTE_PORT=$2
 PASSWORD=$3
+DRONE_PORT=$4
 
 while true; do
   sshpass -p "$PASSWORD" \
@@ -17,7 +18,7 @@ while true; do
   -o UserKnownHostsFile=/dev/null \
   -o ConnectTimeout=15 \
   -o LogLevel=ERROR \
-  -N -R 2222:localhost:22 $REMOTE_ADDR -p $REMOTE_PORT
+  -N -R $DRONE_PORT:localhost:22 $REMOTE_ADDR -p $REMOTE_PORT
   sleep 60
 done
  

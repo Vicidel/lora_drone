@@ -61,3 +61,6 @@
 	distances of 20 to 200 with new antenna
 	smaller RSSI because better antenna
 
+20190517_torus_vert and hor
+	to charcaterize the torus 
+	with new antenna

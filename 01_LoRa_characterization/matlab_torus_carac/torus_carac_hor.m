@@ -2,7 +2,7 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190308pm_torus_hor_indoor_v8.json';
+fname = 'json_backup/20190517_torus_hor.json';
 [time, angles, SF, RSSI, ESP, SNR, ~, ~, ~, tx_pow] = decode_json(fname);
 
 % modify because error

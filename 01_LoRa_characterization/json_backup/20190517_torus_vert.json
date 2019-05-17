@@ -1,0 +1,8332 @@
+[
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.543649
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:41:00.386+02:00",
+    "_id": {
+      "$oid": "5cdeabdc9e3ce40a531b7c26"
+    },
+    "timestamp": {
+      "$date": 1558104060386
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:41:04.692+02:00",
+    "_id": {
+      "$oid": "5cdeabe19e3ce40a531b7c27"
+    },
+    "timestamp": {
+      "$date": 1558104064692
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -15.790097
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:41:09.046+02:00",
+    "_id": {
+      "$oid": "5cdeabe59e3ce40a531b7c28"
+    },
+    "timestamp": {
+      "$date": 1558104069046
+    },
+    "gateway_rssi": [
+      -15.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -17.973228
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.0
+    ],
+    "time": "2019-05-17T14:41:13.399+02:00",
+    "_id": {
+      "$oid": "5cdeabe99e3ce40a531b7c29"
+    },
+    "timestamp": {
+      "$date": 1558104073399
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.543649
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:41:17.732+02:00",
+    "_id": {
+      "$oid": "5cdeabee9e3ce40a531b7c2a"
+    },
+    "timestamp": {
+      "$date": 1558104077732
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:41:22.066+02:00",
+    "_id": {
+      "$oid": "5cdeabf29e3ce40a531b7c2b"
+    },
+    "timestamp": {
+      "$date": 1558104082066
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:41:26.395+02:00",
+    "_id": {
+      "$oid": "5cdeabf69e3ce40a531b7c2c"
+    },
+    "timestamp": {
+      "$date": 1558104086395
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -10.790097
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:41:30.738+02:00",
+    "_id": {
+      "$oid": "5cdeabfb9e3ce40a531b7c2d"
+    },
+    "timestamp": {
+      "$date": 1558104090738
+    },
+    "gateway_rssi": [
+      -10.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:41:35.069+02:00",
+    "_id": {
+      "$oid": "5cdeabff9e3ce40a531b7c2e"
+    },
+    "timestamp": {
+      "$date": 1558104095069
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.413927
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T14:41:39.417+02:00",
+    "_id": {
+      "$oid": "5cdeac039e3ce40a531b7c2f"
+    },
+    "timestamp": {
+      "$date": 1558104099417
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.924179
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.25
+    ],
+    "time": "2019-05-17T14:41:43.776+02:00",
+    "_id": {
+      "$oid": "5cdeac089e3ce40a531b7c30"
+    },
+    "timestamp": {
+      "$date": 1558104103776
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:41:48.112+02:00",
+    "_id": {
+      "$oid": "5cdeac0c9e3ce40a531b7c31"
+    },
+    "timestamp": {
+      "$date": 1558104108112
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:41:56.767+02:00",
+    "_id": {
+      "$oid": "5cdeac159e3ce40a531b7c32"
+    },
+    "timestamp": {
+      "$date": 1558104116767
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.790097
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:42:01.122+02:00",
+    "_id": {
+      "$oid": "5cdeac199e3ce40a531b7c33"
+    },
+    "timestamp": {
+      "$date": 1558104121122
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -10.543649
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:42:05.470+02:00",
+    "_id": {
+      "$oid": "5cdeac1d9e3ce40a531b7c34"
+    },
+    "timestamp": {
+      "$date": 1558104125470
+    },
+    "gateway_rssi": [
+      -10.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:42:09.812+02:00",
+    "_id": {
+      "$oid": "5cdeac229e3ce40a531b7c35"
+    },
+    "timestamp": {
+      "$date": 1558104129812
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:42:14.124+02:00",
+    "_id": {
+      "$oid": "5cdeac269e3ce40a531b7c36"
+    },
+    "timestamp": {
+      "$date": 1558104134124
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.391786
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:42:18.467+02:00",
+    "_id": {
+      "$oid": "5cdeac2a9e3ce40a531b7c37"
+    },
+    "timestamp": {
+      "$date": 1558104138467
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -9.790097
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:42:22.819+02:00",
+    "_id": {
+      "$oid": "5cdeac2f9e3ce40a531b7c38"
+    },
+    "timestamp": {
+      "$date": 1558104142819
+    },
+    "gateway_rssi": [
+      -9.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.543649
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:42:27.171+02:00",
+    "_id": {
+      "$oid": "5cdeac339e3ce40a531b7c39"
+    },
+    "timestamp": {
+      "$date": 1558104147171
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:42:31.504+02:00",
+    "_id": {
+      "$oid": "5cdeac379e3ce40a531b7c3a"
+    },
+    "timestamp": {
+      "$date": 1558104151504
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -9.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:42:35.822+02:00",
+    "_id": {
+      "$oid": "5cdeac3c9e3ce40a531b7c3b"
+    },
+    "timestamp": {
+      "$date": 1558104155822
+    },
+    "gateway_rssi": [
+      -9.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:42:44.538+02:00",
+    "_id": {
+      "$oid": "5cdeac449e3ce40a531b7c3c"
+    },
+    "timestamp": {
+      "$date": 1558104164538
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.391786
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:42:48.845+02:00",
+    "_id": {
+      "$oid": "5cdeac499e3ce40a531b7c3d"
+    },
+    "timestamp": {
+      "$date": 1558104168845
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -9.710818
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:42:53.202+02:00",
+    "_id": {
+      "$oid": "5cdeac4d9e3ce40a531b7c3e"
+    },
+    "timestamp": {
+      "$date": 1558104173202
+    },
+    "gateway_rssi": [
+      -9.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.924179
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.25
+    ],
+    "time": "2019-05-17T14:42:57.538+02:00",
+    "_id": {
+      "$oid": "5cdeac519e3ce40a531b7c3f"
+    },
+    "timestamp": {
+      "$date": 1558104177538
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:43:01.874+02:00",
+    "_id": {
+      "$oid": "5cdeac569e3ce40a531b7c40"
+    },
+    "timestamp": {
+      "$date": 1558104181874
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -12.543649
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:43:06.216+02:00",
+    "_id": {
+      "$oid": "5cdeac5a9e3ce40a531b7c41"
+    },
+    "timestamp": {
+      "$date": 1558104186216
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.710818
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:43:10.543+02:00",
+    "_id": {
+      "$oid": "5cdeac5e9e3ce40a531b7c42"
+    },
+    "timestamp": {
+      "$date": 1558104190543
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:43:14.877+02:00",
+    "_id": {
+      "$oid": "5cdeac639e3ce40a531b7c43"
+    },
+    "timestamp": {
+      "$date": 1558104194877
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:43:19.242+02:00",
+    "_id": {
+      "$oid": "5cdeac679e3ce40a531b7c44"
+    },
+    "timestamp": {
+      "$date": 1558104199242
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:43:23.556+02:00",
+    "_id": {
+      "$oid": "5cdeac6b9e3ce40a531b7c45"
+    },
+    "timestamp": {
+      "$date": 1558104203556
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -11.924179
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.25
+    ],
+    "time": "2019-05-17T14:43:27.922+02:00",
+    "_id": {
+      "$oid": "5cdeac709e3ce40a531b7c46"
+    },
+    "timestamp": {
+      "$date": 1558104207922
+    },
+    "gateway_rssi": [
+      -11.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:43:32.239+02:00",
+    "_id": {
+      "$oid": "5cdeac749e3ce40a531b7c47"
+    },
+    "timestamp": {
+      "$date": 1558104212239
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 1,
+    "gateway_esp": [
+      -13.391786
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:43:36.586+02:00",
+    "_id": {
+      "$oid": "5cdeac789e3ce40a531b7c48"
+    },
+    "timestamp": {
+      "$date": 1558104216586
+    },
+    "gateway_rssi": [
+      -13.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:44:34.996+02:00",
+    "_id": {
+      "$oid": "5cdeacb39e3ce40a531b7c49"
+    },
+    "timestamp": {
+      "$date": 1558104274996
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -15.673984
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.75
+    ],
+    "time": "2019-05-17T14:44:39.325+02:00",
+    "_id": {
+      "$oid": "5cdeacb79e3ce40a531b7c4a"
+    },
+    "timestamp": {
+      "$date": 1558104279325
+    },
+    "gateway_rssi": [
+      -15.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -12.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:44:43.658+02:00",
+    "_id": {
+      "$oid": "5cdeacbb9e3ce40a531b7c4b"
+    },
+    "timestamp": {
+      "$date": 1558104283658
+    },
+    "gateway_rssi": [
+      -12.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -15.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:44:48.001+02:00",
+    "_id": {
+      "$oid": "5cdeacc09e3ce40a531b7c4c"
+    },
+    "timestamp": {
+      "$date": 1558104288001
+    },
+    "gateway_rssi": [
+      -15.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -15.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:44:52.340+02:00",
+    "_id": {
+      "$oid": "5cdeacc49e3ce40a531b7c4d"
+    },
+    "timestamp": {
+      "$date": 1558104292340
+    },
+    "gateway_rssi": [
+      -15.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:44:56.677+02:00",
+    "_id": {
+      "$oid": "5cdeacc99e3ce40a531b7c4e"
+    },
+    "timestamp": {
+      "$date": 1558104296677
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -16.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:45:01.017+02:00",
+    "_id": {
+      "$oid": "5cdeaccd9e3ce40a531b7c4f"
+    },
+    "timestamp": {
+      "$date": 1558104301017
+    },
+    "gateway_rssi": [
+      -16.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T14:45:05.374+02:00",
+    "_id": {
+      "$oid": "5cdeacd19e3ce40a531b7c50"
+    },
+    "timestamp": {
+      "$date": 1558104305374
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -19.331957
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      11.0
+    ],
+    "time": "2019-05-17T14:45:09.697+02:00",
+    "_id": {
+      "$oid": "5cdeacd69e3ce40a531b7c51"
+    },
+    "timestamp": {
+      "$date": 1558104309697
+    },
+    "gateway_rssi": [
+      -19.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -19.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:45:14.041+02:00",
+    "_id": {
+      "$oid": "5cdeacda9e3ce40a531b7c52"
+    },
+    "timestamp": {
+      "$date": 1558104314041
+    },
+    "gateway_rssi": [
+      -19.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:45:18.445+02:00",
+    "_id": {
+      "$oid": "5cdeacde9e3ce40a531b7c53"
+    },
+    "timestamp": {
+      "$date": 1558104318445
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -19.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:45:22.846+02:00",
+    "_id": {
+      "$oid": "5cdeace39e3ce40a531b7c54"
+    },
+    "timestamp": {
+      "$date": 1558104322846
+    },
+    "gateway_rssi": [
+      -19.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.413927
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T14:45:27.233+02:00",
+    "_id": {
+      "$oid": "5cdeace79e3ce40a531b7c55"
+    },
+    "timestamp": {
+      "$date": 1558104327233
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -21.749498
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:45:31.629+02:00",
+    "_id": {
+      "$oid": "5cdeaceb9e3ce40a531b7c56"
+    },
+    "timestamp": {
+      "$date": 1558104331629
+    },
+    "gateway_rssi": [
+      -21.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:45:36.025+02:00",
+    "_id": {
+      "$oid": "5cdeacf09e3ce40a531b7c57"
+    },
+    "timestamp": {
+      "$date": 1558104336025
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T14:45:40.411+02:00",
+    "_id": {
+      "$oid": "5cdeacf49e3ce40a531b7c58"
+    },
+    "timestamp": {
+      "$date": 1558104340411
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T14:45:44.798+02:00",
+    "_id": {
+      "$oid": "5cdeacf99e3ce40a531b7c59"
+    },
+    "timestamp": {
+      "$date": 1558104344798
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:45:49.190+02:00",
+    "_id": {
+      "$oid": "5cdeacfd9e3ce40a531b7c5a"
+    },
+    "timestamp": {
+      "$date": 1558104349190
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -19.350851
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.75
+    ],
+    "time": "2019-05-17T14:45:53.589+02:00",
+    "_id": {
+      "$oid": "5cdead019e3ce40a531b7c5b"
+    },
+    "timestamp": {
+      "$date": 1558104353589
+    },
+    "gateway_rssi": [
+      -19.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:45:57.990+02:00",
+    "_id": {
+      "$oid": "5cdead069e3ce40a531b7c5c"
+    },
+    "timestamp": {
+      "$date": 1558104357990
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:46:02.385+02:00",
+    "_id": {
+      "$oid": "5cdead0a9e3ce40a531b7c5d"
+    },
+    "timestamp": {
+      "$date": 1558104362385
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:46:06.771+02:00",
+    "_id": {
+      "$oid": "5cdead0f9e3ce40a531b7c5e"
+    },
+    "timestamp": {
+      "$date": 1558104366771
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:46:11.162+02:00",
+    "_id": {
+      "$oid": "5cdead139e3ce40a531b7c5f"
+    },
+    "timestamp": {
+      "$date": 1558104371162
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:46:15.555+02:00",
+    "_id": {
+      "$oid": "5cdead179e3ce40a531b7c60"
+    },
+    "timestamp": {
+      "$date": 1558104375555
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:46:19.964+02:00",
+    "_id": {
+      "$oid": "5cdead1c9e3ce40a531b7c61"
+    },
+    "timestamp": {
+      "$date": 1558104379964
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:46:24.352+02:00",
+    "_id": {
+      "$oid": "5cdead209e3ce40a531b7c62"
+    },
+    "timestamp": {
+      "$date": 1558104384352
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:46:28.749+02:00",
+    "_id": {
+      "$oid": "5cdead259e3ce40a531b7c63"
+    },
+    "timestamp": {
+      "$date": 1558104388749
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:46:33.143+02:00",
+    "_id": {
+      "$oid": "5cdead299e3ce40a531b7c64"
+    },
+    "timestamp": {
+      "$date": 1558104393143
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -16.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:46:37.546+02:00",
+    "_id": {
+      "$oid": "5cdead2d9e3ce40a531b7c65"
+    },
+    "timestamp": {
+      "$date": 1558104397546
+    },
+    "gateway_rssi": [
+      -16.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -17.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:46:41.929+02:00",
+    "_id": {
+      "$oid": "5cdead329e3ce40a531b7c66"
+    },
+    "timestamp": {
+      "$date": 1558104401929
+    },
+    "gateway_rssi": [
+      -17.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.924179
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.25
+    ],
+    "time": "2019-05-17T14:46:46.326+02:00",
+    "_id": {
+      "$oid": "5cdead369e3ce40a531b7c67"
+    },
+    "timestamp": {
+      "$date": 1558104406326
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -15.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:46:50.710+02:00",
+    "_id": {
+      "$oid": "5cdead3b9e3ce40a531b7c68"
+    },
+    "timestamp": {
+      "$date": 1558104410710
+    },
+    "gateway_rssi": [
+      -15.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -18.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:46:55.105+02:00",
+    "_id": {
+      "$oid": "5cdead3f9e3ce40a531b7c69"
+    },
+    "timestamp": {
+      "$date": 1558104415105
+    },
+    "gateway_rssi": [
+      -18.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -16.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:46:59.512+02:00",
+    "_id": {
+      "$oid": "5cdead439e3ce40a531b7c6a"
+    },
+    "timestamp": {
+      "$date": 1558104419512
+    },
+    "gateway_rssi": [
+      -16.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 2,
+    "gateway_esp": [
+      -23.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:47:03.896+02:00",
+    "_id": {
+      "$oid": "5cdead489e3ce40a531b7c6b"
+    },
+    "timestamp": {
+      "$date": 1558104423896
+    },
+    "gateway_rssi": [
+      -23.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -24.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:47:53.483+02:00",
+    "_id": {
+      "$oid": "5cdead799e3ce40a531b7c6c"
+    },
+    "timestamp": {
+      "$date": 1558104473483
+    },
+    "gateway_rssi": [
+      -24.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.391785
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:47:57.824+02:00",
+    "_id": {
+      "$oid": "5cdead7e9e3ce40a531b7c6d"
+    },
+    "timestamp": {
+      "$date": 1558104477824
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -25.391785
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:48:02.176+02:00",
+    "_id": {
+      "$oid": "5cdead829e3ce40a531b7c6e"
+    },
+    "timestamp": {
+      "$date": 1558104482176
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -25.63892
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.0
+    ],
+    "time": "2019-05-17T14:48:06.500+02:00",
+    "_id": {
+      "$oid": "5cdead869e3ce40a531b7c6f"
+    },
+    "timestamp": {
+      "$date": 1558104486500
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -24.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:48:10.855+02:00",
+    "_id": {
+      "$oid": "5cdead8b9e3ce40a531b7c70"
+    },
+    "timestamp": {
+      "$date": 1558104490855
+    },
+    "gateway_rssi": [
+      -24.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -24.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:48:28.199+02:00",
+    "_id": {
+      "$oid": "5cdead9c9e3ce40a531b7c74"
+    },
+    "timestamp": {
+      "$date": 1558104508199
+    },
+    "gateway_rssi": [
+      -24.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -27.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:48:32.541+02:00",
+    "_id": {
+      "$oid": "5cdeada09e3ce40a531b7c75"
+    },
+    "timestamp": {
+      "$date": 1558104512541
+    },
+    "gateway_rssi": [
+      -27.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -24.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:48:36.939+02:00",
+    "_id": {
+      "$oid": "5cdeada59e3ce40a531b7c76"
+    },
+    "timestamp": {
+      "$date": 1558104516939
+    },
+    "gateway_rssi": [
+      -24.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -24.749498
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:48:41.333+02:00",
+    "_id": {
+      "$oid": "5cdeada99e3ce40a531b7c77"
+    },
+    "timestamp": {
+      "$date": 1558104521333
+    },
+    "gateway_rssi": [
+      -24.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -25.391785
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:48:45.720+02:00",
+    "_id": {
+      "$oid": "5cdeadae9e3ce40a531b7c78"
+    },
+    "timestamp": {
+      "$date": 1558104525720
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -25.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:48:50.119+02:00",
+    "_id": {
+      "$oid": "5cdeadb29e3ce40a531b7c79"
+    },
+    "timestamp": {
+      "$date": 1558104530119
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -25.749498
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:48:54.512+02:00",
+    "_id": {
+      "$oid": "5cdeadb69e3ce40a531b7c7a"
+    },
+    "timestamp": {
+      "$date": 1558104534512
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -27.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:48:58.916+02:00",
+    "_id": {
+      "$oid": "5cdeadbb9e3ce40a531b7c7b"
+    },
+    "timestamp": {
+      "$date": 1558104538916
+    },
+    "gateway_rssi": [
+      -27.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.370777
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.5
+    ],
+    "time": "2019-05-17T14:49:03.303+02:00",
+    "_id": {
+      "$oid": "5cdeadbf9e3ce40a531b7c7c"
+    },
+    "timestamp": {
+      "$date": 1558104543303
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:49:07.702+02:00",
+    "_id": {
+      "$oid": "5cdeadc49e3ce40a531b7c7d"
+    },
+    "timestamp": {
+      "$date": 1558104547702
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:49:12.094+02:00",
+    "_id": {
+      "$oid": "5cdeadc89e3ce40a531b7c7e"
+    },
+    "timestamp": {
+      "$date": 1558104552094
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:49:16.494+02:00",
+    "_id": {
+      "$oid": "5cdeadcc9e3ce40a531b7c7f"
+    },
+    "timestamp": {
+      "$date": 1558104556494
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -26.63892
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.0
+    ],
+    "time": "2019-05-17T14:49:20.886+02:00",
+    "_id": {
+      "$oid": "5cdeadd19e3ce40a531b7c80"
+    },
+    "timestamp": {
+      "$date": 1558104560886
+    },
+    "gateway_rssi": [
+      -26.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:49:25.263+02:00",
+    "_id": {
+      "$oid": "5cdeadd59e3ce40a531b7c81"
+    },
+    "timestamp": {
+      "$date": 1558104565263
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -27.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:49:29.664+02:00",
+    "_id": {
+      "$oid": "5cdeadd99e3ce40a531b7c82"
+    },
+    "timestamp": {
+      "$date": 1558104569664
+    },
+    "gateway_rssi": [
+      -27.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:49:34.056+02:00",
+    "_id": {
+      "$oid": "5cdeadde9e3ce40a531b7c83"
+    },
+    "timestamp": {
+      "$date": 1558104574056
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -30.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:49:38.450+02:00",
+    "_id": {
+      "$oid": "5cdeade29e3ce40a531b7c84"
+    },
+    "timestamp": {
+      "$date": 1558104578450
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:49:42.864+02:00",
+    "_id": {
+      "$oid": "5cdeade79e3ce40a531b7c85"
+    },
+    "timestamp": {
+      "$date": 1558104582864
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.350851
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.75
+    ],
+    "time": "2019-05-17T14:49:47.254+02:00",
+    "_id": {
+      "$oid": "5cdeadeb9e3ce40a531b7c86"
+    },
+    "timestamp": {
+      "$date": 1558104587254
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:49:51.654+02:00",
+    "_id": {
+      "$oid": "5cdeadef9e3ce40a531b7c87"
+    },
+    "timestamp": {
+      "$date": 1558104591654
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -30.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:49:56.056+02:00",
+    "_id": {
+      "$oid": "5cdeadf49e3ce40a531b7c88"
+    },
+    "timestamp": {
+      "$date": 1558104596056
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:50:00.439+02:00",
+    "_id": {
+      "$oid": "5cdeadf89e3ce40a531b7c89"
+    },
+    "timestamp": {
+      "$date": 1558104600439
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -27.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:50:04.833+02:00",
+    "_id": {
+      "$oid": "5cdeadfd9e3ce40a531b7c8a"
+    },
+    "timestamp": {
+      "$date": 1558104604833
+    },
+    "gateway_rssi": [
+      -27.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -25.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:50:09.219+02:00",
+    "_id": {
+      "$oid": "5cdeae019e3ce40a531b7c8b"
+    },
+    "timestamp": {
+      "$date": 1558104609219
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -30.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:50:13.606+02:00",
+    "_id": {
+      "$oid": "5cdeae059e3ce40a531b7c8c"
+    },
+    "timestamp": {
+      "$date": 1558104613606
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -24.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:50:18.004+02:00",
+    "_id": {
+      "$oid": "5cdeae0a9e3ce40a531b7c8d"
+    },
+    "timestamp": {
+      "$date": 1558104618004
+    },
+    "gateway_rssi": [
+      -24.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -25.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:50:22.387+02:00",
+    "_id": {
+      "$oid": "5cdeae0e9e3ce40a531b7c8e"
+    },
+    "timestamp": {
+      "$date": 1558104622387
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -29.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:50:26.799+02:00",
+    "_id": {
+      "$oid": "5cdeae139e3ce40a531b7c8f"
+    },
+    "timestamp": {
+      "$date": 1558104626799
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -30.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:50:31.201+02:00",
+    "_id": {
+      "$oid": "5cdeae179e3ce40a531b7c90"
+    },
+    "timestamp": {
+      "$date": 1558104631201
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 3,
+    "gateway_esp": [
+      -24.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:50:35.579+02:00",
+    "_id": {
+      "$oid": "5cdeae1b9e3ce40a531b7c91"
+    },
+    "timestamp": {
+      "$date": 1558104635579
+    },
+    "gateway_rssi": [
+      -24.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -34.749496
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:52:07.610+02:00",
+    "_id": {
+      "$oid": "5cdeae779e3ce40a531b7c92"
+    },
+    "timestamp": {
+      "$date": 1558104727610
+    },
+    "gateway_rssi": [
+      -34.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -39.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:52:11.950+02:00",
+    "_id": {
+      "$oid": "5cdeae7c9e3ce40a531b7c93"
+    },
+    "timestamp": {
+      "$date": 1558104731950
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -36.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:52:16.317+02:00",
+    "_id": {
+      "$oid": "5cdeae809e3ce40a531b7c94"
+    },
+    "timestamp": {
+      "$date": 1558104736317
+    },
+    "gateway_rssi": [
+      -36.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -37.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:52:20.639+02:00",
+    "_id": {
+      "$oid": "5cdeae849e3ce40a531b7c95"
+    },
+    "timestamp": {
+      "$date": 1558104740639
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.413925
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T14:52:24.984+02:00",
+    "_id": {
+      "$oid": "5cdeae899e3ce40a531b7c96"
+    },
+    "timestamp": {
+      "$date": 1558104744984
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -31.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:52:29.316+02:00",
+    "_id": {
+      "$oid": "5cdeae8d9e3ce40a531b7c97"
+    },
+    "timestamp": {
+      "$date": 1558104749316
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -36.391785
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:52:33.644+02:00",
+    "_id": {
+      "$oid": "5cdeae919e3ce40a531b7c98"
+    },
+    "timestamp": {
+      "$date": 1558104753644
+    },
+    "gateway_rssi": [
+      -36.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.543648
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:52:37.998+02:00",
+    "_id": {
+      "$oid": "5cdeae969e3ce40a531b7c99"
+    },
+    "timestamp": {
+      "$date": 1558104757998
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:53:04.256+02:00",
+    "_id": {
+      "$oid": "5cdeaeb09e3ce40a531b7c9f"
+    },
+    "timestamp": {
+      "$date": 1558104784256
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -32.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:53:08.635+02:00",
+    "_id": {
+      "$oid": "5cdeaeb49e3ce40a531b7ca0"
+    },
+    "timestamp": {
+      "$date": 1558104788635
+    },
+    "gateway_rssi": [
+      -32.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:53:13.046+02:00",
+    "_id": {
+      "$oid": "5cdeaeb99e3ce40a531b7ca1"
+    },
+    "timestamp": {
+      "$date": 1558104793046
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.413925
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T14:53:17.424+02:00",
+    "_id": {
+      "$oid": "5cdeaebd9e3ce40a531b7ca2"
+    },
+    "timestamp": {
+      "$date": 1558104797424
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -34.673985
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.75
+    ],
+    "time": "2019-05-17T14:53:21.822+02:00",
+    "_id": {
+      "$oid": "5cdeaec29e3ce40a531b7ca3"
+    },
+    "timestamp": {
+      "$date": 1558104801822
+    },
+    "gateway_rssi": [
+      -34.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:53:26.219+02:00",
+    "_id": {
+      "$oid": "5cdeaec69e3ce40a531b7ca4"
+    },
+    "timestamp": {
+      "$date": 1558104806219
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -36.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:53:30.602+02:00",
+    "_id": {
+      "$oid": "5cdeaeca9e3ce40a531b7ca5"
+    },
+    "timestamp": {
+      "$date": 1558104810602
+    },
+    "gateway_rssi": [
+      -36.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.749496
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:53:35.004+02:00",
+    "_id": {
+      "$oid": "5cdeaecf9e3ce40a531b7ca6"
+    },
+    "timestamp": {
+      "$date": 1558104815004
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -32.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:53:39.398+02:00",
+    "_id": {
+      "$oid": "5cdeaed39e3ce40a531b7ca7"
+    },
+    "timestamp": {
+      "$date": 1558104819398
+    },
+    "gateway_rssi": [
+      -32.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:53:43.801+02:00",
+    "_id": {
+      "$oid": "5cdeaed89e3ce40a531b7ca8"
+    },
+    "timestamp": {
+      "$date": 1558104823801
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:53:48.178+02:00",
+    "_id": {
+      "$oid": "5cdeaedc9e3ce40a531b7ca9"
+    },
+    "timestamp": {
+      "$date": 1558104828178
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:53:52.588+02:00",
+    "_id": {
+      "$oid": "5cdeaee09e3ce40a531b7caa"
+    },
+    "timestamp": {
+      "$date": 1558104832588
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.673985
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.75
+    ],
+    "time": "2019-05-17T14:53:56.969+02:00",
+    "_id": {
+      "$oid": "5cdeaee59e3ce40a531b7cab"
+    },
+    "timestamp": {
+      "$date": 1558104836969
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:54:01.366+02:00",
+    "_id": {
+      "$oid": "5cdeaee99e3ce40a531b7cac"
+    },
+    "timestamp": {
+      "$date": 1558104841366
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.605556
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.25
+    ],
+    "time": "2019-05-17T14:54:10.154+02:00",
+    "_id": {
+      "$oid": "5cdeaef29e3ce40a531b7cad"
+    },
+    "timestamp": {
+      "$date": 1558104850154
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.749496
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:54:14.549+02:00",
+    "_id": {
+      "$oid": "5cdeaef69e3ce40a531b7cae"
+    },
+    "timestamp": {
+      "$date": 1558104854549
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -31.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:54:18.952+02:00",
+    "_id": {
+      "$oid": "5cdeaefb9e3ce40a531b7caf"
+    },
+    "timestamp": {
+      "$date": 1558104858952
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:54:23.329+02:00",
+    "_id": {
+      "$oid": "5cdeaeff9e3ce40a531b7cb0"
+    },
+    "timestamp": {
+      "$date": 1558104863329
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.370777
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.5
+    ],
+    "time": "2019-05-17T14:54:27.731+02:00",
+    "_id": {
+      "$oid": "5cdeaf049e3ce40a531b7cb1"
+    },
+    "timestamp": {
+      "$date": 1558104867731
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T14:54:32.121+02:00",
+    "_id": {
+      "$oid": "5cdeaf089e3ce40a531b7cb2"
+    },
+    "timestamp": {
+      "$date": 1558104872121
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.391785
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:54:40.916+02:00",
+    "_id": {
+      "$oid": "5cdeaf119e3ce40a531b7cb3"
+    },
+    "timestamp": {
+      "$date": 1558104880916
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -31.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T14:54:45.303+02:00",
+    "_id": {
+      "$oid": "5cdeaf159e3ce40a531b7cb4"
+    },
+    "timestamp": {
+      "$date": 1558104885303
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:54:49.694+02:00",
+    "_id": {
+      "$oid": "5cdeaf1a9e3ce40a531b7cb5"
+    },
+    "timestamp": {
+      "$date": 1558104889694
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -33.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:54:54.101+02:00",
+    "_id": {
+      "$oid": "5cdeaf1e9e3ce40a531b7cb6"
+    },
+    "timestamp": {
+      "$date": 1558104894101
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -35.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:54:58.500+02:00",
+    "_id": {
+      "$oid": "5cdeaf229e3ce40a531b7cb7"
+    },
+    "timestamp": {
+      "$date": 1558104898500
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -36.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T14:55:02.879+02:00",
+    "_id": {
+      "$oid": "5cdeaf279e3ce40a531b7cb8"
+    },
+    "timestamp": {
+      "$date": 1558104902879
+    },
+    "gateway_rssi": [
+      -36.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 4,
+    "gateway_esp": [
+      -31.749498
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:55:07.282+02:00",
+    "_id": {
+      "$oid": "5cdeaf2b9e3ce40a531b7cb9"
+    },
+    "timestamp": {
+      "$date": 1558104907282
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -33.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:55:41.550+02:00",
+    "_id": {
+      "$oid": "5cdeaf4d9e3ce40a531b7cba"
+    },
+    "timestamp": {
+      "$date": 1558104941550
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -36.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:55:45.956+02:00",
+    "_id": {
+      "$oid": "5cdeaf529e3ce40a531b7cbb"
+    },
+    "timestamp": {
+      "$date": 1558104945956
+    },
+    "gateway_rssi": [
+      -36.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -37.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:55:50.333+02:00",
+    "_id": {
+      "$oid": "5cdeaf569e3ce40a531b7cbc"
+    },
+    "timestamp": {
+      "$date": 1558104950333
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -39.543648
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:55:54.728+02:00",
+    "_id": {
+      "$oid": "5cdeaf5b9e3ce40a531b7cbd"
+    },
+    "timestamp": {
+      "$date": 1558104954728
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -41.673985
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.75
+    ],
+    "time": "2019-05-17T14:56:12.318+02:00",
+    "_id": {
+      "$oid": "5cdeaf6c9e3ce40a531b7cc1"
+    },
+    "timestamp": {
+      "$date": 1558104972318
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -37.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:56:16.698+02:00",
+    "_id": {
+      "$oid": "5cdeaf719e3ce40a531b7cc2"
+    },
+    "timestamp": {
+      "$date": 1558104976698
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -43.391785
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.25
+    ],
+    "time": "2019-05-17T14:56:21.104+02:00",
+    "_id": {
+      "$oid": "5cdeaf759e3ce40a531b7cc3"
+    },
+    "timestamp": {
+      "$date": 1558104981104
+    },
+    "gateway_rssi": [
+      -43.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -43.543648
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:56:25.544+02:00",
+    "_id": {
+      "$oid": "5cdeaf799e3ce40a531b7cc4"
+    },
+    "timestamp": {
+      "$date": 1558104985544
+    },
+    "gateway_rssi": [
+      -43.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -42.413925
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T14:56:29.991+02:00",
+    "_id": {
+      "$oid": "5cdeaf7e9e3ce40a531b7cc5"
+    },
+    "timestamp": {
+      "$date": 1558104989991
+    },
+    "gateway_rssi": [
+      -42.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -59.605556
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.25
+    ],
+    "time": "2019-05-17T14:56:34.451+02:00",
+    "_id": {
+      "$oid": "5cdeaf829e3ce40a531b7cc6"
+    },
+    "timestamp": {
+      "$date": 1558104994451
+    },
+    "gateway_rssi": [
+      -59.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -52.543648
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:56:38.896+02:00",
+    "_id": {
+      "$oid": "5cdeaf879e3ce40a531b7cc7"
+    },
+    "timestamp": {
+      "$date": 1558104998896
+    },
+    "gateway_rssi": [
+      -52.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -49.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:56:43.336+02:00",
+    "_id": {
+      "$oid": "5cdeaf8b9e3ce40a531b7cc8"
+    },
+    "timestamp": {
+      "$date": 1558105003336
+    },
+    "gateway_rssi": [
+      -49.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -45.790096
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:56:47.796+02:00",
+    "_id": {
+      "$oid": "5cdeaf909e3ce40a531b7cc9"
+    },
+    "timestamp": {
+      "$date": 1558105007796
+    },
+    "gateway_rssi": [
+      -45.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -39.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T14:56:52.228+02:00",
+    "_id": {
+      "$oid": "5cdeaf949e3ce40a531b7cca"
+    },
+    "timestamp": {
+      "$date": 1558105012228
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -48.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T14:56:56.695+02:00",
+    "_id": {
+      "$oid": "5cdeaf989e3ce40a531b7ccb"
+    },
+    "timestamp": {
+      "$date": 1558105016695
+    },
+    "gateway_rssi": [
+      -48.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -42.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T14:57:01.126+02:00",
+    "_id": {
+      "$oid": "5cdeaf9d9e3ce40a531b7ccc"
+    },
+    "timestamp": {
+      "$date": 1558105021126
+    },
+    "gateway_rssi": [
+      -42.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -42.605556
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.25
+    ],
+    "time": "2019-05-17T14:57:05.581+02:00",
+    "_id": {
+      "$oid": "5cdeafa19e3ce40a531b7ccd"
+    },
+    "timestamp": {
+      "$date": 1558105025581
+    },
+    "gateway_rssi": [
+      -42.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -49.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:57:10.034+02:00",
+    "_id": {
+      "$oid": "5cdeafa69e3ce40a531b7cce"
+    },
+    "timestamp": {
+      "$date": 1558105030034
+    },
+    "gateway_rssi": [
+      -49.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -45.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:57:14.479+02:00",
+    "_id": {
+      "$oid": "5cdeafaa9e3ce40a531b7ccf"
+    },
+    "timestamp": {
+      "$date": 1558105034479
+    },
+    "gateway_rssi": [
+      -45.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -57.790096
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:57:18.921+02:00",
+    "_id": {
+      "$oid": "5cdeafaf9e3ce40a531b7cd0"
+    },
+    "timestamp": {
+      "$date": 1558105038921
+    },
+    "gateway_rssi": [
+      -57.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -58.790096
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T14:57:23.367+02:00",
+    "_id": {
+      "$oid": "5cdeafb39e3ce40a531b7cd1"
+    },
+    "timestamp": {
+      "$date": 1558105043367
+    },
+    "gateway_rssi": [
+      -58.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -41.370777
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.5
+    ],
+    "time": "2019-05-17T14:57:27.819+02:00",
+    "_id": {
+      "$oid": "5cdeafb89e3ce40a531b7cd2"
+    },
+    "timestamp": {
+      "$date": 1558105047819
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -53.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:57:32.266+02:00",
+    "_id": {
+      "$oid": "5cdeafbc9e3ce40a531b7cd3"
+    },
+    "timestamp": {
+      "$date": 1558105052266
+    },
+    "gateway_rssi": [
+      -53.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -47.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:57:36.726+02:00",
+    "_id": {
+      "$oid": "5cdeafc19e3ce40a531b7cd4"
+    },
+    "timestamp": {
+      "$date": 1558105056726
+    },
+    "gateway_rssi": [
+      -47.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -42.749496
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T14:57:41.168+02:00",
+    "_id": {
+      "$oid": "5cdeafc59e3ce40a531b7cd5"
+    },
+    "timestamp": {
+      "$date": 1558105061168
+    },
+    "gateway_rssi": [
+      -42.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -49.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:57:45.626+02:00",
+    "_id": {
+      "$oid": "5cdeafc99e3ce40a531b7cd6"
+    },
+    "timestamp": {
+      "$date": 1558105065626
+    },
+    "gateway_rssi": [
+      -49.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -49.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:57:50.065+02:00",
+    "_id": {
+      "$oid": "5cdeafce9e3ce40a531b7cd7"
+    },
+    "timestamp": {
+      "$date": 1558105070065
+    },
+    "gateway_rssi": [
+      -49.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -51.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:57:54.514+02:00",
+    "_id": {
+      "$oid": "5cdeafd29e3ce40a531b7cd8"
+    },
+    "timestamp": {
+      "$date": 1558105074514
+    },
+    "gateway_rssi": [
+      -51.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -51.973228
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.0
+    ],
+    "time": "2019-05-17T14:57:58.966+02:00",
+    "_id": {
+      "$oid": "5cdeafd79e3ce40a531b7cd9"
+    },
+    "timestamp": {
+      "$date": 1558105078966
+    },
+    "gateway_rssi": [
+      -51.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -39.543648
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T14:58:03.419+02:00",
+    "_id": {
+      "$oid": "5cdeafdb9e3ce40a531b7cda"
+    },
+    "timestamp": {
+      "$date": 1558105083419
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -51.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T14:58:07.865+02:00",
+    "_id": {
+      "$oid": "5cdeafe09e3ce40a531b7cdb"
+    },
+    "timestamp": {
+      "$date": 1558105087865
+    },
+    "gateway_rssi": [
+      -51.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -46.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T14:58:12.308+02:00",
+    "_id": {
+      "$oid": "5cdeafe49e3ce40a531b7cdc"
+    },
+    "timestamp": {
+      "$date": 1558105092308
+    },
+    "gateway_rssi": [
+      -46.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -43.673985
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.75
+    ],
+    "time": "2019-05-17T14:58:16.755+02:00",
+    "_id": {
+      "$oid": "5cdeafe99e3ce40a531b7cdd"
+    },
+    "timestamp": {
+      "$date": 1558105096755
+    },
+    "gateway_rssi": [
+      -43.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -53.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T14:58:21.205+02:00",
+    "_id": {
+      "$oid": "5cdeafed9e3ce40a531b7cde"
+    },
+    "timestamp": {
+      "$date": 1558105101205
+    },
+    "gateway_rssi": [
+      -53.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 5,
+    "gateway_esp": [
+      -60.370777
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.5
+    ],
+    "time": "2019-05-17T14:58:25.654+02:00",
+    "_id": {
+      "$oid": "5cdeaff19e3ce40a531b7cdf"
+    },
+    "timestamp": {
+      "$date": 1558105105654
+    },
+    "gateway_rssi": [
+      -60.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.877361
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.5
+    ],
+    "time": "2019-05-17T15:00:29.607+02:00",
+    "_id": {
+      "$oid": "5cdeb06d9e3ce40a531b7ce0"
+    },
+    "timestamp": {
+      "$date": 1558105229607
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T15:00:34.064+02:00",
+    "_id": {
+      "$oid": "5cdeb0729e3ce40a531b7ce1"
+    },
+    "timestamp": {
+      "$date": 1558105234064
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T15:00:47.410+02:00",
+    "_id": {
+      "$oid": "5cdeb07f9e3ce40a531b7ce4"
+    },
+    "timestamp": {
+      "$date": 1558105247410
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -28.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T15:00:51.866+02:00",
+    "_id": {
+      "$oid": "5cdeb0849e3ce40a531b7ce5"
+    },
+    "timestamp": {
+      "$date": 1558105251866
+    },
+    "gateway_rssi": [
+      -28.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -28.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T15:00:56.309+02:00",
+    "_id": {
+      "$oid": "5cdeb0889e3ce40a531b7ce6"
+    },
+    "timestamp": {
+      "$date": 1558105256309
+    },
+    "gateway_rssi": [
+      -28.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -25.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T15:01:00.772+02:00",
+    "_id": {
+      "$oid": "5cdeb08d9e3ce40a531b7ce7"
+    },
+    "timestamp": {
+      "$date": 1558105260772
+    },
+    "gateway_rssi": [
+      -25.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.973228
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.0
+    ],
+    "time": "2019-05-17T15:01:05.199+02:00",
+    "_id": {
+      "$oid": "5cdeb0919e3ce40a531b7ce8"
+    },
+    "timestamp": {
+      "$date": 1558105265199
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -29.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:01:09.651+02:00",
+    "_id": {
+      "$oid": "5cdeb0959e3ce40a531b7ce9"
+    },
+    "timestamp": {
+      "$date": 1558105269651
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:01:13.974+02:00",
+    "_id": {
+      "$oid": "5cdeb09a9e3ce40a531b7cea"
+    },
+    "timestamp": {
+      "$date": 1558105273974
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.877361
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.5
+    ],
+    "time": "2019-05-17T15:01:18.288+02:00",
+    "_id": {
+      "$oid": "5cdeb09e9e3ce40a531b7ceb"
+    },
+    "timestamp": {
+      "$date": 1558105278288
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -29.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T15:01:22.602+02:00",
+    "_id": {
+      "$oid": "5cdeb0a29e3ce40a531b7cec"
+    },
+    "timestamp": {
+      "$date": 1558105282602
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -29.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T15:01:26.920+02:00",
+    "_id": {
+      "$oid": "5cdeb0a79e3ce40a531b7ced"
+    },
+    "timestamp": {
+      "$date": 1558105286920
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -33.413925
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T15:01:31.227+02:00",
+    "_id": {
+      "$oid": "5cdeb0ab9e3ce40a531b7cee"
+    },
+    "timestamp": {
+      "$date": 1558105291227
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -28.790098
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T15:01:35.546+02:00",
+    "_id": {
+      "$oid": "5cdeb0af9e3ce40a531b7cef"
+    },
+    "timestamp": {
+      "$date": 1558105295546
+    },
+    "gateway_rssi": [
+      -28.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:01:39.854+02:00",
+    "_id": {
+      "$oid": "5cdeb0b49e3ce40a531b7cf0"
+    },
+    "timestamp": {
+      "$date": 1558105299854
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:01:44.175+02:00",
+    "_id": {
+      "$oid": "5cdeb0b89e3ce40a531b7cf1"
+    },
+    "timestamp": {
+      "$date": 1558105304175
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -35.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T15:01:48.485+02:00",
+    "_id": {
+      "$oid": "5cdeb0bc9e3ce40a531b7cf2"
+    },
+    "timestamp": {
+      "$date": 1558105308485
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -35.924179
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.25
+    ],
+    "time": "2019-05-17T15:01:52.806+02:00",
+    "_id": {
+      "$oid": "5cdeb0c19e3ce40a531b7cf3"
+    },
+    "timestamp": {
+      "$date": 1558105312806
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T15:01:57.122+02:00",
+    "_id": {
+      "$oid": "5cdeb0c59e3ce40a531b7cf4"
+    },
+    "timestamp": {
+      "$date": 1558105317122
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.413927
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T15:02:01.433+02:00",
+    "_id": {
+      "$oid": "5cdeb0c99e3ce40a531b7cf5"
+    },
+    "timestamp": {
+      "$date": 1558105321433
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T15:02:05.774+02:00",
+    "_id": {
+      "$oid": "5cdeb0ce9e3ce40a531b7cf6"
+    },
+    "timestamp": {
+      "$date": 1558105325774
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -28.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:02:10.053+02:00",
+    "_id": {
+      "$oid": "5cdeb0d29e3ce40a531b7cf7"
+    },
+    "timestamp": {
+      "$date": 1558105330053
+    },
+    "gateway_rssi": [
+      -28.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.413927
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T15:02:14.376+02:00",
+    "_id": {
+      "$oid": "5cdeb0d69e3ce40a531b7cf8"
+    },
+    "timestamp": {
+      "$date": 1558105334376
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -33.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:02:18.694+02:00",
+    "_id": {
+      "$oid": "5cdeb0db9e3ce40a531b7cf9"
+    },
+    "timestamp": {
+      "$date": 1558105338694
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.54365
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T15:02:23.004+02:00",
+    "_id": {
+      "$oid": "5cdeb0df9e3ce40a531b7cfa"
+    },
+    "timestamp": {
+      "$date": 1558105343004
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -29.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T15:02:27.311+02:00",
+    "_id": {
+      "$oid": "5cdeb0e39e3ce40a531b7cfb"
+    },
+    "timestamp": {
+      "$date": 1558105347311
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -29.832693
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      6.75
+    ],
+    "time": "2019-05-17T15:02:31.623+02:00",
+    "_id": {
+      "$oid": "5cdeb0e79e3ce40a531b7cfc"
+    },
+    "timestamp": {
+      "$date": 1558105351623
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.370777
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.5
+    ],
+    "time": "2019-05-17T15:02:35.954+02:00",
+    "_id": {
+      "$oid": "5cdeb0ec9e3ce40a531b7cfd"
+    },
+    "timestamp": {
+      "$date": 1558105355954
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -28.573822
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.5
+    ],
+    "time": "2019-05-17T15:02:40.264+02:00",
+    "_id": {
+      "$oid": "5cdeb0f09e3ce40a531b7cfe"
+    },
+    "timestamp": {
+      "$date": 1558105360264
+    },
+    "gateway_rssi": [
+      -28.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -29.749498
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T15:02:44.571+02:00",
+    "_id": {
+      "$oid": "5cdeb0f49e3ce40a531b7cff"
+    },
+    "timestamp": {
+      "$date": 1558105364571
+    },
+    "gateway_rssi": [
+      -29.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -28.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:02:48.892+02:00",
+    "_id": {
+      "$oid": "5cdeb0f99e3ce40a531b7d00"
+    },
+    "timestamp": {
+      "$date": 1558105368892
+    },
+    "gateway_rssi": [
+      -28.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -30.461836
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:02:53.202+02:00",
+    "_id": {
+      "$oid": "5cdeb0fd9e3ce40a531b7d01"
+    },
+    "timestamp": {
+      "$date": 1558105373202
+    },
+    "gateway_rssi": [
+      -30.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -31.437258
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:02:57.514+02:00",
+    "_id": {
+      "$oid": "5cdeb1019e3ce40a531b7d02"
+    },
+    "timestamp": {
+      "$date": 1558105377514
+    },
+    "gateway_rssi": [
+      -31.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -27.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T15:03:01.833+02:00",
+    "_id": {
+      "$oid": "5cdeb1069e3ce40a531b7d03"
+    },
+    "timestamp": {
+      "$date": 1558105381833
+    },
+    "gateway_rssi": [
+      -27.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 6,
+    "gateway_esp": [
+      -33.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:03:06.146+02:00",
+    "_id": {
+      "$oid": "5cdeb10a9e3ce40a531b7d04"
+    },
+    "timestamp": {
+      "$date": 1558105386146
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:03:15.189+02:00",
+    "_id": {
+      "$oid": "5cdeb1139e3ce40a531b7d05"
+    },
+    "timestamp": {
+      "$date": 1558105395189
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -34.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:03:19.641+02:00",
+    "_id": {
+      "$oid": "5cdeb1179e3ce40a531b7d06"
+    },
+    "timestamp": {
+      "$date": 1558105399641
+    },
+    "gateway_rssi": [
+      -34.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -34.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:03:19.641+02:00",
+    "_id": {
+      "$oid": "5cdeb1179e3ce40a531b7d06"
+    },
+    "timestamp": {
+      "$date": 1558105399641
+    },
+    "gateway_rssi": [
+      -34.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -35.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:03:24.097+02:00",
+    "_id": {
+      "$oid": "5cdeb11c9e3ce40a531b7d07"
+    },
+    "timestamp": {
+      "$date": 1558105404097
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -36.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:03:28.540+02:00",
+    "_id": {
+      "$oid": "5cdeb1209e3ce40a531b7d08"
+    },
+    "timestamp": {
+      "$date": 1558105408540
+    },
+    "gateway_rssi": [
+      -36.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -41.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T15:03:32.988+02:00",
+    "_id": {
+      "$oid": "5cdeb1259e3ce40a531b7d09"
+    },
+    "timestamp": {
+      "$date": 1558105412988
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -41.413925
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T15:03:37.432+02:00",
+    "_id": {
+      "$oid": "5cdeb1299e3ce40a531b7d0a"
+    },
+    "timestamp": {
+      "$date": 1558105417432
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -34.790096
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T15:03:46.332+02:00",
+    "_id": {
+      "$oid": "5cdeb1329e3ce40a531b7d0b"
+    },
+    "timestamp": {
+      "$date": 1558105426332
+    },
+    "gateway_rssi": [
+      -34.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -39.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:03:50.780+02:00",
+    "_id": {
+      "$oid": "5cdeb1379e3ce40a531b7d0c"
+    },
+    "timestamp": {
+      "$date": 1558105430780
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:03:55.232+02:00",
+    "_id": {
+      "$oid": "5cdeb13b9e3ce40a531b7d0d"
+    },
+    "timestamp": {
+      "$date": 1558105435232
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T15:03:59.541+02:00",
+    "_id": {
+      "$oid": "5cdeb13f9e3ce40a531b7d0e"
+    },
+    "timestamp": {
+      "$date": 1558105439541
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -41.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:04:03.862+02:00",
+    "_id": {
+      "$oid": "5cdeb1449e3ce40a531b7d0f"
+    },
+    "timestamp": {
+      "$date": 1558105443862
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -41.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T15:04:08.172+02:00",
+    "_id": {
+      "$oid": "5cdeb1489e3ce40a531b7d10"
+    },
+    "timestamp": {
+      "$date": 1558105448172
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G2",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.605556
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.25
+    ],
+    "time": "2019-05-17T15:04:12.486+02:00",
+    "_id": {
+      "$oid": "5cdeb14c9e3ce40a531b7d11"
+    },
+    "timestamp": {
+      "$date": 1558105452486
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.749496
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T15:04:16.800+02:00",
+    "_id": {
+      "$oid": "5cdeb1519e3ce40a531b7d12"
+    },
+    "timestamp": {
+      "$date": 1558105456800
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:04:21.113+02:00",
+    "_id": {
+      "$oid": "5cdeb1559e3ce40a531b7d13"
+    },
+    "timestamp": {
+      "$date": 1558105461113
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -39.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:04:25.438+02:00",
+    "_id": {
+      "$oid": "5cdeb1599e3ce40a531b7d14"
+    },
+    "timestamp": {
+      "$date": 1558105465438
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -39.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:04:29.750+02:00",
+    "_id": {
+      "$oid": "5cdeb15e9e3ce40a531b7d15"
+    },
+    "timestamp": {
+      "$date": 1558105469750
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -41.413925
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T15:04:34.059+02:00",
+    "_id": {
+      "$oid": "5cdeb1629e3ce40a531b7d16"
+    },
+    "timestamp": {
+      "$date": 1558105474059
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -39.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:04:38.376+02:00",
+    "_id": {
+      "$oid": "5cdeb1669e3ce40a531b7d17"
+    },
+    "timestamp": {
+      "$date": 1558105478376
+    },
+    "gateway_rssi": [
+      -39.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:04:42.687+02:00",
+    "_id": {
+      "$oid": "5cdeb16b9e3ce40a531b7d18"
+    },
+    "timestamp": {
+      "$date": 1558105482687
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC4",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.413925
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.0
+    ],
+    "time": "2019-05-17T15:04:47.005+02:00",
+    "_id": {
+      "$oid": "5cdeb16f9e3ce40a531b7d19"
+    },
+    "timestamp": {
+      "$date": 1558105487005
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.710819
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.5
+    ],
+    "time": "2019-05-17T15:04:51.324+02:00",
+    "_id": {
+      "$oid": "5cdeb1739e3ce40a531b7d1a"
+    },
+    "timestamp": {
+      "$date": 1558105491324
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -35.543648
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T15:04:55.642+02:00",
+    "_id": {
+      "$oid": "5cdeb1779e3ce40a531b7d1b"
+    },
+    "timestamp": {
+      "$date": 1558105495642
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -35.514969
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.0
+    ],
+    "time": "2019-05-17T15:04:59.956+02:00",
+    "_id": {
+      "$oid": "5cdeb17c9e3ce40a531b7d1c"
+    },
+    "timestamp": {
+      "$date": 1558105499956
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -35.350853
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      10.75
+    ],
+    "time": "2019-05-17T15:05:04.259+02:00",
+    "_id": {
+      "$oid": "5cdeb1809e3ce40a531b7d1d"
+    },
+    "timestamp": {
+      "$date": 1558105504259
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.605556
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.25
+    ],
+    "time": "2019-05-17T15:05:08.576+02:00",
+    "_id": {
+      "$oid": "5cdeb1849e3ce40a531b7d1e"
+    },
+    "timestamp": {
+      "$date": 1558105508576
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.48772
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.25
+    ],
+    "time": "2019-05-17T15:05:12.890+02:00",
+    "_id": {
+      "$oid": "5cdeb1899e3ce40a531b7d1f"
+    },
+    "timestamp": {
+      "$date": 1558105512890
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC3",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:05:17.202+02:00",
+    "_id": {
+      "$oid": "5cdeb18d9e3ce40a531b7d20"
+    },
+    "timestamp": {
+      "$date": 1558105517202
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC5",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -41.43726
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.75
+    ],
+    "time": "2019-05-17T15:05:21.524+02:00",
+    "_id": {
+      "$oid": "5cdeb1919e3ce40a531b7d21"
+    },
+    "timestamp": {
+      "$date": 1558105521524
+    },
+    "gateway_rssi": [
+      -41.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC1",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -36.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:05:25.838+02:00",
+    "_id": {
+      "$oid": "5cdeb1969e3ce40a531b7d22"
+    },
+    "timestamp": {
+      "$date": 1558105525838
+    },
+    "gateway_rssi": [
+      -36.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC2",
+    "sub_band": "G1",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -35.749496
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.25
+    ],
+    "time": "2019-05-17T15:05:30.155+02:00",
+    "_id": {
+      "$oid": "5cdeb19a9e3ce40a531b7d23"
+    },
+    "timestamp": {
+      "$date": 1558105530155
+    },
+    "gateway_rssi": [
+      -35.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC7",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -42.543648
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      8.75
+    ],
+    "time": "2019-05-17T15:05:34.466+02:00",
+    "_id": {
+      "$oid": "5cdeb19e9e3ce40a531b7d24"
+    },
+    "timestamp": {
+      "$date": 1558105534466
+    },
+    "gateway_rssi": [
+      -42.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC8",
+    "sub_band": "G0",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -37.461838
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      9.5
+    ],
+    "time": "2019-05-17T15:05:38.782+02:00",
+    "_id": {
+      "$oid": "5cdeb1a39e3ce40a531b7d25"
+    },
+    "timestamp": {
+      "$date": 1558105538782
+    },
+    "gateway_rssi": [
+      -37.0
+    ]
+  },
+  {
+    "tx_power": 2.0,
+    "gps_hdop": 666.0,
+    "deviceType": "tuino-v3",
+    "gps_speed": 666.0,
+    "channel": "LC6",
+    "sub_band": "G3",
+    "gps_lon": 666.0,
+    "real_dist": 7,
+    "gateway_esp": [
+      -33.790096
+    ],
+    "sp_fact": 7,
+    "gps_lat": 666.0,
+    "devEUI": "78AF580300000493",
+    "gps_sat": 666,
+    "gateway_id": [
+      "004A1092"
+    ],
+    "gps_course": 666,
+    "gateway_snr": [
+      7.0
+    ],
+    "time": "2019-05-17T15:05:43.124+02:00",
+    "_id": {
+      "$oid": "5cdeb1a79e3ce40a531b7d26"
+    },
+    "timestamp": {
+      "$date": 1558105543124
+    },
+    "gateway_rssi": [
+      -33.0
+    ]
+  }
+]

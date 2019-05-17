@@ -2,7 +2,7 @@
 clear all; close all;
 
 % opens the JSON file decodes it
-fname = 'json_backup/20190311pm_torus_vert_v2.json';
+fname = 'json_backup/20190517_torus_vert.json';
 [time, angles, SF, RSSI, ESP, SNR, ~, ~, ~, tx_pow] = decode_json(fname);
 
 % angle vector
@@ -43,7 +43,7 @@ plot(n(angles==45), ones(size(n(angles==45)))*mean(ESP(angles==45)), 'm', 'LineW
 plot(n(angles==60), ones(size(n(angles==60)))*mean(ESP(angles==60)), 'c', 'LineWidth', 2);
 plot(n(angles==75), ones(size(n(angles==75)))*mean(ESP(angles==75)), 'y', 'LineWidth', 2);
 plot(n(angles==90), ones(size(n(angles==90)))*mean(ESP(angles==90)), 'k', 'LineWidth', 2);
-legend('\alpha=0°', '\alpha=15°', '\alpha=30°', '\alpha=55°', '\alpha=60°', '\alpha=75°','\alpha=90°');
+legend('\alpha=0°', '\alpha=15°', '\alpha=30°', '\alpha=45°', '\alpha=60°', '\alpha=75°','\alpha=90°');
 title('Measured signal strength');
 xlabel('Measure number [-]');
 ylabel('Signal [dBm]');

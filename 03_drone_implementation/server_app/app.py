@@ -658,6 +658,7 @@ def trilateration_main_latlng(drone_dataset):
 	return 0, 0, 0
 
 
+
 #########################################################################################
 #####################################  PARAMETERS  ######################################
 #########################################################################################
@@ -916,28 +917,31 @@ def lora_network_est_latlng():
 @app.route('/lora/compute_network_est', methods=['GET'])
 def lora_net_est():
 
-	# dummy for return, TODO: compute it
-	lat = 47.4
-	lng = 8.54
+	# test if we received a location message at one point
+	if network.loc_radius == 666:
 
-	# display in log the coordinates received
-	print("Coordinates computed: lat={}, lng={}".format(lat, lng))
+		# nothing was ever set...
+		print('No location data was received since the server started...')
+		return 'No location received...'
+	else:
 
-	# convert in x, y
-	x, y = conversion_latlng_xy(lat, lng)
-	print("Position computed: x={}, y={}".format(x, y))
+		# display in log the coordinates received
+		print("Last coordinates received from server: lat={}, lng={}".format(network.latitude, network.longitude))
 
-	# add on map
-	add_network_maps(x, y)
+		# convert in x, y
+		x, y = conversion_latlng_xy(network.latitude, network.longitude)
 
-	# set network estimate
-	global network_x, network_y, network_z
-	network_x = x
-	network_y = y
-	network_z = 0
+		# add on map
+		add_network_maps(x, y)
 
-	# return 
- 	return 'Network estimate positions set at {} {} {}'.format(x, y, 0)
+		# set network estimate
+		global network_x, network_y, network_z
+		network_x = x
+		network_y = y
+		network_z = 0
+
+		# return 
+	 	return 'Received location: lat={}, lng={}'.format(network.latitude, network.longitude)
 
 
 

@@ -811,7 +811,7 @@
             }
 
             // callback for network estimate button
-            function network_button_cb(obj, type, map) {
+            function network_button_cb(obj, type) {
 
                 // 
                 if(type=='get') {
@@ -851,7 +851,11 @@
 
                 // get network est from server
                 const url='http://victor.scapp.io/lora/compute_network_est';
-                axios({method: 'GET', url: url})
+                axios({method: 'GET', url: url}).then(function(response){
+                    if(response.data=='No location received...') {
+                        setTimeout(function(){console.log("No location data was ever received by the server, please place network manually");network_button_cb(this, 'none')}, 1000);
+                    }
+                })
             }
 
             // creates the custom icons

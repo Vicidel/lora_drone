@@ -23,7 +23,7 @@
                 text-decoration: none;
             }
             #map {
-                height: 90%;
+                height: 85%;
                 width: 100%;
             }
             html, body {
@@ -49,8 +49,8 @@
             <div>
                 <b>Network estimate:</b>
                 <button class="button" id="network_place" type="submit" onclick="network_button_cb(this, 'place')">Place on map</button>
-                <button class="button" id="network_get" type="submit" onclick="network_button_cb(this, 'get')">Get from LoRa (based on last messages)</button>
-                <button class="button" id="network_none" type="submit" onclick="network_button_cb(this, 'none')">Disable change (for during drone flight)</button>
+                <button class="button" id="network_get" type="submit" onclick="network_button_cb(this, 'get')">Get from LoRa</button>
+                <button class="button" id="network_none" type="submit" onclick="network_button_cb(this, 'none')">Disable change</button>
             </div>
             <div>
                 <b>Takeoff buttons:</b>
@@ -853,7 +853,16 @@
                 const url='http://victor.scapp.io/lora/compute_network_est';
                 axios({method: 'GET', url: url}).then(function(response){
                     if(response.data=='No location received...') {
-                        setTimeout(function(){console.log("No location data was ever received by the server, please place network manually");network_button_cb(this, 'none')}, 1000);
+                        console.log(response.data)
+                        window.alert("No location data was ever received by the server, please place network manually");
+                        network_button_cb(this, 'none');
+                    }
+                    else{
+                        console.log(response.data)
+                        window.alert(response.data)
+                        //var lat = parseFloat(response.data.substring(4+response.data.indexOf('lat='), response.data.length))
+                        //var lng = parseFloat(response.data.substring(4+response.data.indexOf('lng='), response.data.length))
+                        network_button_cb(this, 'none');
                     }
                 })
             }

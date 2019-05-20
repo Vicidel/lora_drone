@@ -271,25 +271,35 @@ def get_dist_bearing(dist_x, dist_y):
 	# return
 	return distance, bearing
 
+def loc_test_latlng():
+
+	import localization as lx
+
+	P=lx.Project(mode='Earth1',solver='LSE')
 
 
-import localization as lx
+	P.add_anchor('anchore_A',(46.1,6.5))
+	P.add_anchor('anchore_B',(46.5,6.5))
+	P.add_anchor('anchore_C',(46.3,7.5))
 
-P=lx.Project(mode='Earth1',solver='LSE')
+	t,label=P.add_target()
+
+	t.add_measure('anchore_A',50)
+	t.add_measure('anchore_B',50)
+	t.add_measure('anchore_C',50)
+
+	P.solve()
+
+	# Then the target location is:
+
+	print(t.loc)	
 
 
-P.add_anchor('anchore_A',(46.1,6.5))
-P.add_anchor('anchore_B',(46.5,6.5))
-P.add_anchor('anchore_C',(46.3,7.5))
 
-t,label=P.add_target()
+json_test = {"uplink": {"a":1, "b":2}}
+#json_test = {"loc": {"lat":123}}
 
-t.add_measure('anchore_A',50)
-t.add_measure('anchore_B',50)
-t.add_measure('anchore_C',50)
-
-P.solve()
-
-# Then the target location is:
-
-print(t.loc)
+if 'uplink' in json_test:
+	print('message is uplink')
+else:
+	print('message is loc')

@@ -151,6 +151,16 @@ homeR = home_datapoint()
 homeG = home_datapoint()
 homeB = home_datapoint()
 
+# to store the estimation received from network
+class network_datapoint:
+	latitude    = 47.397751 	# Zurich
+	longitude   = 8.545607 		# Zurich
+	altitude    = 500 			# Zurich
+	loc_radius  = 666
+	alt_radius  = 666
+	est_time    = 0
+	est_ts		= 0
+network = network_datapoint()
 
 
 
@@ -1205,91 +1215,119 @@ def lora_receive():
 	print("JSON received:")
 	print(j)
 
-	# parse communication parameters
-	r_deveui    = j['DevEUI_uplink']['DevEUI']
-	r_time      = j['DevEUI_uplink']['Time']
-	r_timestamp = dt.datetime.strptime(r_time, TIME_FORMAT)
-	r_sp_fact   = j['DevEUI_uplink']['SpFact']
-	r_channel   = j['DevEUI_uplink']['Channel']
-	r_band      = j['DevEUI_uplink']['SubBand']
-	r_devtype   = "tuino-v3"
-	r_tx_power  = j['DevEUI_uplink']['TxPower']
+	# message is data
+	if 'DevEUI_uplink' in j:
 
-	# decode payload based on which device is sending
-	payload_int = int(j['DevEUI_uplink']['payload_hex'], 16)	# 16 as payload info in hexadecimal
-	size_payload = 20
-	if r_deveui==victor_beacon:
-		# real distance (for calibration measures)
-		r_real_dist   = payload_int
+		# parse communication parameters
+		r_deveui    = j['DevEUI_uplink']['DevEUI']
+		r_time      = j['DevEUI_uplink']['Time']
+		r_timestamp = dt.datetime.strptime(r_time, TIME_FORMAT)
+		r_sp_fact   = j['DevEUI_uplink']['SpFact']
+		r_channel   = j['DevEUI_uplink']['Channel']
+		r_band      = j['DevEUI_uplink']['SubBand']
+		r_devtype   = "tuino-v3"
+		r_tx_power  = j['DevEUI_uplink']['TxPower']
 
-		# empty GPS
-		r_lat    = 666
-		r_lon    = 666
-		r_sat    = 666
-		r_hdop   = 666
-		r_speed  = 666
-		r_course = 666
+		# decode payload based on which device is sending
+		payload_int = int(j['DevEUI_uplink']['payload_hex'], 16)	# 16 as payload info in hexadecimal
+		size_payload = 20
+		if r_deveui==victor_beacon:
+			# real distance (for calibration measures)
+			r_real_dist   = payload_int
 
-	elif r_deveui==micha_beacon:
-		# empty real distance
-		r_real_dist = 666
+			# empty GPS
+			r_lat    = 666
+			r_lon    = 666
+			r_sat    = 666
+			r_hdop   = 666
+			r_speed  = 666
+			r_course = 666
 
-		# GPS stuff
-		r_lat    = ((payload_int & 0x0000000000ffffffff0000000000000000000000) >> bitshift(size_payload,8))/10000000.0
-		r_lon    = ((payload_int & 0x000000000000000000ffffffff00000000000000) >> bitshift(size_payload,12))/10000000.0
-		r_sat    = ((payload_int & 0x00000000000000000000000000ff000000000000) >> bitshift(size_payload,13))
-		r_hdop   = ((payload_int & 0x0000000000000000000000000000ffff00000000) >> bitshift(size_payload,15))
-		r_speed  = ((payload_int & 0x00000000000000000000000000000000ff000000) >> bitshift(size_payload,16)) / 2
-		r_course = ((payload_int & 0x0000000000000000000000000000000000ff0000) >> bitshift(size_payload,17)) * 2
+		elif r_deveui==micha_beacon:
+			# empty real distance
+			r_real_dist = 666
 
-	# store only one gateway information or all gateways
-	store_only_one = True
-	unique_gateway = gateway_corner
-	if store_only_one:
-		# set gateways parameters for transmission arriving on multiple gateways
-		g_id   = []
-		g_rssi = []
-		g_snr  = []
-		g_esp  = []
+			# GPS stuff
+			r_lat    = ((payload_int & 0x0000000000ffffffff0000000000000000000000) >> bitshift(size_payload,8))/10000000.0
+			r_lon    = ((payload_int & 0x000000000000000000ffffffff00000000000000) >> bitshift(size_payload,12))/10000000.0
+			r_sat    = ((payload_int & 0x00000000000000000000000000ff000000000000) >> bitshift(size_payload,13))
+			r_hdop   = ((payload_int & 0x0000000000000000000000000000ffff00000000) >> bitshift(size_payload,15))
+			r_speed  = ((payload_int & 0x00000000000000000000000000000000ff000000) >> bitshift(size_payload,16)) / 2
+			r_course = ((payload_int & 0x0000000000000000000000000000000000ff0000) >> bitshift(size_payload,17)) * 2
 
-		# store only metadata of gateway
-		for item in j['DevEUI_uplink']['Lrrs']['Lrr']:
-			if unique_gateway == item['Lrrid']:
+		# store only one gateway information or all gateways
+		store_only_one = True
+		unique_gateway = gateway_corner
+		if store_only_one:
+			# set gateways parameters for transmission arriving on multiple gateways
+			g_id   = []
+			g_rssi = []
+			g_snr  = []
+			g_esp  = []
+
+			# store only metadata of gateway
+			for item in j['DevEUI_uplink']['Lrrs']['Lrr']:
+				if unique_gateway == item['Lrrid']:
+					g_id.append(item['Lrrid'])
+					g_rssi.append(item['LrrRSSI'])
+					g_snr.append(item['LrrSNR'])
+					g_esp.append(item['LrrESP'])
+			
+			# if drone gateway not detected
+			if not g_id:
+				print('information not received by set gateway')
+				return 'ERROR: Datapoint not saved (not received by set gateway)'
+		else:
+			# set gateways parameters for transmission arriving on multiple gateways
+			g_id   = []
+			g_rssi = []
+			g_snr  = []
+			g_esp  = []
+
+			#parse array of multiple gateways
+			for item in j['DevEUI_uplink']['Lrrs']['Lrr']:
 				g_id.append(item['Lrrid'])
 				g_rssi.append(item['LrrRSSI'])
 				g_snr.append(item['LrrSNR'])
 				g_esp.append(item['LrrESP'])
-		
-		# if drone gateway not detected
-		if not g_id:
-			print('information not received by set gateway')
-			return 'ERROR: Datapoint not saved (not received by set gateway)'
+
+		# create new datapoint with parsed data
+		datapoint = LoRa_datapoint(devEUI=r_deveui, time=r_time, timestamp=r_timestamp, deviceType=r_devtype, 
+			sp_fact=r_sp_fact, channel=r_channel, sub_band=r_band, gateway_id=g_id, gateway_rssi=g_rssi, 
+			gateway_snr=g_snr, gateway_esp=g_esp, real_dist=r_real_dist, tx_power=r_tx_power, 
+			gps_lat=r_lat, gps_lon=r_lon, gps_sat=r_sat, gps_hdop=r_hdop, gps_speed=r_speed, gps_course=r_course)
+
+		# save it to database
+		datapoint.save()
+		print('SUCESS: new LoRa datapoint saved to database')
+
+		# success
+		return 'Datapoint DevEUI %s saved' %(r_deveui)
+
+	# message is location
 	else:
-		# set gateways parameters for transmission arriving on multiple gateways
-		g_id   = []
-		g_rssi = []
-		g_snr  = []
-		g_esp  = []
 
-		#parse array of multiple gateways
-		for item in j['DevEUI_uplink']['Lrrs']['Lrr']:
-			g_id.append(item['Lrrid'])
-			g_rssi.append(item['LrrRSSI'])
-			g_snr.append(item['LrrSNR'])
-			g_esp.append(item['LrrESP'])
+		# parse values received (see PDF for all info received)
+		r_deveui    = j['DevEUI_location']['DevEUI']
+		r_time      = j['DevEUI_location']['Time']
+		r_timestamp = dt.datetime.strptime(r_time, TIME_FORMAT)
+		r_lat 		= j['DevEUI_location']['DevLAT']
+		r_lng 		= j['DevEUI_location']['DevLON']
+		r_alt 		= j['DevEUI_location']['DevAlt']
+		r_loc_rad   = j['DevEUI_location']['DevLocRadius']
+		r_alt_rad   = j['DevEUI_location']['DevAltRadius']
 
-	# create new datapoint with parsed data
-	datapoint = LoRa_datapoint(devEUI=r_deveui, time=r_time, timestamp=r_timestamp, deviceType=r_devtype, 
-		sp_fact=r_sp_fact, channel=r_channel, sub_band=r_band, gateway_id=g_id, gateway_rssi=g_rssi, 
-		gateway_snr=g_snr, gateway_esp=g_esp, real_dist=r_real_dist, tx_power=r_tx_power, 
-		gps_lat=r_lat, gps_lon=r_lon, gps_sat=r_sat, gps_hdop=r_hdop, gps_speed=r_speed, gps_course=r_course)
+		# set values 
+		network.latitude   = r_lat
+		network.longitude  = r_lng
+		network.altitude   = r_alt
+		network.loc_radius = r_loc_rad
+		network.alt_radius = r_alt_rad
+		network.est_time   = r_time
+		network.est_ts     = r_timestamp
 
-	# save it to database
-	datapoint.save()
-	print('SUCESS: new LoRa datapoint saved to database')
-
-	# success
-	return 'Datapoint DevEUI %s saved' %(r_deveui)
+		# success
+		return 'Localization at lat={} and lng={} saved'.format(r_lat, r_lng)
 
 
 # querying the database and giving back a JSON file

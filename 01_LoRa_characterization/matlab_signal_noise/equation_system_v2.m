@@ -1,51 +1,48 @@
 clear all; close all;
 
-% load function
-load('coeff_ESP_dist_old.mat', 'fitresult_ESPd');
-global func_a;
-global func_b;
-func_a = fitresult_ESPd.a;
-func_b = fitresult_ESPd.b;
+% load base params
+func_a = 0.05568;
+func_b = -0.1062;
 
 % distances
 distances = [20, 50, 100, 150, 200];
 height = [10, 10, 10, 10, 10];
 distances_hor = sqrt(distances.^2-height.^2);
 
-% fill in attenuation for the different configurations and ESP
+% fill in attenuation for the different configurations and RSSI
 attenuation_gateway = zeros(size(distances));
 attenuation_node = zeros(size(distances));
-ESP = zeros(size(distances));
+RSSI = zeros(size(distances));
 for i=1: length(distances)
     theta_deg = atan(height(i)/distances_hor(i))*180/pi;
-    attenuation_gateway(i) = func_attenuation_angle(theta_deg);
-    attenuation_node(i) = func_attenuation_angle(theta_deg);
-    ESP(i) = func_distance_to_signal(distances(i), 'esp');
+    attenuation_gateway(i) = func_attenuation_angle(theta_deg)/2;
+    attenuation_node(i) = func_attenuation_angle(theta_deg)/2;
+    RSSI(i) = func_distance_to_signal(distances(i), 'rssi');
 end
 
 
 %%
 % system
 syms a b;
-eqn1 = ESP(1) == attenuation_gateway(1) + attenuation_node(1) + log(distances(1) / a) / b;
-eqn5 = ESP(5) == attenuation_gateway(5) + attenuation_node(5) + log(distances(5) / a) / b;
+eqn1 = RSSI(2) == attenuation_gateway(2) + log(distances(2) / a) / b;
+eqn5 = RSSI(5) == attenuation_gateway(5) + log(distances(5) / a) / b;
 sol = vpasolve([eqn1, eqn5], [a, b], [func_a, func_b]);
 
 % % store in mat file
-% exp_a = double(sol.a);
-% exp_b = double(sol.b);
-% save('matlab_results/func_ESP_dist.mat', 'exp_a', 'exp_b');
+exp_a = double(sol.a);
+exp_b = double(sol.b);
+save('matlab_results/coeff_RSSI_dist.mat', 'exp_a', 'exp_b');
 
 
 %% 
 % plot new a, b
 figure();
 fit_dist = 10:1:200;
-fit_ESP = log(fit_dist/sol.a) / sol.b;
-fit_ESP_old = log(fit_dist/func_a) / func_b;
-plot(fit_dist, fit_ESP); grid on; hold on;
-plot(fit_dist, fit_ESP_old);
+fit_RSSI = log(fit_dist/sol.a) / sol.b;
+fit_RSSI_old = log(fit_dist/func_a) / func_b;
+plot(fit_dist, fit_RSSI); grid on; hold on;
+plot(fit_dist, fit_RSSI_old);
 xlabel('Distance [m]');
-ylabel('ESP [dB]');
+ylabel('RSSI [dB]');
 legend('Decorrelated fit', 'Fit using data collected at h=10m');
-title('ESP attenuation due to angle');
+title('RSSI attenuation due to angle');

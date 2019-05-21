@@ -8,16 +8,14 @@
 //
 
 
+
+
+//#########################################################################################
+//#################################  GLOBAL VARIABLES #####################################
+//#########################################################################################
+
 // Firebase reference
 var firebase = new Firebase('https://drone-3bd2a.firebaseio.com/');
-
-// data object
-var data = {
-    sender: null,
-    timestamp: null,
-    lat: null,
-    lng: null
-};
 
 // create base coordinates
 var lat_zurich = 47.39784;
@@ -33,28 +31,91 @@ var lat_droneR, lng_droneR, lat_droneG, lng_droneG, lat_droneB, lng_droneB;
 var stateR = "UNKNOWN";
 var stateG = "UNKNOWN";
 var stateB = "UNKNOWN";
-change_states(stateR, stateG, stateB);
 
 // geofence
 var geofence_radius = 0;        // TODO: 0 because can't click through circle...
 
-// initial button colors: call callbacks as if clicked
-takeoff_button_cb(this, 'X');
-kill_button_cb(this, 0);
-network_button_cb(this, 'none');
-
 // listener active for click
-click_listener_active = false
+var click_listener_active = false
 
 // after click on RGB takeoff, go in none mode after X milliseconds 
 var delay_after_takeoff = 5000;
 
-// fills the param fields
-get_base_param();
-
 // checks drone onlines
 var delay_online_check = 500;
-check_drone_online();       // calls the function a first time
+
+
+
+
+
+//#########################################################################################
+//##################################  MAIN FUNCTION #######################################
+//#########################################################################################
+
+// main function called from the html file
+function main() {
+
+    // define the map itself
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: lat_zurich, lng: lng_zurich},
+        zoom: 16,
+        styles: [{
+            featureType: 'poi',
+            stylers: [{ visibility: 'off' }]  // Turn off POI.
+        },
+        {
+            featureType: 'transit.station',
+            stylers: [{ visibility: 'off' }]  // Turn off bus, train stations...
+        }],
+        disableDoubleClickZoom: false,
+        streetViewControl: false,
+    });
+
+    // centering controls
+    init_centering_controls(map);
+
+    // things on the map
+    var markers = create_markers(map);      // create marker
+    var wp_lists = create_waypoint_lists(); // create waypoint lists
+    var circles = create_circles();         // create circles
+    var paths = create_paths(map);          // create paths
+
+    // listener for clicks
+    map.addListener('click', function(e) {
+        // check is listener is active
+        if(click_listener_active){
+            // get coordinates 
+            var lat = e.latLng.lat();
+            var lng = e.latLng.lng();
+
+            // post network estimate on server
+            const url='http://victor.scapp.io/lora/network_estimate_latlng';
+            const data={'lat': lat, 'lng': lng}
+            axios({method: 'POST', url: url, data: data})
+        }
+    });
+
+    // legend
+    init_legend(map);
+
+    // start Firebase and database listeners
+    init_firebase_homes(map, markers, circles);                  // homes
+    init_firebase_drones(map, markers, paths);          // drones, paths
+    init_firebase_waypoints(map, wp_lists);             // waypoints
+    init_firebase_estimations(map, markers, circles);   // estimations
+
+    // initial button colors: call callbacks as if clicked
+    takeoff_button_cb(this, 'X');
+    kill_button_cb(this, 0);
+    network_button_cb(this, 'none');
+
+    // initialize the periodic check of drone online
+    check_drone_online();
+
+    // fills the parameters and state fields
+    get_base_param();
+    change_states(stateR, stateG, stateB);
+}
 
 
 
@@ -168,59 +229,6 @@ function check_drone_online(){
 //#########################################################################################
 //################################  MAPS AND CONTROL ######################################
 //#########################################################################################
-
-// creates a map object
-function init_map() {
-
-    // define the map itself
-    var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: lat_zurich, lng: lng_zurich},
-        zoom: 16,
-        styles: [{
-            featureType: 'poi',
-            stylers: [{ visibility: 'off' }]  // Turn off POI.
-        },
-        {
-            featureType: 'transit.station',
-            stylers: [{ visibility: 'off' }]  // Turn off bus, train stations...
-        }],
-        disableDoubleClickZoom: false,
-        streetViewControl: false,
-    });
-
-    // centering controls
-    init_centering_controls(map);
-
-    // things on the map
-    var markers = create_markers(map);      // create marker
-    var wp_lists = create_waypoint_lists(); // create waypoint lists
-    var circles = create_circles();         // create circles
-    var paths = create_paths(map);          // create paths
-
-    // listener for clicks
-    map.addListener('click', function(e) {
-        // check is listener is active
-        if(click_listener_active){
-            // get coordinates 
-            var lat = e.latLng.lat();
-            var lng = e.latLng.lng();
-
-            // post network estimate on server
-            const url='http://victor.scapp.io/lora/network_estimate_latlng';
-            const data={'lat': lat, 'lng': lng}
-            axios({method: 'POST', url: url, data: data})
-        }
-    });
-
-    // legend
-    init_legend(map);
-
-    // start Firebase and database listeners
-    init_firebase_homes(map, markers, circles);                  // homes
-    init_firebase_drones(map, markers, paths);          // drones, paths
-    init_firebase_waypoints(map, wp_lists);             // waypoints
-    init_firebase_estimations(map, markers, circles);   // estimations
-}
 
 // creates a GUI for centering map
 function center_control(control_div, map, lat, lng, string){

@@ -760,6 +760,11 @@ def param_change_gmaps():
 	global loop_todo
 	loop_todo = j['loop_todo']
 
+	# set altitudes
+	global flying_altitude, takeoff_altitude
+	flying_altitude = j['flight']
+	takeoff_altitude = j['takeoff']
+
 	return "All parameters changed"
 
 

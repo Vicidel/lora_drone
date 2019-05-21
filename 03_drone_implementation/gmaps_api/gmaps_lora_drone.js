@@ -131,6 +131,8 @@ function param_change(){
     var rad1 = document.getElementById("rad1").value;
     var rad2 = document.getElementById("rad2").value;
     var hover = document.getElementById("hover").value;
+    var flight = document.getElementById("flight").value;
+    var takeoff = document.getElementById("takeoff").value;
 
     // POST on server
     const url='http://victor.scapp.io/param/change_from_maps';
@@ -148,6 +150,8 @@ function get_base_param(){
         document.getElementById("rad1").value = response.data['radius']['v1'];
         document.getElementById("rad2").value = response.data['radius']['v2'];
         document.getElementById("hover").value = response.data['hovering time'];
+        document.getElementById("flight").value = response.data['altitude']['flying'];
+        document.getElementById("takeoff").value = response.data['altitude']['takeoff'];
     });
 }
 

@@ -1059,6 +1059,13 @@ def param_drone_kill():
 	global bool_kill_switch
 	bool_kill_switch  = j['kill']
 
+	# greys the buttons
+	global bool_drone1_online, bool_drone2_online, bool_drone3_online
+	if bool_kill_switch==True:
+		bool_drone1_online = False
+		bool_drone2_online = False
+		bool_drone3_online = False
+
 	# return string
 	return 'Drones kill switch set'
 
@@ -1083,7 +1090,6 @@ def param_drone_for_takeoff():
 	# for each drone, return Y(es) or (N)o
 	if drone_id == 1:
 		if bool_drone1_start:
-			bool_drone1_online = False # to grey the button
 			return 'Y: drone {} ready for takeoff'.format(j['drone_id'])
 		else:
 			return 'N: drone {} not ready for takeoff'.format(j['drone_id'])

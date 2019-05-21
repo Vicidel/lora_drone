@@ -517,8 +517,8 @@
                     var lng = snapshot.val().lng;
 
                     // move marker
-                    droneB_marker.setPosition(new google.maps.LatLng(lat, lng));
-                    droneB_marker.setMap(map);
+                    markers.droneB.setPosition(new google.maps.LatLng(lat, lng));
+                    markers.droneB.setMap(map);
 
                     // draw path
                     paths.listB.push({lat: lat, lng: lng});
@@ -805,15 +805,16 @@
 
                         // disable network estimate change
                         network_button_cb(this, 'none');
-
-                        // POST on server
-                        const url='http://victor.scapp.io/param/drone_start';
-                        axios({method: 'POST', url: url, data: data})
                     }
                     else{
+                        data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
                         takeoff_button_cb(this, 'X');
                     }
                 }
+
+                // POST on server
+                const url='http://victor.scapp.io/param/drone_start';
+                axios({method: 'POST', url: url, data: data})
             }
 
             // callback for network estimate button

@@ -35,7 +35,7 @@ using namespace Eigen; // To use matrix and vector representation
 #define FIREBASE_STORE_GPS_URL "http://victor.scapp.io/firebase/store_GPS"				// store drone state in Firebase through server app
 
 // store on Firebase
-void empty_firebase(void);
+void empty_firebase(int drone_id);
 void send_GPS_firebase(double latitude, double longitude, double altitude, double time, 
 	int drone_id, std::string state);
 void send_home_firebase(double latitude, double longitude, double altitude, double delta_x, 

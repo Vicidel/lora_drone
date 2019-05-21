@@ -126,20 +126,6 @@ int main(int argc, char **argv){
     Vector3f pos_current_goal = pos_drone;
 
 
-    // empty Firebase
-    ROS_INFO("Emptying Firebase for GMaps GUI");
-    empty_firebase();
-
-    // send a few setpoints before starting
-    ROS_INFO("Sending a few waypoints before start");
-    for(int i = 100; ros::ok() && i > 0; --i){
-        local_pos_pub.publish(conversion_to_msg(pos_current_goal));
-        ros::spinOnce();
-        pos_drone = conversion_to_vect(est_local_pos);
-        rate.sleep();
-    }
-
-
     // variable for ROS services to arm drone and set OFFBOARD mode
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
@@ -175,6 +161,20 @@ int main(int argc, char **argv){
     bool bool_stop_all = false;             // stop all when simulation is ended or kill switch
     bool bool_kill_switch = false;          // kill switch
     
+    
+    // empty Firebase
+    ROS_INFO("Emptying Firebase for GMaps GUI");
+    empty_firebase(drone_id);
+
+    // send a few setpoints before starting
+    ROS_INFO("Sending a few waypoints before start");
+    for(int i = 100; ros::ok() && i > 0; --i){
+        local_pos_pub.publish(conversion_to_msg(pos_current_goal));
+        ros::spinOnce();
+        pos_drone = conversion_to_vect(est_local_pos);
+        rate.sleep();
+    }
+
 
     // while ROS is online
     ROS_INFO("Starting the ROS loop");

@@ -233,7 +233,7 @@ void send_home_firebase(double latitude, double longitude, double altitude, doub
 ***************************************************************************/
 
 // POST home coordinates 
-void empty_firebase(void){
+void empty_firebase(int drone_id){
 
     // set response string
     std::string response_string;
@@ -244,6 +244,8 @@ void empty_firebase(void){
     root = cJSON_CreateObject();
 
     // fils json
+    char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
+    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL

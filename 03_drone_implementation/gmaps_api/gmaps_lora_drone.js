@@ -57,6 +57,12 @@ var delay_online_check = 500;
 check_drone_online();       // calls the function a first time
 
 
+
+
+//#########################################################################################
+//###############################  PARAMETERS AND STATE ###################################
+//#########################################################################################
+
 // function when parameter is changed
 function param_change(){
     // get from HTML elements
@@ -83,6 +89,85 @@ function get_base_param(){
         document.getElementById("hover").value = response.data['hovering time'];
     });
 }
+
+// set the states in GUI
+function change_states(stateR, stateG, stateB){
+    // change the string in HTML stuff
+    document.querySelector('.states').innerHTML = "<b>Last received state: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
+    }
+
+    // init centering controls
+    function init_centering_controls(map) {
+
+    // create div for centering button
+    var centerControlDiv = document.createElement('div');
+    var centerControl = new center_control(centerControlDiv, map, lat_lausanne, lng_lausanne, "Lausanne");
+    centerControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+
+    // create div for centering button
+    var centerControlDiv2 = document.createElement('div');
+    var centerControl2 = new center_control(centerControlDiv2, map, lat_zurich, lng_zurich, "Zurich");
+    centerControlDiv2.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
+
+    // create div for centering button
+    var centerControlDiv3 = document.createElement('div');
+    var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
+    centerControlDiv3.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
+}
+
+// callback for test button
+function check_drone_online(){
+
+    // check online from server
+    const url='http://victor.scapp.io/param/check_online';
+    axios({method: 'POST', url: url}).then(function(response){
+        
+        // booleans
+        droneR_online = response.data['droneR'];
+        droneG_online = response.data['droneG'];
+        droneB_online = response.data['droneB'];
+
+        // delay before activating button to account for time between delete and drone ready
+        var delay = 5000;
+
+        // R
+        if(droneR_online==true)
+            setTimeout(function(){document.getElementById('R').disabled = false;}, delay);
+        else
+            document.getElementById('R').disabled = true;
+
+        // G
+        if(droneG_online==true)
+            setTimeout(function(){document.getElementById('G').disabled = false;}, delay);
+        else
+            document.getElementById('G').disabled = true;
+
+        // B
+        if(droneB_online==true)
+            setTimeout(function(){document.getElementById('B').disabled = false;}, delay);
+        else
+            document.getElementById('B').disabled = true;
+
+        // all
+        if( (droneR_online==true) && (droneG_online==true) && (droneB_online==true))
+            setTimeout(function(){document.getElementById('all').disabled = false;}, delay);
+        else
+            document.getElementById('all').disabled = true;
+
+        // call function again after X seconds
+        setTimeout(check_drone_online, delay_online_check);
+    });
+}
+
+
+
+
+//#########################################################################################
+//################################  MAPS AND CONTROL ######################################
+//#########################################################################################
 
 // creates a map object
 function init_map() {
@@ -135,34 +220,6 @@ function init_map() {
     init_firebase_drones(map, markers, paths);          // drones, paths
     init_firebase_waypoints(map, wp_lists);             // waypoints
     init_firebase_estimations(map, markers, circles);   // estimations
-}
-
-// set the states in GUI
-function change_states(stateR, stateG, stateB){
-    // change the string in HTML stuff
-    document.querySelector('.states').innerHTML = "<b>Last received state: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
-    }
-
-    // init centering controls
-    function init_centering_controls(map) {
-
-    // create div for centering button
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new center_control(centerControlDiv, map, lat_lausanne, lng_lausanne, "Lausanne");
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-
-    // create div for centering button
-    var centerControlDiv2 = document.createElement('div');
-    var centerControl2 = new center_control(centerControlDiv2, map, lat_zurich, lng_zurich, "Zurich");
-    centerControlDiv2.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
-
-    // create div for centering button
-    var centerControlDiv3 = document.createElement('div');
-    var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
-    centerControlDiv3.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
 }
 
 // creates a GUI for centering map
@@ -282,6 +339,34 @@ function init_legend(map){
     // push on map
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 }
+
+// get lora network estimate
+function get_lora_network_estimate() {
+
+    // get network est from server
+    const url='http://victor.scapp.io/lora/compute_network_est';
+    axios({method: 'GET', url: url}).then(function(response){
+        if(response.data=='No location received...') {
+            console.log(response.data)
+            window.alert("No location data was ever received by the server, please place network manually");
+            network_button_cb(this, 'none');
+        }
+        else{
+            console.log(response.data)
+            window.alert(response.data)
+            //var lat = parseFloat(response.data.substring(4+response.data.indexOf('lat='), response.data.length))
+            //var lng = parseFloat(response.data.substring(4+response.data.indexOf('lng='), response.data.length))
+            network_button_cb(this, 'none');
+        }
+    })
+}
+
+
+
+
+//#########################################################################################
+//################################  FIREBASE OBJECTS ######################################
+//#########################################################################################
 
 // init Firebase for home
 function init_firebase_homes(map, markers, circles) {
@@ -623,6 +708,13 @@ function init_firebase_estimations(map, markers, circles) {
     });
 }   
 
+
+
+
+//#########################################################################################
+//################################  BUTTONS CALLBACKS #####################################
+//#########################################################################################
+
 // callback for killswitch button
 function kill_button_cb(obj, kill){
     if(kill==1){
@@ -640,50 +732,6 @@ function kill_button_cb(obj, kill){
     const url='http://victor.scapp.io/param/drone_kill';
     const data={'kill': kill}
     axios({method: 'POST', url: url, data: data})
-}
-
-// callback for test button
-function check_drone_online(){
-
-    // check online from server
-    const url='http://victor.scapp.io/param/check_online';
-    axios({method: 'POST', url: url}).then(function(response){
-        
-        // booleans
-        droneR_online = response.data['droneR'];
-        droneG_online = response.data['droneG'];
-        droneB_online = response.data['droneB'];
-
-        // delay before activating button to account for time between delete and drone ready
-        var delay = 5000;
-
-        // R
-        if(droneR_online==true)
-            setTimeout(function(){document.getElementById('R').disabled = false;}, delay);
-        else
-            document.getElementById('R').disabled = true;
-
-        // G
-        if(droneG_online==true)
-            setTimeout(function(){document.getElementById('G').disabled = false;}, delay);
-        else
-            document.getElementById('G').disabled = true;
-
-        // B
-        if(droneB_online==true)
-            setTimeout(function(){document.getElementById('B').disabled = false;}, delay);
-        else
-            document.getElementById('B').disabled = true;
-
-        // all
-        if( (droneR_online==true) && (droneG_online==true) && (droneB_online==true))
-            setTimeout(function(){document.getElementById('all').disabled = false;}, delay);
-        else
-            document.getElementById('all').disabled = true;
-
-        // call function again after X seconds
-        setTimeout(check_drone_online, delay_online_check);
-    });
 }
 
 // callback for takeoff button
@@ -825,26 +873,12 @@ function network_button_cb(obj, type) {
     }
 }
 
-// get lora network estimate
-function get_lora_network_estimate() {
 
-    // get network est from server
-    const url='http://victor.scapp.io/lora/compute_network_est';
-    axios({method: 'GET', url: url}).then(function(response){
-        if(response.data=='No location received...') {
-            console.log(response.data)
-            window.alert("No location data was ever received by the server, please place network manually");
-            network_button_cb(this, 'none');
-        }
-        else{
-            console.log(response.data)
-            window.alert(response.data)
-            //var lat = parseFloat(response.data.substring(4+response.data.indexOf('lat='), response.data.length))
-            //var lng = parseFloat(response.data.substring(4+response.data.indexOf('lng='), response.data.length))
-            network_button_cb(this, 'none');
-        }
-    })
-}
+
+
+//#########################################################################################
+//################################  ICONS AND MARKERS #####################################
+//#########################################################################################
 
 // creates the custom icons
 function create_icons() {

@@ -426,6 +426,9 @@ def empty_firebase():
 	ref_est.delete()
 	ref_wayp.delete()
 
+	# global variables
+	global bool_drone1_online, bool_drone2_online, bool_drone3_online
+
 	# based on drone_id, do stuff
 	if r_drone_id==1:
 		ref_droneR = firebase_db.reference('droneR')
@@ -1086,13 +1089,11 @@ def param_drone_for_takeoff():
 			return 'N: drone {} not ready for takeoff'.format(j['drone_id'])
 	elif drone_id == 2:
 		if bool_drone2_start:
-			bool_drone2_online = False # to grey the button
 			return 'Y: drone {} ready for takeoff'.format(drone_id)
 		else:
 			return 'N: drone {} not ready for takeoff'.format(drone_id)
 	elif drone_id == 3:
 		if bool_drone3_start:
-			bool_drone3_online = False # to grey the button
 			return 'Y: drone {} ready for takeoff'.format(drone_id)
 		else:
 			return 'N: drone {} not ready for takeoff'.format(drone_id)
@@ -1778,6 +1779,7 @@ def drone_receive_state():
 	global drone_dataset, current_state1, current_state2, current_state3, solution
 	global network_x, network_y, network_z, circle_radius, nb_est_made
 	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
+	global bool_drone1_online, bool_drone2_online, bool_drone3_online
 
 
 	###################  DECODE PAYLOAD  ######################
@@ -1808,6 +1810,14 @@ def drone_receive_state():
 	# type conversion and stuff
 	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)
 	r_time 		= str(r_time) 
+
+	# drone set to offline, greying button in gmaps
+	if r_drone_id==1:
+		bool_drone1_online = False
+	elif r_drone_id==2:
+		bool_drone2_online = False
+	elif r_drone_id==3:
+		bool_drone3_online = False
 
 
 	###################  SWITCH STATE  ######################

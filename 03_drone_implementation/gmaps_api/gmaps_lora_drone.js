@@ -159,28 +159,6 @@ function get_base_param(){
 function change_states(stateR, stateG, stateB){
     // change the string in HTML stuff
     document.querySelector('.states').innerHTML = "<b>Last received state: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
-    }
-
-    // init centering controls
-    function init_centering_controls(map) {
-
-    // create div for centering button
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new center_control(centerControlDiv, map, lat_lausanne, lng_lausanne, "Lausanne");
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-
-    // create div for centering button
-    var centerControlDiv2 = document.createElement('div');
-    var centerControl2 = new center_control(centerControlDiv2, map, lat_zurich, lng_zurich, "Zurich");
-    centerControlDiv2.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
-
-    // create div for centering button
-    var centerControlDiv3 = document.createElement('div');
-    var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
-    centerControlDiv3.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
 }
 
 // callback for test button
@@ -233,6 +211,28 @@ function check_drone_online(){
 //#########################################################################################
 //################################  MAPS AND CONTROL ######################################
 //#########################################################################################
+
+// init centering controls
+function init_centering_controls(map) {
+
+    // create div for centering button
+    var centerControlDiv = document.createElement('div');
+    var centerControl = new center_control(centerControlDiv, map, lat_lausanne, lng_lausanne, "Lausanne");
+    centerControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+
+    // create div for centering button
+    var centerControlDiv2 = document.createElement('div');
+    var centerControl2 = new center_control(centerControlDiv2, map, lat_zurich, lng_zurich, "Zurich");
+    centerControlDiv2.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
+
+    // create div for centering button
+    var centerControlDiv3 = document.createElement('div');
+    var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
+    centerControlDiv3.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
+}
 
 // creates a GUI for centering map
 function center_control(control_div, map, lat, lng, string){

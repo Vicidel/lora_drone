@@ -435,7 +435,7 @@ def empty_firebase():
 		ref_homeR.delete()
 		ref_waypR.delete()
 		bool_drone1_online = True
-	elif r_drone_id==3:
+	elif r_drone_id==2:
 		ref_droneG = firebase_db.reference('droneG')
 		ref_homeG  = firebase_db.reference('homeG')
 		ref_waypG  = firebase_db.reference('waypointG')

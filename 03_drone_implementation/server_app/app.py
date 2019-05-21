@@ -211,6 +211,11 @@ bool_drone1_start = False
 bool_drone2_start = False
 bool_drone3_start = False
 
+# for one or three drones: are the drone online and able to receive the offboard things
+bool_drone1_online = False
+bool_drone2_online = False
+bool_drone3_online = False
+
 # kill switch
 bool_kill_switch  = False
 
@@ -398,36 +403,56 @@ def empty_firebase():
 
 	print("!!!!!!!!! Deleting Firebase !!!!!!!!!")
 
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# drone id received
+	r_drone_id  = int(j['drone_id'])
+
 	# delete database entries
 	ref_drone  = firebase_db.reference('drone')
-	ref_droneR = firebase_db.reference('droneR')
-	ref_droneG = firebase_db.reference('droneG')
-	ref_droneB = firebase_db.reference('droneB')
 	ref_home   = firebase_db.reference('home')
-	ref_homeR  = firebase_db.reference('homeR')
-	ref_homeG  = firebase_db.reference('homeG')
-	ref_homeB  = firebase_db.reference('homeB')
 	ref_netw   = firebase_db.reference('network')
 	ref_est    = firebase_db.reference('estimate')
 	ref_wayp   = firebase_db.reference('waypoint')
-	ref_waypR  = firebase_db.reference('waypointR')
-	ref_waypG  = firebase_db.reference('waypointG')
-	ref_waypB  = firebase_db.reference('waypointB')
 	ref_drone.delete()
-	ref_droneR.delete()
-	ref_droneG.delete()
-	ref_droneB.delete()
 	ref_home.delete()
-	ref_homeR.delete()
-	ref_homeG.delete()
-	ref_homeB.delete()
 	ref_netw.delete()
 	ref_est.delete()
 	ref_wayp.delete()
-	ref_waypR.delete()
-	ref_waypG.delete()
-	ref_waypB.delete()
 
+	# based on drone_id, do stuff
+	if r_drone_id==1:
+		ref_droneR = firebase_db.reference('droneR')
+		ref_homeR  = firebase_db.reference('homeR')
+		ref_waypR  = firebase_db.reference('waypointR')
+		ref_droneR.delete()
+		ref_homeR.delete()
+		ref_waypR.delete()
+		bool_drone1_online = True
+	elif r_drone_id==3:
+		ref_droneG = firebase_db.reference('droneG')
+		ref_homeG  = firebase_db.reference('homeG')
+		ref_waypG  = firebase_db.reference('waypointG')
+		ref_droneG.delete()
+		ref_homeG.delete()
+		ref_waypG.delete()
+		bool_drone2_online = True
+	elif r_drone_id==3:
+		ref_droneB = firebase_db.reference('droneB')
+		ref_homeB  = firebase_db.reference('homeB')
+		ref_waypB  = firebase_db.reference('waypointB')
+		ref_droneB.delete()
+		ref_homeB.delete()
+		ref_waypB.delete()
+		bool_drone3_online = True
+
+	# return
 	return 'Success'
 
 
@@ -760,10 +785,20 @@ def param_print():
 		},
 		'hovering time': hover_time,
 		'loops to do': loop_todo,
-		'drone status':{
+		'drone ready':{
 			'droneR': bool_drone1_ready,
 			'droneG': bool_drone2_ready,
 			'droneB': bool_drone3_ready,
+		},
+		'drone online':{
+			'droneR': bool_drone1_online,
+			'droneG': bool_drone2_online,
+			'droneB': bool_drone3_online,
+		},
+		'drone start':{
+			'droneR': bool_drone1_start,
+			'droneG': bool_drone2_start,
+			'droneB': bool_drone3_start,
 		}
 	}
 
@@ -1045,16 +1080,19 @@ def param_drone_for_takeoff():
 	# for each drone, return Y(es) or (N)o
 	if drone_id == 1:
 		if bool_drone1_start:
+			bool_drone1_online = False # to grey the button
 			return 'Y: drone {} ready for takeoff'.format(j['drone_id'])
 		else:
 			return 'N: drone {} not ready for takeoff'.format(j['drone_id'])
 	elif drone_id == 2:
 		if bool_drone2_start:
+			bool_drone2_online = False # to grey the button
 			return 'Y: drone {} ready for takeoff'.format(drone_id)
 		else:
 			return 'N: drone {} not ready for takeoff'.format(drone_id)
 	elif drone_id == 3:
 		if bool_drone3_start:
+			bool_drone3_online = False # to grey the button
 			return 'Y: drone {} ready for takeoff'.format(drone_id)
 		else:
 			return 'N: drone {} not ready for takeoff'.format(drone_id)
@@ -1073,6 +1111,17 @@ def param_check_kill():
 		return 'Kill'
 	else:
 		return 'OK'
+
+
+# called by gmaps to check if drones online to grey/ungrey buttons
+@app.route('/param/check_online', methods=['POST'])
+def param_check_online():
+
+	# create dict
+	data = {'droneR': bool_drone1_online, 'droneG': bool_drone2_online, 'droneB': bool_drone3_online}
+
+	# response json
+	return Response(json.dumps(data), mimetype='application/json', headers={'Content-Disposition':'attachment;filename=query.json'})
 
 
 

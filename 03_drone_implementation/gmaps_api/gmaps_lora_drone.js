@@ -158,7 +158,10 @@ function get_base_param(){
 // set the states in GUI
 function change_states(stateR, stateG, stateB){
     // change the string in HTML stuff
-    document.querySelector('.states').innerHTML = "<b>Last received state: </b>droneR: "+stateR+", droneG: "+stateG+", droneB: "+stateB;
+    document.getElementById('legend').children[4].innerHTML = "<img src=marker/droneR.png width=20> Drone 1/R: "+stateR;
+    document.getElementById('legend').children[5].innerHTML = "<img src=marker/droneG.png width=20> Drone 2/G: "+stateG;
+    document.getElementById('legend').children[6].innerHTML = "<img src=marker/droneB.png width=20> Drone 3/B: "+stateB;
+
 }
 
 // callback for test button

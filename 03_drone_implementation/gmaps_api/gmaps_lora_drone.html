@@ -14,6 +14,8 @@
         <title>LoRa drone GUI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
+
+        <!-- Initialize the different elements -->
         <style>
             .button {
                 border-radius: 5px;
@@ -48,45 +50,63 @@
                 vertical-align: middle;
             }
         </style>
+
+        <!-- Header with all the graphical interface elements -->
         <form action="#">
+
+            <!-- Network estimate -->
             <div>
                 <b>Network estimate:</b>
-                <button class="button" id="network_place" type="submit" onclick="network_button_cb(this, 'place')">Place on map</button>
-                <button class="button" id="network_get" type="submit" onclick="network_button_cb(this, 'get')">Get from LoRa</button>
-                <button class="button" id="network_none" type="submit" onclick="network_button_cb(this, 'none')">Disable change</button>
+                <button class="button" title="To put the network estimate where you want on the map. The precision decreases when far away from the drone home (if it's not declared the last one)." id="network_place" type="submit" onclick="network_button_cb(this, 'place')">Place on map</button>
+                <button class="button" title="To get the LoRa network estimation from the network. Requires the Thingpark server to have computed a network position message." id="network_get" type="submit" onclick="network_button_cb(this, 'get')">Get from LoRa</button>
+                <button class="button" title="Stops all possible changes of the first network estimated position. Automatically switches on when a drone starts flying." id="network_none" type="submit" onclick="network_button_cb(this, 'none')">Disable change</button>
             </div>
+
+            <!-- Takeoff buttons -->
             <div>
                 <b>Takeoff buttons:</b>
-                <button class="button" disabled id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
-                <button class="button" disabled id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
-                <button class="button" disabled id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
-                <button class="button" id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None</button>
-                <button class="button" disabled id="all" type="submit" onclick="takeoff_button_cb(this, 'all')">Alex's button (all drones!)</button>
+                <button class="button" disabled title="Start the first drone (1/red)" id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
+                <button class="button" disabled title="Start the second drone (2/green)" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
+                <button class="button" disabled title="Start the first drone (3/blue)" id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
+                <button class="button" title="Active when no drone are currently taking off." id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None</button>
+                <button class="button" disabled title="Start all drones at the same time, beware of collisons in paths." id="all" type="submit" onclick="takeoff_button_cb(this, 'all')">Alex's button (all drones!)</button>
             </div>
+
+            <!-- Kill switch -->
             <div>
                 <b>Common kill switch:</b>
-                <button class="button" id="kill" type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
-                <button class="button" id="unkill" type="submit" onclick="kill_button_cb(this, 0)">Unkill</button>
+                <button class="button" id="kill" title="Sends a kill switch message to all three drones, whcih stops them within two seconds. Safety measure in place in case of emergency. Use the RC kill switches if possible before this one." type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
+                <button class="button" id="unkill" title="Stops sending the kill command to the drones." type="submit" onclick="kill_button_cb(this, 0)">Unkill</button>
             </div>
+
+            <!-- Parameter change and display -->
             <form id="form">
                 <b>Parameters:</b> 
-                loop(s):<input type="text" size="1" id="loop_todo" value="0">, 
-                radius 1:<input type="text" size="1" id="rad1" value="0">, 
-                radius 2:<input type="text" size="1" id="rad2" value="0">, 
-                hover time:<input type="text" size="1" id="hover" value="0"> 
-                <button id="send" type="submit" onclick="param_change()">Submit</button>
+                loop(s):<input type="text" title="Number of loops done by the program. Currently only 1 and 2 are supported. More loops add precision but increases flight time." size="1" id="loop_todo" value="0">, 
+                radius 1:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the first algorithm loop. Obtained through MATLAB optimization simulations." id="rad1" value="0">, 
+                radius 2:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the second (if applicable) algorithm loop. Obtained through MATLAB optimization simulations." id="rad2" value="0">, 
+                hover time:<input type="text" size="1" title="Hovering time at the LoRa message collection positions. Longer means more messages, but uses the flight autonomy." id="hover" value="0"> 
+                <button id="send" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
             </form>
+
+            <!-- Drone states -->
             <div class="states"></div>
         </form> 
     </head>
     <body>
+        <!-- Map and legend -->
         <div id="map"></div>
         <div id="legend"><h3>Legend</h3></div>
 
+        <!-- Scripts for Firebase (database), Ajax and Axios (HTTP POST/GET) -->
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <!-- My JS code -->
         <script src="./gmaps_lora_drone.js"></script>
+
+        <!-- Google Maps API with my API key -->
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxXZYRRheu8t7VGerySo98OVrOxjdcZe8&libraries=visualization&callback=main">
         </script>

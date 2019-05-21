@@ -54,11 +54,11 @@
             </div>
             <div>
                 <b>Takeoff buttons:</b>
-                <button class="button" id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
-                <button class="button" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
-                <button class="button" id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
+                <button class="button" disabled id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
+                <button class="button" disabled id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
+                <button class="button" disabled id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
                 <button class="button" id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None</button>
-                <button class="button" id="all" type="submit" onclick="takeoff_button_cb(this, 'all')">Alex's button (all drones!)</button>
+                <button class="button" disabled id="all" type="submit" onclick="takeoff_button_cb(this, 'all')">Alex's button (all drones!)</button>
             </div>
             <div>
                 <b>Common kill switch:</b>
@@ -127,6 +127,10 @@
 
             // fills the param fields
             get_base_param();
+
+            // checks drone onlines
+            var delay_online_check = 500;
+            check_drone_online();       // calls the function a first time
 
 
             // function when parameter is changed
@@ -712,6 +716,31 @@
                 const url='http://victor.scapp.io/param/drone_kill';
                 const data={'kill': kill}
                 axios({method: 'POST', url: url, data: data})
+            }
+
+            // callback for test button
+            function check_drone_online(){
+
+                // check online from server
+                const url='http://victor.scapp.io/param/check_online';
+                axios({method: 'POST', url: url}).then(function(response){
+                    console.log(response.data)
+                    
+                    // (de)activate buttons
+                    document.getElementById('R').disabled = !(response.data['droneR'])
+                    document.getElementById('G').disabled = !(response.data['droneG'])
+                    document.getElementById('B').disabled = !(response.data['droneB'])
+                    
+                    if( (response.data['droneR']==true) && (response.data['droneG']==true) && (response.data['droneB'])){
+                        document.getElementById('all').disabled = false;
+                    }
+                    else{
+                        document.getElementById('all').disabled = true;
+                    }
+
+
+                    setTimeout(check_drone_online, delay_online_check);
+                });
             }
 
             // callback for takeoff button

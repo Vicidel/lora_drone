@@ -724,7 +724,6 @@
                 // check online from server
                 const url='http://victor.scapp.io/param/check_online';
                 axios({method: 'POST', url: url}).then(function(response){
-                    console.log(response.data)
                     
                     // (de)activate buttons
                     document.getElementById('R').disabled = !(response.data['droneR'])

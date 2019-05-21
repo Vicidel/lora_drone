@@ -286,6 +286,7 @@ def store_current_coord():
 	lat         = float(j['latitude'])
 	lng         = float(j['longitude'])
 	alt         = float(j['altitude'])
+	rel_alt     = float(j['rel_altitude'])
 	drone_id    = int(j['drone_id'])
 	state       = str(j['state'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
@@ -306,6 +307,7 @@ def store_current_coord():
 	    'sender': 'app.py: store_GPS',
 	    'timestamp': (r_timestamp - dt.datetime(1970,1,1)).total_seconds(),
 	    'altitude': alt,
+	    'rel_alt': rel_alt,
 	    'drone_id': drone_id,
 	    'state': state
 	})

@@ -330,40 +330,13 @@ int main(int argc, char **argv){
                             send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waypoint_reached", drone_id, nb_drone);
                             
                             // next state is waiting for all drones to be ready
-                            state = 25;
-                        }
-                        break;
-                    }
-
-                    // hover and collect data every second
-                    case 2:{
-                        if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
-                            // X seconds passed, sending posiion again
-                            ROS_INFO("Sending current position");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"data_collected", drone_id, nb_drone);
-
-                            // time hovering is passed
-                            if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
-                                ROS_INFO("Time spend hovering is over, next waypoint");
-                                pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
-
-                                // check if answer is next waypoint or landing
-                                char answer_char[answer.size()+1];
-                                strcpy(answer_char, answer.c_str());
-                                if(answer_char[0]=='N')          // next waypoint
-                                    state = 1;
-                                else if(answer_char[0]=='L')     // landing waypoint
-                                    state = 3;
-                            }                            
-
-                            // store current time
-                            time_last_request = ros::Time::now();
+                            state = 15;
                         }
                         break;
                     }
 
                     // wait at last received position
-                    case 25:{
+                    case 15:{
                         if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                             ROS_INFO("Waiting, sending current position"); //, ts is %f", ros::Time::now().toSec());
                             answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waiting_for_command", drone_id, nb_drone);
@@ -377,13 +350,49 @@ int main(int argc, char **argv){
                                 hover_time = parse_hover_time_from_answer(answer);
                             }
                             else if(answer_char[0]=='W'){     // still waiting
-                                state = 25;
+                                state = 15;
                                 pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
                             }
 
                             // store current time
                             time_last_request = ros::Time::now();
                         }
+                        break;
+                    }
+
+                    // hover and collect data every second
+                    case 2:{
+                        if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
+                            // X seconds passed, sending posiion again
+                            ROS_INFO("Sending current position");
+                            send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"data_collected", drone_id, nb_drone);
+
+                            // time hovering is passed
+                            if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
+                                ROS_INFO("Time spend hovering is over, next state");
+                                state = 25;
+                            }                            
+
+                            // store current time
+                            time_last_request = ros::Time::now();
+                        }
+                        break;
+                    }
+
+                    // finished hovering, wait for waypoint
+                    case 25:{
+                        ROS_INFO("Sending position waiting for the next waypoint");
+                        answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"finished_hovering", drone_id, nb_drone);
+                        pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+
+                        // check if answer is next waypoint or landing
+                        char answer_char[answer.size()+1];
+                        strcpy(answer_char, answer.c_str());
+                        if(answer_char[0]=='N')          // next waypoint
+                            state = 1;
+                        else if(answer_char[0]=='L')     // landing waypoint
+                            state = 3;
+
                         break;
                     }
 

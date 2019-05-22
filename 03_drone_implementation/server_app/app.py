@@ -1613,9 +1613,6 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 				wp_z = flying_altitude
 				bool_drone3_ready = False
 
-	# save on map
-	add_waypoint_maps(wp_x, wp_y, drone_id)
-
 	return wp_x, wp_y, wp_z, bool_landing_waypoint
 
 
@@ -1720,6 +1717,7 @@ def drone_receive_state():
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
 
 		# save on map
+		add_waypoint_maps(wp_x, wp_y, r_drone_id)
 		add_network_maps(network_x, network_y)		# point
 		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty1, 'network') 	# circle
 
@@ -1743,19 +1741,7 @@ def drone_receive_state():
 		# send hover time
 		return_string = "Wait at this position until drones are ready"
 
-	# drone is hovering in position
-	if r_payload=='data_collected':
-
-		# get new waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
-
-		# return string
-		if bool_landing_waypoint:
-			return_string = "Land at position (when finished hovering): x{} y{} z{}".format(wp_x, wp_y, wp_z)
-		else:
-			return_string = "New waiipoint (when finished hovering): x{} y{} z{}".format(wp_x, wp_y, wp_z)
-
-	# drone has finished hovering
+	# drone is waiting for all drones ready
 	if r_payload=='waiting_for_command':
 
 		# bool if ready for next waypoint
@@ -1789,6 +1775,28 @@ def drone_receive_state():
 		else:
 			# still waiting
 			return_string = "Waiting until other drones ready"
+
+	# drone is hovering in position
+	if r_payload=='data_collected':
+
+		# get new waypoint
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
+
+		# return string
+		return_string = "Waiting until finished hovering"
+
+	# getting the next waypoint
+	if r_payload=='finished_hovering':
+
+		# get new waypoint
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
+		add_waypoint_maps(wp_x, wp_y, r_drone_id)
+
+		# return string
+		if bool_landing_waypoint:
+			return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+		else:
+			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
 	# drone is landing
 	if r_payload=='drone_landing':

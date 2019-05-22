@@ -325,14 +325,12 @@ int main(int argc, char **argv){
                     // go to waypoint position
                     case 1:{
                         if((pos_drone-pos_current_goal).norm()<precision){
-                            // position reached, sending position to drone_dataset and start hovering
+                            // position reached, sending position to drone_dataset and wait for next instruction
                             ROS_INFO("Waypoint reached!");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waypoint_reached", drone_id, nb_drone);
-                            hover_time = parse_hover_time_from_answer(answer);
-
-                            // next state is hovering
-                            state = 2;
-                            time_start_hover = ros::Time::now();
+                            send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waypoint_reached", drone_id, nb_drone);
+                            
+                            // next state is waiting for all drones to be ready
+                            state = 25;
                         }
                         break;
                     }
@@ -348,8 +346,14 @@ int main(int argc, char **argv){
                             if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
                                 ROS_INFO("Time spend hovering is over, next waypoint");
                                 pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
-                                // note: answer should be "Wait...", so pos_current_goal should not change
-                                state = 25;
+
+                                // check if answer is next waypoint or landing
+                                char answer_char[answer.size()+1];
+                                strcpy(answer_char, answer.c_str());
+                                if(answer_char[0]=='N')          // next waypoint
+                                    state = 1;
+                                else if(answer_char[0]=='L')     // landing waypoint
+                                    state = 3;
                             }                            
 
                             // store current time
@@ -358,22 +362,24 @@ int main(int argc, char **argv){
                         break;
                     }
 
-                    // wait at received position
+                    // wait at last received position
                     case 25:{
                         if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                             ROS_INFO("Waiting, sending current position"); //, ts is %f", ros::Time::now().toSec());
                             answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waiting_for_command", drone_id, nb_drone);
-                            pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
                             
-                            // check if answer is landing, new waypoint or waiting again
+                            // check if answer is start hover or wait again
                             char answer_char[answer.size()+1];
                             strcpy(answer_char, answer.c_str());
-                            if(answer_char[0]=='N')          // new waypoint
-                                state = 1;
-                            else if(answer_char[0]=='L')     // go to landing
-                                state = 3;
-                            else if(answer_char[0]=='W')     // still waiting
+                            if(answer_char[0]=='H'){          // hovering/collecting
+                                state = 2;
+                                time_start_hover = ros::Time::now();
+                                hover_time = parse_hover_time_from_answer(answer);
+                            }
+                            else if(answer_char[0]=='W'){     // still waiting
                                 state = 25;
+                                pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+                            }
 
                             // store current time
                             time_last_request = ros::Time::now();

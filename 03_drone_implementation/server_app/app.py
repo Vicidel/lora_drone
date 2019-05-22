@@ -1904,19 +1904,25 @@ def drone_receive_state():
 			current_state3 = current_state3 + 1
 
 		# send hover time
-		return_string = "Hover time set: h{}".format(hover_time)
+		return_string = "Wait at this position until drones are ready"
 
 	# drone is hovering in position
 	if r_payload=='data_collected':
 
+		# get new waypoint
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
+
 		# return string
-		return_string = "Wait at same position until end of hovering"
+		if bool_landing_waypoint:
+			return_string = "Land at position (when finished hovering): x{} y{} z{}".format(wp_x, wp_y, wp_z)
+		else:
+			return_string = "New waiipoint (when finished hovering): x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
 	# drone has finished hovering
 	if r_payload=='waiting_for_command':
 
 		# bool if ready for next waypoint
-		bool_ready_for_next_waypoint = False
+		bool_drone_can_start_collection = False
 
 		# fill bool_ready
 		if r_drone_id==1:
@@ -1928,22 +1934,16 @@ def drone_receive_state():
 
 		# for one drone, true
 		if r_nb_drone==1:
-			bool_ready_for_next_waypoint = True
+			bool_drone_can_start_collection = True
 
 		# for three drones: check if all drones have finished their hovering
 		if r_nb_drone==3:
 			if bool_drone1_ready == True and bool_drone2_ready == True and bool_drone3_ready == True:
-				bool_ready_for_next_waypoint = True
+				bool_drone_can_start_collection = True
 
-		if bool_ready_for_next_waypoint:
-			# get new waypoint
-			wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
-
-			# return string
-			if bool_landing_waypoint:
-				return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
-			else:
-				return_string = "New waypoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+		if bool_drone_can_start_collection:
+			# can start hovering for data collection
+			return_string = "Hover time set: h{}".format(hover_time)
 		else:
 			# still waiting
 			return_string = "Waiting until other drones ready"

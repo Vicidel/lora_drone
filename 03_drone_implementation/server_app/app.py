@@ -526,10 +526,10 @@ def add_network_maps(pos_x, pos_y):
 def function_signal_to_distance(esp, rssi):
 
 	# exponential coefficents
-	a_ESP  = 0.2011
-	b_ESP  = -0.0556
-	a_RSSI = 0.0273
-	b_RSSI = -0.0777
+	a_ESP  = 0.1973
+	b_ESP  = -0.0902
+	a_RSSI = 0.2189
+	b_RSSI = -0.0894
 
 	# compute based on ESP or RSSI
 	distance = a_ESP * math.exp(b_ESP * esp)

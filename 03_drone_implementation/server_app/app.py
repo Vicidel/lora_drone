@@ -662,30 +662,30 @@ def param_change():
 
 	# set network estimate
 	global network_x, network_y, network_z
-	network_x = j['pos_x']
-	network_y = j['pos_y']
-	network_z = j['pos_z']
+	network_x = float(j['pos_x'])
+	network_y = float(j['pos_y'])
+	network_z = float(j['pos_z'])
 
 	# add on map
 	add_network_maps(network_x, network_y)
 
 	# set network estimate
 	global circle_radius_v1, circle_radius_v2
-	circle_radius_v1 = j['radius_v1']
-	circle_radius_v2 = j['radius_v2']
+	circle_radius_v1 = float(j['radius_v1'])
+	circle_radius_v2 = float(j['radius_v2'])
 
 	# set hovering time
 	global hover_time
-	hover_time = j['hover_time']
+	hover_time = float(j['hover_time'])
 
 	# set altitudes
 	global flying_altitude, takeoff_altitude
-	flying_altitude = j['flight']
-	takeoff_altitude = j['takeoff']
+	flying_altitude = float(j['flight'])
+	takeoff_altitude = float(j['takeoff'])
 
 	# set number of loops
 	global loop_todo
-	loop_todo = j['loop_todo']
+	loop_todo = float(j['loop_todo'])
 
 	return "All parameters changed"
 
@@ -705,21 +705,21 @@ def param_change_gmaps():
 
 	# set network estimate
 	global circle_radius_v1, circle_radius_v2
-	circle_radius_v1 = j['rad1']
-	circle_radius_v2 = j['rad2']
+	circle_radius_v1 = float(j['rad1'])
+	circle_radius_v2 = float(j['rad2'])
 
 	# set hovering time
 	global hover_time
-	hover_time = j['hover']
+	hover_time = float(j['hover'])
 
 	# set number of loops
 	global loop_todo
-	loop_todo = j['loop_todo']
+	loop_todo = float(j['loop_todo'])
 
 	# set altitudes
 	global flying_altitude, takeoff_altitude
-	flying_altitude = j['flight']
-	takeoff_altitude = j['takeoff']
+	flying_altitude = float(j['flight'])
+	takeoff_altitude = float(j['takeoff'])
 
 	return "All parameters changed"
 
@@ -788,7 +788,7 @@ def drone_hover_time():
 
 	# set hovering time
 	global hover_time
-	hover_time = j['hover_time']
+	hover_time = float(j['hover_time'])
 
 	# success
 	return 'Hovering time set at {}'.format(j['hover_time'])
@@ -812,8 +812,8 @@ def drone_altitudes():
 
 	# set altitudes
 	global flying_altitude, takeoff_altitude
-	flying_altitude = j['flight']
-	takeoff_altitude = j['takeoff']
+	flying_altitude = float(j['flight'])
+	takeoff_altitude = float(j['takeoff'])
 
 	# success
 	return 'Altitudes set at takeoff={} and flight={}'.format(j['takeoff'], j['flight'])
@@ -837,8 +837,8 @@ def lora_circle_rad():
 
 	# set circle radii
 	global circle_radius_v1, circle_radius_v2
-	circle_radius_v1 = j['radius_v1']
-	circle_radius_v2 = j['radius_v2']
+	circle_radius_v1 = float(j['radius_v1'])
+	circle_radius_v2 = float(j['radius_v2'])
 
 	# success
 	return 'Circle radii set at {} and {}'.format(j['radius_v1'], j['radius_v2'])
@@ -866,14 +866,14 @@ def lora_network_est():
 	# display in log the coordinates received
 	print("Positions received: x={}, y={}, z={}".format(j['pos_x'], j['pos_y'], j['pos_z']))
 
-	# add on map
-	add_network_maps(j['pos_x'], j['pos_y'])
-
 	# set network estimate
 	global network_x, network_y, network_z
-	network_x = j['pos_x']
-	network_y = j['pos_y']
-	network_z = j['pos_z']
+	network_x = float(j['pos_x'])
+	network_y = float(j['pos_y'])
+	network_z = float(j['pos_z'])
+
+	# add on map
+	add_network_maps(network_x, network_y)
 
 	# success
 	return 'Network estimate positions set at {} {} {}'.format(j['pos_x'], j['pos_y'], j['pos_z'])
@@ -966,9 +966,9 @@ def param_drone_ready():
 
 	# set drone status
 	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
-	bool_drone1_ready = j['bool_drone1_ready']
-	bool_drone2_ready = j['bool_drone2_ready']
-	bool_drone3_ready = j['bool_drone3_ready']
+	bool_drone1_ready = int(j['bool_drone1_ready'])
+	bool_drone2_ready = int(j['bool_drone2_ready'])
+	bool_drone3_ready = int(j['bool_drone3_ready'])
 
 	# success
 	return 'Drones set at desired states'
@@ -992,9 +992,9 @@ def param_drone_start():
 
 	# set drone status
 	global bool_drone1_start, bool_drone2_start, bool_drone3_start
-	bool_drone1_start = j['bool_drone1_start']
-	bool_drone2_start = j['bool_drone2_start']
-	bool_drone3_start = j['bool_drone3_start']
+	bool_drone1_start = int(j['bool_drone1_start'])
+	bool_drone2_start = int(j['bool_drone2_start'])
+	bool_drone3_start = int(j['bool_drone3_start'])
 
 	# return string
 	return 'Drones starting modes set'
@@ -1018,7 +1018,7 @@ def param_drone_kill():
 
 	# set drone status
 	global bool_kill_switch
-	bool_kill_switch  = j['kill']
+	bool_kill_switch  = int(j['kill'])
 
 	# greys the buttons
 	global bool_drone1_online, bool_drone2_online, bool_drone3_online

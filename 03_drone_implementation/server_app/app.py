@@ -246,6 +246,9 @@ est_uncertainty1  = 150
 est_uncertainty2  = 25
 est_uncertainty3  = 10
 
+# if we already made estimations before, compare it with new ones
+bool_new_est_made = False
+
 
 
 #########################################################################################
@@ -1463,7 +1466,10 @@ def lora_print_json():
 def get_waypoint(drone_id, nb_drone, drone_dataset):
 
 	# global variables
-	global solution, circle_radius, nb_est_made
+	global solution, circle_radius, nb_est_made, bool_new_est_made
+
+	# uncertainty computed
+	est_uncertainty = 666
 
 	# default is not landing waypoint
 	bool_landing_waypoint = False
@@ -1501,13 +1507,34 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+				# uncertainty
+				if state==3:
+					est_uncertainty = est_uncertainty2
+				elif state==6:
+					est_uncertainty = est_uncertainty3
+
+				# old position
 				print("LOC: Reusing previous estimate")
 				solution.pos_x = solution.pos_x
-				solution.pos_y = solution.pos_y		# reusing old estimation
+				solution.pos_y = solution.pos_y
 				solution.pos_z = solution.pos_z
 			else:
+				# already have an uncertainty to compare
+				if bool_new_est_made==True:
+					delta_x = solution.pos_x - pos_x_est
+					delta_y = solution.pos_y - pos_y_est
+					est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
+				# no previous estimation, use base uncertainty, next time we wil have one
+				else:
+					bool_new_est_made=True
+					if state==3:
+						est_uncertainty = est_uncertainty2
+					elif state==6:
+						est_uncertainty = est_uncertainty3
+
+				# new position
 				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est 		# new calculated position
+				solution.pos_y = pos_y_est
 				solution.pos_z = pos_z_est
 
 			# increment estimations made
@@ -1517,11 +1544,8 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 				nb_est_made = 2
 			
 			# add estimate to map
-			if state==3:
-				add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty2)
-			if state==6:
-				add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty3)	
-
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty)
+			
 			# check if end is now
 			if nb_est_made==loop_todo:
 				# finish program, return landing waypoint above estimate
@@ -1578,57 +1602,67 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+				# uncertainty
+				if state==1:
+					est_uncertainty = est_uncertainty2
+				elif state==2:
+					est_uncertainty = est_uncertainty3
+
+				# old estimation
 				print("LOC: Reusing previous estimate")
 				solution.pos_x = solution.pos_x
-				solution.pos_y = solution.pos_y		# reusing old estimation
+				solution.pos_y = solution.pos_y
 				solution.pos_z = solution.pos_z
 			else:
+				# already have an uncertainty to compare
+				if bool_new_est_made==True:
+					delta_x = solution.pos_x - pos_x_est
+					delta_y = solution.pos_y - pos_y_est
+					est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
+				# no previous estimation, use base uncertainty, next time we wil have one
+				else:
+					bool_new_est_made=True
+					if state==1:
+						est_uncertainty = est_uncertainty2
+					elif state==2:
+						est_uncertainty = est_uncertainty3
+
+				# new position
 				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est 		# new calculated position
+				solution.pos_y = pos_y_est
 				solution.pos_z = pos_z_est
 
 			# increment estimations made
 			nb_est_made = state
 
 			# add estimate to map
-			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty2)
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty)
 
 			# check if end is now
 			if nb_est_made==loop_todo:
 				# finish program, return landing waypoint above estimate
-				if drone_id==1:
-					wp_x = solution.pos_x + landing_radius*math.cos(0)
-					wp_y = solution.pos_y + landing_radius*math.sin(0)
-					wp_z = flying_altitude
-				elif drone_id==2:
-					wp_x = solution.pos_x + landing_radius*math.cos(2*math.pi/3)
-					wp_y = solution.pos_y + landing_radius*math.sin(2*math.pi/3)
-					wp_z = flying_altitude
-				elif drone_id==3:
-					wp_x = solution.pos_x + landing_radius*math.cos(4*math.pi/3)
-					wp_y = solution.pos_y + landing_radius*math.sin(4*math.pi/3)
-					wp_z = flying_altitude
+				circle_radius = landing_radius
 				bool_landing_waypoint = True
 			else:
 				# program still running, new parameters
 				circle_radius = circle_radius_v2
 
-				# new waypoint
-				if drone_id==1:
-					wp_x = solution.pos_x + circle_radius*math.cos(0)
-					wp_y = solution.pos_y + circle_radius*math.sin(0)
-					wp_z = flying_altitude
-					bool_drone1_ready = False
-				elif drone_id==2:
-					wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
-					wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
-					wp_z = flying_altitude
-					bool_drone2_ready = False
-				elif drone_id==3:
-					wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
-					wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
-					wp_z = flying_altitude
-					bool_drone3_ready = False
+			# new waypoint (can be landing or next)
+			if drone_id==1:
+				wp_x = solution.pos_x + circle_radius*math.cos(0)
+				wp_y = solution.pos_y + circle_radius*math.sin(0)
+				wp_z = flying_altitude
+				bool_drone1_ready = False
+			elif drone_id==2:
+				wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
+				wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
+				wp_z = flying_altitude
+				bool_drone2_ready = False
+			elif drone_id==3:
+				wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
+				wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
+				wp_z = flying_altitude
+				bool_drone3_ready = False
 
 	# save on map
 	add_waypoint_maps(wp_x, wp_y, drone_id)
@@ -1797,7 +1831,7 @@ def get_waypoint_latlng(drone_id, nb_drone, drone_dataset):
 def drone_receive_state():
 	# get global variables 
 	global drone_dataset, current_state1, current_state2, current_state3, solution
-	global network_x, network_y, network_z, circle_radius, nb_est_made
+	global network_x, network_y, network_z, circle_radius, nb_est_made, bool_new_est_made
 	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
 	global bool_drone1_online, bool_drone2_online, bool_drone3_online
 
@@ -1909,6 +1943,9 @@ def drone_receive_state():
 			current_state2 = current_state2 + 1
 		if r_drone_id==3:
 			current_state3 = current_state3 + 1
+
+		# reset bool
+		bool_new_est_made = False
 
 		# send hover time
 		return_string = "Wait at this position until drones are ready"

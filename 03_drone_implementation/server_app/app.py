@@ -465,7 +465,7 @@ def empty_firebase():
 
 
 # add estimation to maps
-def add_estimation_maps(pos_x, pos_y, radius):
+def add_estimation_maps(pos_x, pos_y, radius, est_type):
 
 	# convert in latlng
 	lat, lng = conversion_xy_latlng(pos_x, pos_y)
@@ -476,7 +476,8 @@ def add_estimation_maps(pos_x, pos_y, radius):
 		'lat': lat,
 		'lng': lng,
 	    'sender': 'app.py: add_estimation',
-	    'radius': radius
+	    'radius': radius,
+	    'type': est_type
 	})
 
 	return 'Success'
@@ -1471,6 +1472,9 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 	# uncertainty computed
 	est_uncertainty = 666
 
+	# estimation type (est1 or est2)
+	est_type = 'none'
+
 	# default is not landing waypoint
 	bool_landing_waypoint = False
 
@@ -1540,11 +1544,13 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 			# increment estimations made
 			if state==3:
 				nb_est_made = 1
+				est_type = 'est1'
 			elif state==6:
 				nb_est_made = 2
+				est_type = 'est2'
 			
 			# add estimate to map
-			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty)
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, est_type)
 			
 			# check if end is now
 			if nb_est_made==loop_todo:
@@ -1636,7 +1642,7 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 			nb_est_made = state
 
 			# add estimate to map
-			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty)
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, 'est'+str(state))
 
 			# check if end is now
 			if nb_est_made==loop_todo:

@@ -709,26 +709,27 @@ function init_firebase_estimations(map, markers, circles) {
     // for new estimation
     est_ref.on('child_added', function(snapshot) {
         // get coordinates from firebase
-        var lat = snapshot.val().lat;
-        var lng = snapshot.val().lng;
-        var rad = snapshot.val().radius;
+        var lat  = snapshot.val().lat;
+        var lng  = snapshot.val().lng;
+        var rad  = snapshot.val().radius;
+        var type = snapshot.val().type;
 
         // different colors based on radius
-        if(rad>=100) {
+        if(type=='network') {
             circles.c1.setCenter(new google.maps.LatLng(lat, lng));
             circles.c1.setMap(map);
             circles.c1.setRadius(rad);
             markers.network.setPosition(new google.maps.LatLng(lat, lng));
             markers.network.setMap(map);
         }
-        if(rad<100 && rad>=20) {
+        if(type=='est1') {
             circles.c2.setCenter(new google.maps.LatLng(lat, lng));
             circles.c2.setMap(map);
             circles.c2.setRadius(rad);
             markers.est1.setPosition(new google.maps.LatLng(lat, lng));
             markers.est1.setMap(map);
         }
-        if(rad<20) {
+        if(type=='est2') {
             circles.c3.setCenter(new google.maps.LatLng(lat, lng));
             circles.c3.setMap(map);
             circles.c3.setRadius(rad);

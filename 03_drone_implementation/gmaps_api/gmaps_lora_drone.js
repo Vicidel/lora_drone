@@ -44,7 +44,7 @@ var geofence_radius = 0;        // TODO: 0 because can't click through circle...
 var click_listener_active = false
 
 // after click on RGB takeoff, go in none mode after X milliseconds 
-var delay_after_takeoff = 5000;
+var delay_after_takeoff = 8000;
 
 // checks drone onlines ready for takeoff and server online
 var delay_online_check = 500;

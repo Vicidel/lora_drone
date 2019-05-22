@@ -431,9 +431,6 @@ def empty_firebase():
 	ref_est.delete()
 	ref_wayp.delete()
 
-	# global variables
-	global bool_drone1_online, bool_drone2_online, bool_drone3_online
-
 	# based on drone_id, do stuff
 	if r_drone_id==1:
 		ref_droneR = firebase_db.reference('droneR')
@@ -442,7 +439,6 @@ def empty_firebase():
 		ref_droneR.delete()
 		ref_homeR.delete()
 		ref_waypR.delete()
-		bool_drone1_online = True
 	elif r_drone_id==2:
 		ref_droneG = firebase_db.reference('droneG')
 		ref_homeG  = firebase_db.reference('homeG')
@@ -450,7 +446,6 @@ def empty_firebase():
 		ref_droneG.delete()
 		ref_homeG.delete()
 		ref_waypG.delete()
-		bool_drone2_online = True
 	elif r_drone_id==3:
 		ref_droneB = firebase_db.reference('droneB')
 		ref_homeB  = firebase_db.reference('homeB')
@@ -458,7 +453,6 @@ def empty_firebase():
 		ref_droneB.delete()
 		ref_homeB.delete()
 		ref_waypB.delete()
-		bool_drone3_online = True
 
 	# return
 	return 'Success'
@@ -1044,22 +1038,28 @@ def param_drone_for_takeoff():
 		print("ERROR: file is not a JSON")
 		return 'Can only receive JSON file'
 
+	# global variables to set drone as online (if asking for permission to takeoff, drone is online)
+	global bool_drone1_online, bool_drone2_online, bool_drone3_online
+
 	# display info 
 	drone_id = int(j['drone_id'])
 	print("Asking for drone {}, params are d1={}, d2={}, d3={}".format(drone_id, bool_drone1_start, bool_drone2_start, bool_drone3_start))
 
 	# for each drone, return Y(es) or (N)o
 	if drone_id == 1:
+		bool_drone1_online = True
 		if bool_drone1_start:
 			return 'Y: drone {} ready for takeoff'.format(j['drone_id'])
 		else:
 			return 'N: drone {} not ready for takeoff'.format(j['drone_id'])
 	elif drone_id == 2:
+		bool_drone2_online = True
 		if bool_drone2_start:
 			return 'Y: drone {} ready for takeoff'.format(drone_id)
 		else:
 			return 'N: drone {} not ready for takeoff'.format(drone_id)
 	elif drone_id == 3:
+		bool_drone3_online = True
 		if bool_drone3_start:
 			return 'Y: drone {} ready for takeoff'.format(drone_id)
 		else:

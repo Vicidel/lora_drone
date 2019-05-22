@@ -187,30 +187,27 @@ function check_drone_online(){
         droneG_online = response.data['droneG'];
         droneB_online = response.data['droneB'];
 
-        // delay before activating button to account for time between delete and drone ready
-        var delay = 5000;
-
         // R
         if(droneR_online==true)
-            setTimeout(function(){document.getElementById('R').disabled = false;}, delay);
+            document.getElementById('R').disabled = false;
         else
             document.getElementById('R').disabled = true;
 
         // G
         if(droneG_online==true)
-            setTimeout(function(){document.getElementById('G').disabled = false;}, delay);
+            document.getElementById('G').disabled = false;
         else
             document.getElementById('G').disabled = true;
 
         // B
         if(droneB_online==true)
-            setTimeout(function(){document.getElementById('B').disabled = false;}, delay);
+            document.getElementById('B').disabled = false;
         else
             document.getElementById('B').disabled = true;
 
         // all
         if( (droneR_online==true) && (droneG_online==true) && (droneB_online==true))
-            setTimeout(function(){document.getElementById('all').disabled = false;}, delay);
+            document.getElementById('all').disabled = false;
         else
             document.getElementById('all').disabled = true;
 

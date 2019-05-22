@@ -46,7 +46,7 @@ var click_listener_active = false
 // after click on RGB takeoff, go in none mode after X milliseconds 
 var delay_after_takeoff = 5000;
 
-// checks drone onlines
+// checks drone onlines ready for takeoff and server online
 var delay_online_check = 500;
 
 
@@ -114,8 +114,9 @@ function main() {
     kill_button_cb(this, 0);
     network_button_cb(this, 'none');
 
-    // initialize the periodic check of drone online
+    // initialize the periodic check of drone and server online
     check_drone_online();
+    check_server_online();
 
     // fills the parameters and state fields
     get_base_param();
@@ -168,7 +169,7 @@ function change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB){
     document.getElementById('legend').children[6].innerHTML = "<img src=marker/droneB.png width=20> Drone 3/B: "+stateB+", "+altitudeB;
 }
 
-// callback for test button
+// testing if drone is online
 function check_drone_online(){
 
     // check online from server
@@ -212,6 +213,20 @@ function check_drone_online(){
     });
 }
 
+// testing if server is online
+function check_server_online(){
+    
+    // check server
+    const url='http://victor.scapp.io/';
+    axios({method: 'HEAD', url: url})
+    .catch(function (error){
+         window.alert("Server is offline, OK to try again")
+    })
+    .finally(function () {
+        // call function again after X seconds
+        setTimeout(check_server_online, delay_online_check);
+    });
+}
 
 
 

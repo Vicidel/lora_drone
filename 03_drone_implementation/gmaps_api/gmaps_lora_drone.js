@@ -64,6 +64,7 @@ function main() {
     var map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: lat_zurich, lng: lng_zurich},
         zoom: 16,
+        scaleControl: true,
         styles: [{
             featureType: 'poi',
             stylers: [{ visibility: 'off' }]  // Turn off POI.
@@ -74,6 +75,13 @@ function main() {
         }],
         disableDoubleClickZoom: false,
         streetViewControl: false,
+    });
+
+    // measuring tool
+    measureTool = new MeasureTool(map, {
+        showSegmentLength: true,
+        tooltip: true,
+        unit: MeasureTool.UnitTypeId.METRIC // metric, imperial, or nautical
     });
 
     // centering controls

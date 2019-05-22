@@ -1728,7 +1728,7 @@ def drone_receive_state():
 
 		# save on map
 		add_network_maps(network_x, network_y)		# point
-		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty1) 	# circle
+		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty1, 'network') 	# circle
 
 		# return string with new coordinates
 		return_string = "New waypoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)

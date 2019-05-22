@@ -1500,7 +1500,6 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 		if state==3 or state==6:
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
-			nb_est_made = nb_est_made + 1
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				print("LOC: Reusing previous estimate")
 				solution.pos_x = solution.pos_x
@@ -1510,6 +1509,12 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 				solution.pos_x = pos_x_est
 				solution.pos_y = pos_y_est 		# new calculated position
 				solution.pos_z = pos_z_est
+
+			# increment estimations made
+			if state==3:
+				nb_est_made = 1
+			elif state==6:
+				nb_est_made = 2
 			
 			# add estimate to map
 			if state==3:
@@ -1572,7 +1577,6 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 		if state>0:
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
-			nb_est_made = state
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				print("LOC: Reusing previous estimate")
 				solution.pos_x = solution.pos_x
@@ -1582,6 +1586,9 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 				solution.pos_x = pos_x_est
 				solution.pos_y = pos_y_est 		# new calculated position
 				solution.pos_z = pos_z_est
+
+			# increment estimations made
+			nb_est_made = state
 
 			# add estimate to map
 			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty2)

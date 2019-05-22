@@ -243,8 +243,8 @@ circle_radius_v2  = 20	    # second parameter for second loop
 
 # uncertainties radius
 est_uncertainty1  = 150
-est_uncertainty2  = 25
-est_uncertainty3  = 10
+est_uncertainty2  = 50
+est_uncertainty3  = 20
 
 # if we already made estimations before, compare it with new ones
 bool_new_est_made = False

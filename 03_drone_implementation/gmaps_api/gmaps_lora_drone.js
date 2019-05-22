@@ -714,21 +714,21 @@ function init_firebase_estimations(map, markers, circles) {
         var rad = snapshot.val().radius;
 
         // different colors based on radius
-        if(rad==150) {
+        if(rad>=100) {
             circles.c1.setCenter(new google.maps.LatLng(lat, lng));
             circles.c1.setMap(map);
             circles.c1.setRadius(rad);
             markers.network.setPosition(new google.maps.LatLng(lat, lng));
             markers.network.setMap(map);
         }
-        if(rad==25) {
+        if(rad<100 && rad>=20) {
             circles.c2.setCenter(new google.maps.LatLng(lat, lng));
             circles.c2.setMap(map);
             circles.c2.setRadius(rad);
             markers.est1.setPosition(new google.maps.LatLng(lat, lng));
             markers.est1.setMap(map);
         }
-        if(rad==10) {
+        if(rad<20) {
             circles.c3.setCenter(new google.maps.LatLng(lat, lng));
             circles.c3.setMap(map);
             circles.c3.setRadius(rad);

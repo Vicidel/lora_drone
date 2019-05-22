@@ -121,8 +121,15 @@ function main() {
     // fills the parameters and state fields
     get_base_param();
     change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
+
+    // print checklist
+    print_checklist()
 }
 
+// prints a checklist when loading the app
+function print_checklist(){
+    window.alert("CHECKLIST:\r\nTODO")
+}
 
 
 

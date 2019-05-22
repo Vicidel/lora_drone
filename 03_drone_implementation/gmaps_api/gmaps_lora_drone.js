@@ -142,8 +142,14 @@ function param_change(){
 
     // POST on server
     const url='http://victor.scapp.io/param/change_from_maps';
-    const data={'rad1': rad1, 'rad2': rad2, 'hover': hover, 'loop_todo': loop_todo};
+    const data={'rad1': rad1, 'rad2': rad2, 'hover': hover, 'loop_todo': loop_todo, 'flight': flight, 'takeoff': takeoff};
     axios({method: 'POST', url: url, data: data})
+    .then(function(response){
+        window.alert("Success!")
+    })
+    .catch(function(error){
+        window.alert("Fail...")
+    })
 }
 
 // init the params with real server values
@@ -220,7 +226,7 @@ function check_server_online(){
     const url='http://victor.scapp.io/';
     axios({method: 'HEAD', url: url})
     .catch(function (error){
-         window.alert("Server is offline, OK to try again")
+        window.alert("Server is offline, OK to try again")
     })
     .finally(function () {
         // call function again after X seconds

@@ -1951,6 +1951,11 @@ def drone_receive_state():
 		if bool_drone_can_start_collection:
 			# can start hovering for data collection
 			return_string = "Hover time set: h{}".format(hover_time)
+
+			# for three drones, empty drone dataset to avoid unbalanced localization
+			if r_nb_drone==3:
+				print("Emptying drone dataset for current localization")
+				drone_dataset = []
 		else:
 			# still waiting
 			return_string = "Waiting until other drones ready"

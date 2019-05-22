@@ -180,7 +180,7 @@ TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"		# change that to +01:00 in win
 TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
 # gateways on drones
-gateway_id_RGB 	  = ['004A0DB4', '004A0DB4', '004A0DB4']
+gateway_id_RGB 	  = ['004A1092', '004A1092', '004A1092']
 
 
 
@@ -195,7 +195,6 @@ landing_radius    = 2    # circle around landing positions
 hover_time 		  = 4
 
 # storage for state
-current_state 	  = 666
 current_state1 	  = 666
 current_state2 	  = 666
 current_state3 	  = 666
@@ -575,7 +574,8 @@ def trilateration_main(drone_dataset):
 	for i in range(0, len(drone_dataset)):
 
 		# ignore unrelevant states
-		if drone_dataset[i].state not in {1,2,3}:
+		if drone_dataset[i].payload!='data_collected':
+			print("Ignored because payload is not data_collected")
 			continue
 
 		# find matching LoRa points on interval
@@ -592,7 +592,7 @@ def trilateration_main(drone_dataset):
 		else:
 			for gateway_id_looper in lora_data_in_interval.gateway_id:
 				# checks if the gateway id is the one on the corresponding drone
-				if gateway_id_looper == gateway_id_RGB[int(drone_dataset[i].drone_id)-1]:
+				if str(gateway_id_looper) == gateway_id_RGB[int(drone_dataset[i].drone_id)-1]:
 
 					# create tri dataset
 					datapoint = tri_datapoint()
@@ -601,8 +601,8 @@ def trilateration_main(drone_dataset):
 					datapoint.pos_z = float(drone_dataset[i].pos_z)
 
 					# get distance estimate
-					datapoint.esp  = lora_data_in_interval.gateway_esp[0]
-					datapoint.rssi = lora_data_in_interval.gateway_rssi[0]
+					datapoint.esp  = float(lora_data_in_interval.gateway_esp[0])
+					datapoint.rssi = float(lora_data_in_interval.gateway_rssi[0])
 					datapoint.distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
 
 					# save datapoint
@@ -627,13 +627,6 @@ def trilateration_main(drone_dataset):
 
 		# return result
 		return pos_x_est, pos_y_est, pos_z_est
-
-
-# same as above with latlng
-def trilateration_main_latlng(drone_dataset):
-
-	# TODO
-	return 0, 0, 0
 
 
 
@@ -1655,7 +1648,7 @@ def drone_receive_state():
 	r_pos_x     = float(j['pos_x'])
 	r_pos_y     = float(j['pos_y'])
 	r_pos_z     = float(j['pos_z'])
-	r_payload   = j['payload']
+	r_payload   = str(j['payload'])
 	r_ts_temp   = float(j['timestamp'])
 	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
 	r_drone_id  = int(j['drone_id'])
@@ -1811,8 +1804,15 @@ def drone_receive_state():
 	datapoint.time 		= r_time
 	datapoint.timestamp = r_timestamp
 	datapoint.payload   = r_payload
-	datapoint.state 	= current_state
 	datapoint.drone_id  = r_drone_id
+
+	# state
+	if r_drone_id==1:
+		datapoint.state = current_state1
+	elif r_drone_id==2:
+		datapoint.state = current_state2
+	elif r_drone_id==3:
+		datapoint.state = current_state3
 
 	# save it
 	drone_dataset.append(datapoint)

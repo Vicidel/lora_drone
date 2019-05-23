@@ -774,14 +774,31 @@ function init_firebase_estimations(map, markers, circles) {
 // callback for killswitch button
 function kill_button_cb(obj, kill){
     if(kill==1){
-        console.log("Killing all drones now");
+        console.log("Sending kill command to all drones");
         document.getElementById('unkill').style.backgroundColor='#fff';
         document.getElementById('kill').style.backgroundColor='#aaa';
+        document.getElementById('hover').style.backgroundColor='#fff';
+        document.getElementById('rtl').style.backgroundColor='#fff';
     }
-    else{
-        console.log("Unkilling all drones now");
+    else if(kill==0){
         document.getElementById('unkill').style.backgroundColor='#aaa';
         document.getElementById('kill').style.backgroundColor='#fff';
+        document.getElementById('hover').style.backgroundColor='#fff';
+        document.getElementById('rtl').style.backgroundColor='#fff';
+    }
+    else if(kill==2){
+        console.log("Sending hover command to all drones");
+        document.getElementById('unkill').style.backgroundColor='#fff';
+        document.getElementById('kill').style.backgroundColor='#fff';
+        document.getElementById('hover').style.backgroundColor='#aaa';
+        document.getElementById('rtl').style.backgroundColor='#fff';
+    }
+    else if(kill==3){
+        console.log("Sending RTL coommand to all drones");
+        document.getElementById('unkill').style.backgroundColor='#fff';
+        document.getElementById('kill').style.backgroundColor='#fff';
+        document.getElementById('hover').style.backgroundColor='#fff';
+        document.getElementById('rtl').style.backgroundColor='#aaa';
     }
 
     // POST on server

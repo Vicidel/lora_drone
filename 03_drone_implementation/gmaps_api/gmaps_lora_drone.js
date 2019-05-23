@@ -49,6 +49,9 @@ var delay_after_takeoff = 8000;
 // checks drone onlines ready for takeoff and server online
 var delay_online_check = 500;
 
+// to (de)activate buttons
+var bool_some_drone_is_flying = false;
+
 
 
 
@@ -143,6 +146,9 @@ function print_checklist(){
         - communication loss
     * put all drones in MANUAL mode
         - drones will takeoff if in OFFBOARD
+    * buttons are deactivated on drone takeoff 
+        - if drone landed, press kill to activate again
+        - safeties are always active
     * TODO: add more
         `)
 }
@@ -237,6 +243,42 @@ function check_drone_online(){
         // call function again after X seconds
         setTimeout(check_drone_online, delay_online_check);
     });
+
+    // deactivate buttons 
+    if(bool_some_drone_is_flying){
+        console.log("some drone flying")
+
+        // network
+        document.getElementById("network_place").disabled = true;
+        document.getElementById("network_get").disabled = true;
+
+        // parameters
+        document.getElementById("send").disabled = true;
+        document.getElementById("send2").disabled = true;
+        document.getElementById("loop_todo").disabled = true;
+        document.getElementById("rad1").disabled = true;
+        document.getElementById("rad2").disabled = true;
+        document.getElementById("hover").disabled = true;
+        document.getElementById("flight").disabled = true;
+        document.getElementById("takeoff").disabled = true;
+    }
+    else{
+        console.log("no drone flying")
+
+        // network
+        document.getElementById("network_place").disabled = false;
+        document.getElementById("network_get").disabled = false;
+
+        // parameters
+        document.getElementById("send").disabled = false;
+        document.getElementById("send2").disabled = false;
+        document.getElementById("loop_todo").disabled = false;
+        document.getElementById("rad1").disabled = false;
+        document.getElementById("rad2").disabled = false;
+        document.getElementById("hover").disabled = false;
+        document.getElementById("flight").disabled = false;
+        document.getElementById("takeoff").disabled = false;
+    }
 }
 
 // testing if server is online
@@ -785,27 +827,30 @@ function kill_button_cb(obj, kill){
         console.log("Sending kill command to all drones");
         document.getElementById('unkill').style.backgroundColor='#fff';
         document.getElementById('kill').style.backgroundColor='#f55';
-        document.getElementById('hover').style.backgroundColor='#fff';
+        document.getElementById('hold').style.backgroundColor='#fff';
         document.getElementById('rtl').style.backgroundColor='#fff';
+
+        // reactivate things
+        bool_some_drone_is_flying = false;
     }
     else if(kill==0){
         document.getElementById('unkill').style.backgroundColor='#aaa';
         document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hover').style.backgroundColor='#fff';
+        document.getElementById('hold').style.backgroundColor='#fff';
         document.getElementById('rtl').style.backgroundColor='#fff';
     }
     else if(kill==2){
         console.log("Sending hover command to all drones");
         document.getElementById('unkill').style.backgroundColor='#fff';
         document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hover').style.backgroundColor='#aaa';
+        document.getElementById('hold').style.backgroundColor='#aaa';
         document.getElementById('rtl').style.backgroundColor='#fff';
     }
     else if(kill==3){
         console.log("Sending RTL coommand to all drones");
         document.getElementById('unkill').style.backgroundColor='#fff';
         document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hover').style.backgroundColor='#fff';
+        document.getElementById('hold').style.backgroundColor='#fff';
         document.getElementById('rtl').style.backgroundColor='#aaa';
     }
 
@@ -838,6 +883,9 @@ function takeoff_button_cb(obj, drone_id) {
 
         // disable network estimate change
         network_button_cb(this, 'none');
+
+        // deactivate things
+        bool_some_drone_is_flying = true;
     }
     if(drone_id=='G') {
         // data to send 
@@ -856,6 +904,9 @@ function takeoff_button_cb(obj, drone_id) {
 
         // disable network estimate change
         network_button_cb(this, 'none');
+
+        // deactivate things
+        bool_some_drone_is_flying = true;
     }
     if(drone_id=='B') {
         // data to send 
@@ -874,6 +925,9 @@ function takeoff_button_cb(obj, drone_id) {
 
         // disable network estimate change
         network_button_cb(this, 'none');
+
+        // deactivate things
+        bool_some_drone_is_flying = true;
     }
     if(drone_id=='X') {
         // data to send 
@@ -910,6 +964,9 @@ function takeoff_button_cb(obj, drone_id) {
         else{
             data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
             takeoff_button_cb(this, 'X');
+
+        // deactivate things
+        bool_some_drone_is_flying = true;
         }
     }
 

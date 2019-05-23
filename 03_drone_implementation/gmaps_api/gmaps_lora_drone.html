@@ -64,7 +64,7 @@
 
             <!-- Takeoff buttons -->
             <div>
-                <b>Takeoff buttons:</b>
+                <b>Start mission:</b>
                 <button class="button" disabled title="Start the first drone (1/red)" id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
                 <button class="button" disabled title="Start the second drone (2/green)" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
                 <button class="button" disabled title="Start the first drone (3/blue)" id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
@@ -77,7 +77,7 @@
                 <b>Safety switches:</b>
                 <button class="button" id="unkill" title="Stops sending safety commands to the drone. When stoping hovering or RTL, you will need to press the takeoff button again to resume the mission." type="submit" onclick="kill_button_cb(this, 0)">None</button>
                 <button class="button" id="kill" title="Sends a kill switch message to all the drones, which stops them completely within two seconds. Use the RC kill switches if possible before this one." type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
-                <button class="button" id="hover" title="Stops the drone program and start hovering at their current positions." type="submit" onclick="kill_button_cb(this, 2)">Hover</button>
+                <button class="button" id="hold" title="Stops the drone program and start hovering at their current positions." type="submit" onclick="kill_button_cb(this, 2)">Hover</button>
                 <button class="button" id="rtl" title="Stops the drone program and return to takeoff position." type="submit" onclick="kill_button_cb(this, 3)">RTL</button>
             </div>
 

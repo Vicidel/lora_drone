@@ -776,7 +776,7 @@ function kill_button_cb(obj, kill){
     if(kill==1){
         console.log("Sending kill command to all drones");
         document.getElementById('unkill').style.backgroundColor='#fff';
-        document.getElementById('kill').style.backgroundColor='#aaa';
+        document.getElementById('kill').style.backgroundColor='#f55';
         document.getElementById('hover').style.backgroundColor='#fff';
         document.getElementById('rtl').style.backgroundColor='#fff';
     }

@@ -75,8 +75,8 @@
             <!-- Kill switch -->
             <div>
                 <b>Safety switches:</b>
+                <button class="button" id="unkill" title="Stops sending safety commands to the drone. When stoping hovering or RTL, you will need to press the takeoff button again to resume the mission." type="submit" onclick="kill_button_cb(this, 0)">None</button>
                 <button class="button" id="kill" title="Sends a kill switch message to all the drones, which stops them completely within two seconds. Use the RC kill switches if possible before this one." type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
-                <button class="button" id="unkill" title="Stops sending the kill command to the drones." type="submit" onclick="kill_button_cb(this, 0)">Unkill</button>
                 <button class="button" id="hover" title="Stops the drone program and start hovering at their current positions." type="submit" onclick="kill_button_cb(this, 2)">Hover</button>
                 <button class="button" id="rtl" title="Stops the drone program and return to takeoff position." type="submit" onclick="kill_button_cb(this, 3)">RTL</button>
             </div>

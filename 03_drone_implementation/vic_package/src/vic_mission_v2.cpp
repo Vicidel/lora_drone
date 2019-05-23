@@ -203,6 +203,7 @@ int main(int argc, char **argv){
             if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                 ROS_WARN("GUI kill switch activated!");
                 bool_ignore = true;
+                bool_wait_for_offboard = true;
                 break;
             }
         }
@@ -213,6 +214,7 @@ int main(int argc, char **argv){
             set_mode.request.custom_mode = "AUTO.LOITER";
             if(set_mode_client.call(set_mode) && set_mode.response.mode_sent){
                 bool_ignore = true;
+                bool_wait_for_offboard = true;
             }
         }
 
@@ -222,6 +224,7 @@ int main(int argc, char **argv){
             set_mode.request.custom_mode = "AUTO.RTL";
             if(set_mode_client.call(set_mode) && set_mode.response.mode_sent){
                 bool_ignore = true;
+                bool_wait_for_offboard = true;
             }
         }
 
@@ -263,18 +266,32 @@ int main(int argc, char **argv){
 
                     // check from server
                     if(check_offboard_server(drone_id)){
+                        // set mode as offboard
                         set_mode.request.custom_mode = "OFFBOARD";
                         if(set_mode_client.call(set_mode) && set_mode.response.mode_sent){
                             ROS_INFO("Offboard enabled from server");
                             send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_offboard", drone_id, nb_drone, sim_type);
                             bool_wait_for_offboard = false;
+
+                            // set current_goal as current position
+                            pos_current_goal = pos_drone;
+
+                            // if drone retook off after partial mission: redo last FSM state
+                            if(state!=0) state = state - 1;
                         }
                     }
                     // check from RC
                     else if(current_state.mode == "OFFBOARD"){
+                        // offboard from RC
                         ROS_INFO("Offboard enabled from RC");
                         send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_offboard", drone_id, nb_drone, sim_type);
                         bool_wait_for_offboard = false;
+
+                        // set current_goal as current position
+                        pos_current_goal = pos_drone;
+
+                        // if drone retook off after partial mission: redo last FSM state
+                        if(state!=0) state = state - 1;
                     }
                     // still waiting
                     else{
@@ -312,7 +329,7 @@ int main(int argc, char **argv){
                         char answer_char[answer.size()+1];
                         strcpy(answer_char, answer.c_str());
                         if(answer_char[0]=='4' && answer_char[1]=='0' && answer_char[2]=='4') {
-                            ROS_INFO("ERROR: server is offline");
+                            ROS_WARN("ERROR: server is offline");
                             bool_stop_all = true;
                         }
                         // server is online, continue 
@@ -365,13 +382,13 @@ int main(int argc, char **argv){
                                 send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waypoint_reached", drone_id, nb_drone, sim_type);
                                 
                                 // next state is waiting for all drones to be ready
-                                state = 15;
+                                state = 2;
                             }
                             break;
                         }
 
                         // wait at last received position
-                        case 15:{
+                        case 2:{
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                                 ROS_INFO("Waiting, sending current position"); //, ts is %f", ros::Time::now().toSec());
                                 answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"waiting_for_command", drone_id, nb_drone, sim_type);
@@ -380,12 +397,12 @@ int main(int argc, char **argv){
                                 char answer_char[answer.size()+1];
                                 strcpy(answer_char, answer.c_str());
                                 if(answer_char[0]=='H'){          // hovering/collecting
-                                    state = 2;
+                                    state = 3;
                                     time_start_hover = ros::Time::now();
                                     hover_time = parse_hover_time_from_answer(answer);
                                 }
                                 else if(answer_char[0]=='W'){     // still waiting
-                                    state = 15;
+                                    state = 2;
                                     pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
                                 }
 
@@ -396,7 +413,7 @@ int main(int argc, char **argv){
                         }
 
                         // hover and collect data every second
-                        case 2:{
+                        case 3:{
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                                 // X seconds passed, sending posiion again
                                 ROS_INFO("Sending current position");
@@ -405,7 +422,7 @@ int main(int argc, char **argv){
                                 // time hovering is passed
                                 if(ros::Time::now() - time_start_hover > ros::Duration(hover_time)){
                                     ROS_INFO("Time spend hovering is over, next state");
-                                    state = 25;
+                                    state = 4;
                                 }                            
 
                                 // store current time
@@ -415,7 +432,7 @@ int main(int argc, char **argv){
                         }
 
                         // finished hovering, wait for waypoint
-                        case 25:{
+                        case 4:{
                             ROS_INFO("Sending position waiting for the next waypoint");
                             answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"finished_hovering", drone_id, nb_drone, sim_type);
                             pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
@@ -426,37 +443,37 @@ int main(int argc, char **argv){
                             if(answer_char[0]=='N')          // next waypoint
                                 state = 1;
                             else if(answer_char[0]=='L')     // landing waypoint
-                                state = 3;
+                                state = 5;
 
                             break;
                         }
 
                         // go above the landing position 
-                        case 3:{
+                        case 5:{
                             if((pos_drone-pos_current_goal).norm()<precision){
                                 // reached position, start going down
                                 ROS_INFO("Drone above landing spot, going down");
                                 pos_current_goal(2) = pos_current_goal(2) - pos_drone(2);
-                                state = 4;
+                                state = 6;
                             }
                             break;
                         }
 
                         // going down towards ground
-                        case 4:{
+                        case 6:{
                             if((pos_drone-pos_current_goal).norm()<precision){
                                 // reached ground level, disarm drone
                                 arm_cmd.request.value = false;
                                 if(arming_client.call(arm_cmd) && arm_cmd.response.success){
                                     ROS_INFO("Drone landing spot reached!");
-                                    state = 5;
+                                    state = 7;
                                 }
                             }
                             break;
                         }
 
                         // drone is disarmed on the ground
-                        case 5:{
+                        case 7:{
                             ROS_INFO("Drone landed");
                             send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"drone_landing", drone_id, nb_drone, sim_type);
                             bool_stop_all = true;

@@ -540,9 +540,12 @@ def function_signal_to_distance(esp, rssi):
 
 
 # uses the multilateration package on the created dataset
-def trilateration(tri_dataset):
+def trilateration():
 	# this function uses the localization package by Kamal Shadi:
 	# https://github.com/kamalshadi/Localization
+
+	# global
+	global tri_dataset
 
 	# print
 	print("LOC: Starting multilateration with {} anchors".format(len(tri_dataset)))
@@ -564,10 +567,12 @@ def trilateration(tri_dataset):
 
 
 # matches LoRa and drone data
-def trilateration_main(drone_dataset):
+def trilateration_main():
+
+	# global
+	global tri_dataset, drone_dataset
 
 	# clear tri_dataset
-	global tri_dataset
 	tri_dataset = []
 
 	# matches LoRa and drone datasets
@@ -1407,7 +1412,7 @@ def lora_print_json():
 
 
 # returns the waypoint based on drone id, total number of drone and state
-def get_waypoint(drone_id, nb_drone, drone_dataset):
+def get_waypoint(drone_id, nb_drone):
 
 	# global variables
 	global solution, circle_radius, nb_est_made, bool_new_est_made
@@ -1452,7 +1457,7 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 		# need multilateration
 		if state==3 or state==6:
 			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main()
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				# uncertainty
 				if state==3:
@@ -1549,7 +1554,7 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 		# estimations
 		if state>0:
 			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main(drone_dataset)
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main()
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				# uncertainty
 				if state==1:
@@ -1616,6 +1621,154 @@ def get_waypoint(drone_id, nb_drone, drone_dataset):
 	return wp_x, wp_y, wp_z, bool_landing_waypoint
 
 
+# returns the return string
+def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
+
+	# global
+	global drone_dataset, current_state1, current_state2, current_state3
+	global solution, circle_radius, nb_est_made, bool_new_est_made
+	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
+
+
+	# if it is not set during the next if's
+	return_string = 'ERROR, return string not set'
+
+	# switch to OFFBOARD mode done
+	if payload=='drone_offboard':
+		return_string = "Congrats on offboard mode!"
+
+	# drone was just armed
+	if payload=='drone_armed':
+
+		# add waypoint for takeoff to Firebase
+		add_waypoint_maps(pos_x, pos_y, drone_id)
+
+		# return string with takeoff coordinates
+		return_string = "Takeoff at current position: h{}".format(takeoff_altitude)
+
+	# drone took off and is in the air
+	if payload=='drone_takeoff':
+
+		# empty drone dataset
+		print("Emptying drone dataset for this mission")
+		drone_dataset = []
+
+		# set base solution at network estimate
+		solution.pos_x = network_x
+		solution.pos_y = network_y
+		solution.pos_z = 0
+
+		# set base parameters
+		circle_radius = circle_radius_v1
+
+		# set state at 0
+		if drone_id==1:
+			current_state1 = 0
+		if drone_id==2:
+			current_state2 = 0
+		if drone_id==3:
+			current_state3 = 0
+
+		## all drones needs to be ready again
+		bool_drone1_ready = False
+		bool_drone2_ready = False
+		bool_drone3_ready = False
+
+		# set estimation made at 0
+		nb_est_made = 0
+
+		# get waypoint
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
+
+		# save on map
+		add_waypoint_maps(wp_x, wp_y, drone_id)
+		add_network_maps(solution.pos_x, solution.pos_y)		# point
+		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty1, 'network') 	# circle
+
+		# return string with new coordinates
+		return_string = "New waypoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+
+	# drone reached its previous (unknown) waypoint
+	if payload=='waypoint_reached':
+
+		# read old state to increment it
+		if drone_id==1:
+			current_state1 = current_state1 + 1
+		if drone_id==2:
+			current_state2 = current_state2 + 1
+		if drone_id==3:
+			current_state3 = current_state3 + 1
+
+		# reset bool
+		bool_new_est_made = False
+
+		# send hover time
+		return_string = "Wait at this position until drones are ready"
+
+	# drone is waiting for all drones ready
+	if payload=='waiting_for_command':
+
+		# bool if ready for next waypoint
+		bool_drone_can_start_collection = False
+
+		# fill bool_ready
+		if drone_id==1:
+			bool_drone1_ready = True
+		if drone_id==2:
+			bool_drone2_ready = True
+		if drone_id==3:
+			bool_drone3_ready = True
+
+		# for one drone, true
+		if nb_drone==1:
+			bool_drone_can_start_collection = True
+
+		# for three drones: check if all drones have finished their hovering
+		if nb_drone==3:
+			if bool_drone1_ready == True and bool_drone2_ready == True and bool_drone3_ready == True:
+				bool_drone_can_start_collection = True
+
+		if bool_drone_can_start_collection:
+			# can start hovering for data collection
+			return_string = "Hover time set: h{}".format(hover_time)
+
+			# for three drones, empty drone dataset to avoid unbalanced localization
+			if nb_drone==3:
+				print("Emptying drone dataset for current localization")
+				drone_dataset = []
+		else:
+			# still waiting
+			return_string = "Waiting until other drones ready"
+
+	# drone is hovering in position
+	if payload=='data_collected':
+
+		# get new waypoint
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
+
+		# return string
+		return_string = "Waiting until finished hovering"
+
+	# getting the next waypoint
+	if payload=='finished_hovering':
+
+		# get new waypoint
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
+		add_waypoint_maps(wp_x, wp_y, drone_id)
+
+		# return string
+		if bool_landing_waypoint:
+			return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+		else:
+			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+
+	# drone is landing
+	if payload=='drone_landing':
+		return_string = "Congrats on mission!"
+
+	return return_string
+
+
 # receive GPS coordinates from offboard script (v2)
 @app.route('/drone/receive_state', methods=['POST'])
 def drone_receive_state():
@@ -1664,143 +1817,8 @@ def drone_receive_state():
 		bool_drone3_online = False
 
 
-	###################  SWITCH STATE  ######################
-	
-	# if it is not set during the next if's
-	return_string = 'ERROR, return string not set'
-
-	# switch to OFFBOARD mode done
-	if r_payload=='drone_offboard':
-		return_string = "Congrats on offboard mode!"
-
-	# drone was just armed
-	if r_payload=='drone_armed':
-
-		# add waypoint for takeoff to Firebase
-		add_waypoint_maps(r_pos_x, r_pos_y, r_drone_id)
-
-		# return string with takeoff coordinates
-		return_string = "Takeoff at current position: h{}".format(takeoff_altitude)
-
-	# drone took off and is in the air
-	if r_payload=='drone_takeoff':
-
-		# empty drone dataset
-		print("Emptying drone dataset for this mission")
-		drone_dataset = []
-
-		# set base solution at network estimate
-		solution.pos_x = network_x
-		solution.pos_y = network_y
-		solution.pos_z = 0
-
-		# set base parameters
-		circle_radius = circle_radius_v1
-
-		# set state at 0
-		if r_drone_id==1:
-			current_state1 = 0
-		if r_drone_id==2:
-			current_state2 = 0
-		if r_drone_id==3:
-			current_state3 = 0
-
-		## all drones needs to be ready again
-		bool_drone1_ready = False
-		bool_drone2_ready = False
-		bool_drone3_ready = False
-
-		# set estimation made at 0
-		nb_est_made = 0
-
-		# get waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
-
-		# save on map
-		add_waypoint_maps(wp_x, wp_y, r_drone_id)
-		add_network_maps(network_x, network_y)		# point
-		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty1, 'network') 	# circle
-
-		# return string with new coordinates
-		return_string = "New waypoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
-
-	# drone reached its previous (unknown) waypoint
-	if r_payload=='waypoint_reached':
-
-		# read old state to increment it
-		if r_drone_id==1:
-			current_state1 = current_state1 + 1
-		if r_drone_id==2:
-			current_state2 = current_state2 + 1
-		if r_drone_id==3:
-			current_state3 = current_state3 + 1
-
-		# reset bool
-		bool_new_est_made = False
-
-		# send hover time
-		return_string = "Wait at this position until drones are ready"
-
-	# drone is waiting for all drones ready
-	if r_payload=='waiting_for_command':
-
-		# bool if ready for next waypoint
-		bool_drone_can_start_collection = False
-
-		# fill bool_ready
-		if r_drone_id==1:
-			bool_drone1_ready = True
-		if r_drone_id==2:
-			bool_drone2_ready = True
-		if r_drone_id==3:
-			bool_drone3_ready = True
-
-		# for one drone, true
-		if r_nb_drone==1:
-			bool_drone_can_start_collection = True
-
-		# for three drones: check if all drones have finished their hovering
-		if r_nb_drone==3:
-			if bool_drone1_ready == True and bool_drone2_ready == True and bool_drone3_ready == True:
-				bool_drone_can_start_collection = True
-
-		if bool_drone_can_start_collection:
-			# can start hovering for data collection
-			return_string = "Hover time set: h{}".format(hover_time)
-
-			# for three drones, empty drone dataset to avoid unbalanced localization
-			if r_nb_drone==3:
-				print("Emptying drone dataset for current localization")
-				drone_dataset = []
-		else:
-			# still waiting
-			return_string = "Waiting until other drones ready"
-
-	# drone is hovering in position
-	if r_payload=='data_collected':
-
-		# get new waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
-
-		# return string
-		return_string = "Waiting until finished hovering"
-
-	# getting the next waypoint
-	if r_payload=='finished_hovering':
-
-		# get new waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(r_drone_id, r_nb_drone, drone_dataset)
-		add_waypoint_maps(wp_x, wp_y, r_drone_id)
-
-		# return string
-		if bool_landing_waypoint:
-			return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
-		else:
-			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
-
-	# drone is landing
-	if r_payload=='drone_landing':
-		return_string = "Congrats on mission!"
+	###################  GET RETURN STRING  ######################
+	return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
 
 
 	###################  CREATE MEMORY  ######################

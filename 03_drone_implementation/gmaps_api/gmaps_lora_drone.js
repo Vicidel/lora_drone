@@ -136,7 +136,15 @@ function main() {
 
 // prints a checklist when loading the app
 function print_checklist(){
-    window.alert("CHECKLIST:\r\nTODO")
+    window.alert(`CHECKLIST:\n
+    * check safety settings
+        - geofence
+        - RTL
+        - communication loss
+    * put all drones in MANUAL mode
+        - drones will takeoff if in OFFBOARD
+    * TODO: add more
+        `)
 }
 
 
@@ -238,7 +246,7 @@ function check_server_online(){
     const url='http://victor.scapp.io/';
     axios({method: 'HEAD', url: url})
     .catch(function (error){
-        window.alert("Server is offline, OK to try again")
+        window.alert("Server is offline\nOK to try again\nRefresh page when back online")
     })
     .finally(function () {
         // call function again after X seconds

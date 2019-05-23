@@ -628,7 +628,7 @@ def trilateration_main():
 	# all good
 	else:
 		# call trilateration function
-		pos_x_est, pos_y_est, pos_z_est = trilateration(tri_dataset)
+		pos_x_est, pos_y_est, pos_z_est = trilateration()
 
 		# return result
 		return pos_x_est, pos_y_est, pos_z_est
@@ -1772,10 +1772,8 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 # receive GPS coordinates from offboard script (v2)
 @app.route('/drone/receive_state', methods=['POST'])
 def drone_receive_state():
+
 	# get global variables 
-	global drone_dataset, current_state1, current_state2, current_state3, solution
-	global network_x, network_y, network_z, circle_radius, nb_est_made, bool_new_est_made
-	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
 	global bool_drone1_online, bool_drone2_online, bool_drone3_online
 
 
@@ -1808,6 +1806,9 @@ def drone_receive_state():
 	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)
 	r_time 		= str(r_time) 
 
+
+	###################  CHANGE DRONE STATE  ######################
+
 	# drone set to offline, greying button in gmaps
 	if r_drone_id==1:
 		bool_drone1_online = False
@@ -1816,8 +1817,7 @@ def drone_receive_state():
 	elif r_drone_id==3:
 		bool_drone3_online = False
 
-
-	###################  GET RETURN STRING  ######################
+	# get return string with new instructions	
 	return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
 
 

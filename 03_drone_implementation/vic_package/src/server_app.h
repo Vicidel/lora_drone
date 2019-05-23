@@ -27,7 +27,6 @@ using namespace Eigen; // To use matrix and vector representation
 
 // URL for POST on server app
 #define DRONE_SEND_CURRENT_STATE_URL "http://victor.scapp.io/drone/receive_state"		// ask for instrcutions from server app
-#define DRONE_SERVER_URL "http://victor.scapp.io/drone/receive_state_latlng"		// ask for instrcutions from server app
 #define DRONE_STATUS_URL "http://victor.scapp.io/param/check_offboard"					// check state from Firebase GUI through server app
 #define DRONE_KILL_URL "http://victor.scapp.io/param/check_kill"						// check kill switch from Firebase GUI through server app
 #define FIREBASE_EMPTY_URL "http://victor.scapp.io/firebase/empty" 						// empties the Firebase through server app

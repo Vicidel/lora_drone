@@ -215,8 +215,8 @@ bool_drone1_online = False
 bool_drone2_online = False
 bool_drone3_online = False
 
-# kill switch
-bool_kill_switch  = False
+# safety switch
+gmaps_safety_switch  = 0		# 0 for unkill, 1 for kill, 2 for hover, 3 for RTL
 
 
 
@@ -995,7 +995,7 @@ def param_drone_start():
 # to kill the drone from the server 
 @app.route('/param/drone_kill', methods=['POST'])
 def param_drone_kill():
-	print("!!!!!!!!! Drone kill received from POST !!!!!!!!!")
+	print("!!!!!!!!! Safety switch received from POST !!!!!!!!!")
 
 	# test nature of message: if not JSON we don't want it
 	j = []
@@ -1009,18 +1009,18 @@ def param_drone_kill():
 	print("Drone kill received: {}".format(j['kill']))
 
 	# set drone status
-	global bool_kill_switch
-	bool_kill_switch  = int(j['kill'])
+	global gmaps_safety_switch
+	gmaps_safety_switch  = int(j['kill'])
 
 	# greys the buttons
 	global bool_drone1_online, bool_drone2_online, bool_drone3_online
-	if bool_kill_switch==True:
+	if gmaps_safety_switch==True:
 		bool_drone1_online = False
 		bool_drone2_online = False
 		bool_drone3_online = False
 
 	# return string
-	return 'Drones kill switch set'
+	return 'Drones safety switch set'
 
 
 # called from the drone to know if it should start
@@ -1073,8 +1073,12 @@ def param_check_kill():
 	print("!!!!!!!!! Drone is checking kill !!!!!!!!!")
 
 	# return directly kill switch status
-	if bool_kill_switch:
+	if gmaps_safety_switch==1:
 		return 'Kill'
+	elif gmaps_safety_switch==2:
+		return 'Hover'
+	elif gmaps_safety_switch==3:
+		return 'RTL'
 	else:
 		return 'OK'
 

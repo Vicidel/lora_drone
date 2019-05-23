@@ -1814,7 +1814,6 @@ def drone_receive_state():
 
 
 	###################  CHANGE DRONE STATE  ######################
-
 	# drone set to offline, greying button in gmaps
 	if r_drone_id==1:
 		bool_drone1_online = False
@@ -1829,8 +1828,7 @@ def drone_receive_state():
 		return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
 	elif r_sim_type == 1:
 		# return string for continuous method
-		return_String = get_return_string_continuous()
-
+		return_string = get_return_string_continuous()
 
 
 	###################  CREATE MEMORY  ######################

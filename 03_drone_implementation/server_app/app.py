@@ -517,6 +517,24 @@ def add_network_maps(pos_x, pos_y):
 	return 'Success'
 
 
+# add real node on maps
+def add_ground_truth(lat, lng, nb_sat, hdop, speed, course):
+
+	# push on Firebase
+	ref_node = firebase_db.reference('node')
+	ref_node.push({
+		'lat': lat,
+		'lng': lng,
+		'nb_sat': nb_sat,
+		'hdop': hdop,
+		'speed': speed,
+		'course': course,
+	    'sender': 'app.py: add_ground_truth',
+	})
+
+	return 'Success'
+
+
 
 #########################################################################################
 ###################################  TRILATERATION  #####################################
@@ -1271,8 +1289,12 @@ def lora_receive():
 			r_speed  = ((payload_int & 0x00000000000000000000000000000000ff000000) >> bitshift(size_payload,16)) / 2
 			r_course = ((payload_int & 0x0000000000000000000000000000000000ff0000) >> bitshift(size_payload,17)) * 2
 
+			# add to firebase
+			if r_hdop != 0:
+				add_ground_truth(r_lat, r_lon, r_sat, r_hdop, r_speed, r_course)
+
 		# store only one gateway information or all gateways
-		store_only_one = True
+		store_only_one = False
 		unique_gateway = gateway_corner
 		if store_only_one:
 			# set gateways parameters for transmission arriving on multiple gateways

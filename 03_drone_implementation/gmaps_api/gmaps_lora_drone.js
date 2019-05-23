@@ -814,6 +814,29 @@ function init_firebase_estimations(map, markers, circles) {
     });
 }   
 
+// init Firebase for node
+function init_firebase_node(map, markers) {
+
+    // reference in Firebase
+    var node_ref = firebase.child('node');
+
+    // for network points
+    node_ref.on('child_added', function(snapshot) {
+
+        // get coordinates from firebase
+        var lat = snapshot.val().lat;
+        var lng = snapshot.val().lng;
+
+        // move marker
+        markers.node.setPosition(new google.maps.LatLng(lat, lng));
+        markers.node.setMap(map);
+    });
+    node_ref.on('child_removed', function(snapshot) {
+        markers.node.setMap(null)
+    });
+
+}
+
 
 
 

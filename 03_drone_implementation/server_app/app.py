@@ -1621,7 +1621,7 @@ def get_waypoint(drone_id, nb_drone):
 	return wp_x, wp_y, wp_z, bool_landing_waypoint
 
 
-# returns the return string
+# returns the return string for classic method
 def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 
 	# global
@@ -1769,6 +1769,11 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	return return_string
 
 
+# returns the returne string for continuous method
+def get_return_string_continuous():
+	return "TODO"
+
+
 # receive GPS coordinates from offboard script (v2)
 @app.route('/drone/receive_state', methods=['POST'])
 def drone_receive_state():
@@ -1801,6 +1806,7 @@ def drone_receive_state():
 	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
 	r_drone_id  = int(j['drone_id'])
 	r_nb_drone  = int(j['nb_drone'])
+	r_sim_type  = int(j['sim_type'])		# 0 for classic, 1 for continuous
 
 	# type conversion and stuff
 	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)
@@ -1818,7 +1824,13 @@ def drone_receive_state():
 		bool_drone3_online = False
 
 	# get return string with new instructions	
-	return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
+	if r_sim_type == 0:
+		# return string for classic method
+		return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
+	elif r_sim_type == 1:
+		# return string for continuous method
+		return_String = get_return_string_continuous()
+
 
 
 	###################  CREATE MEMORY  ######################

@@ -46,8 +46,10 @@ int check_offboard_server(int drone_id);
 int check_kill_server(void);
 
 // get instructions from server app
-std::string send_drone_state(Vector3f position, double time, char* payload, int drone_id, int nb_drone);
-std::string send_drone_state_latlng(double lat, double lng, double alt, double time, char* payload, int drone_id, int nb_drone);
+std::string send_drone_state(Vector3f position, double time, char* payload, 
+	int drone_id, int nb_drone, int sim_type);
+std::string send_drone_state_latlng(double lat, double lng, double alt, double time, 
+	char* payload, int drone_id, int nb_drone);
 
 
 #endif

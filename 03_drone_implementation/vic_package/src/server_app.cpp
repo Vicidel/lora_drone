@@ -106,7 +106,7 @@ std::string send_drone_state(Vector3f position, double time, char* payload,
     char str_pos_z[10];    sprintf(str_pos_z, "%f", position(2));
     char str_time[30];     sprintf(str_time, "%f", time);
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
-    char str_sim_type[10]; sprintf(str_sim_type, "%d", drone_id);
+    char str_sim_type[10]; sprintf(str_sim_type, "%d", sim_type);
     char str_nb_drone[10]; sprintf(str_nb_drone, "%d", nb_drone);
     cJSON_AddStringToObject(root, "pos_x", str_pos_x);
     cJSON_AddStringToObject(root, "pos_y", str_pos_y);
@@ -269,6 +269,5 @@ int check_kill_server(void){
     strcpy(answer_char, response_string.c_str());
 
     // return 
-    if(answer_char[0]=='K') return 1;       // kill drone
-    else return 0;                          // ok
+    return atoi(answer_char);
 }

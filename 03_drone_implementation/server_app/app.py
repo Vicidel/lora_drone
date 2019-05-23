@@ -1073,7 +1073,7 @@ def param_check_kill():
 	print("!!!!!!!!! Drone is checking kill !!!!!!!!!")
 
 	# return directly kill switch status
-	return gmaps_safety_switch
+	return "{}".format(gmaps_safety_switch)
 
 
 # called by gmaps to check if drones online to grey/ungrey buttons

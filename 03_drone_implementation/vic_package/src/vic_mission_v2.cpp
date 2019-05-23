@@ -156,11 +156,11 @@ int main(int argc, char **argv){
     int nb_drone = 1;           // can be 1 or 3
     int sim_type = 0;           // 0 for classic, 1 for continuous
     bool bool_fly_straight = true;      // fly in direction of waypoint or just x+
+    int gmaps_safety_switch = 0;        // 0 for unkill, 1 for kil, 2 for hover, 3 for RTL
 
     // state booleans
     bool bool_wait_for_offboard = true;     // waiting for offboard mode activation from RC or server app
     bool bool_stop_all = false;             // stop all when simulation is ended or kill switch
-    bool bool_kill_switch = false;          // kill switch
     
     
     // empty Firebase
@@ -184,20 +184,30 @@ int main(int argc, char **argv){
         // check offboard mode and kill switch from GMaps API through server
         if(ros::Time::now() - time_last_server_check > ros::Duration(time_kill_check_period)) {
             // get value from server
-            bool_kill_switch = check_kill_server();
+            gmaps_safety_switch = check_kill_server();
             
             // store current time
             time_last_server_check = ros::Time::now();
         }
 
         // kill switch
-        if(bool_kill_switch){
+        if(gmaps_safety_switch==1){
             // disarm drone and stop program
             arm_cmd.request.value = false;
             if(arming_client.call(arm_cmd) && arm_cmd.response.success){
-                ROS_INFO("Server kill switch activated!");
+                ROS_WARN("GUI kill switch activated!");
                 break;
             }
+        }
+
+        // hover switch
+        if(gmaps_safety_switch==2){
+            ROS_WARN("GUI hovering switch activated");
+        }
+
+        // RTL switch
+        if(gmaps_safety_switch==3){
+            ROS_WARN("GUI RTL switch activated");
         }
 
         // stop boolean, when program ended
@@ -205,7 +215,7 @@ int main(int argc, char **argv){
             // disarm drone and stop program
             arm_cmd.request.value = false;
             if(arming_client.call(arm_cmd) && arm_cmd.response.success){
-                ROS_INFO("Stop condition reached");
+                ROS_WARN("Stop condition reached");
                 break;
             }
         }

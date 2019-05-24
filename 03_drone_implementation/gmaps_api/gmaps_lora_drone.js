@@ -363,6 +363,11 @@ function init_legend(map){
     // create legend object
     var legend = document.getElementById('legend');
 
+    // add node
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/node_circle.png width=20> Node ground truth'
+    legend.appendChild(div);
+
     // add homeR
     var div = document.createElement('div');
     div.innerHTML = '<img src=marker/homeR.png width=20> Home 1/R'
@@ -834,7 +839,6 @@ function init_firebase_node(map, markers) {
     node_ref.on('child_removed', function(snapshot) {
         markers.node.setMap(null)
     });
-
 }
 
 
@@ -1139,8 +1143,15 @@ function create_markers(map, icons) {
         title: 'Second estimation',
     });
 
+    // for node
+    var node_marker = new google.maps.Marker({
+        map: map,
+        icon: 'marker/node.png',
+        title: 'Node ground truth',
+    });
+
     // return them 
-    return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, network: network_marker, est1: est_marker1, est2: est_marker2};
+    return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, network: network_marker, est1: est_marker1, est2: est_marker2, node: node_marker};
 }
 
 // creates the circles

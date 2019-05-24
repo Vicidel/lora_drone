@@ -443,11 +443,13 @@ void loop() {
 
             // info coming from serial (GPS)
             if (gps.encode(Serial.read())){
-              
+                
+                // put state on screen
+                oledPutState();
+                
                 //check GPS fix
                 if(fsm_state!=NO_GPS && (!gps.location.isValid() || !gps.time.isValid() || gps.satellites.value()<1)){
                     fsm_state = NO_FIX;
-                    oledPutState();
                 }
                     
                 switch (fsm_state)
@@ -455,25 +457,23 @@ void loop() {
                     case NO_GPS: 
                         if (gps.charsProcessed() > 10){
                             fsm_state = NO_FIX;
-                            oledPutState();
                         }
                         delay(t_check_fix);
                         break;
             
                     case NO_FIX:
                         if(gps.location.isValid() && gps.time.isValid() && gps.satellites.value()>0){
-                            fsm_state = CHECK_PRECISION;
-                            oledPutState();
+                            fsm_state = SEND;
                         }
                         delay(t_check_fix);
                         break;
-            
+
+            /*
                     case CHECK_PRECISION:
                         if(gps.hdop.value()<MIN_HDOP && gps.hdop.value()>0){
                             //store time when the fix was accepted
                             fsm_flag = millis();
                             fsm_state = GPS_IMPROVE;
-                            oledPutState();
                         }
                         sprintf(oled_string, "HDOP: %d", gps.hdop.value());
                         oledPut(5, oled_string);
@@ -489,7 +489,6 @@ void loop() {
                             oledPut(5, "Done, start mapping!");
                             if(current_state==SEND_WITH_GPS){
                                 fsm_state = SEND;
-                                oledPutState();
                             }
                         }
                         else{
@@ -504,7 +503,7 @@ void loop() {
                             oledPut(5, "GPS precision lost");
                         }
                         delay(t_improve);
-                        break;
+                        break;*/
             
                     case SEND:
                         sprintf(oled_string, "Since: %d s", (int) (0.001 * (millis()-fsm_flag)));

@@ -115,10 +115,11 @@ function main() {
     init_legend(map);
 
     // start Firebase and database listeners
-    init_firebase_homes(map, markers, circles);                  // homes
+    init_firebase_homes(map, markers, circles);         // homes
     init_firebase_drones(map, markers, paths);          // drones, paths
     init_firebase_waypoints(map, wp_lists);             // waypoints
     init_firebase_estimations(map, markers, circles);   // estimations
+    init_firebase_node(map, markers);                   // node ground truth
 
     // initial button colors: call callbacks as if clicked
     takeoff_button_cb(this, 'X');

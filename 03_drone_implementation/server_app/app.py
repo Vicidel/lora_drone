@@ -1290,8 +1290,11 @@ def lora_receive():
 			r_course = ((payload_int & 0x0000000000000000000000000000000000ff0000) >> bitshift(size_payload,17)) * 2
 
 			# add to firebase
-			if r_hdop != 0:
+			if r_lon != 0:
+				print("Adding to Firebase as ground truth")
 				add_ground_truth(r_lat, r_lon, r_sat, r_hdop, r_speed, r_course)
+			else: 
+				print("No GPS data, not adding to Firebase")
 
 		# store only one gateway information or all gateways
 		store_only_one = False

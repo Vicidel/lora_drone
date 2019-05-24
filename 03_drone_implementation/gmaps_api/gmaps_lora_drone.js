@@ -26,6 +26,7 @@ var lng_lausanne = 6.5628348;
 // storage            
 var lat_homeR, lng_homeR, lat_homeG, lng_homeG, lat_homeB, lng_homeB;
 var lat_droneR, lng_droneR, lat_droneG, lng_droneG, lat_droneB, lng_droneB;
+var lat_node, lng_node, lat_last_est, lng_last_est;
 
 // drones states
 var stateR = "UNKNOWN";
@@ -128,7 +129,6 @@ function main() {
 
     // initialize the periodic check of drone and server online
     check_drone_online();
-    check_server_online();
 
     // fills the parameters and state fields
     get_base_param();
@@ -210,7 +210,11 @@ function check_drone_online(){
 
     // check online from server
     const url='http://victor.scapp.io/param/check_online';
-    axios({method: 'POST', url: url}).then(function(response){
+    axios({method: 'POST', url: url})
+    .catch(function (error){
+        window.alert("Server is offline\nOK to try again\nRefresh page when back online")
+    })
+    .then(function(response){
         
         // booleans
         droneR_online = response.data['droneR'];
@@ -247,7 +251,6 @@ function check_drone_online(){
 
     // deactivate buttons 
     if(bool_some_drone_is_flying){
-        console.log("some drone flying")
 
         // network
         document.getElementById("network_place").disabled = true;
@@ -264,7 +267,6 @@ function check_drone_online(){
         document.getElementById("takeoff").disabled = true;
     }
     else{
-        console.log("no drone flying")
 
         // network
         document.getElementById("network_place").disabled = false;
@@ -282,19 +284,46 @@ function check_drone_online(){
     }
 }
 
-// testing if server is online
-function check_server_online(){
-    
-    // check server
-    const url='http://victor.scapp.io/';
-    axios({method: 'HEAD', url: url})
-    .catch(function (error){
-        window.alert("Server is offline\nOK to try again\nRefresh page when back online")
-    })
-    .finally(function () {
-        // call function again after X seconds
-        setTimeout(check_server_online, delay_online_check);
-    });
+// compute distance between node and est
+function compute_result_dist(){
+
+    // define variables
+    lat1 = lat_node;
+    lon1 = lng_node;
+    lat2 = lat_last_est;
+    lon2 = lng_last_est;
+
+    if (typeof lat1=='undefined' || typeof lon1=='undefined' || typeof lat2=='undefined' || typeof lon2=='undefined'){
+        return '-1';
+    }
+
+    // code from https://www.geodatasource.com/developers/javascript
+    if ((lat1 == lat2) && (lon1 == lon2)) {
+        return 0;
+    }
+    else {
+        var radlat1 = Math.PI * lat1/180;
+        var radlat2 = Math.PI * lat2/180;
+        var theta = lon1-lon2;
+        var radtheta = Math.PI * theta/180;
+        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+        if (dist > 1) {
+            dist = 1;
+        }
+        dist = Math.acos(dist);
+        dist = dist * 180/Math.PI;
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1.609344 / 1000;  // conversion to meters
+        return dist;
+    }
+}
+
+// get the results
+function print_results(){
+
+    // print results in header
+    document.querySelector('.results').innerHTML = 
+        "node:("+lat_node+","+lng_node+"),est:("+lat_last_est+","+lng_last_est+"), distance:("+compute_result_dist()+"m)";
 }
 
 
@@ -323,6 +352,12 @@ function init_centering_controls(map) {
     var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
     centerControlDiv3.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
+
+    // create div for centering button
+    var centerControlDiv4 = document.createElement('div');
+    var centerControl4 = new center_control(centerControlDiv4, map, lat_node, lng_node, "Node");
+    centerControlDiv4.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv4);
 }
 
 // creates a GUI for centering map
@@ -353,7 +388,11 @@ function center_control(control_div, map, lat, lng, string){
 
     // Setup the click event listeners: simply set the map to Chicago.
     controlUI.addEventListener('click', function() {
-        console.log("Centering on "+string)
+        if(string=='Node'){
+            lat = lat_node
+            lng = lng_node
+        }
+        console.log("Centering on "+string+", lat:"+lat+", lng:"+lng)
         map.setCenter(new google.maps.LatLng(lat, lng));
         map.setZoom(16);
     });
@@ -775,6 +814,13 @@ function init_firebase_estimations(map, markers, circles) {
         // move marker
         markers.network.setPosition(new google.maps.LatLng(lat, lng));
         markers.network.setMap(map);
+
+        // storage
+        lat_last_est = lat;
+        lng_last_est = lng;
+
+        // print results
+        print_results();
     });
     netw_ref.on('child_removed', function(snapshot) {
         //markers.network.setMap(null)
@@ -782,6 +828,7 @@ function init_firebase_estimations(map, markers, circles) {
 
     // for new estimation
     est_ref.on('child_added', function(snapshot) {
+
         // get coordinates from firebase
         var lat  = snapshot.val().lat;
         var lng  = snapshot.val().lng;
@@ -810,6 +857,13 @@ function init_firebase_estimations(map, markers, circles) {
             markers.est2.setPosition(new google.maps.LatLng(lat, lng));
             markers.est2.setMap(map);
         }
+
+        // storage
+        lat_last_est = lat;
+        lng_last_est = lng;
+
+        // print results
+        print_results();
     });
     est_ref.on('child_removed', function(snapshot) {
         circles.c1.setMap(null);
@@ -836,6 +890,13 @@ function init_firebase_node(map, markers) {
         // move marker
         markers.node.setPosition(new google.maps.LatLng(lat, lng));
         markers.node.setMap(map);
+
+        // storage
+        lat_node = lat;
+        lng_node = lng;
+
+        // print results
+        print_results();
     });
     node_ref.on('child_removed', function(snapshot) {
         markers.node.setMap(null)

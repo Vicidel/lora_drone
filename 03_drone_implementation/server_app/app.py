@@ -1725,7 +1725,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		bool_new_est_made = False
 
 		# send hover time
-		return_string = "Wait at this position until drones are ready"
+		return_string = "Wait at this position"
 
 	# drone is waiting for all drones ready
 	if payload=='waiting_for_command':
@@ -1760,7 +1760,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 				drone_dataset = []
 		else:
 			# still waiting
-			return_string = "Waiting until other drones ready"
+			return_string = "Wait until other drones ready (d1:{}, d2:{} d3:{})".format(bool_drone1_ready, bool_drone2_ready, bool_drone3_ready)
 
 	# drone is hovering in position
 	if payload=='data_collected':
@@ -1769,7 +1769,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
 
 		# return string
-		return_string = "Waiting until finished hovering"
+		return_string = "Wait until finished hovering"
 
 	# getting the next waypoint
 	if payload=='finished_hovering':

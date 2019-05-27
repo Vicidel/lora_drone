@@ -1769,7 +1769,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
 
 		# return string
-		return_string = "Wait until finished hovering"
+		return_string = "Wait until finished hovering (h:{})".format(hover_time)
 
 	# getting the next waypoint
 	if payload=='finished_hovering':

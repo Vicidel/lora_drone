@@ -1280,7 +1280,7 @@ function create_circles() {
         fillOpacity: 0.1,
     })
     var network_circle4 = new google.maps.Circle({
-        strokeColor: '#FFFF00',
+        strokeColor: '#00FF00',
         strokeOpacity: 0.5,
         strokeWeight: 2,
         fillColor: '#00FF00',

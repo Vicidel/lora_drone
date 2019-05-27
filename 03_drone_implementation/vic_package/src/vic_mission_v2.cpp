@@ -66,7 +66,7 @@ void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg);
 void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg);
 
 // conversion functions
-geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
+geometry_msgs::PoseStamped conversion_to_msg(Vector3f a, geometry_msgs::PoseStamped est_local_pos);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
 mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal);
 
@@ -164,7 +164,7 @@ int main(int argc, char **argv){
     int drone_id = 2;           // can be 1, 2 or 3
     int nb_drone = 1;           // can be 1 or 3
     int sim_type = 0;           // 0 for classic, 1 for continuous
-    bool bool_fly_straight = true;      // fly in direction of waypoint or just x+
+    bool bool_fly_straight = false;     // fly in direction of waypoint or just keep same yaw
     int gmaps_safety_switch = 0;        // 0 for unkill, 1 for kil, 2 for hover, 3 for RTL
 
     // state booleans
@@ -185,7 +185,7 @@ int main(int argc, char **argv){
     // send a few setpoints before starting
     ROS_INFO("Sending a few waypoints before start");
     for(int i = 100; ros::ok() && i > 0; --i){
-        local_pos_pub.publish(conversion_to_msg(pos_current_goal));
+        local_pos_pub.publish(conversion_to_msg(pos_current_goal, est_local_pos));
         ros::spinOnce();
         pos_drone = conversion_to_vect(est_local_pos);
         rate.sleep();
@@ -435,6 +435,9 @@ int main(int argc, char **argv){
                                     // next state: go to waypoint
                                     pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
                                     state = 1;
+
+                                    // drone flies in direction of waypoint for next state
+                                    bool_fly_straight = true;
                                 }
                             }
                             break;
@@ -453,6 +456,9 @@ int main(int argc, char **argv){
                                 else{
                                     // next state: waiting for all drones to be ready
                                     state = 2;
+
+                                    // drone waits while keeping same orientation
+                                    bool_fly_straight = false;
                                 }
                             }
                             break;
@@ -530,6 +536,9 @@ int main(int argc, char **argv){
                                     state = 1;
                                 else if(answer_char[0]=='L')     // landing waypoint
                                     state = 5;
+
+                                // drone flies in direction of waypoint for next state
+                                bool_fly_straight = true;
                             }
                             break;
                         }
@@ -541,6 +550,9 @@ int main(int argc, char **argv){
                                 ROS_INFO("Drone above landing spot, going down");
                                 pos_current_goal(2) = pos_current_goal(2) - pos_drone(2);
                                 state = 6;
+
+                                // drone goes down keeping same orientation
+                                bool_fly_straight = false;
                             }
                             break;
                         }
@@ -583,7 +595,7 @@ int main(int argc, char **argv){
                     
         // ROS update
         if(bool_fly_straight) target_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
-        else local_pos_pub.publish(conversion_to_msg(pos_current_goal));
+        else local_pos_pub.publish(conversion_to_msg(pos_current_goal, est_local_pos));
         ros::spinOnce();
         pos_drone = conversion_to_vect(est_local_pos);
         rate.sleep();
@@ -698,11 +710,12 @@ void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg){
 
 
 // convertion functions between Vector3f and PoseStamped ROS message
-geometry_msgs::PoseStamped conversion_to_msg(Vector3f vect){
+geometry_msgs::PoseStamped conversion_to_msg(Vector3f vect, geometry_msgs::PoseStamped est_local_pos){
     geometry_msgs::PoseStamped msg;
     msg.pose.position.x = vect(0);
     msg.pose.position.y = vect(1);
     msg.pose.position.z = vect(2);
+    msg.pose.orientation = est_local_pos.pose.orientation;
     return msg;
 }
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped msg){

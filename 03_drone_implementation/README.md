@@ -26,7 +26,7 @@ This folder contains:
 Contains the important logs of different flights.
 
 #### FLORIAN_RPI
-Contains the C++ code of Florian Kaufmann used on his Raspberry Pi to make the drone fly. Initially wanted to take inspiration from it, but decided to do again from scrathc as I use ROS and he didn't.
+Contains the C++ code of Florian Kaufmann used on his Raspberry Pi to make the drone fly. Initially wanted to take inspiration from it, but decided to do again from scratch as I use ROS and he didn't.
 
 #### GMAPS_API
 Contains the HTML/JS Google Maps API code used to visualize the drone flight in Maps. Also used as a GUI for giving commands.
@@ -38,7 +38,7 @@ Contains different scripts to ease the process of launching the simulation or co
 Contains the Python code of the Swisscom server app. The server is connected to both the drone and the GMaps and is the one to compute the commands for the drone.
 
 #### TUINO_LORA_BEACONING
-Contains the Arduino code to put the beacon in "lost" mode when the button is pressed.
+Contains the Arduino code to put the beacon in "lost" mode when the button is pressed. The v2 is for Micha's beacon with onboard GPS to have a ground truth.
 
 #### VIC_PACKAGE
 Contains the ROS node in C++ to run on the drone.

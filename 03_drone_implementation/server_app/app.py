@@ -716,9 +716,10 @@ def param_change_gmaps():
 		return 'Can only receive JSON file'
 
 	# set network estimate
-	global circle_radius_v1, circle_radius_v2
+	global circle_radius_v1, circle_radius_v2, circle_radius_v3
 	circle_radius_v1 = float(j['rad1'])
 	circle_radius_v2 = float(j['rad2'])
+	circle_radius_v3 = float(j['rad3'])
 
 	# set hovering time
 	global hover_time
@@ -754,6 +755,7 @@ def param_print():
 		'radius':{
 			'v1': circle_radius_v1,
 			'v2': circle_radius_v2,
+			'v3': circle_radius_v3,
 		},
 		'altitude':{
 			'flying': flying_altitude,
@@ -780,80 +782,6 @@ def param_print():
 
 	# return	
 	return Response(json.dumps(data), mimetype='application/json', headers={'Content-Disposition':'attachment;filename=query.json'})
-
-
-# to set the hovering time
-@app.route('/drone/hover_time', methods=['POST'])
-def drone_hover_time():
-	print("!!!!!!!!! Hover time received from POST !!!!!!!!!")
-
-	# test nature of message: if not JSON we don't want it
-	j = []
-	try:
-		j = request.json
-	except:
-		print("ERROR: file is not a JSON")
-		return 'Can only receive JSON file'
-
-	# display in log the coordinates received
-	print("Hovering time received: h={}".format(j['hover_time']))
-
-	# set hovering time
-	global hover_time
-	hover_time = float(j['hover_time'])
-
-	# success
-	return 'Hovering time set at {}'.format(j['hover_time'])
-
-
-# to set the takeoff and flight altitudes
-@app.route('/drone/altitudes', methods=['POST'])
-def drone_altitudes():
-	print("!!!!!!!!! Hover time received from POST !!!!!!!!!")
-
-	# test nature of message: if not JSON we don't want it
-	j = []
-	try:
-		j = request.json
-	except:
-		print("ERROR: file is not a JSON")
-		return 'Can only receive JSON file'
-
-	# display in log the param received
-	print("Altitude received: takeoff={} and flight={}".format(j['takeoff'], j['flight']))
-
-	# set altitudes
-	global flying_altitude, takeoff_altitude
-	flying_altitude = float(j['flight'])
-	takeoff_altitude = float(j['takeoff'])
-
-	# success
-	return 'Altitudes set at takeoff={} and flight={}'.format(j['takeoff'], j['flight'])
-
-
-# to set the circle radii
-@app.route('/lora/circle_radius', methods=['POST'])
-def lora_circle_rad():
-	print("!!!!!!!!! Circle radii received from POST !!!!!!!!!")
-
-	# test nature of message: if not JSON we don't want it
-	j = []
-	try:
-		j = request.json
-	except:
-		print("ERROR: file is not a JSON")
-		return 'Can only receive JSON file'
-
-	# display in log the param received
-	print("Radii received: r1={}, r2={}".format(j['radius_v1'], j['radius_v2']))
-
-	# set circle radii
-	global circle_radius_v1, circle_radius_v2
-	circle_radius_v1 = float(j['radius_v1'])
-	circle_radius_v2 = float(j['radius_v2'])
-
-	# success
-	return 'Circle radii set at {} and {}'.format(j['radius_v1'], j['radius_v2'])
 
 
 

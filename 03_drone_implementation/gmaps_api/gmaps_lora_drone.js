@@ -175,13 +175,14 @@ function param_change(){
     var loop_todo = document.getElementById("loop_todo").value;
     var rad1 = document.getElementById("rad1").value;
     var rad2 = document.getElementById("rad2").value;
+    var rad3 = document.getElementById("rad3").value;
     var hover = document.getElementById("hover").value;
     var flight = document.getElementById("flight").value;
     var takeoff = document.getElementById("takeoff").value;
 
     // POST on server
     const url='http://victor.scapp.io/param/change_from_maps';
-    const data={'rad1': rad1, 'rad2': rad2, 'hover': hover, 'loop_todo': loop_todo, 'flight': flight, 'takeoff': takeoff};
+    const data={'rad1': rad1, 'rad2': rad2, 'rad3': rad3, 'hover': hover, 'loop_todo': loop_todo, 'flight': flight, 'takeoff': takeoff};
     axios({method: 'POST', url: url, data: data})
     .then(function(response){
         window.alert("Success!")
@@ -200,6 +201,7 @@ function get_base_param(){
         document.getElementById("loop_todo").value = response.data['loops to do'];
         document.getElementById("rad1").value = response.data['radius']['v1'];
         document.getElementById("rad2").value = response.data['radius']['v2'];
+        document.getElementById("rad3").value = response.data['radius']['v3'];
         document.getElementById("hover").value = response.data['hovering time'];
         document.getElementById("flight").value = response.data['altitude']['flying'];
         document.getElementById("takeoff").value = response.data['altitude']['takeoff'];
@@ -304,7 +306,7 @@ function compute_result_dist(){
 
     // check undefined
     if (typeof lat1=='undefined' || typeof lon1=='undefined' || typeof lat2=='undefined' || typeof lon2=='undefined'){
-        return '-1';
+        return -1;
     }
 
     // check zero for node (initialization)
@@ -496,6 +498,11 @@ function init_legend(map){
     // add est2
     var div = document.createElement('div');
     div.innerHTML = '<img src=marker/estimate_circle.png width=20> Second estimation'
+    legend.appendChild(div);
+
+    // add est3
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/estimate3_circle.png width=20> Third estimation'
     legend.appendChild(div);
 
     // push on map
@@ -872,6 +879,13 @@ function init_firebase_estimations(map, markers, circles) {
             markers.est2.setPosition(new google.maps.LatLng(lat, lng));
             markers.est2.setMap(map);
         }
+        if(type=='est3') {
+            circles.c4.setCenter(new google.maps.LatLng(lat, lng));
+            circles.c4.setMap(map);
+            circles.c4.setRadius(rad);
+            markers.est3.setPosition(new google.maps.LatLng(lat, lng));
+            markers.est3.setMap(map);
+        }
 
         // storage
         lat_last_est = lat;
@@ -884,8 +898,10 @@ function init_firebase_estimations(map, markers, circles) {
         circles.c1.setMap(null);
         circles.c2.setMap(null);
         circles.c3.setMap(null);
+        circles.c4.setMap(null);
         markers.est1.setMap(null);
         markers.est2.setMap(null);
+        markers.est3.setMap(null);
     });
 }   
 
@@ -1219,6 +1235,11 @@ function create_markers(map, icons) {
         icon: 'marker/estimate.png',
         title: 'Second estimation',
     });
+    var est_marker3 = new google.maps.Marker({
+        map: map,
+        icon: 'marker/estimate3.png',
+        title: 'Third estimation',
+    });
 
     // for node
     var node_marker = new google.maps.Marker({
@@ -1228,7 +1249,7 @@ function create_markers(map, icons) {
     });
 
     // return them 
-    return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, network: network_marker, est1: est_marker1, est2: est_marker2, node: node_marker};
+    return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, network: network_marker, est1: est_marker1, est2: est_marker2, est3: est_marker3, node: node_marker};
 }
 
 // creates the circles
@@ -1256,6 +1277,13 @@ function create_circles() {
         fillColor: '#FFFF00',
         fillOpacity: 0.1,
     })
+    var network_circle4 = new google.maps.Circle({
+        strokeColor: '#FFFF00',
+        strokeOpacity: 0.5,
+        strokeWeight: 2,
+        fillColor: '#00FF00',
+        fillOpacity: 0.1,
+    })
 
     // for geofences
     var home_circleR = new google.maps.Circle({
@@ -1280,7 +1308,7 @@ function create_circles() {
         fillOpacity: 0,
     });
 
-    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, geoR: home_circleR, geoG: home_circleG, geoB: home_circleB};
+    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, c4: network_circle4, geoR: home_circleR, geoG: home_circleG, geoB: home_circleB};
 }
 
 // creates the waypoints lists (empty)

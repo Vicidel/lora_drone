@@ -1473,7 +1473,7 @@ def get_waypoint(drone_id, nb_drone):
 				wp_z = flying_altitude
 
 		# too high state
-		if state > 6:
+		if state > 9:
 			print("ERROR: too high state")
 			wp_x = 0
 			wp_y = 0
@@ -1559,9 +1559,9 @@ def get_waypoint(drone_id, nb_drone):
 				bool_landing_waypoint = True
 			else:
 				# program still running, new parameters
-				if state==3:
+				if state==1:
 					circle_radius = circle_radius_v2
-				elif state==6:
+				elif state==2:
 					circle_radius = circle_radius_v3
 
 			# new waypoint (can be landing or next)
@@ -1649,7 +1649,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty_net, 'network') 	# circle
 
 		# return string with new coordinates
-		return_string = "New waypoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+		return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
 	# drone reached its previous (unknown) waypoint
 	if payload=='waypoint_reached':

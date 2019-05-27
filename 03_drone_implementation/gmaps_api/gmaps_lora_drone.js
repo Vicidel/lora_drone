@@ -273,6 +273,7 @@ function check_drone_online(){
         document.getElementById("loop_todo").disabled = true;
         document.getElementById("rad1").disabled = true;
         document.getElementById("rad2").disabled = true;
+        document.getElementById("rad3").disabled = true;
         document.getElementById("hover").disabled = true;
         document.getElementById("flight").disabled = true;
         document.getElementById("takeoff").disabled = true;
@@ -289,6 +290,7 @@ function check_drone_online(){
         document.getElementById("loop_todo").disabled = false;
         document.getElementById("rad1").disabled = false;
         document.getElementById("rad2").disabled = false;
+        document.getElementById("rad3").disabled = false;
         document.getElementById("hover").disabled = false;
         document.getElementById("flight").disabled = false;
         document.getElementById("takeoff").disabled = false;

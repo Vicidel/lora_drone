@@ -193,6 +193,7 @@ flying_altitude   = 20
 takeoff_altitude  = 5
 landing_radius    = 4    # circle around landing positions
 hover_time 		  = 4
+base_angle 		  = 0    # for one drone, to go to the 1st wp as fast as possible
 
 # storage for state
 current_state1 	  = 666
@@ -995,9 +996,9 @@ def param_drone_for_takeoff():
 	if drone_id == 1:
 		bool_drone1_online = True
 		if bool_drone1_start:
-			return 'Y: drone {} ready for takeoff'.format(j['drone_id'])
+			return 'Y: drone {} ready for takeoff'.format(drone_id)
 		else:
-			return 'N: drone {} not ready for takeoff'.format(j['drone_id'])
+			return 'N: drone {} not ready for takeoff'.format(drone_id)
 	elif drone_id == 2:
 		bool_drone2_online = True
 		if bool_drone2_start:
@@ -1011,8 +1012,8 @@ def param_drone_for_takeoff():
 		else:
 			return 'N: drone {} not ready for takeoff'.format(drone_id)
 	else:
-		print('ERROR: drone number unknown ({})'.format(j['drone_id']))
-		return 'E: drone number unknown ({})'.format(j['drone_id'])
+		print('ERROR: drone number unknown ({})'.format(drone_id))
+		return 'E: drone number unknown ({})'.format(drone_id)
 	
 
 # called from the drone for kill switch
@@ -1363,11 +1364,18 @@ def lora_print_json():
 #########################################################################################
 
 
+# returns the angle in radian at which the first waypoint is located for flight optimization
+def get_base_angle(pos_x, pos_y, network_x, network_y):
+
+	# could have done that in code, but cleaner that way
+	return math.atan2(network_y-pos_y, network_x-pos_x)+math.pi
+
+
 # returns the waypoint based on drone id, total number of drone and state
-def get_waypoint(drone_id, nb_drone):
+def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 
 	# global variables
-	global solution, circle_radius, nb_est_made, bool_new_est_made
+	global solution, circle_radius, nb_est_made, bool_new_est_made, base_angle
 
 	# uncertainty computed
 	est_uncertainty = 666
@@ -1388,19 +1396,22 @@ def get_waypoint(drone_id, nb_drone):
 
 		# no need for multilateration
 		if state==0:
-			# east of estimate
-			wp_x = solution.pos_x + circle_radius*math.cos(0)
-			wp_y = solution.pos_y + circle_radius*math.sin(0)
+			# get base angle
+			base_angle = get_base_angle(pos_x, pos_y, solution.pos_x, solution.pos_y)
+
+			# first
+			wp_x = solution.pos_x + circle_radius*math.cos(base_angle)
+			wp_y = solution.pos_y + circle_radius*math.sin(base_angle)
 			wp_z = flying_altitude
 		if state==1 or state==4 or state==7:
-			# north-west of estimate
-			wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
-			wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
+			# second
+			wp_x = solution.pos_x + circle_radius*math.cos(base_angle+2*math.pi/3)
+			wp_y = solution.pos_y + circle_radius*math.sin(base_angle+2*math.pi/3)
 			wp_z = flying_altitude
 		if state==2 or state==5 or state==8:
-			# south-west of estimate
-			wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
-			wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
+			# third
+			wp_x = solution.pos_x + circle_radius*math.cos(base_angle+4*math.pi/3)
+			wp_y = solution.pos_y + circle_radius*math.sin(base_angle+4*math.pi/3)
 			wp_z = flying_altitude
 
 		# need multilateration
@@ -1464,12 +1475,14 @@ def get_waypoint(drone_id, nb_drone):
 				# program still running, new parameters
 				if state==3:
 					circle_radius = circle_radius_v2
+					base_angle = get_base_angle(pos_x, pos_y, solution.pos_x, solution.pos_y)
 				elif state==6:
 					circle_radius = circle_radius_v3
+					base_angle = get_base_angle(pos_x, pos_y, solution.pos_x, solution.pos_y)
 
-				# east of (new) estimate
-				wp_x = solution.pos_x + circle_radius*math.cos(0)
-				wp_y = solution.pos_y + circle_radius*math.sin(0)
+				# first
+				wp_x = solution.pos_x + circle_radius*math.cos(base_angle)
+				wp_y = solution.pos_y + circle_radius*math.sin(base_angle)
 				wp_z = flying_altitude
 
 		# too high state
@@ -1641,7 +1654,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		nb_est_made = 0
 
 		# get waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
 
 		# save on map
 		add_waypoint_maps(wp_x, wp_y, drone_id)
@@ -1712,7 +1725,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	if payload=='hover':
 
 		# get new waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
 
 		# return string
 		return_string = "Wait until finished hovering (h:{})".format(hover_time)
@@ -1721,7 +1734,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	if payload=='wait_next':
 
 		# get new waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
 		add_waypoint_maps(wp_x, wp_y, drone_id)
 
 		# return string

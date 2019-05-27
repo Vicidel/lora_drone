@@ -84,12 +84,15 @@ function main() {
         streetViewControl: false,
     });
 
-    // spider for overlapping markers
+    // spider for overlapping markers: https://github.com/jawj/OverlappingMarkerSpiderfier
     oms = new OverlappingMarkerSpiderfier(map,{
         markersWontMove: true, 
         markersWontHide: true, 
         keepSpiderfied: true, 
-        circleSpiralSwitchover: 40 
+        circleSpiralSwitchover: 200,
+        nearbyDistance: 40,
+        circleFootSeparation: 28,
+        legWeight: 2
     });
 
     // information window

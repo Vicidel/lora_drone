@@ -171,7 +171,7 @@ network = network_datapoint()
 # devices
 gateway_printer   = '004A0DB4'
 gateway_corner    = '004A1092'
-gateway_drone     = '004A10EB'
+gateway_logitech  = '004A1093'
 victor_beacon     = '78AF580300000493'		# no gps
 micha_beacon      = '78AF580300000485'		# gps
 
@@ -180,7 +180,7 @@ TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"		# change that to +01:00 in win
 TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
 # gateways on drones
-gateway_id_RGB 	  = ['004A1092', '004A1092', '004A1092']
+gateway_id_RGB 	  = [gateway_corner, gateway_logitech, gateway_printer]
 
 
 

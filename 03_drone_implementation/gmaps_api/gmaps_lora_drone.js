@@ -351,7 +351,7 @@ function compute_result_dist(){
     }
 
     // check zero for node (initialization)
-    if (lat1==0 || lng1==0){
+    if (lat1==0 || lon1==0){
         return -1;
     }
 
@@ -372,7 +372,7 @@ function compute_result_dist(){
         dist = dist * 180/Math.PI;
         dist = dist * 60 * 1.1515;
         dist = dist * 1.609344 * 1000;  // conversion to meters
-        return dist;
+        return dist.toFixed(1);
     }
 }
 

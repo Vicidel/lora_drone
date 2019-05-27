@@ -191,7 +191,7 @@ gateway_id_RGB 	  = ['004A1092', '004A1092', '004A1092']
 # waypoint parameters
 flying_altitude   = 20
 takeoff_altitude  = 5
-landing_radius    = 2    # circle around landing positions
+landing_radius    = 4    # circle around landing positions
 hover_time 		  = 4
 
 # storage for state
@@ -237,13 +237,15 @@ network_alt		  = 0
 
 # radius of waypoints around est
 circle_radius     = 666     # used parameters (will be changed)
-circle_radius_v1  = 40 	    # base parameter when starting the simulation
-circle_radius_v2  = 20	    # second parameter for second loop
+circle_radius_v1  = 100	    # base parameter when starting the simulation
+circle_radius_v2  = 50	    # second parameter for second loop
+circle_radius_v3  = 20 		# third parameter for third loop
 
 # uncertainties radius
-est_uncertainty1  = 150
-est_uncertainty2  = 50
-est_uncertainty3  = 20
+est_uncertainty_net  = 150
+est_uncertainty1  = 50
+est_uncertainty2  = 20
+est_uncertainty3  = 10
 
 # if we already made estimations before, compare it with new ones
 bool_new_est_made = False
@@ -1442,9 +1444,6 @@ def get_waypoint(drone_id, nb_drone):
 	# uncertainty computed
 	est_uncertainty = 666
 
-	# estimation type (est1 or est2)
-	est_type = 'none'
-
 	# default is not landing waypoint
 	bool_landing_waypoint = False
 
@@ -1465,26 +1464,28 @@ def get_waypoint(drone_id, nb_drone):
 			wp_x = solution.pos_x + circle_radius*math.cos(0)
 			wp_y = solution.pos_y + circle_radius*math.sin(0)
 			wp_z = flying_altitude
-		if state==1 or state==4:
+		if state==1 or state==4 or state==7:
 			# north-west of estimate
 			wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
 			wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
 			wp_z = flying_altitude
-		if state==2 or state==5:
+		if state==2 or state==5 or state==8:
 			# south-west of estimate
 			wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
 			wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
 			wp_z = flying_altitude
 
 		# need multilateration
-		if state==3 or state==6:
+		if state==3 or state==6 or state==9:
 			# do multilateration and store position
 			pos_x_est, pos_y_est, pos_z_est = trilateration_main()
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				# uncertainty
 				if state==3:
-					est_uncertainty = est_uncertainty2
+					est_uncertainty = est_uncertainty1
 				elif state==6:
+					est_uncertainty = est_uncertainty2
+				elif state==9:
 					est_uncertainty = est_uncertainty3
 
 				# old position
@@ -1502,8 +1503,10 @@ def get_waypoint(drone_id, nb_drone):
 				else:
 					bool_new_est_made=True
 					if state==3:
-						est_uncertainty = est_uncertainty2
+						est_uncertainty = est_uncertainty1
 					elif state==6:
+						est_uncertainty = est_uncertainty2
+					elif state==9:
 						est_uncertainty = est_uncertainty3
 
 				# new position
@@ -1514,13 +1517,13 @@ def get_waypoint(drone_id, nb_drone):
 			# increment estimations made
 			if state==3:
 				nb_est_made = 1
-				est_type = 'est1'
 			elif state==6:
 				nb_est_made = 2
-				est_type = 'est2'
+			elif state==9:
+				nb_est_made = 3
 			
 			# add estimate to map
-			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, est_type)
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, 'est'+str(nb_est_made))
 			
 			# check if end is now
 			if nb_est_made==loop_todo:
@@ -1531,7 +1534,10 @@ def get_waypoint(drone_id, nb_drone):
 				bool_landing_waypoint = True
 			else:
 				# program still running, new parameters
-				circle_radius = circle_radius_v2
+				if state==3:
+					circle_radius = circle_radius_v2
+				elif state==6:
+					circle_radius = circle_radius_v3
 
 				# east of (new) estimate
 				wp_x = solution.pos_x + circle_radius*math.cos(0)
@@ -1580,8 +1586,10 @@ def get_waypoint(drone_id, nb_drone):
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				# uncertainty
 				if state==1:
-					est_uncertainty = est_uncertainty2
+					est_uncertainty = est_uncertainty1
 				elif state==2:
+					est_uncertainty = est_uncertainty2
+				elif state==3:
 					est_uncertainty = est_uncertainty3
 
 				# old estimation
@@ -1599,8 +1607,10 @@ def get_waypoint(drone_id, nb_drone):
 				else:
 					bool_new_est_made=True
 					if state==1:
-						est_uncertainty = est_uncertainty2
+						est_uncertainty = est_uncertainty1
 					elif state==2:
+						est_uncertainty = est_uncertainty2
+					elif state==3:
 						est_uncertainty = est_uncertainty3
 
 				# new position
@@ -1612,7 +1622,7 @@ def get_waypoint(drone_id, nb_drone):
 			nb_est_made = state
 
 			# add estimate to map
-			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, 'est'+str(state))
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, 'est'+str(nb_est_made))
 
 			# check if end is now
 			if nb_est_made==loop_todo:
@@ -1621,7 +1631,10 @@ def get_waypoint(drone_id, nb_drone):
 				bool_landing_waypoint = True
 			else:
 				# program still running, new parameters
-				circle_radius = circle_radius_v2
+				if state==3:
+					circle_radius = circle_radius_v2
+				elif state==6:
+					circle_radius = circle_radius_v3
 
 			# new waypoint (can be landing or next)
 			if drone_id==1:
@@ -1705,7 +1718,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# save on map
 		add_waypoint_maps(wp_x, wp_y, drone_id)
 		add_network_maps(solution.pos_x, solution.pos_y)		# point
-		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty1, 'network') 	# circle
+		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty_net, 'network') 	# circle
 
 		# return string with new coordinates
 		return_string = "New waypoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)

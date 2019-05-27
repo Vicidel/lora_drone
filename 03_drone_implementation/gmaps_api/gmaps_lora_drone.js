@@ -112,6 +112,12 @@ function main() {
         }
     });
 
+    // set base values
+    lat_node = 0
+    lng_node = 0
+    lat_last_est = 0
+    lng_last_est = 0
+
     // legend
     init_legend(map);
 
@@ -136,6 +142,9 @@ function main() {
 
     // print checklist
     print_checklist()
+
+    // print results
+    print_results()
 }
 
 // prints a checklist when loading the app
@@ -293,8 +302,14 @@ function compute_result_dist(){
     lat2 = lat_last_est;
     lon2 = lng_last_est;
 
+    // check undefined
     if (typeof lat1=='undefined' || typeof lon1=='undefined' || typeof lat2=='undefined' || typeof lon2=='undefined'){
         return '-1';
+    }
+
+    // check zero for node (initialization)
+    if (lat1==0 || lng1==0){
+        return -1;
     }
 
     // code from https://www.geodatasource.com/developers/javascript
@@ -313,7 +328,7 @@ function compute_result_dist(){
         dist = Math.acos(dist);
         dist = dist * 180/Math.PI;
         dist = dist * 60 * 1.1515;
-        dist = dist * 1.609344 / 1000;  // conversion to meters
+        dist = dist * 1.609344 * 1000;  // conversion to meters
         return dist;
     }
 }
@@ -323,7 +338,7 @@ function print_results(){
 
     // print results in header
     document.querySelector('.results').innerHTML = 
-        "node:("+lat_node+","+lng_node+"),est:("+lat_last_est+","+lng_last_est+"), distance:("+compute_result_dist()+"m)";
+        "node:("+lat_node.toFixed(5)+","+lng_node.toFixed(5)+"),est:("+lat_last_est.toFixed(5)+","+lng_last_est.toFixed(5)+"), distance:("+compute_result_dist()+"m)";
 }
 
 

@@ -1724,6 +1724,11 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# reset bool
 		bool_new_est_made = False
 
+		## all drones needs to be ready again
+		bool_drone1_ready = False
+		bool_drone2_ready = False
+		bool_drone3_ready = False
+
 		# send hover time
 		return_string = "Wait at this position"
 

@@ -14,6 +14,9 @@
 //#################################  GLOBAL VARIABLES #####################################
 //#########################################################################################
 
+// map, spider and info window as global
+var map, oms, iw
+
 // Firebase reference
 var firebase = new Firebase('https://drone-3bd2a.firebaseio.com/');
 
@@ -65,7 +68,7 @@ var bool_some_drone_is_flying = false;
 function main() {
 
     // define the map itself
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: lat_zurich, lng: lng_zurich},
         zoom: 16,
         scaleControl: true,
@@ -80,6 +83,17 @@ function main() {
         disableDoubleClickZoom: false,
         streetViewControl: false,
     });
+
+    // spider for overlapping markers
+    oms = new OverlappingMarkerSpiderfier(map,{
+        markersWontMove: true, 
+        markersWontHide: true, 
+        keepSpiderfied: true, 
+        circleSpiralSwitchover: 40 
+    });
+
+    // information window
+    iw = new google.maps.InfoWindow();
 
     // measuring tool
     measureTool = new MeasureTool(map, {
@@ -201,7 +215,7 @@ function param_change(){
         window.alert("Altitudes parameters are not correct, flight should be above takeoff")
         return;
     }
-    
+
     // POST on server
     const url='http://victor.scapp.io/param/change_from_maps';
     const data={'rad1': rad1, 'rad2': rad2, 'rad3': rad3, 'hover': hover, 'loop_todo': loop_todo, 'flight': flight, 'takeoff': takeoff};
@@ -578,7 +592,7 @@ function init_firebase_homes(map, markers, circles) {
 
         // move marker
         markers.homeR.setPosition(new google.maps.LatLng(lat, lng));
-        markers.homeR.setMap(map);
+        oms.addMarker(markers.homeR);
 
         // move geofence circle
         circles.geoR.setCenter(new google.maps.LatLng(lat, lng));
@@ -588,6 +602,12 @@ function init_firebase_homes(map, markers, circles) {
         // set start as home
         lat_homeR = lat;
         lng_homeR = lng;
+
+        // spider click listener
+        google.maps.event.addListener(markers.homeR, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.homeR.title);
+            iw.open(map, markers.homeR);
+        });
     });
     home_refR.on('child_removed', function(snapshot) {
         markers.homeR.setMap(null)
@@ -603,7 +623,7 @@ function init_firebase_homes(map, markers, circles) {
 
         // move marker
         markers.homeG.setPosition(new google.maps.LatLng(lat, lng));
-        markers.homeG.setMap(map);
+        oms.addMarker(markers.homeG);
 
         // move geofence circle
         circles.geoG.setCenter(new google.maps.LatLng(lat, lng));
@@ -613,6 +633,12 @@ function init_firebase_homes(map, markers, circles) {
         // set start as home
         lat_homeG = lat;
         lng_homeG = lng;
+
+        // spider click listener
+        google.maps.event.addListener(markers.homeG, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.homeG.title);
+            iw.open(map, markers.homeG);
+        });
     });
     home_refG.on('child_removed', function(snapshot) {
         markers.homeG.setMap(null)
@@ -628,7 +654,7 @@ function init_firebase_homes(map, markers, circles) {
 
         // move marker
         markers.homeB.setPosition(new google.maps.LatLng(lat, lng));
-        markers.homeB.setMap(map);
+        oms.addMarker(markers.homeB);
 
         // move geofence circle
         circles.geoB.setCenter(new google.maps.LatLng(lat, lng));
@@ -638,6 +664,12 @@ function init_firebase_homes(map, markers, circles) {
         // set start as home
         lng_homeB = lat;
         lng_homeB = lng;
+
+        // spider click listener
+        google.maps.event.addListener(markers.homeB, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.homeB.title);
+            iw.open(map, markers.homeB);
+        });
     });
     home_refB.on('child_removed', function(snapshot) {
         markers.homeB.setMap(null)
@@ -662,7 +694,7 @@ function init_firebase_drones(map, markers, paths) {
 
         // move marker
         markers.droneR.setPosition(new google.maps.LatLng(lat, lng));
-        markers.droneR.setMap(map);
+        oms.addMarker(markers.droneR);
 
         // draw path
         paths.listR.push({lat: lat, lng: lng});
@@ -677,6 +709,12 @@ function init_firebase_drones(map, markers, paths) {
         // change variable
         lat_droneR = lat;
         lng_droneR = lng;
+
+        // spider click listener
+        google.maps.event.addListener(markers.droneR, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.droneR.title);
+            iw.open(map, markers.droneR);
+        });
     });
     drone_refR.on('child_removed', function(snapshot) {
         markers.droneR.setMap(null)
@@ -694,7 +732,7 @@ function init_firebase_drones(map, markers, paths) {
 
         // move marker
         markers.droneG.setPosition(new google.maps.LatLng(lat, lng));
-        markers.droneG.setMap(map);
+        oms.addMarker(markers.droneG);
 
         // draw path
         paths.listG.push({lat: lat, lng: lng});
@@ -709,6 +747,12 @@ function init_firebase_drones(map, markers, paths) {
         // change variable
         lat_droneG = lat;
         lng_droneG = lng;
+
+        // spider click listener
+        google.maps.event.addListener(markers.droneG, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.droneG.title);
+            iw.open(map, markers.droneG);
+        });
     });
     drone_refG.on('child_removed', function(snapshot) {
         markers.droneG.setMap(null)
@@ -731,7 +775,7 @@ function init_firebase_drones(map, markers, paths) {
         // draw path
         paths.listB.push({lat: lat, lng: lng});
         paths.lineB.setPath(paths.listB);
-        paths.lineB.setMap(map)
+        oms.addMarker(markers.droneB);
 
         // change state in HTML
         stateB = snapshot.val().state;
@@ -741,6 +785,12 @@ function init_firebase_drones(map, markers, paths) {
         // change variable
         lat_droneB = lat;
         lng_droneB = lng;
+
+        // spider click listener
+        google.maps.event.addListener(markers.droneB, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.droneB.title);
+            iw.open(map, markers.droneB);
+        });
     });
     drone_refB.on('child_removed', function(snapshot) {
         markers.droneB.setMap(null)
@@ -774,11 +824,20 @@ function init_firebase_waypoints(map, wp_lists) {
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointR_current.png',
-            title: 'Waypoint',
+            title: 'Waypoint R',
         });
+        oms.addMarker(waypoint_marker);
 
         // add it to list
         wp_lists.wpR.push(waypoint_marker);
+
+        // spider click listener
+        wp_lists.wpR.forEach(function(item, index, array){
+            google.maps.event.addListener(item, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+                iw.setContent(item.title);
+                iw.open(map, item);
+            });
+        });
     });
     wayp_refR.on('child_removed', function(snapshot) {
         wp_lists.wpR.forEach(function(item, index, array){
@@ -802,11 +861,20 @@ function init_firebase_waypoints(map, wp_lists) {
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointG_current.png',
-            title: 'Waypoint',
+            title: 'Waypoint G',
         });
+        oms.addMarker(waypoint_marker);
 
         // add it to list
         wp_lists.wpG.push(waypoint_marker);
+
+        // spider click listener
+        wp_lists.wpG.forEach(function(item, index, array){
+            google.maps.event.addListener(item, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+                iw.setContent(item.title);
+                iw.open(map, item);
+            });
+        });
     });
     wayp_refG.on('child_removed', function(snapshot) {
         wp_lists.wpG.forEach(function(item, index, array){
@@ -824,17 +892,26 @@ function init_firebase_waypoints(map, wp_lists) {
         wp_lists.wpB.forEach(function(item, index, array){
             item.setIcon('marker/waypointB_current.png');
         });
+        oms.addMarker(waypoint_marker);
 
         // create new marker
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointB_old.png',
-            title: 'Waypoint',
+            title: 'Waypoint B',
         });
 
         // add it to list
         wp_lists.wpB.push(waypoint_marker);
+
+        // spider click listener
+        wp_lists.wpB.forEach(function(item, index, array){
+            google.maps.event.addListener(item, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+                iw.setContent(item.title);
+                iw.open(map, item);
+            });
+        });
     });
     wayp_refB.on('child_removed', function(snapshot) {
         wp_lists.wpB.forEach(function(item, index, array){
@@ -859,7 +936,7 @@ function init_firebase_estimations(map, markers, circles) {
 
         // move marker
         markers.network.setPosition(new google.maps.LatLng(lat, lng));
-        markers.network.setMap(map);
+        oms.addMarker(markers.network);
 
         // storage
         lat_last_est = lat;
@@ -867,6 +944,12 @@ function init_firebase_estimations(map, markers, circles) {
 
         // print results
         print_results();
+
+        // spider click listener
+        google.maps.event.addListener(markers.network, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.network.title);
+            iw.open(map, markers.network);
+        });
     });
     netw_ref.on('child_removed', function(snapshot) {
         //markers.network.setMap(null)
@@ -887,28 +970,28 @@ function init_firebase_estimations(map, markers, circles) {
             circles.c1.setMap(map);
             circles.c1.setRadius(rad);
             markers.network.setPosition(new google.maps.LatLng(lat, lng));
-            markers.network.setMap(map);
+            oms.addMarker(markers.network);
         }
         if(type=='est1') {
             circles.c2.setCenter(new google.maps.LatLng(lat, lng));
             circles.c2.setMap(map);
             circles.c2.setRadius(rad);
             markers.est1.setPosition(new google.maps.LatLng(lat, lng));
-            markers.est1.setMap(map);
+            oms.addMarker(markers.est1);
         }
         if(type=='est2') {
             circles.c3.setCenter(new google.maps.LatLng(lat, lng));
             circles.c3.setMap(map);
             circles.c3.setRadius(rad);
             markers.est2.setPosition(new google.maps.LatLng(lat, lng));
-            markers.est2.setMap(map);
+            oms.addMarker(markers.est2);
         }
         if(type=='est3') {
             circles.c4.setCenter(new google.maps.LatLng(lat, lng));
             circles.c4.setMap(map);
             circles.c4.setRadius(rad);
             markers.est3.setPosition(new google.maps.LatLng(lat, lng));
-            markers.est3.setMap(map);
+            oms.addMarker(markers.est3);
         }
 
         // storage
@@ -917,6 +1000,24 @@ function init_firebase_estimations(map, markers, circles) {
 
         // print results
         print_results();
+
+        // spider click listener
+        google.maps.event.addListener(markers.est1, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.est1.title);
+            iw.open(map, markers.est1);
+        });
+        google.maps.event.addListener(markers.est2, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.est2.title);
+            iw.open(map, markers.est2);
+        });
+        google.maps.event.addListener(markers.est3, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.est3.title);
+            iw.open(map, markers.est3);
+        });
+        google.maps.event.addListener(markers.network, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.network.title);
+            iw.open(map, markers.network);
+        });
     });
     est_ref.on('child_removed', function(snapshot) {
         circles.c1.setMap(null);
@@ -944,7 +1045,7 @@ function init_firebase_node(map, markers) {
 
         // move marker
         markers.node.setPosition(new google.maps.LatLng(lat, lng));
-        markers.node.setMap(map);
+        oms.addMarker(markers.node);
 
         // storage
         lat_node = lat;
@@ -952,6 +1053,12 @@ function init_firebase_node(map, markers) {
 
         // print results
         print_results();
+
+        // spider click listener
+        google.maps.event.addListener(markers.node, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.node.title);
+            iw.open(map, markers.node);
+        });
     });
     node_ref.on('child_removed', function(snapshot) {
         markers.node.setMap(null)

@@ -287,13 +287,13 @@ def store_current_coord():
 	print(j)
 
 	# parse received data
-	lat         = float(j['latitude'])
-	lng         = float(j['longitude'])
-	alt         = float(j['altitude'])
-	rel_alt     = float(j['rel_altitude'])
-	drone_id    = int(j['drone_id'])
+	lat         = float(j['lat'])
+	lng         = float(j['lon'])
+	alt         = float(j['alt'])
+	rel_alt     = float(j['rel'])
+	drone_id    = int(j['id'])
 	state       = str(j['state'])
-	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
+	r_timestamp = dt.datetime.utcfromtimestamp(float(j['ts']))
 
 	# push on Firebase
 	print("Pushing new drone position on Firebase {} {}".format(lat, lng))
@@ -340,14 +340,14 @@ def store_current_home():
 	print(j)
 
 	# parse received data
-	r_lat       = float(j['latitude'])
-	r_lng       = float(j['longitude'])
-	r_alt       = float(j['altitude'])
-	r_dx        = float(j['delta_x'])
-	r_dy        = float(j['delta_y'])
-	r_dz        = float(j['delta_z'])
-	r_drone_id  = int(j['drone_id'])
-	r_timestamp = dt.datetime.utcfromtimestamp(float(j['timestamp']))
+	r_lat       = float(j['lat'])
+	r_lng       = float(j['lon'])
+	r_alt       = float(j['alt'])
+	r_dx        = float(j['dx'])
+	r_dy        = float(j['dy'])
+	r_dz        = float(j['dz'])
+	r_drone_id  = int(j['id'])
+	r_timestamp = dt.datetime.utcfromtimestamp(float(j['ts']))
 
 
 	# add in server memory
@@ -418,7 +418,7 @@ def empty_firebase():
 		return 'Can only receive JSON file'
 
 	# drone id received
-	r_drone_id  = int(j['drone_id'])
+	r_drone_id  = int(j['id'])
 
 	# delete database entries
 	ref_drone  = firebase_db.reference('drone')
@@ -988,7 +988,7 @@ def param_drone_for_takeoff():
 	global bool_drone1_online, bool_drone2_online, bool_drone3_online
 
 	# display info 
-	drone_id = int(j['drone_id'])
+	drone_id = int(j['id'])
 	print("Asking for drone {}, params are d1={}, d2={}, d3={}".format(drone_id, bool_drone1_start, bool_drone2_start, bool_drone3_start))
 
 	# for each drone, return Y(es) or (N)o
@@ -1597,11 +1597,11 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	return_string = 'ERROR, return string not set'
 
 	# switch to OFFBOARD mode done
-	if payload=='drone_offboard':
+	if payload=='offb':
 		return_string = "Congrats on offboard mode!"
 
 	# drone was just armed
-	if payload=='drone_armed':
+	if payload=='arm':
 
 		# add waypoint for takeoff to Firebase
 		add_waypoint_maps(pos_x, pos_y, drone_id)
@@ -1610,7 +1610,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		return_string = "Takeoff at current position: h{}".format(takeoff_altitude)
 
 	# drone took off and is in the air
-	if payload=='drone_takeoff':
+	if payload=='takeoff':
 
 		# empty drone dataset
 		print("Emptying drone dataset for this mission")
@@ -1652,7 +1652,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
 	# drone reached its previous (unknown) waypoint
-	if payload=='waypoint_reached':
+	if payload=='wp_ok':
 
 		# read old state to increment it
 		if drone_id==1:
@@ -1674,7 +1674,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		return_string = "Wait at this position"
 
 	# drone is waiting for all drones ready
-	if payload=='waiting_for_command':
+	if payload=='wait':
 
 		# bool if ready for next waypoint
 		bool_drone_can_start_collection = False
@@ -1709,7 +1709,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			return_string = "Wait until other drones ready (d1:{}, d2:{} d3:{})".format(bool_drone1_ready, bool_drone2_ready, bool_drone3_ready)
 
 	# drone is hovering in position
-	if payload=='data_collected':
+	if payload=='hover':
 
 		# get new waypoint
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
@@ -1718,7 +1718,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		return_string = "Wait until finished hovering (h:{})".format(hover_time)
 
 	# getting the next waypoint
-	if payload=='finished_hovering':
+	if payload=='wait_next':
 
 		# get new waypoint
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone)
@@ -1731,7 +1731,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
 	# drone is landing
-	if payload=='drone_landing':
+	if payload=='land':
 		return_string = "Congrats on mission!"
 
 	return return_string
@@ -1766,15 +1766,15 @@ def drone_receive_state():
 	print(j)
 
 	# parse received data
-	r_pos_x     = float(j['pos_x'])
-	r_pos_y     = float(j['pos_y'])
-	r_pos_z     = float(j['pos_z'])
-	r_payload   = str(j['payload'])
-	r_ts_temp   = float(j['timestamp'])
+	r_pos_x     = float(j['x'])
+	r_pos_y     = float(j['y'])
+	r_pos_z     = float(j['z'])
+	r_payload   = str(j['str'])
+	r_ts_temp   = float(j['ts'])
 	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
-	r_drone_id  = int(j['drone_id'])
-	r_nb_drone  = int(j['nb_drone'])
-	r_sim_type  = int(j['sim_type'])		# 0 for classic, 1 for continuous
+	r_drone_id  = int(j['id'])
+	r_nb_drone  = int(j['nb'])
+	r_sim_type  = int(j['type'])		# 0 for classic, 1 for continuous
 
 	# type conversion and stuff
 	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)

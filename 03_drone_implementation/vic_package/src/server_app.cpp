@@ -108,14 +108,14 @@ std::string send_drone_state(Vector3f position, double time, char* payload,
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
     char str_sim_type[10]; sprintf(str_sim_type, "%d", sim_type);
     char str_nb_drone[10]; sprintf(str_nb_drone, "%d", nb_drone);
-    cJSON_AddStringToObject(root, "pos_x", str_pos_x);
-    cJSON_AddStringToObject(root, "pos_y", str_pos_y);
-    cJSON_AddStringToObject(root, "pos_z", str_pos_z);
-    cJSON_AddStringToObject(root, "timestamp", str_time);
-    cJSON_AddStringToObject(root, "payload", payload);
-    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
-    cJSON_AddStringToObject(root, "sim_type", str_sim_type);
-    cJSON_AddStringToObject(root, "nb_drone", str_nb_drone);
+    cJSON_AddStringToObject(root, "x", str_pos_x);
+    cJSON_AddStringToObject(root, "y", str_pos_y);
+    cJSON_AddStringToObject(root, "z", str_pos_z);
+    cJSON_AddStringToObject(root, "ts", str_time);
+    cJSON_AddStringToObject(root, "str", payload);
+    cJSON_AddStringToObject(root, "id", str_drone_id);
+    cJSON_AddStringToObject(root, "type", str_sim_type);
+    cJSON_AddStringToObject(root, "nb", str_nb_drone);
     json = cJSON_PrintUnformatted(root);
     //std::cout << "String sent:" << json << std::endl;
 
@@ -148,12 +148,12 @@ void send_GPS_firebase(double latitude, double longitude, double altitude, doubl
     char str_time[30]; sprintf(str_time, "%f", time);
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
     char str_state[20]; strcpy(str_state, state.c_str());
-    cJSON_AddStringToObject(root, "latitude", str_lat);
-    cJSON_AddStringToObject(root, "longitude", str_lng);
-    cJSON_AddStringToObject(root, "altitude", str_alt);
-    cJSON_AddStringToObject(root, "rel_altitude", str_alt_rel);
-    cJSON_AddStringToObject(root, "timestamp", str_time);
-    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
+    cJSON_AddStringToObject(root, "lat", str_lat);
+    cJSON_AddStringToObject(root, "lon", str_lng);
+    cJSON_AddStringToObject(root, "alt", str_alt);
+    cJSON_AddStringToObject(root, "rel", str_alt_rel);
+    cJSON_AddStringToObject(root, "ts", str_time);
+    cJSON_AddStringToObject(root, "id", str_drone_id);
     cJSON_AddStringToObject(root, "state", str_state);
     json = cJSON_PrintUnformatted(root);
 
@@ -182,14 +182,14 @@ void send_home_firebase(double latitude, double longitude, double altitude,
     char str_dy[10]; sprintf(str_dy, "%f", delta_y);
     char str_dz[10]; sprintf(str_dz, "%f", delta_z);
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
-    cJSON_AddStringToObject(root, "latitude", str_lat);
-    cJSON_AddStringToObject(root, "longitude", str_lng);
-    cJSON_AddStringToObject(root, "altitude", str_alt);
-    cJSON_AddStringToObject(root, "timestamp", str_time);
-    cJSON_AddStringToObject(root, "delta_x", str_dx);
-    cJSON_AddStringToObject(root, "delta_y", str_dy);
-    cJSON_AddStringToObject(root, "delta_z", str_dz);
-    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
+    cJSON_AddStringToObject(root, "lat", str_lat);
+    cJSON_AddStringToObject(root, "lon", str_lng);
+    cJSON_AddStringToObject(root, "alt", str_alt);
+    cJSON_AddStringToObject(root, "ts", str_time);
+    cJSON_AddStringToObject(root, "dx", str_dx);
+    cJSON_AddStringToObject(root, "dy", str_dy);
+    cJSON_AddStringToObject(root, "dz", str_dz);
+    cJSON_AddStringToObject(root, "id", str_drone_id);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL
@@ -215,7 +215,7 @@ void empty_firebase(int drone_id){
 
     // fils json
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
-    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
+    cJSON_AddStringToObject(root, "id", str_drone_id);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL
@@ -235,7 +235,7 @@ int check_offboard_server(int drone_id){
 
     // fils json
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
-    cJSON_AddStringToObject(root, "drone_id", str_drone_id);
+    cJSON_AddStringToObject(root, "id", str_drone_id);
     json = cJSON_PrintUnformatted(root);
 
     // POST JSON on URL

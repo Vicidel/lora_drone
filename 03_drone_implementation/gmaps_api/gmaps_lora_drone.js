@@ -1232,12 +1232,13 @@ function takeoff_button_cb(obj, drone_id) {
 // callback for network estimate button
 function network_button_cb(obj, type) {
 
-    // 
+    // differnt types of network estimate 
     if(type=='get') {
         // button color
         document.getElementById('network_get').style.backgroundColor='#aaa';
         document.getElementById('network_place').style.backgroundColor='#fff';
         document.getElementById('network_none').style.backgroundColor='#fff';
+        document.getElementById('network_closeby').style.backgroundColor='#fff';
 
         // click listener
         click_listener_active = false
@@ -1250,6 +1251,7 @@ function network_button_cb(obj, type) {
         document.getElementById('network_get').style.backgroundColor='#fff';
         document.getElementById('network_place').style.backgroundColor='#aaa';
         document.getElementById('network_none').style.backgroundColor='#fff';
+        document.getElementById('network_closeby').style.backgroundColor='#fff';
 
         // click listener
         click_listener_active = true
@@ -1259,9 +1261,31 @@ function network_button_cb(obj, type) {
         document.getElementById('network_get').style.backgroundColor='#fff';
         document.getElementById('network_place').style.backgroundColor='#fff';
         document.getElementById('network_none').style.backgroundColor='#aaa';
+        document.getElementById('network_closeby').style.backgroundColor='#fff';
 
         // click listener
         click_listener_active = false
+    }
+    if(type=='node') {
+        // button color
+        document.getElementById('network_get').style.backgroundColor='#fff';
+        document.getElementById('network_place').style.backgroundColor='#fff';
+        document.getElementById('network_none').style.backgroundColor='#fff';
+        document.getElementById('network_closeby').style.backgroundColor='#aaa';
+
+        // click listener
+        click_listener_active = false
+
+        // get random things around node
+        var dist_meters = Math.random()*200; 
+        var angle_degrees = Math.random()*2*Math.PI;
+        var answer = shift_latlng(lat_node, lng_node, dist_meters, angle_degrees)
+        var lat = answer.lat; var lng = answer.lng;
+
+        // post network estimate on server
+        const url='http://victor.scapp.io/lora/network_estimate_latlng';
+        const data={'lat': lat, 'lng': lng}
+        axios({method: 'POST', url: url, data: data})
     }
 }
 
@@ -1485,4 +1509,30 @@ function create_waypoint_lists() {
 
     // return
     return {listR: [], lineR: flight_pathR, listG: [], lineG: flight_pathG, listB: [], lineB: flight_pathB};
+}
+
+
+
+
+//#########################################################################################
+//##################################  MISC FUNCTIONS ######################################
+//#########################################################################################
+
+// adds distance and bearing to latlng
+function shift_latlng(lat1, lon1, dist_meters, bearing_degrees){
+
+    var dist = dist_meters / 1000;      // distances in kilometers
+    var brng = bearing_degrees * Math.PI / 180;     // angles in radians
+
+    dist = dist / 6371;   
+
+    lat1 = lat1 * Math.PI / 180;
+    //lon1 = lon1 * Math.PI / 180;
+
+    var lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) + Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
+    var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2));
+
+    if (isNaN(lat2) || isNaN(lon2)) return null;
+
+    return {lat:lat2*180/Math.PI, lng:lon2};
 }

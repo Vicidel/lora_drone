@@ -506,6 +506,7 @@ void loop() {
                         break;*/
             
                     case SEND:
+                        /*
                         sprintf(oled_string, "Since: %d s", (int) (0.001 * (millis()-fsm_flag)));
                         oledPut(5, oled_string);
                         sprintf(oled_string, "HDOP: %d", gps.hdop.value());
@@ -523,6 +524,19 @@ void loop() {
                         else {
                             oledPut(6,"No update, wait.");
                             delay(t_update);
+                        }*/
+                        // send every 3 seconds
+                        if(millis()-fsm_flag>3*SECOND){
+                            sendLoraTX(0);
+                            delay(min_delay_txpow[SF]);
+                            fsm_pck_count++;
+                            sprintf(oled_string, "Packets: %d", fsm_pck_count);
+                            oledPut(5, oled_string);
+                            sprintf(oled_string, "HDOP: %d", gps.hdop.value());
+                            oledPut(6, oled_string);
+                            sprintf(oled_string, "Satellites: %d",gps.satellites.value());
+                            oledPut(7, oled_string); 
+                            fsm_flag = millis();
                         }
                         break;
                 }
@@ -531,7 +545,7 @@ void loop() {
     }
 
     else if(current_state == SEND_WITHOUT_GPS){
-        //Send every 5 seconds
+        // send every 3 seconds
         if(millis()-fsm_flag>3*SECOND){
             sendLoraTX(0);
             delay(min_delay_txpow[SF]);

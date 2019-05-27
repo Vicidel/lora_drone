@@ -172,14 +172,36 @@ function print_checklist(){
 // function when parameter is changed
 function param_change(){
     // get from HTML elements
-    var loop_todo = document.getElementById("loop_todo").value;
-    var rad1 = document.getElementById("rad1").value;
-    var rad2 = document.getElementById("rad2").value;
-    var rad3 = document.getElementById("rad3").value;
-    var hover = document.getElementById("hover").value;
-    var flight = document.getElementById("flight").value;
-    var takeoff = document.getElementById("takeoff").value;
+    var loop_todo = parseInt(document.getElementById("loop_todo").value);
+    var rad1 = parseFloat(document.getElementById("rad1").value);
+    var rad2 = parseFloat(document.getElementById("rad2").value);
+    var rad3 = parseFloat(document.getElementById("rad3").value);
+    var hover = parseFloat(document.getElementById("hover").value);
+    var flight = parseFloat(document.getElementById("flight").value);
+    var takeoff = parseFloat(document.getElementById("takeoff").value);
 
+    // check validity 
+    if(loop_todo!=1 && loop_todo!=2 && loop_todo!=3){
+        window.alert("Loops todo parameter is not correct, should be 1, 2 or 3")
+        return;
+    }
+    if(rad1<0 || rad2<0 || rad3<0){
+        window.alert("Radius parameters are not correct, should be positive")
+        return;
+    }
+    if(hover<0){
+        window.alert("Hover parameters is not correct, should be positive")
+        return;
+    }
+    if(flight<0 || takeoff<0){
+        window.alert("Altitudes parameters are not correct, should be positive")
+        return;
+    }
+    if(flight<=takeoff){
+        window.alert("Altitudes parameters are not correct, flight should be above takeoff")
+        return;
+    }
+    
     // POST on server
     const url='http://victor.scapp.io/param/change_from_maps';
     const data={'rad1': rad1, 'rad2': rad2, 'rad3': rad3, 'hover': hover, 'loop_todo': loop_todo, 'flight': flight, 'takeoff': takeoff};

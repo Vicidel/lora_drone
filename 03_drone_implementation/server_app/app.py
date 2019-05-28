@@ -1604,7 +1604,7 @@ def get_waypoint_continuous(drone_id, nb_drone, pos_x, pos_y):
 	return 1000, 0, flying_altitude
 
 
-# returns the return string for classic method
+# returns the return string
 def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 
 	# global
@@ -1615,6 +1615,9 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 
 	# if it is not set during the next if's
 	return_string = 'ERROR, return string not set'
+
+
+	###################  COMMON PAYLOADS  ######################
 
 	# switch to OFFBOARD mode done
 	if payload=='offb':
@@ -1671,7 +1674,14 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# return string with new coordinates
 		return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
-	# drone reached its previous (unknown) waypoint
+	# drone is landing
+	if payload=='land':
+		return_string = "Congrats on mission!"
+
+
+	###################  PAYLOADS FOR CLASSIC ONLY  ######################
+
+	# (classic only) drone reached its previous (unknown) waypoint
 	if payload=='wp_ok':
 
 		# read old state to increment it
@@ -1693,7 +1703,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# send hover time
 		return_string = "Wait at this position"
 
-	# drone is waiting for all drones ready
+	# (classic only) drone is waiting for all drones ready
 	if payload=='wait':
 
 		# bool if ready for next waypoint
@@ -1728,7 +1738,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			# still waiting
 			return_string = "Wait until other drones ready (d1:{}, d2:{} d3:{})".format(bool_drone1_ready, bool_drone2_ready, bool_drone3_ready)
 
-	# drone is hovering in position
+	# (classic only) drone is hovering in position
 	if payload=='hover':
 
 		# get new waypoint
@@ -1737,7 +1747,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# return string
 		return_string = "Wait until finished hovering (h:{})".format(hover_time)
 
-	# getting the next waypoint
+	# (classic only) getting the next waypoint
 	if payload=='wait_next':
 
 		# get new waypoint
@@ -1750,72 +1760,11 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		else:
 			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
-	# drone is landing
-	if payload=='land':
-		return_string = "Congrats on mission!"
 
-	return return_string
+	###################  PAYLOADS FOR CONTINUOUS ONLY  ######################
 
-
-# returns the returne string for continuous method
-def get_return_string_continuous(payload, drone_id, nb_drone, pos_x, pos_y):
-
-	# global
-	global drone_dataset, current_state1, current_state2, current_state3, solution
-
-
-	# if it is not set during the next if's
-	return_string = 'ERROR, return string not set'
-
-	# switch to OFFBOARD mode done
-	if payload=='offb':
-		return_string = "Congrats on offboard mode!"
-
-	# drone was just armed
-	if payload=='arm':
-
-		# add waypoint for takeoff to Firebase
-		add_waypoint_maps(pos_x, pos_y, drone_id)
-
-		# return string with takeoff coordinates
-		return_string = "Takeoff at current position: h{}".format(takeoff_altitude)
-
-	# drone took off and is in the air
-	if payload=='takeoff':
-
-		# empty drone dataset
-		print("Emptying drone dataset for this mission")
-		drone_dataset = []
-
-		# set base solution at network estimate
-		solution.pos_x = network_x
-		solution.pos_y = network_y
-		solution.pos_z = 0
-
-		# set state at 0
-		if drone_id==1:
-			current_state1 = 0
-		if drone_id==2:
-			current_state2 = 0
-		if drone_id==3:
-			current_state3 = 0
-
-		# set estimation made at 0
-		nb_est_made = 0
-
-		# get waypoint 
-		wp_x, wp_y, wp_z = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
-
-		# save on map
-		add_waypoint_maps(wp_x, wp_y, drone_id)
-		add_network_maps(solution.pos_x, solution.pos_y)		# point
-		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty_net, 'network') 	# circle
-
-		# return string with new coordinates
-		return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
-
-	# drone reached its previous (unknown) waypoint
-	if payload=='wp_ok':
+	# (continuous only) drone reached its previous (unknown) waypoint
+	if payload=='wp_ok_cont':
 
 		# read old state to increment it
 		if drone_id==1:
@@ -1826,27 +1775,52 @@ def get_return_string_continuous(payload, drone_id, nb_drone, pos_x, pos_y):
 			current_state3 = current_state3 + 1
 
 		# get waypoint 
-		wp_x, wp_y, wp_z = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
 
 		# save on map
 		add_waypoint_maps(wp_x, wp_y, drone_id)
 
-		# return string with new coordinates
-		return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+		# return string
+		if bool_landing_waypoint:
+			return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+		else:
+			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
 
-	# drone received data, make a new estimation
+	# (continuous only) drone received data, make a new estimation
 	if payload=='data':
 
 		# do multilateration and store position
 		pos_x_est, pos_y_est, pos_z_est = trilateration_main()
+		if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+			# old position
+			print("LOC: Reusing previous estimate")
+			solution.pos_x = solution.pos_x
+			solution.pos_y = solution.pos_y
+			solution.pos_z = solution.pos_z
+		else:
+			# base uncertainty
+			est_uncertainty = 666
 
-		# add estimate to map
-		add_estimation_maps(solution.pos_x, solution.pos_y, 0, 'temp')
-		
-	# drone is landing
-	if payload=='land':
-		return_string = "Congrats on mission!"
+			# already have an uncertainty to compare
+			if bool_new_est_made==True:
+				delta_x = solution.pos_x - pos_x_est
+				delta_y = solution.pos_y - pos_y_est
+				est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
+			# no previous estimation, use base uncertainty, next time we wil have one
+			else:
+				bool_new_est_made = True
+				est_uncertainty = est_uncertainty1
 
+			# new position
+			solution.pos_x = pos_x_est
+			solution.pos_y = pos_y_est
+			solution.pos_z = pos_z_est
+
+			# add estimate to map
+			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, 'temp')
+			
+
+	###################  RETURN
 	return return_string
 
 
@@ -1882,7 +1856,6 @@ def drone_receive_state():
 	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
 	r_drone_id  = int(j['id'])
 	r_nb_drone  = int(j['nb'])
-	r_sim_type  = int(j['type'])		# 0 for classic, 1 for continuous
 
 	# type conversion and stuff
 	r_timestamp = dt.datetime.utcfromtimestamp(r_ts_temp)
@@ -1899,12 +1872,7 @@ def drone_receive_state():
 		bool_drone3_online = False
 
 	# get return string with new instructions	
-	if r_sim_type == 0:
-		# return string for classic method
-		return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
-	elif r_sim_type == 1:
-		# return string for continuous method
-		return_string = get_return_string_continuous(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
+	return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
 
 
 	###################  CREATE MEMORY  ######################

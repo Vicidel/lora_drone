@@ -163,7 +163,6 @@ int main(int argc, char **argv){
     float hover_time;           // hovering time at measure positions
     int drone_id = 1;           // can be 1, 2 or 3
     int nb_drone = 1;           // can be 1 or 3
-    int sim_type = 1;           // 0 for classic, 1 for continuous
     bool bool_fly_straight = false;     // fly in direction of waypoint or just keep same yaw
     int gmaps_safety_switch = 0;        // 0 for unkill, 1 for kil, 2 for hover, 3 for RTL
 
@@ -309,7 +308,7 @@ int main(int argc, char **argv){
 
                             // post on server
                             ROS_INFO("Offboard enabled from server");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, sim_type, false);
+                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false);
 
                             // check server error
                             if(check_server_answer(answer))
@@ -330,7 +329,7 @@ int main(int argc, char **argv){
 
                         // post on server
                         ROS_INFO("Offboard enabled from RC");
-                        answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, sim_type, false);
+                        answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false);
 
                         // check server error
                         if(check_server_answer(answer))
@@ -382,7 +381,7 @@ int main(int argc, char **argv){
 
                         // post on server
                         ROS_INFO("Vehicle armed");
-                        answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"arm", drone_id, nb_drone, sim_type, false);
+                        answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"arm", drone_id, nb_drone, false);
                         
                         // check server error
                         if(check_server_answer(answer))
@@ -426,7 +425,7 @@ int main(int argc, char **argv){
                             if((pos_drone-pos_current_goal).norm()<precision){
                                 // post on server
                                 ROS_INFO("Takeoff position reached!");
-                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"takeoff", drone_id, nb_drone, sim_type, false);
+                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"takeoff", drone_id, nb_drone, false);
                                 
                                 // check server error
                                 if(check_server_answer(answer))
@@ -449,7 +448,7 @@ int main(int argc, char **argv){
                             // sending
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                                 ROS_INFO("Sending coordinates for dataset");
-                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, sim_type, true);
+                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true);
                                 
                                 // check server error
                                 if(check_server_answer(answer))
@@ -463,7 +462,7 @@ int main(int argc, char **argv){
                             // reached position
                             if((pos_drone-pos_current_goal).norm()<precision){
                                 ROS_INFO("Waypoint reached!");
-                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wp_ok", drone_id, nb_drone, sim_type, false);
+                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wp_ok_cont", drone_id, nb_drone, false);
                                 
                                 // check server error
                                 if(check_server_answer(answer))
@@ -513,7 +512,7 @@ int main(int argc, char **argv){
                         /***********************   DISARMING   ************************/
                         case 4:{
                             ROS_INFO("Drone landed");
-                            send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"land", drone_id, nb_drone, sim_type, false);
+                            send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"land", drone_id, nb_drone, false);
                             bool_stop_all = true;
                             break;
                         }

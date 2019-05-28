@@ -1019,6 +1019,9 @@ function init_firebase_estimations(map, markers, circles) {
             oms.addMarker(markers.est3);
         }
         if(type=='cont') {
+            circles.c_cont.setCenter(new google.maps.LatLng(lat, lng));
+            circles.c_cont.setMap(map);
+            circles.c_cont.setRadius(rad);
             markers.est_cont.setPosition(new google.maps.LatLng(lat, lng));
             oms.addMarker(markers.est_cont);
         }
@@ -1057,6 +1060,7 @@ function init_firebase_estimations(map, markers, circles) {
         circles.c2.setMap(null);
         circles.c3.setMap(null);
         circles.c4.setMap(null);
+        circles.c_cont.setMap(null);
         markers.est1.setMap(null);
         markers.est2.setMap(null);
         markers.est3.setMap(null);
@@ -1478,6 +1482,13 @@ function create_circles() {
         fillColor: '#00FF00',
         fillOpacity: 0.1,
     })
+    var network_circle5 = new google.maps.Circle({
+        strokeColor: '#000000',
+        strokeOpacity: 0.5,
+        strokeWeight: 2,
+        fillColor: '#000000',
+        fillOpacity: 0.1,
+    })
 
     // for geofences
     var home_circleR = new google.maps.Circle({
@@ -1502,7 +1513,7 @@ function create_circles() {
         fillOpacity: 0,
     });
 
-    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, c4: network_circle4, geoR: home_circleR, geoG: home_circleG, geoB: home_circleB};
+    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, c4: network_circle4, c_cont: network_circle5, geoR: home_circleR, geoG: home_circleG, geoB: home_circleB};
 }
 
 // creates the waypoints lists (empty)

@@ -90,7 +90,7 @@ void post_JSON_noanswer(const char* url, char* post_array){
 
 // POST the drone xy coordinates and drone number
 std::string send_drone_state(Vector3f position, double time, char* payload, 
-    int drone_id, int nb_drone, int sim_type, bool bool_no_answer){
+    int drone_id, int nb_drone, bool bool_no_answer){
 
     // set response string
     std::string response_string;
@@ -106,7 +106,6 @@ std::string send_drone_state(Vector3f position, double time, char* payload,
     char str_pos_z[10];    sprintf(str_pos_z, "%f", position(2));
     char str_time[30];     sprintf(str_time, "%f", time);
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
-    char str_sim_type[10]; sprintf(str_sim_type, "%d", sim_type);
     char str_nb_drone[10]; sprintf(str_nb_drone, "%d", nb_drone);
     cJSON_AddStringToObject(root, "x", str_pos_x);
     cJSON_AddStringToObject(root, "y", str_pos_y);
@@ -114,7 +113,6 @@ std::string send_drone_state(Vector3f position, double time, char* payload,
     cJSON_AddStringToObject(root, "ts", str_time);
     cJSON_AddStringToObject(root, "str", payload);
     cJSON_AddStringToObject(root, "id", str_drone_id);
-    cJSON_AddStringToObject(root, "type", str_sim_type);
     cJSON_AddStringToObject(root, "nb", str_nb_drone);
     json = cJSON_PrintUnformatted(root);
     //std::cout << "String sent:" << json << std::endl;

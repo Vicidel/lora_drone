@@ -311,9 +311,6 @@ function check_drone_online(){
             document.getElementById('all').disabled = false;
         else
             document.getElementById('all').disabled = true;
-
-        // call function again after X seconds
-        setTimeout(check_drone_online, delay_online_check);
     });
 
     // deactivate buttons 
@@ -351,6 +348,9 @@ function check_drone_online(){
         document.getElementById("flight").disabled = false;
         document.getElementById("takeoff").disabled = false;
     }
+
+    // call function again after X seconds
+    setTimeout(check_drone_online, delay_online_check);
 }
 
 // compute distance between node and est

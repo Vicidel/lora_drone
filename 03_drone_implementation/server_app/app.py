@@ -1371,7 +1371,7 @@ def get_base_angle(pos_x, pos_y, network_x, network_y):
 	return math.atan2(network_y-pos_y, network_x-pos_x)+math.pi
 
 
-# returns the waypoint based on drone id, total number of drone and state
+# returns the waypoint based on drone id, total number of drone and state for classic method
 def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 
 	# global variables
@@ -1597,6 +1597,13 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 	return wp_x, wp_y, wp_z, bool_landing_waypoint
 
 
+# returns the waypoint based on drone id, total number of drone and state for continuous method
+def get_waypoint_continuous(drone_id, nb_drone, pos_x, pos_y):
+
+	# TODO
+	return 1000, 0, flying_altitude
+
+
 # returns the return string for classic method
 def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 
@@ -1796,10 +1803,8 @@ def get_return_string_continuous(payload, drone_id, nb_drone, pos_x, pos_y):
 		# set estimation made at 0
 		nb_est_made = 0
 
-		# TODO: get waypoint 
-		wp_x = -20
-		wp_y = 20
-		wp_z = flying_altitude
+		# get waypoint 
+		wp_x, wp_y, wp_z = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
 
 		# save on map
 		add_waypoint_maps(wp_x, wp_y, drone_id)
@@ -1812,10 +1817,16 @@ def get_return_string_continuous(payload, drone_id, nb_drone, pos_x, pos_y):
 	# drone reached its previous (unknown) waypoint
 	if payload=='wp_ok':
 
-		# TODO: get waypoint
-		wp_x = 1000
-		wp_y = 1000
-		wp_z = flying_altitude
+		# read old state to increment it
+		if drone_id==1:
+			current_state1 = current_state1 + 1
+		if drone_id==2:
+			current_state2 = current_state2 + 1
+		if drone_id==3:
+			current_state3 = current_state3 + 1
+
+		# get waypoint 
+		wp_x, wp_y, wp_z = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
 
 		# save on map
 		add_waypoint_maps(wp_x, wp_y, drone_id)

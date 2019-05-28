@@ -550,17 +550,22 @@ function init_legend(map){
 
     // add est1
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate2_circle.png width=20> First estimation'
+    div.innerHTML = '<img src=marker/estimate2_circle.png width=20> First estimation (classic)'
     legend.appendChild(div);
 
     // add est2
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate_circle.png width=20> Second estimation'
+    div.innerHTML = '<img src=marker/estimate_circle.png width=20> Second estimation (classic)'
     legend.appendChild(div);
 
     // add est3
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate3_circle.png width=20> Third estimation'
+    div.innerHTML = '<img src=marker/estimate3_circle.png width=20> Third estimation (classic)'
+    legend.appendChild(div);
+
+    // add estcont
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Estimation (continuous)'
     legend.appendChild(div);
 
     // push on map
@@ -1013,6 +1018,10 @@ function init_firebase_estimations(map, markers, circles) {
             markers.est3.setPosition(new google.maps.LatLng(lat, lng));
             oms.addMarker(markers.est3);
         }
+        if(type=='cont') {
+            markers.est_cont.setPosition(new google.maps.LatLng(lat, lng));
+            oms.addMarker(markers.est_cont);
+        }
 
         // storage
         lat_last_est = lat;
@@ -1038,6 +1047,10 @@ function init_firebase_estimations(map, markers, circles) {
             iw.setContent(markers.network.title);
             iw.open(map, markers.network);
         });
+        google.maps.event.addListener(markers.est_cont, 'spider_click', function(e) {  // 'spider_click', not plain 'click'
+            iw.setContent(markers.est_cont.title);
+            iw.open(map, markers.est_cont);
+        });
     });
     est_ref.on('child_removed', function(snapshot) {
         circles.c1.setMap(null);
@@ -1047,6 +1060,7 @@ function init_firebase_estimations(map, markers, circles) {
         markers.est1.setMap(null);
         markers.est2.setMap(null);
         markers.est3.setMap(null);
+        markers.est_cont.setMap(null);
     });
 }   
 
@@ -1415,6 +1429,11 @@ function create_markers(map, icons) {
         icon: 'marker/estimate3.png',
         title: 'Third estimation',
     });
+    var est_marker_cont = new google.maps.Marker({
+        map: map,
+        icon: 'marker/estimate_cont.png',
+        title: 'Continuous estimation',
+    });
 
     // for node
     var node_marker = new google.maps.Marker({
@@ -1424,7 +1443,7 @@ function create_markers(map, icons) {
     });
 
     // return them 
-    return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, network: network_marker, est1: est_marker1, est2: est_marker2, est3: est_marker3, node: node_marker};
+    return {droneR: droneR_marker, droneG: droneG_marker, droneB: droneB_marker, homeR: home_markerR, homeG: home_markerG, homeB: home_markerB, network: network_marker, est1: est_marker1, est2: est_marker2, est3: est_marker3, est_cont: est_marker_cont, node: node_marker};
 }
 
 // creates the circles

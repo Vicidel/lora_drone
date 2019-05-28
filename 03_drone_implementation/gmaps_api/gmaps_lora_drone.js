@@ -129,6 +129,23 @@ function main() {
         }
     });
 
+    // listener for keyboard
+    document.onkeypress = function (e) {
+        e = e || window.event;
+        if(e.keyCode==62){
+            if(window.confirm("Key '>' pressed, do you want to empty the database?")){
+                console.log("Deleting Firebase database")
+                const url='http://victor.scapp.io/firebase/empty';
+                const data={'id': 1}
+                axios({method: 'POST', url: url, data: data})
+                const data2={'id': 2}
+                axios({method: 'POST', url: url, data: data2})
+                const data3={'id': 3}
+                axios({method: 'POST', url: url, data: data3})
+            }
+        }
+    };
+
     // set base values
     lat_node = 0
     lng_node = 0

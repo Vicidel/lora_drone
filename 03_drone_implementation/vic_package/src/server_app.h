@@ -46,7 +46,7 @@ int check_kill_server(void);
 
 // get instructions from server app
 std::string send_drone_state(Vector3f position, double time, char* payload, 
-	int drone_id, int nb_drone, int sim_type);
+	int drone_id, int nb_drone, int sim_type, bool bool_no_answer);
 
 
 #endif

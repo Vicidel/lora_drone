@@ -90,7 +90,7 @@ void post_JSON_noanswer(const char* url, char* post_array){
 
 // POST the drone xy coordinates and drone number
 std::string send_drone_state(Vector3f position, double time, char* payload, 
-    int drone_id, int nb_drone, int sim_type){
+    int drone_id, int nb_drone, int sim_type, bool bool_no_answer){
 
     // set response string
     std::string response_string;
@@ -119,13 +119,20 @@ std::string send_drone_state(Vector3f position, double time, char* payload,
     json = cJSON_PrintUnformatted(root);
     //std::cout << "String sent:" << json << std::endl;
 
-    // POST JSON on URL
-    response_string = post_JSON(DRONE_SEND_CURRENT_STATE_URL, json);
+    if(bool_no_answer==false){
+        // POST JSON on URL
+        response_string = post_JSON(DRONE_SEND_CURRENT_STATE_URL, json);
 
-    // print for debugging
-    std::cout << "POST answer: " << response_string << std::endl;
+        // print for debugging
+        std::cout << "POST answer: " << response_string << std::endl;
 
-    return response_string;
+        return response_string;
+    }
+    else{
+        // POST without answer
+        post_JSON_noanswer(DRONE_SEND_CURRENT_STATE_URL, json);
+        return "XX no answer required";
+    }
 }
 
 // POST drone GPS coordinates on Firebase

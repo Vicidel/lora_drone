@@ -600,8 +600,8 @@ def trilateration_main():
 	for i in range(0, len(drone_dataset)):
 
 		# ignore unrelevant states
-		if drone_dataset[i].payload!='data_collected':
-			print("Ignored because payload is not data_collected")
+		if drone_dataset[i].payload!='hover' and drone_dataset[i].payload!='data':
+			print("Ignored because payload is not 'hover' or 'data'")
 			continue
 
 		# find matching LoRa points on interval
@@ -1751,8 +1751,92 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 
 
 # returns the returne string for continuous method
-def get_return_string_continuous():
-	return "TODO"
+def get_return_string_continuous(payload, drone_id, nb_drone, pos_x, pos_y):
+
+	# global
+	global drone_dataset, current_state1, current_state2, current_state3, solution
+
+
+	# if it is not set during the next if's
+	return_string = 'ERROR, return string not set'
+
+	# switch to OFFBOARD mode done
+	if payload=='offb':
+		return_string = "Congrats on offboard mode!"
+
+	# drone was just armed
+	if payload=='arm':
+
+		# add waypoint for takeoff to Firebase
+		add_waypoint_maps(pos_x, pos_y, drone_id)
+
+		# return string with takeoff coordinates
+		return_string = "Takeoff at current position: h{}".format(takeoff_altitude)
+
+	# drone took off and is in the air
+	if payload=='takeoff':
+
+		# empty drone dataset
+		print("Emptying drone dataset for this mission")
+		drone_dataset = []
+
+		# set base solution at network estimate
+		solution.pos_x = network_x
+		solution.pos_y = network_y
+		solution.pos_z = 0
+
+		# set state at 0
+		if drone_id==1:
+			current_state1 = 0
+		if drone_id==2:
+			current_state2 = 0
+		if drone_id==3:
+			current_state3 = 0
+
+		# set estimation made at 0
+		nb_est_made = 0
+
+		# TODO: get waypoint 
+		wp_x = -20
+		wp_y = 20
+		wp_z = flying_altitude
+
+		# save on map
+		add_waypoint_maps(wp_x, wp_y, drone_id)
+		add_network_maps(solution.pos_x, solution.pos_y)		# point
+		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty_net, 'network') 	# circle
+
+		# return string with new coordinates
+		return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+
+	# drone reached its previous (unknown) waypoint
+	if payload=='wp_ok':
+
+		# TODO: get waypoint
+		wp_x = 1000
+		wp_y = 1000
+		wp_z = flying_altitude
+
+		# save on map
+		add_waypoint_maps(wp_x, wp_y, drone_id)
+
+		# return string with new coordinates
+		return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+
+	# drone received data, make a new estimation
+	if payload=='data':
+
+		# do multilateration and store position
+		pos_x_est, pos_y_est, pos_z_est = trilateration_main()
+
+		# add estimate to map
+		add_estimation_maps(solution.pos_x, solution.pos_y, 0, 'temp')
+		
+	# drone is landing
+	if payload=='land':
+		return_string = "Congrats on mission!"
+
+	return return_string
 
 
 # receive GPS coordinates from offboard script (v2)
@@ -1809,7 +1893,7 @@ def drone_receive_state():
 		return_string = get_return_string(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
 	elif r_sim_type == 1:
 		# return string for continuous method
-		return_string = get_return_string_continuous()
+		return_string = get_return_string_continuous(r_payload, r_drone_id, r_nb_drone, r_pos_x, r_pos_y)
 
 
 	###################  CREATE MEMORY  ######################

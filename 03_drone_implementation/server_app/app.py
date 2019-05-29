@@ -1833,7 +1833,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, 0, 'temp')
 
 
-	###################  RETURN
+	###################  RETURN  ######################
 	return return_string
 
 

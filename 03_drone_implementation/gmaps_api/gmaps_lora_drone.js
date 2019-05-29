@@ -189,6 +189,9 @@ function main() {
     // legend
     init_legend(map);
 
+    // states
+    init_states(map);
+
     // start Firebase and database listeners
     init_firebase_homes(map, markers, circles);         // homes
     init_firebase_drones(map, markers, paths);          // drones, paths
@@ -302,9 +305,9 @@ function get_base_param(){
 // set the states in GUI
 function change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB){
     // change the string in HTML stuff
-    document.getElementById('legend').children[4].innerHTML = "<img src=marker/droneR.png width=20> Drone 1/R: "+stateR+", "+altitudeR;
-    document.getElementById('legend').children[5].innerHTML = "<img src=marker/droneG.png width=20> Drone 2/G: "+stateG+", "+altitudeG;
-    document.getElementById('legend').children[6].innerHTML = "<img src=marker/droneB.png width=20> Drone 3/B: "+stateB+", "+altitudeB;
+    document.getElementById('states').children[1].innerHTML = '<img src=marker/droneR.png width=20> State:'+stateR+', altitude:'+altitudeR;
+    document.getElementById('states').children[2].innerHTML = '<img src=marker/droneG.png width=20> State:'+stateG+', altitude:'+altitudeG;
+    document.getElementById('states').children[3].innerHTML = '<img src=marker/droneB.png width=20> State:'+stateB+', altitude:'+altitudeB;
 }
 
 // testing if drone is online
@@ -512,99 +515,73 @@ function center_control(control_div, map, lat, lng, string){
     });
 }
 
+// init states
+function init_states(map){
+    // create states object
+    var states = document.getElementById('states');
+
+    // add droneR
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/droneR.png width=20> State:'+stateR+', altitude:'+altitudeR;
+    states.appendChild(div);
+
+    // add droneG
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/droneG.png width=20> State:'+stateG+', altitude:'+altitudeG;
+    states.appendChild(div);
+
+    // add droneB
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/droneB.png width=20> State:'+stateB+', altitude:'+altitudeB;
+    states.appendChild(div);
+
+    // push on map
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(states);
+}
+
 // init legend
 function init_legend(map){
     // create legend object
     var legend = document.getElementById('legend');
 
+    // add home
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/homeR.png width=20> <img src=marker/homeG.png width=20> <img src=marker/homeB.png width=20> Homes'
+    legend.appendChild(div);
+
+    // add drone
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/droneR.png width=20> <img src=marker/droneG.png width=20> <img src=marker/droneB.png width=20> Drones'
+    legend.appendChild(div);
+
+    // add waypoint past
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/waypointR_old_circle.png width=20> <img src=marker/waypointG_old_circle.png width=20> <img src=marker/waypointB_old_circle.png width=20> Past waypoints'
+    legend.appendChild(div);
+
+    // add waypoint current
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/waypointR_current_circle.png width=20> <img src=marker/waypointG_current_circle.png width=20> <img src=marker/waypointB_current_circle.png width=20> Current waypoints'
+    legend.appendChild(div);
+    
     // add node
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/node_circle.png width=20> Node ground truth'
-    legend.appendChild(div);
-
-    // add homeR
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/homeR.png width=20> Home 1/R'
-    legend.appendChild(div);
-
-    // add homeG
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/homeG.png width=20> Home 2/G'
-    legend.appendChild(div);
-
-    // add homeB
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/homeB.png width=20> Home 3/B'
-    legend.appendChild(div);
-
-    // add droneR
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/droneR.png width=20> Drone 1/R'
-    legend.appendChild(div);
-
-    // add droneG
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/droneG.png width=20> Drone 2/G'
-    legend.appendChild(div);
-
-    // add droneB
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/droneB.png width=20> Drone 3/B'
-    legend.appendChild(div);
-
-    // add waypoint past
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/waypointR_old_circle.png width=20> Drone 1/R past waypoint'
-    legend.appendChild(div);
-
-    // add waypoint current
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/waypointR_current_circle.png width=20> Drone 1/R current waypoint'
-    legend.appendChild(div);
-
-    // add waypoint past
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/waypointG_old_circle.png width=20> Drone 2/G past waypoint'
-    legend.appendChild(div);
-
-    // add waypoint current
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/waypointG_current_circle.png width=20> Drone 2/G current waypoint'
-    legend.appendChild(div);
-
-    // add waypoint past
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/waypointB_old_circle.png width=20> Drone 3/B past waypoint'
-    legend.appendChild(div);
-
-    // add waypoint current
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/waypointB_current_circle.png width=20> Drone 3/B current waypoint'
+    div.innerHTML = '<img src=marker/node_circle.png width=20> Node ground truth (goal)'
     legend.appendChild(div);
 
     // add network
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/network_circle.png width=20> Network estimate'
-    legend.appendChild(div);
-
-    // add est1
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate2_circle.png width=20> First loop estimation'
-    legend.appendChild(div);
-
-    // add est2
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate_circle.png width=20> Second loop estimation'
-    legend.appendChild(div);
-
-    // add est3
-    var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate3_circle.png width=20> Third loop estimation'
+    div.innerHTML = '<img src=marker/network_circle.png width=20> Network estimate (start)'
     legend.appendChild(div);
 
     // add estcont
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Temporary estimation'
+    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Temporary estimate (continuous)'
+    legend.appendChild(div);
+
+    // add est
+    var div = document.createElement('div');
+    div.innerHTML = '<img src=marker/estimate2_circle.png width=20> <img src=marker/estimate_circle.png width=20> <img src=marker/estimate3_circle.png width=20> Loop estimation'
     legend.appendChild(div);
 
     // push on map

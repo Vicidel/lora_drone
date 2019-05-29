@@ -280,7 +280,9 @@ function check_drone_online(){
     const url='http://victor.scapp.io/param/check_online';
     axios({method: 'POST', url: url})
     .catch(function (error){
-        window.alert("Server is offline\nOK to try again\nRefresh page when back online")
+        if(window.confirm("Server is offline\nOK to try again\n")){
+            get_base_param();
+        }
     })
     .then(function(response){
         

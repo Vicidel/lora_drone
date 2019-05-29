@@ -1391,10 +1391,10 @@ def get_base_angle(pos_x, pos_y, network_x, network_y):
 
 
 # returns the waypoint based on drone id, total number of drone and state for classic method
-def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
+def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 
 	# global variables
-	global solution, circle_radius, nb_est_made, bool_new_est_made, base_angle
+	global solution, solution_temp, circle_radius, nb_est_made, bool_new_est_made, base_angle
 
 	# uncertainty computed
 	est_uncertainty = 666
@@ -1435,31 +1435,14 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 
 		# need multilateration
 		if state==3 or state==6 or state==9:
-			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main(False)		# False for not using drone_dataset_temp
-			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
-				# uncertainty
-				if state==3:
-					est_uncertainty = est_uncertainty1
-				elif state==6:
-					est_uncertainty = est_uncertainty2
-				elif state==9:
-					est_uncertainty = est_uncertainty3
 
-				# old position
-				print("LOC: Reusing previous estimate")
-				solution.pos_x = solution.pos_x
-				solution.pos_y = solution.pos_y
-				solution.pos_z = solution.pos_z
-			else:
-				# already have an uncertainty to compare
-				if bool_new_est_made==True:
-					delta_x = solution.pos_x - pos_x_est
-					delta_y = solution.pos_y - pos_y_est
-					est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
-				# no previous estimation, use base uncertainty, next time we wil have one
-				else:
-					bool_new_est_made=True
+			# bool_continuous is False: classic mode, do multilateration
+			if bool_continuous==False:
+
+				# do multilateration and store position
+				pos_x_est, pos_y_est, pos_z_est = trilateration_main(False)		# False for not using drone_dataset_temp
+				if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+					# uncertainty
 					if state==3:
 						est_uncertainty = est_uncertainty1
 					elif state==6:
@@ -1467,10 +1450,44 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 					elif state==9:
 						est_uncertainty = est_uncertainty3
 
-				# new position
-				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est
-				solution.pos_z = pos_z_est
+					# old position
+					print("LOC: Reusing previous estimate")
+				else:
+					# already have an uncertainty to compare
+					if bool_new_est_made==True:
+						delta_x = solution.pos_x - pos_x_est
+						delta_y = solution.pos_y - pos_y_est
+						est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
+
+					# no previous estimation, use base uncertainty, next time we wil have one
+					else:
+						bool_new_est_made=True
+						if state==3:
+							est_uncertainty = est_uncertainty1
+						elif state==6:
+							est_uncertainty = est_uncertainty2
+						elif state==9:
+							est_uncertainty = est_uncertainty3
+
+					# new position
+					solution.pos_x = pos_x_est
+					solution.pos_y = pos_y_est
+					solution.pos_z = pos_z_est
+
+			# bool_continuous is True: continuous mode, use solution_temp as solution
+			else:
+				# use base uncertainty
+				if state==3:
+					est_uncertainty = est_uncertainty1
+				elif state==6:
+					est_uncertainty = est_uncertainty2
+				elif state==9:
+					est_uncertainty = est_uncertainty3
+
+				# get solution as solution_temp
+				solution.pos_x = solution_temp.pos_x
+				solution.pos_y = solution_temp.pos_y
+				solution.pos_z = solution_temp.pos_z
 
 			# increment estimations made
 			if state==3:
@@ -1678,7 +1695,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		nb_est_made = 0
 
 		# get waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, False)
 
 		# save on map
 		add_waypoint_maps(wp_x, wp_y, drone_id)
@@ -1756,7 +1773,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	if payload=='hover':
 
 		# get new waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, False)
 
 		# return string
 		return_string = "Wait until finished hovering (h:{})".format(hover_time)
@@ -1765,7 +1782,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	if payload=='wait_next':
 
 		# get new waypoint
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, False)
 		add_waypoint_maps(wp_x, wp_y, drone_id)
 
 		# return string
@@ -1788,20 +1805,11 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		if drone_id==3:
 			current_state3 = current_state3 + 1
 
-		# after each "turn" around estimate, save solution_temp as solution for next waypoint generation
-		if current_state1==3 or current_state2==3 or current_state3==3 or current_state1==6 or current_state2==6 or current_state3==6 or current_state1==9 or current_state2==9 or current_state3==9:
-			# save solution_temp as solution
-			# explanation: as in continuous mode we don't fill drone_dataset but drone_dataset_temp, 
-			# the function get_waypoint called just after doesn't have data for trilateration and will return 
-			# waypoints around the old estimation. if we set the "old" estimation now to the one computed
-			# until now we will have good waypoints
-			solution = solution_temp
-
 		# reset bool
 		bool_new_est_made = False
 
 		# get waypoint 
-		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, True)
 
 		# save on map
 		add_waypoint_maps(wp_x, wp_y, drone_id)
@@ -1820,9 +1828,6 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 			# old position
 			print("LOC: Reusing previous estimate")
-			solution_temp.pos_x = solution_temp.pos_x
-			solution_temp.pos_y = solution_temp.pos_y
-			solution_temp.pos_z = solution_temp.pos_z
 		else:
 			# new position
 			solution_temp.pos_x = pos_x_est

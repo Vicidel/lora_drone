@@ -251,11 +251,14 @@ int main(int argc, char **argv){
 
         /*************************   ROS KILL   **************************/
         if(bool_stop_all){
-            // disarm drone and stop program
+            // set at manual, disarm drone and stop program
+            set_mode.request.custom_mode = "MANUAL";
             arm_cmd.request.value = false;
             if(arming_client.call(arm_cmd) && arm_cmd.response.success){
-                ROS_WARN("Stop condition reached");
-                break;
+                if(set_mode_client.call(set_mode) && set_mode.response.mode_sent){
+                    ROS_WARN("Stop condition reached");
+                    break;
+                }
             }
         }
 

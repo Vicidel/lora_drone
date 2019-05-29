@@ -322,6 +322,7 @@ function check_drone_online(){
         // network
         document.getElementById("network_place").disabled = true;
         document.getElementById("network_get").disabled = true;
+        document.getElementById("network_closeby").disabled = true;
 
         // parameters
         document.getElementById("send").disabled = true;
@@ -339,6 +340,7 @@ function check_drone_online(){
         // network
         document.getElementById("network_place").disabled = false;
         document.getElementById("network_get").disabled = false;
+        document.getElementById("network_closeby").disabled = false;
 
         // parameters
         document.getElementById("send").disabled = false;
@@ -1257,8 +1259,8 @@ function takeoff_button_cb(obj, drone_id) {
             data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
             takeoff_button_cb(this, 'X');
 
-        // deactivate things
-        bool_some_drone_is_flying = true;
+            // deactivate things
+            bool_some_drone_is_flying = true;
         }
     }
 

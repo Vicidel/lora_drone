@@ -132,6 +132,8 @@ function main() {
     // listener for keyboard
     document.onkeypress = function (e) {
         e = e || window.event;
+
+        // empty Firebase
         if(e.keyCode==62){
             if(window.confirm("Key '>' pressed, do you want to empty the database?")){
                 console.log("Deleting Firebase database")
@@ -142,6 +144,38 @@ function main() {
                 axios({method: 'POST', url: url, data: data2})
                 const data3={'id': 3}
                 axios({method: 'POST', url: url, data: data3})
+            }
+        }
+
+        // print LoRa database
+        if(e.keyCode==43){
+            if(window.confirm("Key '+' pressed, do you want to popup-print the LoRa database?")){
+                console.log("Popup-printing LoRa database")
+                window.open('http://victor.scapp.io/lora/json_print');
+            }
+        }
+
+        // print drone dataset
+        if(e.keyCode==34){
+            if(window.confirm(`Key '"' pressed, do you want to popup-print the drone dataset?`)){
+                console.log("Popup-printing drone dataset")
+                window.open('http://victor.scapp.io/print/drone_dataset');
+            }
+        }
+
+        // print drone_temp dataset
+        if(e.keyCode==42){
+            if(window.confirm(`Key '*' pressed, do you want to popup-print the temporary drone dataset?`)){
+                console.log("Popup-printing drone_temp dataset")
+                window.open('http://victor.scapp.io/print/drone_dataset_temp');
+            }
+        }
+
+        // print tri dataset
+        if(e.keyCode==231){
+            if(window.confirm(`Key 'ç' pressed, do you want to popup-print the trilateration dataset?`)){
+                console.log("Popup-printing trilateration dataset")
+                window.open('http://victor.scapp.io/print/tri_dataset');
             }
         }
     };

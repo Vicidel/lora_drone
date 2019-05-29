@@ -267,6 +267,53 @@ def hello_world():
 
 
 #########################################################################################
+##################################  PRINTING ROUTE  #####################################
+#########################################################################################
+
+# print the drone dataset
+@app.route('/print/drone_dataset', methods=['GET'])
+def print_drone_dataset():
+
+	# doing stuff to have a json...
+	data_dict = {}
+	for item in drone_dataset:
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "ts": (item.timestamp-dt.datetime(1970,1,1)).total_seconds(), "time": item.time, "state": item.state, "payload": item.payload, "id": item.drone_id}
+		data_dict.update({"datapoint_"+str(drone_dataset.index(item)): data})
+
+	# format as json and send
+	return Response(json.dumps(data_dict), mimetype='application/json', headers={'Content-Disposition':'attachment;filename=query.json'})
+
+
+# print the drone dataset temp
+@app.route('/print/drone_dataset_temp', methods=['GET'])
+def print_drone_dataset_temp():
+
+	# doing stuff to have a json...
+	data_dict = {}
+	for item in drone_dataset_temp:
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "ts": (item.timestamp-dt.datetime(1970,1,1)).total_seconds(), "time": item.time, "state": item.state, "payload": item.payload, "id": item.drone_id}
+		data_dict.update({"datapoint_"+str(drone_dataset_temp.index(item)): data})
+
+	# format as json and send
+	return Response(json.dumps(data_dict), mimetype='application/json', headers={'Content-Disposition':'attachment;filename=query.json'})
+
+
+# print the trilateration dataset
+@app.route('/print/tri_dataset', methods=['GET'])
+def print_tri_dataset():
+
+	# doing stuff to have a json...
+	data_dict = {}
+	for item in tri_dataset:
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance}
+		data_dict.update({"datapoint_"+str(tri_dataset.index(item)): data})
+
+	# format as json and send
+	return Response(json.dumps(data_dict), mimetype='application/json', headers={'Content-Disposition':'attachment;filename=query.json'})
+
+
+
+#########################################################################################
 ##################################  GMAPS API THINGS  ###################################
 #########################################################################################
 

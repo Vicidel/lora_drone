@@ -102,6 +102,7 @@ class LoRa_datapoint(db.Document):
 
 # class and dataset for drone messages 
 drone_dataset = []
+drone_dataset_temp = []
 class drone_datapoint:
 	pos_x 		 = 666
 	pos_y 		 = 666
@@ -131,6 +132,7 @@ class solution_datapoint:
 	pos_y 		= 0
 	pos_z 		= 0
 solution = solution_datapoint()
+solution_temp = solution_datapoint()
 
 # to store the solution in latlng
 class solution_datapoint_latlng:
@@ -588,24 +590,31 @@ def trilateration():
 
 
 # matches LoRa and drone data
-def trilateration_main():
+def trilateration_main(bool_use_temp_dataset):
 
 	# global
-	global tri_dataset, drone_dataset
+	global tri_dataset, drone_dataset, drone_dataset_temp
 
 	# clear tri_dataset
 	tri_dataset = []
+	
+	# define which dataset to use, depending on if temporary estimate or "real" one
+	used_dataset = []
+	if(bool_use_temp_dataset):
+		used_dataset = drone_dataset_temp
+	else:
+		used_dataset = drone_dataset
 
 	# matches LoRa and drone datasets
-	for i in range(0, len(drone_dataset)):
+	for i in range(0, len(used_dataset)):
 
 		# ignore unrelevant states
-		if drone_dataset[i].payload!='hover' and drone_dataset[i].payload!='data':
+		if used_dataset[i].payload!='hover' and used_dataset[i].payload!='data':
 			print("Ignored because payload is not 'hover' or 'data'")
 			continue
 
 		# find matching LoRa points on interval
-		timestamp = (drone_dataset[i].timestamp - dt.datetime(1970,1,1)).total_seconds() + 7200
+		timestamp = (used_dataset[i].timestamp - dt.datetime(1970,1,1)).total_seconds() + 7200
 		start = dt.datetime.fromtimestamp(timestamp-3)
 		end = dt.datetime.fromtimestamp(timestamp+3)
 		lora_data_in_interval = LoRa_datapoint.objects(timestamp__lt=end,timestamp__gt=start).first()
@@ -618,13 +627,13 @@ def trilateration_main():
 		else:
 			for gateway_id_looper in lora_data_in_interval.gateway_id:
 				# checks if the gateway id is the one on the corresponding drone
-				if str(gateway_id_looper) == gateway_id_RGB[int(drone_dataset[i].drone_id)-1]:
+				if str(gateway_id_looper) == gateway_id_RGB[int(used_dataset[i].drone_id)-1]:
 
 					# create tri dataset
 					datapoint = tri_datapoint()
-					datapoint.pos_x = float(drone_dataset[i].pos_x)
-					datapoint.pos_y = float(drone_dataset[i].pos_y)
-					datapoint.pos_z = float(drone_dataset[i].pos_z)
+					datapoint.pos_x = float(used_dataset[i].pos_x)
+					datapoint.pos_y = float(used_dataset[i].pos_y)
+					datapoint.pos_z = float(used_dataset[i].pos_z)
 
 					# get distance estimate
 					datapoint.esp  = float(lora_data_in_interval.gateway_esp[0])
@@ -1417,7 +1426,7 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 		# need multilateration
 		if state==3 or state==6 or state==9:
 			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main()
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main(False)		# False for not using drone_dataset_temp
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				# uncertainty
 				if state==3:
@@ -1523,7 +1532,7 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 		# estimations
 		if state>0:
 			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main()
+			pos_x_est, pos_y_est, pos_z_est = trilateration_main(False)		# False for not using drone_dataset_temp
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				# uncertainty
 				if state==1:
@@ -1597,19 +1606,13 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y):
 	return wp_x, wp_y, wp_z, bool_landing_waypoint
 
 
-# returns the waypoint based on drone id, total number of drone and state for continuous method
-def get_waypoint_continuous(drone_id, nb_drone, pos_x, pos_y):
-
-	# TODO
-	return 1000, 0, flying_altitude
-
-
 # returns the return string
 def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 
 	# global
-	global drone_dataset, current_state1, current_state2, current_state3
-	global solution, circle_radius, nb_est_made, bool_new_est_made
+	global drone_dataset, drone_dataset_temp
+	global current_state1, current_state2, current_state3
+	global solution, solution_temp, circle_radius, nb_est_made, bool_new_est_made
 	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
 
 
@@ -1638,6 +1641,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# empty drone dataset
 		print("Emptying drone dataset for this mission")
 		drone_dataset = []
+		drone_dataset_temp = []
 
 		# set base solution at network estimate
 		solution.pos_x = network_x
@@ -1774,6 +1778,18 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		if drone_id==3:
 			current_state3 = current_state3 + 1
 
+		# after each "turn" around estimate, save solution_temp as solution for next waypoint generation
+		if current_state1==3 or current_state2==3 or current_state3==3 or current_state1==6 or current_state2==6 or current_state3==6 or current_state1==9 or current_state2==9 or current_state3==9:
+			# save solution_temp as solution
+			# explanation: as in continuous mode we don't fill drone_dataset but drone_dataset_temp, 
+			# the function get_waypoint called just after doesn't have data for trilateration and will return 
+			# waypoints around the old estimation. if we set the "old" estimation now to the one computed
+			# until now we will have good waypoints
+			solution = solution_temp
+
+		# reset bool
+		bool_new_est_made = False
+
 		# get waypoint 
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y)
 
@@ -1790,35 +1806,22 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	if payload=='data':
 
 		# do multilateration and store position
-		pos_x_est, pos_y_est, pos_z_est = trilateration_main()
+		pos_x_est, pos_y_est, pos_z_est = trilateration_main(True)		# True for using drone_dataset_temp
 		if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 			# old position
 			print("LOC: Reusing previous estimate")
-			solution.pos_x = solution.pos_x
-			solution.pos_y = solution.pos_y
-			solution.pos_z = solution.pos_z
+			solution_temp.pos_x = solution_temp.pos_x
+			solution_temp.pos_y = solution_temp.pos_y
+			solution_temp.pos_z = solution_temp.pos_z
 		else:
-			# base uncertainty
-			est_uncertainty = 666
-
-			# already have an uncertainty to compare
-			if bool_new_est_made==True:
-				delta_x = solution.pos_x - pos_x_est
-				delta_y = solution.pos_y - pos_y_est
-				est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
-			# no previous estimation, use base uncertainty, next time we wil have one
-			else:
-				bool_new_est_made = True
-				est_uncertainty = est_uncertainty1
-
 			# new position
-			solution.pos_x = pos_x_est
-			solution.pos_y = pos_y_est
-			solution.pos_z = pos_z_est
+			solution_temp.pos_x = pos_x_est
+			solution_temp.pos_y = pos_y_est
+			solution_temp.pos_z = pos_z_est
 
 			# add estimate to map
-			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, 'temp')
-			
+			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, est_uncertainty, 'temp')
+
 
 	###################  RETURN
 	return return_string
@@ -1895,7 +1898,10 @@ def drone_receive_state():
 		datapoint.state = current_state3
 
 	# save it
-	drone_dataset.append(datapoint)
+	if r_payload=='data':
+		drone_dataset_temp.append(datapoint)
+	else:
+		drone_dataset.append(datapoint)
 
 	# success
 	return return_string

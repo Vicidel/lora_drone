@@ -193,6 +193,7 @@ function print_checklist(){
     * buttons are deactivated on drone takeoff 
         - if drone landed, press kill to activate again
         - safeties are always active
+    * launch beaconing mode on the node
     * TODO: add more
         `)
 }
@@ -550,22 +551,22 @@ function init_legend(map){
 
     // add est1
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate2_circle.png width=20> First estimation (classic)'
+    div.innerHTML = '<img src=marker/estimate2_circle.png width=20> First loop estimation'
     legend.appendChild(div);
 
     // add est2
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate_circle.png width=20> Second estimation (classic)'
+    div.innerHTML = '<img src=marker/estimate_circle.png width=20> Second loop estimation'
     legend.appendChild(div);
 
     // add est3
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate3_circle.png width=20> Third estimation (classic)'
+    div.innerHTML = '<img src=marker/estimate3_circle.png width=20> Third loop estimation'
     legend.appendChild(div);
 
     // add estcont
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Estimation (continuous)'
+    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Temporary estimation'
     legend.appendChild(div);
 
     // push on map
@@ -1018,7 +1019,7 @@ function init_firebase_estimations(map, markers, circles) {
             markers.est3.setPosition(new google.maps.LatLng(lat, lng));
             oms.addMarker(markers.est3);
         }
-        if(type=='cont') {
+        if(type=='temp') {
             circles.c_cont.setCenter(new google.maps.LatLng(lat, lng));
             circles.c_cont.setMap(map);
             circles.c_cont.setRadius(rad);
@@ -1421,22 +1422,22 @@ function create_markers(map, icons) {
     var est_marker1 = new google.maps.Marker({
         map: map,
         icon: 'marker/estimate2.png',
-        title: 'First estimation',
+        title: 'First loop estimation',
     });
     var est_marker2 = new google.maps.Marker({
         map: map,
         icon: 'marker/estimate.png',
-        title: 'Second estimation',
+        title: 'Second loop estimation',
     });
     var est_marker3 = new google.maps.Marker({
         map: map,
         icon: 'marker/estimate3.png',
-        title: 'Third estimation',
+        title: 'Third loop estimation',
     });
     var est_marker_cont = new google.maps.Marker({
         map: map,
         icon: 'marker/estimate_cont.png',
-        title: 'Continuous estimation',
+        title: 'Temporary estimation',
     });
 
     // for node

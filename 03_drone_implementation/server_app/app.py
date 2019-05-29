@@ -1484,10 +1484,15 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				elif state==9:
 					est_uncertainty = est_uncertainty3
 
-				# get solution as solution_temp
-				solution.pos_x = solution_temp.pos_x
-				solution.pos_y = solution_temp.pos_y
-				solution.pos_z = solution_temp.pos_z
+				# get solution as solution_temp or old one if nothing found
+				if solution_temp.pos_x == 0 and solution_temp.pos_y == 0 and solution_temp.pos_z == 0:
+					# old position
+					print("LOC: Reusing previous estimate")
+				else:
+					# new position
+					solution.pos_x = solution_temp.pos_x
+					solution.pos_y = solution_temp.pos_y
+					solution.pos_z = solution_temp.pos_z
 
 			# increment estimations made
 			if state==3:

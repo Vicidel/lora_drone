@@ -626,6 +626,16 @@ def trilateration_main(bool_use_temp_dataset):
 		# we got something for timestamp
 		else:
 			for gateway_id_looper in lora_data_in_interval.gateway_id:
+
+				#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+				#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+				#print('current looper:", gateway_id_looper)
+				#print('lora data matching ts:', lora_data_in_interval.gateway_id)
+				#print('drone id (0,1,2):', int(used_dataset[i].drone_id)-1)
+				#print('drone gateway:', gateway_id_RGB[int(used_dataset[i].drone_id)-1])
+				#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+				#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+
 				# checks if the gateway id is the one on the corresponding drone
 				if str(gateway_id_looper) == gateway_id_RGB[int(used_dataset[i].drone_id)-1]:
 
@@ -1820,7 +1830,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			solution_temp.pos_z = pos_z_est
 
 			# add estimate to map
-			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, est_uncertainty, 'temp')
+			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, 0, 'temp')
 
 
 	###################  RETURN

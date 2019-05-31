@@ -8,7 +8,6 @@ echo "  0=exit"
 echo "  1=vic_takeoff"
 echo "  2=vic_mission_v2"
 echo "  3=vic_coordinates"
-echo "  4=vic_continuous"
 
 read program
 
@@ -16,7 +15,6 @@ a=0
 b=1
 c=2
 d=3
-e=4
 
 if [ $program -eq $a ]
 then
@@ -50,15 +48,5 @@ then
 	cd rosbag_files
 	rosbag record -a __name:=current_bag > /dev/null 2>&1 &
 	rosrun vic_package vic_coordinates
-	rosnode kill /current_bag > /dev/null 2>&1
-fi
-
-if [ $program -eq $e ]
-then
-	echo "Running vic_continuous"
-	cd
-	cd rosbag_files
-	rosbag record -a __name:=current_bag > /dev/null 2>&1 &
-	rosrun vic_package vic_continuous
 	rosnode kill /current_bag > /dev/null 2>&1
 fi

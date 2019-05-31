@@ -70,29 +70,29 @@
             <!-- Network estimate -->
             <div>
                 <b title="Change the network estimate from the map or from the LoRa network. LoRa network may not return a result.">Network estimate:</b>
-                <button class="button" title="To put the network estimate where you want on the map. The precision decreases when far away from the drone home (if it's not declared the last one)." id="network_place" type="submit" onclick="network_button_cb(this, 'place')">Place on map</button>
-                <button class="button" title="To get the LoRa network estimation from the network. Requires the Thingpark server to have computed a network position message." id="network_get" type="submit" onclick="network_button_cb(this, 'get')">Get from LoRa</button>
-                <button class="button" title="To put the network estimate around the node ground truth obtained via GPS. Requires to have already obtained a GPS message from the node." id="network_closeby" type="submit" onclick="network_button_cb(this, 'node')">Get random around node</button>
-                <button class="button" title="Stops all possible changes of the first network estimated position. Automatically switches on when a drone starts flying." id="network_none" type="submit" onclick="network_button_cb(this, 'none')">Disable change</button>
+                <button class="button" title="To put the network estimate where you want on the map. The precision decreases when far away from the drone home (if it's not declared the last one)." id="network_place" type="submit" onclick="network_button_cb('place')">Place on map</button>
+                <button class="button" title="To get the LoRa network estimation from the network. Requires the Thingpark server to have computed a network position message." id="network_get" type="submit" onclick="network_button_cb('get')">Get from LoRa</button>
+                <button class="button" title="To put the network estimate around the node ground truth obtained via GPS. Requires to have already obtained a GPS message from the node." id="network_closeby" type="submit" onclick="network_button_cb('node')">Get random around node</button>
+                <button class="button" title="Stops all possible changes of the first network estimated position. Automatically switches on when a drone starts flying." id="network_none" type="submit" onclick="network_button_cb('none')">Disable change</button>
             </div>
 
             <!-- Takeoff buttons -->
             <div>
                 <b title="Launch the drone(s), send a command to switch to OFFBOARD mode.">Start mission:</b>
-                <button class="button" disabled title="Start the first drone (1/red)" id="R" type="submit" onclick="takeoff_button_cb(this, 'R')">Drone 1/R</button>
-                <button class="button" disabled title="Start the second drone (2/green)" id="G" type="submit" onclick="takeoff_button_cb(this, 'G')">Drone 2/G</button>
-                <button class="button" disabled title="Start the first drone (3/blue)" id="B" type="submit" onclick="takeoff_button_cb(this, 'B')">Drone 3/B</button>
-                <button class="button" title="Active when no drone are currently taking off." id="X" type="submit" onclick="takeoff_button_cb(this, 'X')">None</button>
-                <button class="button" disabled title="Start all drones at the same time, beware of collisons in paths." id="all" type="submit" onclick="takeoff_button_cb(this, 'all')">Alex's button (all drones!)</button>
+                <button class="button" disabled title="Start the first drone (1/red)" id="R" type="submit" onclick="takeoff_button_cb('R')">Drone 1/R</button>
+                <button class="button" disabled title="Start the second drone (2/green)" id="G" type="submit" onclick="takeoff_button_cb('G')">Drone 2/G</button>
+                <button class="button" disabled title="Start the first drone (3/blue)" id="B" type="submit" onclick="takeoff_button_cb('B')">Drone 3/B</button>
+                <button class="button" title="Active when no drone are currently taking off." id="X" type="submit" onclick="takeoff_button_cb('X')">None</button>
+                <button class="button" disabled title="Start all drones at the same time, beware of collisons in paths." id="all" type="submit" onclick="takeoff_button_cb('all')">Alex's button (all drones!)</button>
             </div>
 
             <!-- Kill switch -->
             <div>
                 <b title="Safety switches in place in case of emergencies.">Safety switches:</b>
-                <button class="button" id="unkill" title="Stops sending safety commands to the drone. When stoping hovering or RTL, you will need to press the takeoff button again to resume the mission." type="submit" onclick="kill_button_cb(this, 0)">None</button>
-                <button class="button" id="kill" title="Sends a kill switch message to all the drones, which stops them completely within two seconds. Use the RC kill switches if possible before this one." type="submit" onclick="kill_button_cb(this, 1)">Kill</button>
-                <button class="button" id="hold" title="Stops the drone program and start hovering at their current positions." type="submit" onclick="kill_button_cb(this, 2)">Hover</button>
-                <button class="button" id="rtl" title="Stops the drone program and return to takeoff position." type="submit" onclick="kill_button_cb(this, 3)">RTL</button>
+                <button class="button" id="unkill" title="Stops sending safety commands to the drone. When stoping hovering or RTL, you will need to press the takeoff button again to resume the mission." type="submit" onclick="kill_button_cb(0)">None</button>
+                <button class="button" id="kill" title="Sends a kill switch message to all the drones, which stops them completely within two seconds. Use the RC kill switches if possible before this one." type="submit" onclick="kill_button_cb(1)">Kill</button>
+                <button class="button" id="hold" title="Stops the drone program and start hovering at their current positions." type="submit" onclick="kill_button_cb(2)">Hover</button>
+                <button class="button" id="rtl" title="Stops the drone program and return to takeoff position." type="submit" onclick="kill_button_cb(3)">RTL</button>
             </div>
 
             <!-- Parameter change and display -->

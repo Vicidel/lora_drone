@@ -106,13 +106,74 @@ function main() {
     });
 
     // centering controls
-    init_centering_controls(map);
+    init_centering_controls();
 
     // things on the map
-    var markers = create_markers(map);      // create marker
+    var markers = create_markers();      // create marker
     var wp_lists = create_waypoint_lists(); // create waypoint lists
     var circles = create_circles();         // create circles
-    var paths = create_paths(map);          // create paths
+    var paths = create_paths();          // create paths
+
+    // init listeners (keyboard and clicks)
+    init_listeners();
+
+    // set base values
+    lat_node = 0
+    lng_node = 0
+    lat_last_est = 0
+    lng_last_est = 0
+
+    // legend
+    init_legend(map);
+
+    // states
+    init_states(map);
+
+    // start Firebase and database listeners
+    init_firebase_homes(map, markers, circles);         // homes
+    init_firebase_drones(map, markers, paths);          // drones, paths
+    init_firebase_waypoints(map, wp_lists);             // waypoints
+    init_firebase_estimations(map, markers, circles);   // estimations
+    init_firebase_node(map, markers);                   // node ground truth
+
+    // initial button colors: call callbacks as if clicked
+    takeoff_button_cb('X');
+    kill_button_cb(0);
+    network_button_cb('none');
+
+    // initialize the periodic check of drone and server online
+    check_drone_online();
+
+    // fills the parameters and state fields
+    get_base_param();
+    change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
+
+    // print checklist
+    print_checklist()
+
+    // print results
+    print_results()
+}
+
+// prints a checklist when loading the app
+function print_checklist(){
+    window.alert(`CHECKLIST:\n
+    * check safety settings
+        - geofence
+        - RTL
+        - communication loss
+    * put all drones in MANUAL mode
+        - drones will takeoff if in OFFBOARD
+    * buttons are deactivated on drone takeoff 
+        - if drone landed, press kill to activate again
+        - safeties are always active
+    * launch beaconing mode on the node
+    * TODO: add more
+        `)
+}
+
+// init the keyboard listeners
+function init_listeners(){
 
     // listener for clicks
     map.addListener('click', function(e) {
@@ -151,7 +212,7 @@ function main() {
         if(e.keyCode==43){
             if(window.confirm("Key '+' pressed, do you want to popup-print the LoRa database?")){
                 console.log("Popup-printing LoRa database")
-                window.open('http://victor.scapp.io/lora/json_print');
+                window.open('http://victor.scapp.io/lora/json');
             }
         }
 
@@ -179,62 +240,7 @@ function main() {
             }
         }
     };
-
-    // set base values
-    lat_node = 0
-    lng_node = 0
-    lat_last_est = 0
-    lng_last_est = 0
-
-    // legend
-    init_legend(map);
-
-    // states
-    init_states(map);
-
-    // start Firebase and database listeners
-    init_firebase_homes(map, markers, circles);         // homes
-    init_firebase_drones(map, markers, paths);          // drones, paths
-    init_firebase_waypoints(map, wp_lists);             // waypoints
-    init_firebase_estimations(map, markers, circles);   // estimations
-    init_firebase_node(map, markers);                   // node ground truth
-
-    // initial button colors: call callbacks as if clicked
-    takeoff_button_cb(this, 'X');
-    kill_button_cb(this, 0);
-    network_button_cb(this, 'none');
-
-    // initialize the periodic check of drone and server online
-    check_drone_online();
-
-    // fills the parameters and state fields
-    get_base_param();
-    change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
-
-    // print checklist
-    print_checklist()
-
-    // print results
-    print_results()
 }
-
-// prints a checklist when loading the app
-function print_checklist(){
-    window.alert(`CHECKLIST:\n
-    * check safety settings
-        - geofence
-        - RTL
-        - communication loss
-    * put all drones in MANUAL mode
-        - drones will takeoff if in OFFBOARD
-    * buttons are deactivated on drone takeoff 
-        - if drone landed, press kill to activate again
-        - safeties are always active
-    * launch beaconing mode on the node
-    * TODO: add more
-        `)
-}
-
 
 
 //#########################################################################################
@@ -450,7 +456,7 @@ function print_results(){
 //#########################################################################################
 
 // init centering controls
-function init_centering_controls(map) {
+function init_centering_controls() {
 
     // create div for centering button
     var centerControlDiv = document.createElement('div');
@@ -1127,7 +1133,7 @@ function init_firebase_node(map, markers) {
 //#########################################################################################
 
 // callback for killswitch button
-function kill_button_cb(obj, kill){
+function kill_button_cb(kill){
     if(kill==1){
         console.log("Sending kill command to all drones");
         document.getElementById('unkill').style.backgroundColor='#fff';
@@ -1166,7 +1172,7 @@ function kill_button_cb(obj, kill){
 }
 
 // callback for takeoff button
-function takeoff_button_cb(obj, drone_id) {
+function takeoff_button_cb(drone_id) {
     //console.log("Starting drone: "+drone_id)
 
     // create data according to which button was pressed
@@ -1187,7 +1193,7 @@ function takeoff_button_cb(obj, drone_id) {
         setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
 
         // disable network estimate change
-        network_button_cb(this, 'none');
+        network_button_cb('none');
 
         // deactivate things
         bool_some_drone_is_flying = true;
@@ -1208,7 +1214,7 @@ function takeoff_button_cb(obj, drone_id) {
         setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
 
         // disable network estimate change
-        network_button_cb(this, 'none');
+        network_button_cb('none');
 
         // deactivate things
         bool_some_drone_is_flying = true;
@@ -1229,7 +1235,7 @@ function takeoff_button_cb(obj, drone_id) {
         setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
 
         // disable network estimate change
-        network_button_cb(this, 'none');
+        network_button_cb('none');
 
         // deactivate things
         bool_some_drone_is_flying = true;
@@ -1264,11 +1270,11 @@ function takeoff_button_cb(obj, drone_id) {
             setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
 
             // disable network estimate change
-            network_button_cb(this, 'none');
+            network_button_cb('none');
         }
         else{
             data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
-            takeoff_button_cb(this, 'X');
+            takeoff_button_cb('X');
 
             // deactivate things
             bool_some_drone_is_flying = true;
@@ -1281,9 +1287,9 @@ function takeoff_button_cb(obj, drone_id) {
 }
 
 // callback for network estimate button
-function network_button_cb(obj, type) {
+function network_button_cb(type) {
 
-    // differnt types of network estimate 
+    // different types of network estimate 
     if(type=='get') {
         // button color
         document.getElementById('network_get').style.backgroundColor='#aaa';
@@ -1389,7 +1395,7 @@ function create_icons() {
 }
 
 // creates the markers
-function create_markers(map, icons) {
+function create_markers(icons) {
 
     // create custom markers icons
     var icons = create_icons();
@@ -1537,10 +1543,10 @@ function create_waypoint_lists() {
 
     // return empty
     return {wpR: [], wpG: [], wpB: []};
-    }
+}
 
-    // creates the drone paths lines and the list 
-    function create_paths(map) { 
+// creates the drone paths lines and the list 
+function create_paths() { 
 
     // flight path
     var flight_pathR = new google.maps.Polyline({

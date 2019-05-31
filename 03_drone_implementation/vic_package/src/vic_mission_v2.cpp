@@ -141,6 +141,22 @@ int main(int argc, char **argv){
 
 
     /**************************************************************************
+    ************************  SIMULATION PARAMETERS   *************************
+    ***************************************************************************/
+
+    // parameters to change depending on simulation type
+    int drone_id = 1;           // can be 1, 2 or 3
+    int nb_drone = 1;           // can be 1 or 3
+    bool bool_continuous_sim = true;    // continuous (true) or classic (false) sim type
+
+    // print
+    if(bool_continuous_sim)
+        ROS_WARN("Continuous simulation started with parameters: drone_id=%d, nb_drone=%d", drone_id, nb_drone);
+    else
+        ROS_WARN("Classic simulation started with parameters: drone_id=%d, nb_drone=%d", drone_id, nb_drone);
+
+
+    /**************************************************************************
     ******************************  VARIABLES   *******************************
     ***************************************************************************/
 
@@ -169,20 +185,21 @@ int main(int argc, char **argv){
     float time_data_collection_period = 1.0f;     // period for data collection when hovering
 
     // misc variables
-    float precision = 0.5f;     // precision to reach the waypoints
-    std::string answer;         // string returned by the server when sending position
-    int state = 0;              // FSM state
-    float hover_time;           // hovering time at measure positions
-    int drone_id = 1;           // can be 1, 2 or 3
-    int nb_drone = 1;           // can be 1 or 3
-    bool bool_fly_straight = false;     // fly in direction of waypoint or just keep same yaw
-    int gmaps_safety_switch = 0;        // 0 for unkill, 1 for kil, 2 for hover, 3 for RTL
+    if(bool_continuous_sim)
+        float precision = 1.5f;          // precision to reach the continuous waypoints
+    else    
+        float precision = 0.5f;          // precision to reach the classic waypoints
+    std::string answer;                  // string returned by the server when sending position
+    int state = 0;                       // FSM state
+    float hover_time;                    // hovering time at measure positions
+    bool bool_fly_straight = false;      // fly in direction of waypoint or just keep same yaw
+    int gmaps_safety_switch = 0;         // 0 for unkill, 1 for kil, 2 for hover, 3 for RTL
 
     // state booleans
-    bool bool_wait_for_offboard = true;     // waiting for offboard mode activation from RC or server app
-    bool bool_stop_all = false;             // stop all when simulation is ended or kill switch
-    bool bool_pause_all = false;            // when server has problem, start hovering
-    bool bool_ignore = false;               // activated when hover or RTL switch active
+    bool bool_wait_for_offboard = true;  // waiting for offboard mode activation from RC or server app
+    bool bool_stop_all = false;          // stop all when simulation is ended or kill switch
+    bool bool_pause_all = false;         // when server has problem, start hovering
+    bool bool_ignore = false;            // activated when hover or RTL switch active
     
 
     /**************************************************************************
@@ -435,6 +452,10 @@ int main(int argc, char **argv){
                     ***************************************************************************/
                     switch(state){
 
+                        /**************************************************************************
+                        ***************************   SHARED STATES   *****************************
+                        ***************************************************************************/
+
                         /***********************   TAKING OFF   ************************/
                         case 0:{
                             if((pos_drone-pos_current_goal).norm()<precision){
@@ -448,7 +469,10 @@ int main(int argc, char **argv){
                                 else{
                                     // next state: go to waypoint
                                     pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
-                                    state = 1;
+                                    if(bool_continuous_sim)
+                                        state = 666;
+                                    else
+                                        state = 1;
 
                                     // drone flies in direction of waypoint for next state
                                     bool_fly_straight = true;
@@ -456,6 +480,52 @@ int main(int argc, char **argv){
                             }
                             break;
                         }
+
+                       /********************   GOING IN LANDING POSITION   *********************/
+                        case 5:{
+                            if((pos_drone-pos_current_goal).norm()<precision){
+                                // reached position, start going down
+                                ROS_INFO("Drone above landing spot, going down");
+                                pos_current_goal(2) = pos_current_goal(2) - pos_drone(2);
+                                state = 6;
+
+                                // drone goes down keeping same orientation
+                                bool_fly_straight = false;
+                            }
+                            break;
+                        }
+
+                        /***********************   GOING DOWN   ************************/
+                        case 6:{
+                            if((pos_drone-pos_current_goal).norm()<precision){
+                                // reached ground level, disarm drone
+                                arm_cmd.request.value = false;
+                                if(arming_client.call(arm_cmd) && arm_cmd.response.success){
+                                    ROS_INFO("Drone landing spot reached!");
+                                    state = 7;
+                                }
+                            }
+                            break;
+                        }
+
+                        /***********************   DISARMING   ************************/
+                        case 7:{
+                            ROS_INFO("Drone landed");
+                            threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"land", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                            bool_stop_all = true;
+                            break;
+                        }
+
+                        /********************   ?? SHOULDN'T HAPPEN ??   *******************/
+                        default:{
+                            ROS_INFO("Unknown state");
+                            break;
+                        }
+
+
+                        /**************************************************************************
+                        ***************************   CLASSIC STATES   ****************************
+                        ***************************************************************************/
 
                         /***********************   GOING TO WAYPOINT   ************************/
                         case 1:{
@@ -557,46 +627,51 @@ int main(int argc, char **argv){
                             break;
                         }
 
-                       /********************   GOING IN LANDING POSITION   *********************/
-                        case 5:{
-                            if((pos_drone-pos_current_goal).norm()<precision){
-                                // reached position, start going down
-                                ROS_INFO("Drone above landing spot, going down");
-                                pos_current_goal(2) = pos_current_goal(2) - pos_drone(2);
-                                state = 6;
 
-                                // drone goes down keeping same orientation
-                                bool_fly_straight = false;
+                        /**************************************************************************
+                        *************************   CONTINUOUS STATES   ***************************
+                        ***************************************************************************/
+
+                        /*******************   GOING TO WAYPOINT WHILE SENDING  ********************/
+                        case 666:{
+
+                            // sending
+                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
+                                ROS_INFO("Sending coordinates for dataset");
+                                answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                                
+                                // check server error
+                                if(check_server_answer(answer))
+                                    bool_pause_all = true;
+                                else{
+                                    // store current time
+                                    time_last_request = ros::Time::now();
+                                }
                             }
-                            break;
-                        }
 
-                        /***********************   GOING DOWN   ************************/
-                        case 6:{
+                            // reached position
                             if((pos_drone-pos_current_goal).norm()<precision){
-                                // reached ground level, disarm drone
-                                arm_cmd.request.value = false;
-                                if(arming_client.call(arm_cmd) && arm_cmd.response.success){
-                                    ROS_INFO("Drone landing spot reached!");
-                                    state = 7;
+                                ROS_INFO("Waypoint reached!");
+                                answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wp_ok_cont", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                                
+                                // check server error
+                                if(check_server_answer(answer))
+                                    bool_pause_all = true;
+                                else{
+                                    pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+
+                                    // check if answer is next waypoint or landing
+                                    char answer_char[answer.size()+1];
+                                    strcpy(answer_char, answer.c_str());
+                                    if(answer_char[0]=='N')          // next waypoint
+                                        state = 666;
+                                    else if(answer_char[0]=='L')     // landing waypoint
+                                        state = 5;
                                 }
                             }
                             break;
                         }
 
-                        /***********************   DISARMING   ************************/
-                        case 7:{
-                            ROS_INFO("Drone landed");
-                            threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"land", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
-                            bool_stop_all = true;
-                            break;
-                        }
-
-                        /********************   ?? SHOULDN'T HAPPEN ??   *******************/
-                        default:{
-                            ROS_INFO("Unknown state");
-                            break;
-                        }
                     }
                 }
             }

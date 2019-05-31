@@ -16,6 +16,7 @@ import math
 import random
 import numpy as np
 import datetime as dt
+import time
 
 # localization package: https://github.com/kamalshadi/Localization
 import localization as lx
@@ -1969,6 +1970,9 @@ def drone_receive_state():
 		drone_dataset_temp.append(datapoint)
 	else:
 		drone_dataset.append(datapoint)
+
+	# delay to emulate 5G
+	#time.sleep(4)
 
 	# success
 	return return_string

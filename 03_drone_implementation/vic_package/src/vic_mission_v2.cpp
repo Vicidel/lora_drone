@@ -20,6 +20,11 @@ Uses the server_app files for communication with server
 #include <string.h>
 #include <math.h>
 
+// for threading
+#include <thread> 
+#include <future>
+#include <chrono>
+
 // libraries for Vector3f
 #include <vector>
 #include <eigen3/Eigen/Dense>
@@ -81,6 +86,13 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
 
 // check if server is OK by its answer
 bool check_server_answer(std::string answer);
+
+// for threading
+std::string threaded_send_drone_state(Vector3f position, double time, char* payload, 
+    int drone_id, int nb_drone, bool bool_no_answer, ros::Rate rate, bool bool_fly_straight, 
+    Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub);
+void threaded_ros_update(ros::Rate rate, bool bool_fly_straight, Vector3f pos_drone, Vector3f pos_current_goal, 
+    ros::Publisher target_pub, ros::Publisher local_pos_pub, std::future<void> future_object);
 
 
 /***************************************************************************
@@ -311,7 +323,7 @@ int main(int argc, char **argv){
 
                             // post on server
                             ROS_INFO("Offboard enabled from server");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false);
+                            answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
 
                             // check server error
                             if(check_server_answer(answer))
@@ -332,7 +344,7 @@ int main(int argc, char **argv){
 
                         // post on server
                         ROS_INFO("Offboard enabled from RC");
-                        answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false);
+                        answer =threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
 
                         // check server error
                         if(check_server_answer(answer))
@@ -384,7 +396,7 @@ int main(int argc, char **argv){
 
                         // post on server
                         ROS_INFO("Vehicle armed");
-                        answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"arm", drone_id, nb_drone, false);
+                        answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"arm", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                         
                         // check server error
                         if(check_server_answer(answer))
@@ -428,7 +440,7 @@ int main(int argc, char **argv){
                             if((pos_drone-pos_current_goal).norm()<precision){
                                 // post on server
                                 ROS_INFO("Takeoff position reached!");
-                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"takeoff", drone_id, nb_drone, false);
+                                answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"takeoff", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                                 
                                 // check server error
                                 if(check_server_answer(answer))
@@ -450,7 +462,7 @@ int main(int argc, char **argv){
                             if((pos_drone-pos_current_goal).norm()<precision){
                                 // position reached, sending position to drone_dataset and wait for next instruction
                                 ROS_INFO("Waypoint reached!");
-                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wp_ok", drone_id, nb_drone, false);
+                                answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wp_ok", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                                 
                                 // check server error
                                 if(check_server_answer(answer))
@@ -470,7 +482,7 @@ int main(int argc, char **argv){
                         case 2:{
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                                 ROS_INFO("Waiting, sending current position"); //, ts is %f", ros::Time::now().toSec());
-                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wait", drone_id, nb_drone, false);
+                                answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wait", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                                 
                                 // check server error
                                 if(check_server_answer(answer))
@@ -501,7 +513,7 @@ int main(int argc, char **argv){
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
                                 // X seconds passed, sending posiion again
                                 ROS_INFO("Sending current position");
-                                answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"hover", drone_id, nb_drone, false);
+                                answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"hover", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
 
                                 // check server error
                                 if(check_server_answer(answer))
@@ -523,7 +535,7 @@ int main(int argc, char **argv){
                         /********************   WAITING FOR NEXT WP   *********************/
                         case 4:{
                             ROS_INFO("Sending position waiting for the next waypoint");
-                            answer = send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wait_next", drone_id, nb_drone, false);
+                            answer = threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"wait_next", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                             
                             // check server error
                             if(check_server_answer(answer))
@@ -575,7 +587,7 @@ int main(int argc, char **argv){
                         /***********************   DISARMING   ************************/
                         case 7:{
                             ROS_INFO("Drone landed");
-                            send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"land", drone_id, nb_drone, false);
+                            threaded_send_drone_state(pos_drone, ros::Time::now().toSec(), (char*)"land", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                             bool_stop_all = true;
                             break;
                         }
@@ -801,4 +813,45 @@ bool check_server_answer(std::string response_string){
 
     // default 
     return false;
+}
+
+
+// send_drone_state but with threading imbedded
+std::string threaded_send_drone_state(Vector3f position, double time, char* payload, 
+    int drone_id, int nb_drone, bool bool_no_answer, ros::Rate rate, bool bool_fly_straight, 
+    Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub){
+
+    // create a std::promise object
+    std::promise<void> exit_signal;
+    std::future<void> future_object = exit_signal.get_future();
+
+    // start ROS update thread (normal thread)
+    std::thread thread_ROS(threaded_ros_update, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub, std::move(future_object));
+
+    // start send_drone_state thread (async thread)
+    auto thread_send = std::async(send_drone_state, position, time, payload, drone_id, nb_drone, bool_no_answer);
+
+    // finsihed send_state, send exit to ROS thread
+    std::string answer = thread_send.get();
+    exit_signal.set_value();
+    thread_ROS.join();
+
+    // return answer
+    return answer;
+}
+
+// updates ROS while waiting for send_drone_state thread to finish
+void threaded_ros_update(ros::Rate rate, bool bool_fly_straight, Vector3f pos_drone, Vector3f pos_current_goal, 
+    ros::Publisher target_pub, ros::Publisher local_pos_pub, std::future<void> future_object){
+    
+    // while promise not set
+    while(future_object.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout){
+        
+        // ROS update
+        if(bool_fly_straight) target_pub.publish(conversion_to_target(pos_drone, pos_current_goal));
+        else local_pos_pub.publish(conversion_to_msg(pos_current_goal, est_local_pos));
+        ros::spinOnce();
+        pos_drone = conversion_to_vect(est_local_pos);
+        rate.sleep();
+    }
 }

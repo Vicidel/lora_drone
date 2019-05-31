@@ -145,15 +145,34 @@ int main(int argc, char **argv){
     ***************************************************************************/
 
     // parameters to change depending on simulation type
-    int drone_id = 1;           // can be 1, 2 or 3
-    int nb_drone = 1;           // can be 1 or 3
-    bool bool_continuous_sim = true;    // continuous (true) or classic (false) sim type
+    int drone_id;           // can be 1, 2 or 3
+    int nb_drone;           // can be 1 or 3
+    bool bool_continuous_sim;    // continuous (true) or classic (false) sim type
 
-    // print
-    if(bool_continuous_sim)
-        ROS_WARN("Continuous simulation started with parameters: drone_id=%d, nb_drone=%d", drone_id, nb_drone);
-    else
-        ROS_WARN("Classic simulation started with parameters: drone_id=%d, nb_drone=%d", drone_id, nb_drone);
+    // user input for sim type
+    std::cout << "Input simulation type (0=classic, 1=continuous): ";
+    std::cin >> bool_continuous_sim;
+
+    if(bool_continuous_sim){
+        // no user input, fixed parameters
+        drone_id = 1;
+        nb_drone = 1;
+        ROS_WARN("Continuous simulation started with one drone (R)");
+    }
+    else{
+        // user input
+        std::cout << "Input number of drones for this simulation (1/3): ";
+        std::cin >> nb_drone;
+        if(nb_drone==3){
+            std::cout << "Input drone id for this simulation (1/2/3): ";
+            std::cin >> drone_id;
+            ROS_WARN("Classic simulation started with three drone (drone_id=%d)", drone_id);
+        }
+        else{
+            drone_id = 1;       // drone R is default when using one drone
+            ROS_WARN("Classic simulation started with one drone (R)");
+        }
+    }
 
 
     /**************************************************************************
@@ -185,10 +204,7 @@ int main(int argc, char **argv){
     float time_data_collection_period = 1.0f;     // period for data collection when hovering
 
     // misc variables
-    if(bool_continuous_sim)
-        float precision = 1.5f;          // precision to reach the continuous waypoints
-    else    
-        float precision = 0.5f;          // precision to reach the classic waypoints
+    float precision = 1.5f;              // precision to reach
     std::string answer;                  // string returned by the server when sending position
     int state = 0;                       // FSM state
     float hover_time;                    // hovering time at measure positions
@@ -201,6 +217,10 @@ int main(int argc, char **argv){
     bool bool_pause_all = false;         // when server has problem, start hovering
     bool bool_ignore = false;            // activated when hover or RTL switch active
     
+    // set precision based on sim type
+    if(bool_continuous_sim) precision = 1.5f;
+    else precision = 0.5f;
+
 
     /**************************************************************************
     ***************************  START ROS LOOP   *****************************

@@ -94,6 +94,9 @@ std::string threaded_send_drone_state(Vector3f position, double time, char* payl
 void threaded_ros_update(ros::Rate rate, bool bool_fly_straight, Vector3f pos_drone, Vector3f pos_current_goal, 
     ros::Publisher target_pub, ros::Publisher local_pos_pub, std::future<void> future_object);
 
+// ask user for input
+void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_id);
+
 
 /***************************************************************************
 ***************************   MAIN FUNCTION   *****************************
@@ -149,30 +152,8 @@ int main(int argc, char **argv){
     int nb_drone;           // can be 1 or 3
     bool bool_continuous_sim;    // continuous (true) or classic (false) sim type
 
-    // user input for sim type
-    std::cout << "Input simulation type (0=classic, 1=continuous): ";
-    std::cin >> bool_continuous_sim;
-
-    if(bool_continuous_sim){
-        // no user input, fixed parameters
-        drone_id = 1;
-        nb_drone = 1;
-        ROS_WARN("Continuous simulation started with one drone (R)");
-    }
-    else{
-        // user input
-        std::cout << "Input number of drones for this simulation (1/3): ";
-        std::cin >> nb_drone;
-        if(nb_drone==3){
-            std::cout << "Input drone id for this simulation (1/2/3): ";
-            std::cin >> drone_id;
-            ROS_WARN("Classic simulation started with three drone (drone_id=%d)", drone_id);
-        }
-        else{
-            drone_id = 1;       // drone R is default when using one drone
-            ROS_WARN("Classic simulation started with one drone (R)");
-        }
-    }
+    // call user input function
+    user_input_sim_param(bool_continuous_sim, nb_drone, drone_id);
 
 
     /**************************************************************************
@@ -948,5 +929,35 @@ void threaded_ros_update(ros::Rate rate, bool bool_fly_straight, Vector3f pos_dr
         ros::spinOnce();
         pos_drone = conversion_to_vect(est_local_pos);
         rate.sleep();
+    }
+}
+
+
+// ask user for input
+void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_id){
+
+    // user input for sim type
+    std::cout << "Input simulation type (0=classic, 1=continuous): ";
+    std::cin >> bool_continuous_sim;
+
+    if(bool_continuous_sim){
+        // no user input, fixed parameters
+        drone_id = 1;
+        nb_drone = 1;
+        ROS_WARN("Continuous simulation started with one drone (R)");
+    }
+    else{
+        // user input
+        std::cout << "Input number of drones for this simulation (1/3): ";
+        std::cin >> nb_drone;
+        if(nb_drone==3){
+            std::cout << "Input drone id for this simulation (1/2/3): ";
+            std::cin >> drone_id;
+            ROS_WARN("Classic simulation started with three drone (drone_id=%d)", drone_id);
+        }
+        else{
+            drone_id = 1;       // drone R is default when using one drone
+            ROS_WARN("Classic simulation started with one drone (R)");
+        }
     }
 }

@@ -82,7 +82,7 @@ float parse_hover_time_from_answer(std::string answer_string);
 // for sending home and drone position to Firebase
 ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, 
     float time_firebase_period, mavros_msgs::HomePosition home_position, 
-    sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude);
+    sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, int fsm_state);
 
 // check if server is OK by its answer
 bool check_server_answer(std::string answer);
@@ -692,7 +692,7 @@ int main(int argc, char **argv){
 
         // sending to Firebase
         time_last_send_firebase = send_firebase(bool_wait_for_offboard, time_last_send_firebase, 
-            time_firebase_period, home_position, est_global_pos, drone_id, current_state.mode, pos_drone(2));
+            time_firebase_period, home_position, est_global_pos, drone_id, current_state.mode, pos_drone(2), state);
     }
 
     // success
@@ -845,7 +845,7 @@ mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal
 // function for sending to Firebase
 ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, 
         float time_firebase_period, mavros_msgs::HomePosition home_position, 
-        sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude){
+        sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, int fsm_state){
     
     // every period
     if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
@@ -857,8 +857,8 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
             ros::Time::now().toSec(), drone_id);
 
         // send drone position
-        send_GPS_firebase(est_global_pos.latitude, est_global_pos.longitude, 
-            est_global_pos.altitude, ros::Time::now().toSec(), drone_id, state, relative_altitude);
+        send_GPS_firebase(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, 
+            ros::Time::now().toSec(), drone_id, state, relative_altitude, fsm_state);
 
         // store current time
         time_last_send_firebase = ros::Time::now();

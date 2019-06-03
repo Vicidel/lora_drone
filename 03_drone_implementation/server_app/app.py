@@ -344,6 +344,7 @@ def store_current_coord():
 	rel_alt     = float(j['rel'])
 	drone_id    = int(j['id'])
 	state       = str(j['state'])
+	fsm_state   = str(j['fsm'])
 	r_timestamp = dt.datetime.utcfromtimestamp(float(j['ts']))
 
 	# push on Firebase
@@ -364,7 +365,8 @@ def store_current_coord():
 	    'altitude': alt,
 	    'rel_alt': rel_alt,
 	    'drone_id': drone_id,
-	    'state': state
+	    'state': state,
+	    'fsm': fsm_state
 	})
 
 	# return string

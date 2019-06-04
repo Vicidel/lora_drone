@@ -532,7 +532,7 @@ def add_estimation_maps(pos_x, pos_y, radius, est_type):
 
 
 # add waypoint on map
-def add_waypoint_maps(pos_x, pos_y, drone_id):
+def add_waypoint_maps(pos_x, pos_y, drone_id, id_string):
 
 	# convert in latlng
 	lat, lng = conversion_xy_latlng(pos_x, pos_y)
@@ -549,7 +549,8 @@ def add_waypoint_maps(pos_x, pos_y, drone_id):
 		'lat': lat,
 		'lng': lng,
 	    'sender': 'app.py: add_waypoint',
-	    'drone_id': drone_id
+	    'drone_id': drone_id,
+	    'id': id_string
 	})
 
 	return 'Success'
@@ -1700,7 +1701,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	if payload=='arm':
 
 		# add waypoint for takeoff to Firebase
-		add_waypoint_maps(pos_x, pos_y, drone_id)
+		add_waypoint_maps(pos_x, pos_y, drone_id, 'takeoff')
 
 		# return string with takeoff coordinates
 		return_string = "Takeoff at current position: h{}".format(takeoff_altitude)
@@ -1741,7 +1742,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, False)
 
 		# save on map
-		add_waypoint_maps(wp_x, wp_y, drone_id)
+		add_waypoint_maps(wp_x, wp_y, drone_id, 'WP')
 		add_network_maps(solution.pos_x, solution.pos_y)		# point
 		add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty_net, 'network') 	# circle
 
@@ -1826,13 +1827,14 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 
 		# get new waypoint
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, False)
-		add_waypoint_maps(wp_x, wp_y, drone_id)
 
 		# return string
 		if bool_landing_waypoint:
 			return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+			add_waypoint_maps(wp_x, wp_y, drone_id, 'landing')
 		else:
 			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+			add_waypoint_maps(wp_x, wp_y, drone_id, 'WP')
 
 
 	###################  PAYLOADS FOR CONTINUOUS ONLY  ######################
@@ -1854,14 +1856,13 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# get waypoint 
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, True)
 
-		# save on map
-		add_waypoint_maps(wp_x, wp_y, drone_id)
-
 		# return string
 		if bool_landing_waypoint:
 			return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+			add_waypoint_maps(wp_x, wp_y, drone_id, 'landing')
 		else:
 			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+			add_waypoint_maps(wp_x, wp_y, drone_id, 'WP')
 
 	# (continuous only) drone received data, make a new estimation
 	if payload=='data':

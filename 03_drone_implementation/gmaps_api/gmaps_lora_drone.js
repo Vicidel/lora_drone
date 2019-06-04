@@ -866,12 +866,21 @@ function init_firebase_waypoints(map, wp_lists) {
             item.setIcon('marker/waypointR_old.png');
         });
 
+        // create title for waypoint
+        var title;
+        if(snapshot.val().id=='WP'){
+            title = 'Waypoint R (#'+wp_lists.wpR.length+')';
+        }
+        else{
+            title = 'Waypoint R (#'+wp_lists.wpR.length+','+snapshot.val().id+')';
+        }
+
         // create new marker
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointR_current.png',
-            title: 'Waypoint R (#'+wp_lists.wpR.length+')',
+            title: title,
         });
         oms.addMarker(waypoint_marker);
 
@@ -903,12 +912,21 @@ function init_firebase_waypoints(map, wp_lists) {
             item.setIcon('marker/waypointG_old.png');
         });
 
+        // create title for waypoint
+        var title;
+        if(snapshot.val().id=='WP'){
+            title = 'Waypoint G (#'+wp_lists.wpG.length+')';
+        }
+        else{
+            title = 'Waypoint G (#'+wp_lists.wpG.length+','+snapshot.val().id+')';
+        }
+
         // create new marker
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointG_current.png',
-            title: 'Waypoint G (#'+wp_lists.wpG.length+')',
+            title: title,
         });
         oms.addMarker(waypoint_marker);
 
@@ -941,12 +959,21 @@ function init_firebase_waypoints(map, wp_lists) {
         });
         oms.addMarker(waypoint_marker);
 
+        // create title for waypoint
+        var title;
+        if(snapshot.val().id=='WP'){
+            title = 'Waypoint B (#'+wp_lists.wpB.length+')';
+        }
+        else{
+            title = 'Waypoint B (#'+wp_lists.wpB.length+','+snapshot.val().id+')';
+        }
+
         // create new marker
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointB_old.png',
-            title: 'Waypoint B (#'+wp_lists.wpB.length+')',
+            title: title,
         });
 
         // add it to list

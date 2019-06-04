@@ -955,7 +955,7 @@ function init_firebase_waypoints(map, wp_lists) {
 
         // change color of last waypoints
         wp_lists.wpB.forEach(function(item, index, array){
-            item.setIcon('marker/waypointB_current.png');
+            item.setIcon('marker/waypointB_old.png');
         });
         oms.addMarker(waypoint_marker);
 
@@ -972,7 +972,7 @@ function init_firebase_waypoints(map, wp_lists) {
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
-            icon: 'marker/waypointB_old.png',
+            icon: 'marker/waypointB_current.png',
             title: title,
         });
 

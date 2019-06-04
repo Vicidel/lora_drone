@@ -8,4 +8,4 @@ Supervisors: Fabrizio Schiano, Giuseppe Cocco, Alexandru Rusu.
 
 ## Folder description
 
-This folder contains the Arduino code to put on the beaconing node to characterize the angular radiation pattern of the antenna.
+This folder contains the results of the signal and noise characterization. The file "how_to_run.m" can help understanding it better.

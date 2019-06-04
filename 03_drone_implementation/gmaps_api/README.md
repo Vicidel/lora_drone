@@ -8,4 +8,4 @@ Supervisors: Fabrizio Schiano, Giuseppe Cocco, Alexandru Rusu.
 
 ## Folder description
 
-This folder contains the Arduino code to put the beacon in "lost" mode when the button is pressed. The v2 is for Micha's beacon with onboard GPS to have a ground truth.
+This folder contains the HTML/JS Google Maps API code used to visualize the drone flight in Maps. Also used as a GUI for giving commands.

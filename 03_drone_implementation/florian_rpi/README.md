@@ -8,4 +8,4 @@ Supervisors: Fabrizio Schiano, Giuseppe Cocco, Alexandru Rusu.
 
 ## Folder description
 
-This folder contains the Arduino code to put the beacon in "lost" mode when the button is pressed. The v2 is for Micha's beacon with onboard GPS to have a ground truth.
+This folder contains the C++ code of Florian Kaufmann used on his Raspberry Pi to make the drone fly. Initially wanted to take inspiration from it, but decided to do again from scratch as I use ROS and he didn't.

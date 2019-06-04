@@ -603,14 +603,14 @@ function get_lora_network_estimate() {
         if(response.data=='No location received...') {
             console.log(response.data)
             window.alert("No location data was ever received by the server, please place network manually");
-            network_button_cb(this, 'none');
+            network_button_cb('none');
         }
         else{
             console.log(response.data)
             window.alert(response.data)
             //var lat = parseFloat(response.data.substring(4+response.data.indexOf('lat='), response.data.length))
             //var lng = parseFloat(response.data.substring(4+response.data.indexOf('lng='), response.data.length))
-            network_button_cb(this, 'none');
+            network_button_cb('none');
         }
     })
 }
@@ -1217,7 +1217,10 @@ function takeoff_button_cb(drone_id) {
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
-        setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+        setTimeout(function(){
+            console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+            takeoff_button_cb('X')
+        }, delay_after_takeoff);
 
         // disable network estimate change
         network_button_cb('none');
@@ -1238,7 +1241,10 @@ function takeoff_button_cb(drone_id) {
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
-        setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+        setTimeout(function(){
+            console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+            takeoff_button_cb('X')
+        }, delay_after_takeoff);
 
         // disable network estimate change
         network_button_cb('none');
@@ -1259,7 +1265,10 @@ function takeoff_button_cb(drone_id) {
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
-        setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+        setTimeout(function(){
+            console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+            takeoff_button_cb('X')
+        }, delay_after_takeoff);
 
         // disable network estimate change
         network_button_cb('none');
@@ -1294,7 +1303,10 @@ function takeoff_button_cb(drone_id) {
 
             // go back in None after X seconds
             console.log("Setting all drones to takeoff, disabling network estimate change");
-            setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+            setTimeout(function(){
+                console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+                takeoff_button_cb('X')
+            }, delay_after_takeoff);
 
             // disable network estimate change
             network_button_cb('none');

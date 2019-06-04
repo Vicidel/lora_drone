@@ -690,6 +690,11 @@ def trilateration_main(bool_use_temp_dataset):
 				# checks if the gateway id is the one on the corresponding drone
 				if str(gateway_id_looper) == gateway_id_RGB[int(used_dataset[i].drone_id)-1]:
 
+					# ignore data with bad RSSI/ESP
+					if float(lora_data_in_interval.gateway_rssi[index])<-100:
+						print("ERROR: too low RSSI to use (<-100)")
+						continue
+
 					# create tri dataset
 					datapoint = tri_datapoint()
 					datapoint.pos_x = float(used_dataset[i].pos_x)

@@ -1472,19 +1472,19 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 			wp_x = solution.pos_x + circle_radius*math.cos(base_angle)
 			wp_y = solution.pos_y + circle_radius*math.sin(base_angle)
 			wp_z = flying_altitude
-		if state==1 or state==4 or state==7:
+		elif state%3==1:	# state=1/4/7/10...
 			# second
 			wp_x = solution.pos_x + circle_radius*math.cos(base_angle+2*math.pi/3)
 			wp_y = solution.pos_y + circle_radius*math.sin(base_angle+2*math.pi/3)
 			wp_z = flying_altitude
-		if state==2 or state==5 or state==8:
+		elif state%3==2:	# state=2/5/8/11...
 			# third
 			wp_x = solution.pos_x + circle_radius*math.cos(base_angle+4*math.pi/3)
 			wp_y = solution.pos_y + circle_radius*math.sin(base_angle+4*math.pi/3)
 			wp_z = flying_altitude
 
-		# need multilateration
-		if state==3 or state==6 or state==9:
+		# need multilateration: state=3/6/9/12...
+		elif state%3==0:
 
 			# bool_continuous is False: classic mode, do multilateration
 			if bool_continuous==False:
@@ -1494,11 +1494,11 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 					# uncertainty
 					if state==3:
-						est_uncertainty = est_uncertainty1
+						est_uncertainty = est_uncertainty1		# state=3
 					elif state==6:
-						est_uncertainty = est_uncertainty2
-					elif state==9:
-						est_uncertainty = est_uncertainty3
+						est_uncertainty = est_uncertainty2		# state=6
+					else:
+						est_uncertainty = est_uncertainty3		# state=9/12/15...
 
 					# old position
 					print("LOC: Reusing previous estimate")
@@ -1513,11 +1513,11 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 					else:
 						bool_new_est_made=True
 						if state==3:
-							est_uncertainty = est_uncertainty1
+							est_uncertainty = est_uncertainty1		# state=3
 						elif state==6:
-							est_uncertainty = est_uncertainty2
-						elif state==9:
-							est_uncertainty = est_uncertainty3
+							est_uncertainty = est_uncertainty2		# state=6
+						else:
+							est_uncertainty = est_uncertainty3		# state=9/12/15...
 
 					# new position
 					solution.pos_x = pos_x_est
@@ -1528,11 +1528,11 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 			else:
 				# use base uncertainty
 				if state==3:
-					est_uncertainty = est_uncertainty1
+					est_uncertainty = est_uncertainty1		# state=3
 				elif state==6:
-					est_uncertainty = est_uncertainty2
-				elif state==9:
-					est_uncertainty = est_uncertainty3
+					est_uncertainty = est_uncertainty2		# state=6
+				else:
+					est_uncertainty = est_uncertainty3		# state=9/12/15...
 
 				# get solution as solution_temp or old one if nothing found
 				if solution_temp.pos_x == 0 and solution_temp.pos_y == 0 and solution_temp.pos_z == 0:
@@ -1545,12 +1545,7 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 					solution.pos_z = solution_temp.pos_z
 
 			# increment estimations made
-			if state==3:
-				nb_est_made = 1
-			elif state==6:
-				nb_est_made = 2
-			elif state==9:
-				nb_est_made = 3
+			nb_est_made = state/3
 			
 			# add estimate to map
 			add_estimation_maps(solution.pos_x, solution.pos_y, est_uncertainty, 'est'+str(nb_est_made))
@@ -1567,7 +1562,7 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				if state==3:
 					circle_radius = circle_radius_v2
 					base_angle = get_base_angle(pos_x, pos_y, solution.pos_x, solution.pos_y)
-				elif state==6:
+				else:
 					circle_radius = circle_radius_v3
 					base_angle = get_base_angle(pos_x, pos_y, solution.pos_x, solution.pos_y)
 
@@ -1575,13 +1570,6 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				wp_x = solution.pos_x + circle_radius*math.cos(base_angle)
 				wp_y = solution.pos_y + circle_radius*math.sin(base_angle)
 				wp_z = flying_altitude
-
-		# too high state
-		if state > 9:
-			print("ERROR: too high state")
-			wp_x = 0
-			wp_y = 0
-			wp_z = flying_altitude
 
 	# three drones
 	if nb_drone==3:
@@ -1618,11 +1606,11 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
 				# uncertainty
 				if state==1:
-					est_uncertainty = est_uncertainty1
+					est_uncertainty = est_uncertainty1		# state=1
 				elif state==2:
-					est_uncertainty = est_uncertainty2
-				elif state==3:
-					est_uncertainty = est_uncertainty3
+					est_uncertainty = est_uncertainty2		# state=2
+				else:
+					est_uncertainty = est_uncertainty3		# state=3/4/5...
 
 				# old estimation
 				print("LOC: Reusing previous estimate")
@@ -1639,11 +1627,11 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				else:
 					bool_new_est_made=True
 					if state==1:
-						est_uncertainty = est_uncertainty1
+						est_uncertainty = est_uncertainty1		# state=1
 					elif state==2:
-						est_uncertainty = est_uncertainty2
-					elif state==3:
-						est_uncertainty = est_uncertainty3
+						est_uncertainty = est_uncertainty2		# state=2
+					else:
+						est_uncertainty = est_uncertainty3		# state=3/4/5...
 
 				# new position
 				solution.pos_x = pos_x_est
@@ -1665,7 +1653,7 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				# program still running, new parameters
 				if state==1:
 					circle_radius = circle_radius_v2
-				elif state==2:
+				else:
 					circle_radius = circle_radius_v3
 
 			# new waypoint (can be landing or next)

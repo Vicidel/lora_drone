@@ -676,7 +676,7 @@ def trilateration_main(bool_use_temp_dataset):
 			continue
 		# we got something for timestamp
 		else:
-			for gateway_id_looper in lora_data_in_interval.gateway_id:
+			for index, gateway_id_looper in enumerate(lora_data_in_interval.gateway_id):
 
 				#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 				#print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
@@ -697,8 +697,8 @@ def trilateration_main(bool_use_temp_dataset):
 					datapoint.pos_z = float(used_dataset[i].pos_z)
 
 					# get distance estimate
-					datapoint.esp  = float(lora_data_in_interval.gateway_esp[0])
-					datapoint.rssi = float(lora_data_in_interval.gateway_rssi[0])
+					datapoint.esp  = float(lora_data_in_interval.gateway_esp[index])
+					datapoint.rssi = float(lora_data_in_interval.gateway_rssi[index])
 					datapoint.distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
 
 					# save datapoint

@@ -259,8 +259,8 @@ function param_change(){
     var takeoff = parseFloat(document.getElementById("takeoff").value);
 
     // check validity 
-    if(loop_todo!=1 && loop_todo!=2 && loop_todo!=3){
-        window.alert("Loops todo parameter is not correct, should be 1, 2 or 3")
+    if(loop_todo<=0){
+        window.alert("Loops todo parameter is not correct, should be positive")
         return;
     }
     if(rad1<0 || rad2<0 || rad3<0){

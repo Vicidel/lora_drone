@@ -871,7 +871,7 @@ function init_firebase_waypoints(map, wp_lists) {
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointR_current.png',
-            title: 'Waypoint R',
+            title: 'Waypoint R (#'+wp_lists.wpR.length+')',
         });
         oms.addMarker(waypoint_marker);
 
@@ -908,7 +908,7 @@ function init_firebase_waypoints(map, wp_lists) {
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointG_current.png',
-            title: 'Waypoint G',
+            title: 'Waypoint G (#'+wp_lists.wpG.length+')',
         });
         oms.addMarker(waypoint_marker);
 
@@ -946,7 +946,7 @@ function init_firebase_waypoints(map, wp_lists) {
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointB_old.png',
-            title: 'Waypoint B',
+            title: 'Waypoint B (#'+wp_lists.wpB.length+')',
         });
 
         // add it to list

@@ -34,3 +34,6 @@ octave-workspace
 
 # Custom folder for results
 results*/*
+
+# GMaps API key
+03_drone_implementation/gmaps_api/drone-3bd2a-firebase-adminsdk-6ju7o-272f41c754.json

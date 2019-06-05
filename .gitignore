@@ -37,3 +37,4 @@ results*/*
 
 # GMaps API key
 03_drone_implementation/gmaps_api/*.json
+03_drone_implementation/server_app/*.json

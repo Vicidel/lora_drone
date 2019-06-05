@@ -64,7 +64,7 @@ db = MongoEngine(app)
 port = int(os.getenv('PORT', '3000'))
 
 # create the link with Firebase
-cred = credentials.Certificate('drone-3bd2a-firebase-adminsdk-6ju7o-272f41c754.json')		# for lora-drone Firebase
+#cred = credentials.Certificate('drone-3bd2a-firebase-adminsdk-6ju7o-272f41c754.json')		# for lora-drone Firebase
 cred = credentials.Certificate('lora-drone-v2-firebase-adminsdk-velks-2ef74f77f9.json')		# for lora-drone-v2 Firebase
 firebase_admin.initialize_app(cred, {
     #'databaseURL': 'https://drone-3bd2a.firebaseio.com/'		# for lora-drone Firebase

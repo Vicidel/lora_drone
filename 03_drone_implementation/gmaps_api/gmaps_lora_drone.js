@@ -18,7 +18,7 @@
 var map, oms, iw
 
 // Firebase reference
-var firebase = new Firebase('https://drone-3bd2a.firebaseio.com/');
+var firebase = new Firebase('https://lora-drone-v2.firebaseio.com/');
 
 // create base coordinates
 var lat_zurich = 47.39784;
@@ -325,6 +325,7 @@ function check_drone_online(){
     .catch(function (error){
         if(window.confirm("Server is offline\nOK to try again\n")){
             get_base_param();
+            markers.network.setMap(null);
         }
     })
     .then(function(response){

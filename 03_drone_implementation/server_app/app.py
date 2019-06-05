@@ -237,9 +237,6 @@ loop_todo		  = 1
 network_x 		  = 0 
 network_y 		  = 0	 	# used parameters (will be changed)
 network_z 		  = 0
-network_lat		  = 0 
-network_lng		  = 0	 	# used parameters (will be changed)
-network_alt		  = 0
 
 # radius of waypoints around est
 circle_radius     = 666     # used parameters (will be changed)
@@ -1721,10 +1718,17 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		drone_dataset = []
 		drone_dataset_temp = []
 
-		# set base solution at network estimate
-		solution.pos_x = network_x
-		solution.pos_y = network_y
-		solution.pos_z = 0
+		# check if network est was set 
+		if network_x==0 and network_y==0 and network_z==0:
+			# no: solution is current position
+			solution.pos_x = pos_x
+			solution.pos_y = pos_y
+			solution.pos_z = 0
+		else:
+			# yes: solution is network estimate set
+			solution.pos_x = network_x
+			solution.pos_y = network_y
+			solution.pos_z = 0
 
 		# set base parameters
 		circle_radius = circle_radius_v1

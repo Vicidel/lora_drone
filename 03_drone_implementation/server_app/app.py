@@ -137,35 +137,20 @@ class solution_datapoint:
 solution = solution_datapoint()
 solution_temp = solution_datapoint()
 
-# to store the solution in latlng
-class solution_datapoint_latlng:
-	lat 		= 0
-	lng 		= 0
-	alt 		= 0
-solution_latlng = solution_datapoint_latlng()
-
 # to store the home
 class home_datapoint:
-	latitude    = 47.397751 	# Zurich
-	longitude   = 8.545607 		# Zurich
-	altitude    = 500 			# Zurich
+#	latitude    = 47.397751 	# Zurich
+#	longitude   = 8.545607 		# Zurich
+#	altitude    = 500 			# Zurich
+	latitude    = 46.513381 	# center of football field
+	longitude   = 6.563056 		# center of football field
+	altitude    = 400 			# center of football field
 	delta_x     = 0				# home is at zero
 	delta_y     = 0				# home is at zero		
 	delta_z     = 0				# home is at zero
 homeR = home_datapoint()
 homeG = home_datapoint()
 homeB = home_datapoint()
-
-# to store the estimation received from network
-class network_datapoint:
-	latitude    = 47.397751 	# Zurich
-	longitude   = 8.545607 		# Zurich
-	altitude    = 500 			# Zurich
-	loc_radius  = 666
-	alt_radius  = 666
-	est_time    = 0
-	est_ts		= 0
-network = network_datapoint()
 
 
 
@@ -911,7 +896,7 @@ def lora_network_est_latlng():
 	print("Coordinates received: lat={}, lng={}".format(j['lat'], j['lng']))
 
 	# convert in x, y
-	x, y = conversion_latlng_xy(float(j['lat']), float(j['lng']))
+	x, y = conversion_latlng_xy(float(j['lat']), float(j['lng']), 1)
 	print("Position computed: x={}, y={}".format(x, y))
 
 	# add on map
@@ -943,7 +928,7 @@ def lora_net_est():
 		print("Last coordinates received from server: lat={}, lng={}".format(network.latitude, network.longitude))
 
 		# convert in x, y
-		x, y = conversion_latlng_xy(network.latitude, network.longitude)
+		x, y = conversion_latlng_xy(network.latitude, network.longitude, 1)
 
 		# add on map
 		add_network_maps(x, y)
@@ -1116,20 +1101,17 @@ def param_check_online():
 #########################################################################################
 
 # conversion between latlng and xy
-def conversion_latlng_xy(lat, lng):
+def conversion_latlng_xy(lat, lng, drone_id):
 
-	# get one home, first G. then R, then B, then new default is nothing is defined...
+	# get drone_id home
 	home = None
-	if homeG is not None:
-		home = homeG
-	elif homeR is not None:
+	if drone_id==1:
 		home = homeR
-	elif homeB is not None:
-		home = homeB
+	elif drone_id==2:
+		home = homeG
 	else:
-		print("ERROR: no home was defined, using default values")
-		home = home_datapoint()
-
+		home = homeB
+	
 	# math stuff for bearing 
 	delta_lon = home.longitude - lng
 	bearing_y = math.sin(delta_lon) * math.cos(home.latitude)

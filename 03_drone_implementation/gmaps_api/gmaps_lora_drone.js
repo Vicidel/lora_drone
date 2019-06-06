@@ -69,7 +69,7 @@ function main() {
 
     // define the map itself
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: lat_zurich, lng: lng_zurich},
+        center: {lat: lat_lausanne, lng: lng_lausanne},
         zoom: 16,
         scaleControl: true,
         styles: [{
@@ -142,7 +142,7 @@ function main() {
     network_button_cb('none');
 
     // initialize the periodic check of drone and server online
-    check_drone_online();
+    check_drone_online(markers);
 
     // fills the parameters and state fields
     get_base_param();
@@ -317,7 +317,7 @@ function change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB){
 }
 
 // testing if drone is online
-function check_drone_online(){
+function check_drone_online(markers){
 
     // check online from server
     const url='http://victor.scapp.io/param/check_online';
@@ -399,7 +399,9 @@ function check_drone_online(){
     }
 
     // call function again after X seconds
-    setTimeout(check_drone_online, delay_online_check);
+    setTimeout(function(){
+        check_drone_online(markers)
+    }, delay_online_check);
 }
 
 // compute distance between node and est

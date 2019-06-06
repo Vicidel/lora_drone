@@ -1924,6 +1924,9 @@ def drone_receive_state():
 	r_pos_x     = float(j['x'])
 	r_pos_y     = float(j['y'])
 	r_pos_z     = float(j['z'])
+	r_lat       = float(j['lat'])
+	r_lng       = float(j['lng'])
+	r_alt       = float(j['alt'])
 	r_payload   = str(j['str'])
 	r_ts_temp   = float(j['ts'])
 	r_time      = dt.datetime.utcfromtimestamp(r_ts_temp).strftime(TIME_FORMAT)
@@ -1954,6 +1957,9 @@ def drone_receive_state():
 	datapoint.pos_x 	= r_pos_x
 	datapoint.pos_y 	= r_pos_y
 	datapoint.pos_z 	= r_pos_z
+	datapoint.lat       = r_lat
+	datapoint.lng       = r_lng
+	datapoint.alt       = r_alt
 	datapoint.time 		= r_time
 	datapoint.timestamp = r_timestamp
 	datapoint.payload   = r_payload

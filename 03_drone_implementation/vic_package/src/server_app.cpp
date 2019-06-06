@@ -89,8 +89,8 @@ void post_JSON_noanswer(const char* url, char* post_array){
 ***************************************************************************/
 
 // POST the drone xy coordinates and drone number
-std::string send_drone_state(Vector3f position, double time, char* payload, 
-    int drone_id, int nb_drone, bool bool_no_answer){
+std::string send_drone_state(Vector3f position, double lat, double lng, double alt, 
+    double time, char* payload, int drone_id, int nb_drone, bool bool_no_answer){
 
     // set response string
     std::string response_string;
@@ -104,12 +104,18 @@ std::string send_drone_state(Vector3f position, double time, char* payload,
     char str_pos_x[10];    sprintf(str_pos_x, "%f", position(0));
     char str_pos_y[10];    sprintf(str_pos_y, "%f", position(1));
     char str_pos_z[10];    sprintf(str_pos_z, "%f", position(2));
+    char str_lat[20];      sprintf(str_lat, "%f", lat);
+    char str_lng[20];      sprintf(str_lng, "%f", lng);
+    char str_alt[20];      sprintf(str_alt, "%f", alt);
     char str_time[30];     sprintf(str_time, "%f", time);
     char str_drone_id[10]; sprintf(str_drone_id, "%d", drone_id);
     char str_nb_drone[10]; sprintf(str_nb_drone, "%d", nb_drone);
     cJSON_AddStringToObject(root, "x", str_pos_x);
     cJSON_AddStringToObject(root, "y", str_pos_y);
     cJSON_AddStringToObject(root, "z", str_pos_z);
+    cJSON_AddStringToObject(root, "lat", str_lat);
+    cJSON_AddStringToObject(root, "lng", str_lng);
+    cJSON_AddStringToObject(root, "alt", str_alt);
     cJSON_AddStringToObject(root, "ts", str_time);
     cJSON_AddStringToObject(root, "str", payload);
     cJSON_AddStringToObject(root, "id", str_drone_id);

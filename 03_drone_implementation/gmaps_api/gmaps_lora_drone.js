@@ -1336,6 +1336,7 @@ function network_button_cb(type) {
         document.getElementById('network_place').style.backgroundColor='#fff';
         document.getElementById('network_none').style.backgroundColor='#fff';
         document.getElementById('network_closeby').style.backgroundColor='#fff';
+        document.getElementById('network_latlng').style.backgroundColor='#fff';
 
         // click listener
         click_listener_active = false
@@ -1349,6 +1350,7 @@ function network_button_cb(type) {
         document.getElementById('network_place').style.backgroundColor='#aaa';
         document.getElementById('network_none').style.backgroundColor='#fff';
         document.getElementById('network_closeby').style.backgroundColor='#fff';
+        document.getElementById('network_latlng').style.backgroundColor='#fff';
 
         // click listener
         click_listener_active = true
@@ -1359,9 +1361,30 @@ function network_button_cb(type) {
         document.getElementById('network_place').style.backgroundColor='#fff';
         document.getElementById('network_none').style.backgroundColor='#aaa';
         document.getElementById('network_closeby').style.backgroundColor='#fff';
+        document.getElementById('network_latlng').style.backgroundColor='#fff';
 
         // click listener
         click_listener_active = false
+    }
+    if(type=='latlng') {
+        // button color
+        document.getElementById('network_get').style.backgroundColor='#fff';
+        document.getElementById('network_place').style.backgroundColor='#fff';
+        document.getElementById('network_none').style.backgroundColor='#fff';
+        document.getElementById('network_closeby').style.backgroundColor='#fff';
+        document.getElementById('network_latlng').style.backgroundColor='#aaa';
+
+        // click listener
+        click_listener_active = false
+
+        // ask user input
+        var lat = prompt("Latitude: ", "46.51341")
+        var lat = prompt("Longitude: ", "6.356288")
+
+        // post network estimate on server
+        const url='http://victor.scapp.io/lora/network_estimate_latlng';
+        const data={'lat': lat, 'lng': lng}
+        axios({method: 'POST', url: url, data: data})
     }
     if(type=='node') {
         // button color
@@ -1369,6 +1392,7 @@ function network_button_cb(type) {
         document.getElementById('network_place').style.backgroundColor='#fff';
         document.getElementById('network_none').style.backgroundColor='#fff';
         document.getElementById('network_closeby').style.backgroundColor='#aaa';
+        document.getElementById('network_latlng').style.backgroundColor='#fff';
 
         // click listener
         click_listener_active = false

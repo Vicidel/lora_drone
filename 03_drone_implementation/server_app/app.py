@@ -500,7 +500,7 @@ def empty_firebase():
 def add_estimation_maps(pos_x, pos_y, radius, est_type):
 
 	# convert in latlng
-	lat, lng = conversion_xy_latlng(pos_x, pos_y)
+	lat, lng = conversion_xy_latlng(pos_x, pos_y, 1)
 
 	# push on Firebase
 	ref_est = firebase_db.reference('estimate')
@@ -519,7 +519,7 @@ def add_estimation_maps(pos_x, pos_y, radius, est_type):
 def add_waypoint_maps(pos_x, pos_y, drone_id, id_string):
 
 	# convert in latlng
-	lat, lng = conversion_xy_latlng(pos_x, pos_y)
+	lat, lng = conversion_xy_latlng(pos_x, pos_y, drone_id)
 
 	# push on Firebase
 	if drone_id==1:
@@ -544,7 +544,7 @@ def add_waypoint_maps(pos_x, pos_y, drone_id, id_string):
 def add_network_maps(pos_x, pos_y):
 
 	# convert in latlng
-	lat, lng = conversion_xy_latlng(pos_x, pos_y)
+	lat, lng = conversion_xy_latlng(pos_x, pos_y, 1)
 
 	# push on Firebase
 	ref_network = firebase_db.reference('network')
@@ -1135,20 +1135,17 @@ def conversion_latlng_xy(lat, lng, drone_id):
 
 
 # conversion between xy and latlng
-def conversion_xy_latlng(x, y):
-	
-	# get one home, first G. then R, then B, then new default is nothing is defined...
-	home = None
-	if homeG is not None:
-		home = homeG
-	elif homeR is not None:
-		home = homeR
-	elif homeB is not None:
-		home = homeB
-	else:
-		print("ERROR: no home was defined, using default values")
-		home = home_datapoint()
+def conversion_xy_latlng(x, y, drone_id):
 
+	# get drone_id home
+	home = None
+	if drone_id==1:
+		home = homeR
+	elif drone_id==2:
+		home = homeG
+	else:
+		home = homeB
+	
 	# home to zero
 	home_latlng = geopy.Point(home.latitude, home.longitude)
 	dist_to_zero, bearing_to_zero = get_dist_bearing(-float(home.delta_x), -float(home.delta_y))

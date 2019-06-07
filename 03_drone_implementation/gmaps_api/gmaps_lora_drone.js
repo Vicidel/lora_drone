@@ -168,7 +168,7 @@ function print_checklist(){
     * check radio calibration in QGC
     * if in a new testing place, run droneR code once
         - set the zero for conversions
-        - otherwise probelm in conversions
+        - otherwise problem in conversions
     * put all drones in MANUAL mode
         - drones will takeoff if in OFFBOARD
     * buttons are deactivated on drone takeoff 
@@ -374,6 +374,7 @@ function check_drone_online(markers){
         document.getElementById("network_place").disabled = true;
         document.getElementById("network_get").disabled = true;
         document.getElementById("network_closeby").disabled = true;
+        document.getElementById("network_latlng").disabled = true;
 
         // parameters
         document.getElementById("send").disabled = true;
@@ -392,6 +393,7 @@ function check_drone_online(markers){
         document.getElementById("network_place").disabled = false;
         document.getElementById("network_get").disabled = false;
         document.getElementById("network_closeby").disabled = false;
+        document.getElementById("network_latlng").disabled = false;
 
         // parameters
         document.getElementById("send").disabled = false;

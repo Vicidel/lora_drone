@@ -15,11 +15,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
 
-        <!-- Initialize the different elements -->
+        <!-- CSS styling for the different elements -->
         <style>
+            :root{
+                --gui-line-height: 30px;
+            }
             .button {
                 border-radius: 5px;
-                padding: 5px;
+                padding: 3px;
                 border: 1px solid #000;
                 color: #000;
                 text-decoration: none;
@@ -27,14 +30,19 @@
             .button:disabled {
                 color: #888;
             }
-            #map {
-                height: 85%;
-                width: 100%;
-            }
             html, body {
                 height: 100%;
                 margin: 0;
                 padding: 0;
+            }
+            #gui_elements{
+                line-height: var(--gui-line-height);
+                height: calc(6 * var(--gui-line-height));
+                width: 100%;
+            }
+            #map {
+                height: calc(100% - calc(6 * var(--gui-line-height)));
+                width: 100%;
             }
             #legend {
                 font-family: Arial, sans-serif;
@@ -63,63 +71,66 @@
                 vertical-align: middle;
             }
         </style>
-
-        <!-- Header with all the graphical interface elements -->
-        <form action="#">
-
-            <!-- Network estimate -->
-            <div>
-                <b title="Change the network estimate from the map or from the LoRa network. LoRa network may not return a result.">Network estimate:</b>
-                <button class="button" title="To put the network estimate where you want on the map. The precision decreases when far away from the drone home (if it's not declared the last one)." id="network_place" type="submit" onclick="network_button_cb('place')">Place on map</button>
-                <button class="button" title="To get the LoRa network estimation from the network. Requires the Thingpark server to have computed a network position message." id="network_get" type="submit" onclick="network_button_cb('get')">Get from LoRa</button>
-                <button class="button" title="To put the network estimate around the node ground truth obtained via GPS. Requires to have already obtained a GPS message from the node." id="network_closeby" type="submit" onclick="network_button_cb('node')">Around node</button>
-                <button class="button" title="To put the network estimate on a given latitude/longitude." id="network_latlng" type="submit" onclick="network_button_cb('latlng')">GPS coord.</button>
-                <button class="button" title="Stops all possible changes of the first network estimated position. Automatically switches on when a drone starts flying." id="network_none" type="submit" onclick="network_button_cb('none')">Disable change</button>
-            </div>
-
-            <!-- Takeoff buttons -->
-            <div>
-                <b title="Launch the drone(s), send a command to switch to OFFBOARD mode.">Start mission:</b>
-                <button class="button" disabled title="Start the first drone (1/red)" id="R" type="submit" onclick="takeoff_button_cb('R')">Drone 1/R</button>
-                <button class="button" disabled title="Start the second drone (2/green)" id="G" type="submit" onclick="takeoff_button_cb('G')">Drone 2/G</button>
-                <button class="button" disabled title="Start the first drone (3/blue)" id="B" type="submit" onclick="takeoff_button_cb('B')">Drone 3/B</button>
-                <button class="button" title="Active when no drone are currently taking off." id="X" type="submit" onclick="takeoff_button_cb('X')">None</button>
-                <button class="button" disabled title="Start all drones at the same time, beware of collisons in paths." id="all" type="submit" onclick="takeoff_button_cb('all')">Alex's button (all drones!)</button>
-            </div>
-
-            <!-- Kill switch -->
-            <div>
-                <b title="Safety switches in place in case of emergencies.">Safety switches:</b>
-                <button class="button" id="unkill" title="Stops sending safety commands to the drone. When stoping hovering or RTL, you will need to press the takeoff button again to resume the mission." type="submit" onclick="kill_button_cb(0)">None</button>
-                <button class="button" id="kill" title="Sends a kill switch message to all the drones, which stops them completely within two seconds. Use the RC kill switches if possible before this one." type="submit" onclick="kill_button_cb(1)">Kill</button>
-                <button class="button" id="hold" title="Stops the drone program and start hovering at their current positions." type="submit" onclick="kill_button_cb(2)">Hover</button>
-                <button class="button" id="rtl" title="Stops the drone program and return to takeoff position." type="submit" onclick="kill_button_cb(3)">RTL</button>
-            </div>
-
-            <!-- Parameter change and display -->
-            <form id="form">
-                <b title="Defines the waypoints parameters for the path. Send using the Submit button.">Waypoints parameters:</b> 
-                loop(s):<input type="text" title="Number of loops done by the program. More loops add precision but increases flight time. Currently 1 to 3 are supported." size="1" id="loop_todo" value="0">, 
-                radius 1:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the first algorithm loop. Obtained through MATLAB optimization simulations." id="rad1" value="0">, 
-                radius 2:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the second (if applicable) algorithm loop. Obtained through MATLAB optimization simulations." id="rad2" value="0">
-                radius 3+:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the third (if applicable) algorithm loop. Obtained through MATLAB optimization simulations." id="rad3" value="0">
-                <button id="send" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
-            </form>
-            <form id="form">
-                <b title="Defines the flight parameters for the drone. Send using the Submit button.">Flight parameters:</b> 
-                flying altitude:<input type="text" size="1" title="Altitude at which the drone makes the mission. Default is 20 meters." id="flight" value="0">,
-                takeoff altitude:<input type="text" size="1" title="Altitude at which the drone takeoff before starting the mission. Default is 5 meters." id="takeoff" value="0">,
-                hover time:<input type="text" size="1" title="Hovering time at the LoRa message collection positions. Longer means more messages, but uses the flight autonomy." id="hover" value="0"> 
-                <button id="send2" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
-            </form>
-
-            <!-- Results -->
-            <form id="form">
-                <b>Results:</b> <a title="Compute the distance between the last received node position and estimation. -1 is returned if one of the variable is undefined." class="results"></a>
-            </form>
-        </form> 
     </head>
     <body>
+        <!-- GUI elements -->
+        <div id="gui_elements">
+            <!-- Header with all the graphical interface elements -->
+            <form action="#">
+
+                <!-- Network estimate -->
+                <div>
+                    <b title="Change the network estimate from the map or from the LoRa network. LoRa network may not return a result.">Network estimate:</b>
+                    <button class="button" title="To put the network estimate where you want on the map. The precision decreases when far away from the drone home (if it's not declared the last one)." id="network_place" type="submit" onclick="network_button_cb('place')">Place on map</button>
+                    <button class="button" title="To get the LoRa network estimation from the network. Requires the Thingpark server to have computed a network position message." id="network_get" type="submit" onclick="network_button_cb('get')">Get from LoRa</button>
+                    <button class="button" title="To put the network estimate around the node ground truth obtained via GPS. Requires to have already obtained a GPS message from the node." id="network_closeby" type="submit" onclick="network_button_cb('node')">Around node</button>
+                    <button class="button" title="To put the network estimate on a given latitude/longitude." id="network_latlng" type="submit" onclick="network_button_cb('latlng')">GPS coord.</button>
+                    <button class="button" title="Stops all possible changes of the first network estimated position. Automatically switches on when a drone starts flying." id="network_none" type="submit" onclick="network_button_cb('none')">Disable change</button>
+                </div>
+
+                <!-- Takeoff buttons -->
+                <div>
+                    <b title="Launch the drone(s), send a command to switch to OFFBOARD mode.">Start mission:</b>
+                    <button class="button" disabled title="Start the first drone (1/red)" id="R" type="submit" onclick="takeoff_button_cb('R')">Drone 1/R</button>
+                    <button class="button" disabled title="Start the second drone (2/green)" id="G" type="submit" onclick="takeoff_button_cb('G')">Drone 2/G</button>
+                    <button class="button" disabled title="Start the first drone (3/blue)" id="B" type="submit" onclick="takeoff_button_cb('B')">Drone 3/B</button>
+                    <button class="button" title="Active when no drone are currently taking off." id="X" type="submit" onclick="takeoff_button_cb('X')">None</button>
+                    <button class="button" disabled title="Start all drones at the same time, beware of collisons in paths." id="all" type="submit" onclick="takeoff_button_cb('all')">Alex's button (all drones!)</button>
+                </div>
+
+                <!-- Kill switch -->
+                <div>
+                    <b title="Safety switches in place in case of emergencies.">Safety switches:</b>
+                    <button class="button" id="unkill" title="Stops sending safety commands to the drone. When stoping hovering or RTL, you will need to press the takeoff button again to resume the mission." type="submit" onclick="kill_button_cb(0)">None</button>
+                    <button class="button" id="kill" title="Sends a kill switch message to all the drones, which stops them completely within two seconds. Use the RC kill switches if possible before this one." type="submit" onclick="kill_button_cb(1)">Kill</button>
+                    <button class="button" id="hold" title="Stops the drone program and start hovering at their current positions." type="submit" onclick="kill_button_cb(2)">Hover</button>
+                    <button class="button" id="rtl" title="Stops the drone program and return to takeoff position." type="submit" onclick="kill_button_cb(3)">RTL</button>
+                </div>
+
+                <!-- Parameter change and display -->
+                <form id="form">
+                    <b title="Defines the waypoints parameters for the path. Send using the Submit button.">Waypoints parameters:</b> 
+                    loop(s):<input type="text" title="Number of loops done by the program. More loops add precision but increases flight time. Currently 1 to 3 are supported." size="1" id="loop_todo" value="0">, 
+                    radius 1:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the first algorithm loop. Obtained through MATLAB optimization simulations." id="rad1" value="0">, 
+                    radius 2:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the second (if applicable) algorithm loop. Obtained through MATLAB optimization simulations." id="rad2" value="0">
+                    radius 3+:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the third (if applicable) algorithm loop. Obtained through MATLAB optimization simulations." id="rad3" value="0">
+                    <button id="send" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
+                </form>
+                <form id="form">
+                    <b title="Defines the flight parameters for the drone. Send using the Submit button.">Flight parameters:</b> 
+                    flying altitude:<input type="text" size="1" title="Altitude at which the drone makes the mission. Default is 20 meters." id="flight" value="0">,
+                    takeoff altitude:<input type="text" size="1" title="Altitude at which the drone takeoff before starting the mission. Default is 5 meters." id="takeoff" value="0">,
+                    hover time:<input type="text" size="1" title="Hovering time at the LoRa message collection positions. Longer means more messages, but uses the flight autonomy." id="hover" value="0"> 
+                    <button id="send2" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
+                </form>
+
+                <!-- Results -->
+                <form id="form">
+                    <b>Results:</b> <a title="Compute the distance between the last received node position and estimation. -1 is returned if one of the variable is undefined." class="results"></a>
+                </form>
+            </form> 
+        </div>
+
         <!-- Map and legend -->
         <div id="map"></div>
         <div id="legend"><h3>Legend</h3></div>

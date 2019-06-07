@@ -72,8 +72,8 @@
                 <b title="Change the network estimate from the map or from the LoRa network. LoRa network may not return a result.">Network estimate:</b>
                 <button class="button" title="To put the network estimate where you want on the map. The precision decreases when far away from the drone home (if it's not declared the last one)." id="network_place" type="submit" onclick="network_button_cb('place')">Place on map</button>
                 <button class="button" title="To get the LoRa network estimation from the network. Requires the Thingpark server to have computed a network position message." id="network_get" type="submit" onclick="network_button_cb('get')">Get from LoRa</button>
-                <button class="button" title="To put the network estimate around the node ground truth obtained via GPS. Requires to have already obtained a GPS message from the node." id="network_closeby" type="submit" onclick="network_button_cb('node')">Get random around node</button>
-                <button class="button" title="To put the network estimate on a given latitude/longitude." id="network_latlng" type="submit" onclick="network_button_cb('latlng')">Lat/lng</button>
+                <button class="button" title="To put the network estimate around the node ground truth obtained via GPS. Requires to have already obtained a GPS message from the node." id="network_closeby" type="submit" onclick="network_button_cb('node')">Around node</button>
+                <button class="button" title="To put the network estimate on a given latitude/longitude." id="network_latlng" type="submit" onclick="network_button_cb('latlng')">GPS coord.</button>
                 <button class="button" title="Stops all possible changes of the first network estimated position. Automatically switches on when a drone starts flying." id="network_none" type="submit" onclick="network_button_cb('none')">Disable change</button>
             </div>
 

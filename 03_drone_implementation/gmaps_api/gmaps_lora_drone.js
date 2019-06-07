@@ -158,10 +158,14 @@ function main() {
 // prints a checklist when loading the app
 function print_checklist(){
     window.alert(`CHECKLIST:\n
-    * check safety settings
-        - geofence
-        - RTL
-        - communication loss
+    * check safety settings in QGC
+        - geofence: action and radius
+        - RTL: action and altitude
+        - communication loss: action
+    * change parameters in QGC
+        - MPC_XY_VEL_MAX: maximum horizontal speed
+        - MPC_TILTMAX_AIR: maximum tilt angle 
+    * check radio calibration in QGC
     * put all drones in MANUAL mode
         - drones will takeoff if in OFFBOARD
     * buttons are deactivated on drone takeoff 
@@ -1399,9 +1403,12 @@ function network_button_cb(type) {
         // click listener
         click_listener_active = false
 
+        // get max distance from node
+        var max_dist = prompt("Maximum distance from node: ", "0");
+
         // get random things around node
-        var dist_meters = Math.random()*200; 
-        var angle_degrees = Math.random()*2*Math.PI;
+        var dist_meters = Math.random()*max_dist; 
+        var angle_degrees = Math.random()*360;
         var answer = shift_latlng(lat_node, lng_node, dist_meters, angle_degrees)
         var lat = answer.lat; var lng = answer.lng;
 
@@ -1665,7 +1672,7 @@ function shift_latlng(lat1, lon1, dist_meters, bearing_degrees){
     //lon1 = lon1 * Math.PI / 180;
 
     var lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) + Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
-    var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2));
+    var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2)) *180 / Math.PI;
 
     if (isNaN(lat2) || isNaN(lon2)) return null;
 

@@ -1385,7 +1385,7 @@ function network_button_cb(type) {
 
         // ask user input
         var lat = prompt("Latitude: ", "46.51341")
-        var lat = prompt("Longitude: ", "6.356288")
+        var lng = prompt("Longitude: ", "6.356288")
 
         // post network estimate on server
         const url='http://victor.scapp.io/lora/network_estimate_latlng';

@@ -166,6 +166,9 @@ function print_checklist(){
         - MPC_XY_VEL_MAX: maximum horizontal speed
         - MPC_TILTMAX_AIR: maximum tilt angle 
     * check radio calibration in QGC
+    * if in a new testing place, run droneR code once
+        - set the zero for conversions
+        - otherwise probelm in conversions
     * put all drones in MANUAL mode
         - drones will takeoff if in OFFBOARD
     * buttons are deactivated on drone takeoff 

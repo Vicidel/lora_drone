@@ -844,6 +844,28 @@ def param_print():
 	return Response(json.dumps(data), mimetype='application/json', headers={'Content-Disposition':'attachment;filename=query.json'})
 
 
+# change the gateway ids
+@app.route('/param/gateways', methods=['POST'])
+def change_gateways():
+	print("!!!!!!!!! New gateways ID received from GMAPS !!!!!!!!!")
+
+	# test nature of message: if not JSON we don't want it
+	j = []
+	try:
+		j = request.json
+	except:
+		print("ERROR: file is not a JSON")
+		return 'Can only receive JSON file'
+
+	# set gateway IDs
+	global gateway_id_RGB
+	gateway_id_RGB[0] = str(j['gatewayR'])
+	gateway_id_RGB[1] = str(j['gatewayG'])
+	gateway_id_RGB[2] = str(j['gatewayB'])
+
+	return "Gateway IDs changed"
+
+
 
 #########################################################################################
 ################################  LORA NETWORK ESTIMATE  ################################

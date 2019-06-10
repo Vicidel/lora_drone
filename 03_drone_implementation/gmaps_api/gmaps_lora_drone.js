@@ -246,6 +246,19 @@ function init_listeners(){
                 window.open('http://victor.scapp.io/print/tri_dataset');
             }
         }
+
+        // change gateway IDs
+        if(e.keyCode==37){
+            if(window.confirm(`Key '%' pressed, do you want to change the gateway IDs?`)){
+                console.log("Changing gateway IDs");
+                var gatewayR = prompt("Gateway R: ", "004A1092");
+                var gatewayG = prompt("Gateway G: ", "004A1093");
+                var gatewayB = prompt("Gateway B: ", "004A0DB4");
+                const url='http://victor.scapp.io/param/gateways';
+                const data={'gatewayR': gatewayR, 'gatewayG': gatewayG, 'gatewayB': gatewayB}
+                axios({method: 'POST', url: url, data: data})
+            }
+        }
     };
 }
 

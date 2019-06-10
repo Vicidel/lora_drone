@@ -294,12 +294,24 @@ def loc_test_latlng():
 
 	print(t.loc)	
 
+def rand():
+
+	json_test = {"uplink": {"a":1, "b":2}}
+	#json_test = {"loc": {"lat":123}}
+
+	if 'uplink' in json_test:
+		print('message is uplink')
+	else:
+		print('message is loc')
 
 
-json_test = {"uplink": {"a":1, "b":2}}
-#json_test = {"loc": {"lat":123}}
+state = 0
 
-if 'uplink' in json_test:
-	print('message is uplink')
-else:
-	print('message is loc')
+if state==0:
+	print("0")
+elif state%3==1:	# state=1/4/7/10...
+	print("1")
+elif state%3==2:	# state=2/5/8/11...
+	print("3")
+elif state%3==0:
+	print("4")

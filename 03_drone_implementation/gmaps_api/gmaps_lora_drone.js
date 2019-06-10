@@ -51,7 +51,7 @@ var click_listener_active = false
 var delay_after_takeoff = 8000;
 
 // checks drone onlines ready for takeoff and server online
-var delay_online_check = 500;
+var delay_online_check = 3000;
 
 // to (de)activate buttons
 var bool_some_drone_is_flying = false;

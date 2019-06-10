@@ -679,6 +679,8 @@ def trilateration_main(bool_use_temp_dataset):
 						print("ERROR: too low RSSI to use (<-100)")
 						continue
 
+					#print("**** x{} y{} z{} gw{} e{} r{} ****".format(used_dataset[i].pos_x, used_dataset[i].pos_y, used_dataset[i].pos_z, lora_data_in_interval.gateway_id[index], lora_data_in_interval.gateway_esp[index], lora_data_in_interval.gateway_rssi[index]))
+
 					# create tri dataset
 					datapoint = tri_datapoint()
 					datapoint.pos_x = float(used_dataset[i].pos_x)

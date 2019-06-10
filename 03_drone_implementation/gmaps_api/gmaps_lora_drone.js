@@ -175,6 +175,7 @@ function print_checklist(){
         - if drone landed, press kill to activate again
         - safeties are always active
     * launch beaconing mode on the node
+    * secret keys: >+"*ç%
     * TODO: add more
         `)
 }
@@ -205,6 +206,8 @@ function init_listeners(){
         if(e.keyCode==62){
             if(window.confirm("Key '>' pressed, do you want to empty the database?")){
                 console.log("Deleting Firebase database")
+
+                // empty database
                 const url='http://victor.scapp.io/firebase/empty';
                 const data={'id': 1}
                 axios({method: 'POST', url: url, data: data})
@@ -212,6 +215,15 @@ function init_listeners(){
                 axios({method: 'POST', url: url, data: data2})
                 const data3={'id': 3}
                 axios({method: 'POST', url: url, data: data3})
+
+                // clear states
+                stateR = 'UNKNOWN'
+                stateG = 'UNKNOWN'
+                stateB = 'UNKNOWN'
+                altitudeR = 0
+                altitudeG = 0
+                altitudeB = 0
+                change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
             }
         }
 
@@ -251,6 +263,8 @@ function init_listeners(){
         if(e.keyCode==37){
             if(window.confirm(`Key '%' pressed, do you want to change the gateway IDs?`)){
                 console.log("Changing gateway IDs");
+
+                // change gateway IDs
                 var gatewayR = prompt("Gateway R: ", "004A1092");
                 var gatewayG = prompt("Gateway G: ", "004A1093");
                 var gatewayB = prompt("Gateway B: ", "004A0DB4");

@@ -182,7 +182,7 @@ int main(int argc, char **argv){
     float time_firebase_period        = 0.5f;     // period of sending messages to Firebase
     float time_offboard_arm_period    = 4.0f;     // period to check RC offboard and arming
     float time_kill_check_period      = 1.0f;     // period for server kill switch
-    float time_data_collection_period = 1.0f;     // period for data collection when hovering
+    float time_data_collection_period = 2.0f;     // period for data collection when hovering
 
     // misc variables
     float precision = 1.5f;              // precision to reach

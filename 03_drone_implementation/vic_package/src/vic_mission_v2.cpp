@@ -164,7 +164,6 @@ int main(int argc, char **argv){
     Vector3f pos_drone         (0.0f,  0.0f, 0.0f);
     Vector3f pos_current_goal = pos_drone;
 
-
     // variable for ROS services to arm drone and set OFFBOARD mode
     mavros_msgs::CommandBool arm_cmd;
     arm_cmd.request.value = true;
@@ -182,7 +181,8 @@ int main(int argc, char **argv){
     float time_firebase_period        = 0.5f;     // period of sending messages to Firebase
     float time_offboard_arm_period    = 4.0f;     // period to check RC offboard and arming
     float time_kill_check_period      = 1.0f;     // period for server kill switch
-    float time_data_collection_period = 2.0f;     // period for data collection when hovering
+    float time_data_collection_period = 1.0f;     // period for data collection when hovering
+    float time_data_collection_temp_period = 2.0f;     // period for data collection when moving (temp)
 
     // misc variables
     float precision = 1.5f;              // precision to reach
@@ -531,7 +531,7 @@ int main(int argc, char **argv){
                         /***********************   GOING TO WAYPOINT   ************************/
                         case 1:{
                             // sending
-                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
+                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_temp_period)){
                                 threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                             }
 
@@ -643,7 +643,7 @@ int main(int argc, char **argv){
                         case 666:{
 
                             // sending
-                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
+                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_temp_period)){
                                 threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                             }
 

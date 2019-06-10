@@ -176,6 +176,7 @@ function print_checklist(){
         - safeties are always active
     * launch beaconing mode on the node
     * secret keys: >+"*ç%
+        - check that the gateways IDs are correct (%)
     * TODO: add more
         `)
 }
@@ -243,19 +244,19 @@ function init_listeners(){
             }
         }
 
-        // print drone_temp dataset
+        // print tri_dataset
         if(e.keyCode==42){
-            if(window.confirm(`Key '*' pressed, do you want to popup-print the temporary drone dataset?`)){
-                console.log("Popup-printing drone_temp dataset")
-                window.open('http://victor.scapp.io/print/drone_dataset_temp');
+            if(window.confirm(`Key '*' pressed, do you want to popup-print the trilateration dataset?`)){
+                console.log("Popup-printing trilateration dataset")
+                window.open('http://victor.scapp.io/print/tri_dataset');
             }
         }
 
-        // print tri dataset
+        // print tri_dataset_temp
         if(e.keyCode==231){
-            if(window.confirm(`Key 'ç' pressed, do you want to popup-print the trilateration dataset?`)){
-                console.log("Popup-printing trilateration dataset")
-                window.open('http://victor.scapp.io/print/tri_dataset');
+            if(window.confirm(`Key 'ç' pressed, do you want to popup-print the temporary trilateration dataset?`)){
+                console.log("Popup-printing temporary trilateration dataset")
+                window.open('http://victor.scapp.io/print/tri_dataset_temp');
             }
         }
 

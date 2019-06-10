@@ -530,6 +530,12 @@ int main(int argc, char **argv){
 
                         /***********************   GOING TO WAYPOINT   ************************/
                         case 1:{
+                            // sending
+                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
+                                threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                            }
+
+                            // reaached position
                             if((pos_drone-pos_current_goal).norm()<precision){
                                 // position reached, sending position to drone_dataset and wait for next instruction
                                 ROS_INFO("Waypoint reached!");
@@ -638,16 +644,7 @@ int main(int argc, char **argv){
 
                             // sending
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_period)){
-                                ROS_INFO("Sending coordinates for dataset");
-                                answer = threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
-                                
-                                // check server error
-                                if(check_server_answer(answer))
-                                    bool_pause_all = true;
-                                else{
-                                    // store current time
-                                    time_last_request = ros::Time::now();
-                                }
+                                threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
                             }
 
                             // reached position

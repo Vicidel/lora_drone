@@ -127,11 +127,11 @@ function main() {
     init_states(map);
 
     // start Firebase and database listeners
-    init_firebase_homes(map, markers, circles);         // homes
-    init_firebase_drones(map, markers, paths);          // drones, paths
-    init_firebase_waypoints(map, wp_lists);             // waypoints
-    init_firebase_estimations(map, markers, circles);   // estimations
-    init_firebase_node(map, markers);                   // node ground truth
+    firebase_homes(map, markers);                  // homes
+    firebase_drones(map, markers, paths);          // drones, paths
+    firebase_waypoints(map, wp_lists);             // waypoints
+    firebase_estimations(map, markers, circles);   // estimations
+    firebase_node(map, markers);                   // node ground truth
 
     // initial button colors: call callbacks as if clicked
     takeoff_button_cb('X');
@@ -663,8 +663,8 @@ function get_lora_network_estimate() {
 //################################  FIREBASE OBJECTS ######################################
 //#########################################################################################
 
-// init Firebase for home
-function init_firebase_homes(map, markers, circles) {
+// Firebase for home
+function firebase_homes(map, markers) {
 
     // reference in Firebase
     var home_refR = firebase.child('homeR');
@@ -694,7 +694,6 @@ function init_firebase_homes(map, markers, circles) {
     });
     home_refR.on('child_removed', function(snapshot) {
         markers.homeR.setMap(null)
-        circles.geoR.setMap(null)
     });
 
     // for homeG
@@ -720,7 +719,6 @@ function init_firebase_homes(map, markers, circles) {
     });
     home_refG.on('child_removed', function(snapshot) {
         markers.homeG.setMap(null)
-        circles.geoG.setMap(null)
     });
 
     // for homeB
@@ -746,12 +744,11 @@ function init_firebase_homes(map, markers, circles) {
     });
     home_refB.on('child_removed', function(snapshot) {
         markers.homeB.setMap(null)
-        circles.geoB.setMap(null)
     });
 }
 
-// init Firebase for drones and paths
-function init_firebase_drones(map, markers, paths) {
+// Firebase for drones and paths
+function firebase_drones(map, markers, paths) {
 
     // reference in Firebase
     var drone_refR = firebase.child('droneR');
@@ -873,8 +870,8 @@ function init_firebase_drones(map, markers, paths) {
     });
 }
 
-// init Firebase for waypoints
-function init_firebase_waypoints(map, wp_lists) {
+// Firebase for waypoints
+function firebase_waypoints(map, wp_lists) {
 
     // reference in Firebase
     var wayp_refR  = firebase.child('waypointR');
@@ -1020,8 +1017,8 @@ function init_firebase_waypoints(map, wp_lists) {
     });
 }
 
-// init Firebase for estimations
-function init_firebase_estimations(map, markers, circles) {
+// Firebase for estimations
+function firebase_estimations(map, markers, circles) {
 
     // reference in Firebase
     var netw_ref   = firebase.child('network');
@@ -1143,8 +1140,8 @@ function init_firebase_estimations(map, markers, circles) {
     });
 }   
 
-// init Firebase for node
-function init_firebase_node(map, markers) {
+// Firebase for node
+function firebase_node(map, markers) {
 
     // reference in Firebase
     var node_ref = firebase.child('node');

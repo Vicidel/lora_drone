@@ -940,10 +940,18 @@ void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_i
     std::cin >> bool_continuous_sim;
 
     if(bool_continuous_sim){
-        // no user input, fixed parameters
-        drone_id = 1;
-        nb_drone = 1;
-        ROS_WARN("Continuous simulation started with one drone (R)");
+        // user input
+        std::cout << "Input number of drones for this simulation (1/3): ";
+        std::cin >> nb_drone;
+        if(nb_drone==3){
+            std::cout << "Input drone id for this simulation (1/2/3): ";
+            std::cin >> drone_id;
+            ROS_WARN("Continuous simulation started with three drone (drone_id=%d)", drone_id);
+        }
+        else{
+            drone_id = 1;       // drone R is default when using one drone
+            ROS_WARN("Continuous simulation started with one drone (R)");
+        }
     }
     else{
         // user input

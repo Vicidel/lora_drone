@@ -41,9 +41,6 @@ var altitudeR = 0;
 var altitudeG = 0;
 var altitudeB = 0;
 
-// geofence
-var geofence_radius = 0;        // TODO: 0 because can't click through circle...
-
 // listener active for click
 var click_listener_active = false
 
@@ -685,11 +682,6 @@ function init_firebase_homes(map, markers, circles) {
         markers.homeR.setPosition(new google.maps.LatLng(lat, lng));
         oms.addMarker(markers.homeR);
 
-        // move geofence circle
-        circles.geoR.setCenter(new google.maps.LatLng(lat, lng));
-        circles.geoR.setRadius(geofence_radius);
-        circles.geoR.setMap(map);
-
         // set start as home
         lat_homeR = lat;
         lng_homeR = lng;
@@ -716,11 +708,6 @@ function init_firebase_homes(map, markers, circles) {
         markers.homeG.setPosition(new google.maps.LatLng(lat, lng));
         oms.addMarker(markers.homeG);
 
-        // move geofence circle
-        circles.geoG.setCenter(new google.maps.LatLng(lat, lng));
-        circles.geoG.setRadius(geofence_radius);
-        circles.geoG.setMap(map);
-
         // set start as home
         lat_homeG = lat;
         lng_homeG = lng;
@@ -746,11 +733,6 @@ function init_firebase_homes(map, markers, circles) {
         // move marker
         markers.homeB.setPosition(new google.maps.LatLng(lat, lng));
         oms.addMarker(markers.homeB);
-
-        // move geofence circle
-        circles.geoB.setCenter(new google.maps.LatLng(lat, lng));
-        circles.geoB.setRadius(geofence_radius);
-        circles.geoB.setMap(map);
 
         // set start as home
         lng_homeB = lat;
@@ -1587,65 +1569,42 @@ function create_circles() {
 
     // for network estimations
     var network_circle1 = new google.maps.Circle({
-        strokeColor: '#FF0000',
+        strokeColor: '#000000',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#FF0000',
+        fillColor: '#222222',       // for network, grey
         fillOpacity: 0.1,
     })
     var network_circle2 = new google.maps.Circle({
         strokeColor: '#FFBB00',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#FF9900',
+        fillColor: '#FF9900',       // for est1, orange
         fillOpacity: 0.2,
     })
     var network_circle3 = new google.maps.Circle({
         strokeColor: '#FFFF00',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#FFFF00',
+        fillColor: '#FFFF00',       // for est2, yellow
         fillOpacity: 0.1,
     })
     var network_circle4 = new google.maps.Circle({
         strokeColor: '#00FF00',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#00FF00',
+        fillColor: '#00FF00',       // for est3, green
         fillOpacity: 0.1,
     })
     var network_circle5 = new google.maps.Circle({
         strokeColor: '#000000',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#000000',
-        fillOpacity: 0.1,
-    })
-
-    // for geofences
-    var home_circleR = new google.maps.Circle({
-        strokeColor: '#550000',
-        strokeOpacity: 1,
-        strokeWeight: 1,
-        fillColor: '#FFF',
-        fillOpacity: 0,
-    });
-    var home_circleG = new google.maps.Circle({
-        strokeColor: '#005500',
-        strokeOpacity: 1,
-        strokeWeight: 1,
-        fillColor: '#FFF',
-        fillOpacity: 0,
-    });
-    var home_circleB = new google.maps.Circle({
-        strokeColor: '#000055',
-        strokeOpacity: 1,
-        strokeWeight: 1,
-        fillColor: '#FFF',
-        fillOpacity: 0,
+        fillColor: '#000000',       // for temp est, black
+        fillOpacity: 0.15,
     });
 
-    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, c4: network_circle4, c_cont: network_circle5, geoR: home_circleR, geoG: home_circleG, geoB: home_circleB};
+    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, c4: network_circle4, c_cont: network_circle5};
 }
 
 // creates the waypoints lists (empty)

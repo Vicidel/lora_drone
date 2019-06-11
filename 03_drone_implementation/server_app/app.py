@@ -180,6 +180,7 @@ gateway_id_RGB 	  = [gateway_corner, gateway_logitech, gateway_printer]
 
 # waypoint parameters
 flying_altitude   = 20
+delta_fly_alt 	  = [-2, 0, 2]		# for obstacle avoidance, drones don't have same flying altitude
 takeoff_altitude  = 5
 landing_radius    = 4    # circle around landing positions
 hover_time 		  = 4
@@ -1658,7 +1659,7 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 			print("ERROR: unknown drone number (not 1/2/3)")
 			wp_x = 0
 			wp_y = 0
-			wp_z = flying_altitude
+			wp_z = flying_altitude + delta_fly_alt[drone_id+1]
 
 		# first waypoints
 		if state==0:
@@ -1666,17 +1667,17 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				# east of estimate
 				wp_x = solution.pos_x + circle_radius*math.cos(0)
 				wp_y = solution.pos_y + circle_radius*math.sin(0)
-				wp_z = flying_altitude
+				wp_z = flying_altitude + delta_fly_alt[drone_id+1]
 			elif drone_id==2:
 				# north-west of estimate
 				wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
 				wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
-				wp_z = flying_altitude
+				wp_z = flying_altitude + delta_fly_alt[drone_id+1]
 			elif drone_id==3:
 				# south-west of estimate
 				wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
 				wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
-				wp_z = flying_altitude
+				wp_z = flying_altitude + delta_fly_alt[drone_id+1]
 
 		# estimations
 		if state>0:
@@ -1727,17 +1728,17 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 			if drone_id==1:
 				wp_x = solution.pos_x + circle_radius*math.cos(0)
 				wp_y = solution.pos_y + circle_radius*math.sin(0)
-				wp_z = flying_altitude
+				wp_z = flying_altitude + delta_fly_alt[drone_id+1]
 				bool_drone1_ready = False
 			elif drone_id==2:
 				wp_x = solution.pos_x + circle_radius*math.cos(2*math.pi/3)
 				wp_y = solution.pos_y + circle_radius*math.sin(2*math.pi/3)
-				wp_z = flying_altitude
+				wp_z = flying_altitude + delta_fly_alt[drone_id+1]
 				bool_drone2_ready = False
 			elif drone_id==3:
 				wp_x = solution.pos_x + circle_radius*math.cos(4*math.pi/3)
 				wp_y = solution.pos_y + circle_radius*math.sin(4*math.pi/3)
-				wp_z = flying_altitude
+				wp_z = flying_altitude + delta_fly_alt[drone_id+1]
 				bool_drone3_ready = False
 
 	return wp_x, wp_y, wp_z, bool_landing_waypoint

@@ -128,6 +128,8 @@ class tri_datapoint:
 	esp 		= 666
 	rssi 		= 666
 	distance 	= 666
+	drone_id    = 666
+	gw_id 		= 666
 
 # to store the solution
 class solution_datapoint:
@@ -277,7 +279,7 @@ def print_tri_dataset_temp():
 	# doing stuff to have a json...
 	data_dict = {}
 	for item in tri_dataset_temp:
-		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance}
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance, "drone": item.drone_id, "gateway": item.gateway_id}
 		data_dict.update({"datapoint_"+str(tri_dataset_temp.index(item)): data})
 
 	# format as json and send
@@ -291,7 +293,7 @@ def print_tri_dataset():
 	# doing stuff to have a json...
 	data_dict = {}
 	for item in tri_dataset:
-		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance}
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance, "drone": item.drone_id, "gateway": item.gateway_id}
 		data_dict.update({"datapoint_"+str(tri_dataset.index(item)): data})
 
 	# format as json and send
@@ -694,6 +696,10 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	datapoint.esp 	    = float(lora_message.gateway_esp[gateway_index])
 	datapoint.rssi 	    = float(lora_message.gateway_rssi[gateway_index])
 	datapoint.distance 	= float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
+
+	# add info
+	datapoint.drone_id  = drone_id
+	datapoint.gw_id     = gateway_id_RGB[drone_id-1]
 
 	# return tri_datapoint
 	print("TRI: datapoint x{0:.2f} y{0:.2f} d{0:.1f}".format(datapoint.pos_x, datapoint.pos_y, datapoint.distance))

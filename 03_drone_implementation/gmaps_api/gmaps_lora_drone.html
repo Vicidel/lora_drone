@@ -118,7 +118,7 @@
                 </form>
                 <form id="form">
                     <b title="Defines the flight parameters for the drone. Send using the Submit button.">Flight parameters:</b> 
-                    flying altitude:<input type="text" size="1" title="Altitude at which the drone makes the mission. Default is 20 meters." id="flight" value="0">,
+                    flying altitude:<input type="text" size="1" title="Altitude at which the drone makes the mission. Default is 20 meters. For three drones, R fly 2m under, G at flight altitude and B 2m over." id="flight" value="0">,
                     takeoff altitude:<input type="text" size="1" title="Altitude at which the drone takeoff before starting the mission. Default is 5 meters." id="takeoff" value="0">,
                     hover time:<input type="text" size="1" title="Hovering time at the LoRa message collection positions. Longer means more messages, but uses the flight autonomy." id="hover" value="0"> 
                     <button id="send2" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>

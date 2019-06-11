@@ -533,6 +533,7 @@ int main(int argc, char **argv){
                             // sending
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_temp_period)){
                                 threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                                time_last_request = ros::Time::now();
                             }
 
                             // reaached position
@@ -645,6 +646,7 @@ int main(int argc, char **argv){
                             // sending
                             if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_temp_period)){
                                 threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                                time_last_request = ros::Time::now();
                             }
 
                             // reached position

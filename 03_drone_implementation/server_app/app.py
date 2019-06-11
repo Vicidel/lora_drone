@@ -1681,30 +1681,57 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 
 		# estimations
 		if state>0:
-			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est, uncertainty = trilateration_main()
-			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
-				# base uncertainty
-				if state==1:
-					est_uncertainty = est_uncertainty1		# state=1
-				elif state==2:
-					est_uncertainty = est_uncertainty2		# state=2
+			# bool_continuous is False: classic mode, do multilateration
+			if bool_continuous==False:
+
+				# do multilateration and store position
+				pos_x_est, pos_y_est, pos_z_est, uncertainty = trilateration_main()
+				if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+					# base uncertainty
+					if state==1:
+						est_uncertainty = est_uncertainty1		# state=1
+					elif state==2:
+						est_uncertainty = est_uncertainty2		# state=2
+					else:
+						est_uncertainty = est_uncertainty3		# state=3/4/5...
+
+					# old estimation
+					print("LOC: Reusing previous estimate")
+					solution.pos_x = solution.pos_x
+					solution.pos_y = solution.pos_y
+					solution.pos_z = solution.pos_z
 				else:
-					est_uncertainty = est_uncertainty3		# state=3/4/5...
+					# computed uncertainty
+					est_uncertainty = uncertainty
 
-				# old estimation
-				print("LOC: Reusing previous estimate")
-				solution.pos_x = solution.pos_x
-				solution.pos_y = solution.pos_y
-				solution.pos_z = solution.pos_z
+					# new position
+					solution.pos_x = pos_x_est
+					solution.pos_y = pos_y_est
+					solution.pos_z = pos_z_est
+
+			# bool_continuous is True: continuous mode, use solution_temp as solution
 			else:
-				# computed uncertainty
-				est_uncertainty = uncertainty
 
-				# new position
-				solution.pos_x = pos_x_est
-				solution.pos_y = pos_y_est
-				solution.pos_z = pos_z_est
+				# get solution as solution_temp or old one if nothing found
+				if solution_temp.pos_x == 0 and solution_temp.pos_y == 0 and solution_temp.pos_z == 0:
+					# base uncertainty
+					if state==3:
+						est_uncertainty = est_uncertainty1		# state=3
+					elif state==6:
+						est_uncertainty = est_uncertainty2		# state=6
+					else:
+						est_uncertainty = est_uncertainty3		# state=9/12/15...
+
+					# old position
+					print("LOC: Reusing previous estimate")
+				else:
+					# computed uncertainty
+					est_uncertainty = tri_get_uncertainty(tri_dataset_temp, solution_temp.pos_x, solution_temp.pos_y, solution_temp.pos_z)
+
+					# new position
+					solution.pos_x = solution_temp.pos_x
+					solution.pos_y = solution_temp.pos_y
+					solution.pos_z = solution_temp.pos_z
 
 			# increment estimations made
 			nb_est_made = state

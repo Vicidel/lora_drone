@@ -1657,9 +1657,9 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 		# if unknown drone number
 		if drone_id>3 or drone_id<1:
 			print("ERROR: unknown drone number (not 1/2/3)")
-			wp_x = 0
-			wp_y = 0
-			wp_z = flying_altitude + delta_fly_alt[drone_id+1]
+			wp_x = pos_x
+			wp_y = pos_y
+			wp_z = flying_altitude
 
 		# first waypoints
 		if state==0:
@@ -1697,9 +1697,6 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 
 					# old estimation
 					print("LOC: Reusing previous estimate")
-					solution.pos_x = solution.pos_x
-					solution.pos_y = solution.pos_y
-					solution.pos_z = solution.pos_z
 				else:
 					# computed uncertainty
 					est_uncertainty = uncertainty
@@ -1715,12 +1712,12 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				# get solution as solution_temp or old one if nothing found
 				if solution_temp.pos_x == 0 and solution_temp.pos_y == 0 and solution_temp.pos_z == 0:
 					# base uncertainty
-					if state==3:
-						est_uncertainty = est_uncertainty1		# state=3
-					elif state==6:
-						est_uncertainty = est_uncertainty2		# state=6
+					if state==1:
+						est_uncertainty = est_uncertainty1		# state=1
+					elif state==2:
+						est_uncertainty = est_uncertainty2		# state=2
 					else:
-						est_uncertainty = est_uncertainty3		# state=9/12/15...
+						est_uncertainty = est_uncertainty3		# state=3/4/5...
 
 					# old position
 					print("LOC: Reusing previous estimate")

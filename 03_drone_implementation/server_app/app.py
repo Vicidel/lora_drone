@@ -699,6 +699,39 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	return datapoint
 
 
+# returns the uncertainty of the trilateration
+def tri_get_uncertainty(tri_dataset, x_est, y_est, z_est):
+
+	# storage for max difference with true estimation
+	max_distance = 0
+
+	# do it five times
+	for i in range(0,4):
+
+		# modified dataset
+		dataset = tri_dataset
+
+		# modify tri_dataset
+		for j in range(0, len(dataset)):
+
+			# new distance with added +std in first half, -std in second half
+			if j<len(dataset)/2:
+				dataset[j].distance = float(function_signal_to_distance(dataset[j].esp+2.5, dataset[j].rssi+2.5))
+			else:
+				dataset[j].distance = float(function_signal_to_distance(dataset[j].esp-2.5, dataset[j].rssi-2.5))
+
+		# do new tri
+		x_est2, y_est2, z_est2 = trilateration(dataset)
+
+		# compare with maximum distance
+		delta_x = x_est - x_est2
+		delta_y = y_est - y_est2
+		max_distance = max(max_distance, math.sqrt(delta_x*delta_x + delta_y*delta_y))
+
+	# return
+	return max_distance*5 		# safety factor
+
+
 # matches Lora and drone, then does trilateration on it
 def trilateration_main():
 
@@ -722,20 +755,21 @@ def trilateration_main():
 	# test if empty (forgot to start LoRa node?)
 	if len(tri_dataset) == 0:
 		print("ERROR: empty trilateration dataset (didn't start LoRa node?)")
-		return 0, 0, 0
+		return 0, 0, 0, 666
 
 	# test if enough points
 	elif len(tri_dataset) < 3:
 		print("ERROR: not enough datapoint for trilateration")
-		return 0, 0, 0
+		return 0, 0, 0, 666
 
 	# all good
 	else:
 		# call trilateration function
 		pos_x_est, pos_y_est, pos_z_est = trilateration(tri_dataset)
+		uncertainty = tri_get_uncertainty(tri_dataset, pos_x_est, pos_y_est, pos_z_est)
 
 		# return result
-		return pos_x_est, pos_y_est, pos_z_est
+		return pos_x_est, pos_y_est, pos_z_est, uncertainty
 
 
 # does trilateration on tri_dataset_temp
@@ -1544,9 +1578,9 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 			if bool_continuous==False:
 
 				# do multilateration and store position
-				pos_x_est, pos_y_est, pos_z_est = trilateration_main()
+				pos_x_est, pos_y_est, pos_z_est, uncertainty = trilateration_main()
 				if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
-					# uncertainty
+					# base uncertainty
 					if state==3:
 						est_uncertainty = est_uncertainty1		# state=3
 					elif state==6:
@@ -1557,21 +1591,8 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 					# old position
 					print("LOC: Reusing previous estimate")
 				else:
-					# already have an uncertainty to compare
-					if bool_new_est_made==True:
-						delta_x = solution.pos_x - pos_x_est
-						delta_y = solution.pos_y - pos_y_est
-						est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
-
-					# no previous estimation, use base uncertainty, next time we wil have one
-					else:
-						bool_new_est_made=True
-						if state==3:
-							est_uncertainty = est_uncertainty1		# state=3
-						elif state==6:
-							est_uncertainty = est_uncertainty2		# state=6
-						else:
-							est_uncertainty = est_uncertainty3		# state=9/12/15...
+					# computed uncertainty
+					est_uncertainty = uncertainty
 
 					# new position
 					solution.pos_x = pos_x_est
@@ -1580,19 +1601,23 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 
 			# bool_continuous is True: continuous mode, use solution_temp as solution
 			else:
-				# use base uncertainty
-				if state==3:
-					est_uncertainty = est_uncertainty1		# state=3
-				elif state==6:
-					est_uncertainty = est_uncertainty2		# state=6
-				else:
-					est_uncertainty = est_uncertainty3		# state=9/12/15...
 
 				# get solution as solution_temp or old one if nothing found
 				if solution_temp.pos_x == 0 and solution_temp.pos_y == 0 and solution_temp.pos_z == 0:
+					# base uncertainty
+					if state==3:
+						est_uncertainty = est_uncertainty1		# state=3
+					elif state==6:
+						est_uncertainty = est_uncertainty2		# state=6
+					else:
+						est_uncertainty = est_uncertainty3		# state=9/12/15...
+
 					# old position
 					print("LOC: Reusing previous estimate")
 				else:
+					# computed uncertainty
+					est_uncertainty = tri_get_uncertainty(tri_dataset_temp, solution_temp.pos_x, solution_temp.pos_y, solution_temp.pos_z)
+
 					# new position
 					solution.pos_x = solution_temp.pos_x
 					solution.pos_y = solution_temp.pos_y
@@ -1656,9 +1681,9 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 		# estimations
 		if state>0:
 			# do multilateration and store position
-			pos_x_est, pos_y_est, pos_z_est = trilateration_main()
+			pos_x_est, pos_y_est, pos_z_est, uncertainty = trilateration_main()
 			if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
-				# uncertainty
+				# base uncertainty
 				if state==1:
 					est_uncertainty = est_uncertainty1		# state=1
 				elif state==2:
@@ -1672,20 +1697,8 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				solution.pos_y = solution.pos_y
 				solution.pos_z = solution.pos_z
 			else:
-				# already have an uncertainty to compare
-				if bool_new_est_made==True:
-					delta_x = solution.pos_x - pos_x_est
-					delta_y = solution.pos_y - pos_y_est
-					est_uncertainty = math.sqrt(delta_x*delta_x + delta_y*delta_y)		# TODO: maybe not the best way to compute it...
-				# no previous estimation, use base uncertainty, next time we wil have one
-				else:
-					bool_new_est_made=True
-					if state==1:
-						est_uncertainty = est_uncertainty1		# state=1
-					elif state==2:
-						est_uncertainty = est_uncertainty2		# state=2
-					else:
-						est_uncertainty = est_uncertainty3		# state=3/4/5...
+				# computed uncertainty
+				est_uncertainty = uncertainty
 
 				# new position
 				solution.pos_x = pos_x_est
@@ -1938,8 +1951,11 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			solution_temp.pos_y = pos_y_est
 			solution_temp.pos_z = pos_z_est
 
+			# computed uncertainty
+			uncertainty = tri_get_uncertainty(tri_dataset_temp, solution_temp.pos_x, solution_temp.pos_y, solution_temp.pos_z)
+
 			# add estimate to map
-			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, 0, 'temp')
+			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, uncertainty, 'temp')
 
 
 	###################  RETURN  ######################

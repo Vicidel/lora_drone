@@ -352,7 +352,7 @@ int main(int argc, char **argv){
                                 pos_current_goal = pos_drone;
 
                                 // if drone retook off after partial mission: redo last FSM state
-                                if(state!=0) state = state - 1;
+                                if(state!=0 && state!=666) state = state - 1;
                             }
                         }
                     }
@@ -373,7 +373,7 @@ int main(int argc, char **argv){
                             pos_current_goal = pos_drone;
 
                             // if drone retook off after partial mission: redo last FSM state
-                            if(state!=0) state = state - 1;
+                            if(state!=0 && state!=666) state = state - 1;
                         }
                     }
 
@@ -425,7 +425,7 @@ int main(int argc, char **argv){
                             pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
 
                             // if drone retook off after partial mission: redo last FSM state
-                            if(state!=0) state = state - 1;
+                            if(state!=0 && state!=666) state = state - 1;
                         }
                     }
                     /***********************   STILL TRYING   ************************/

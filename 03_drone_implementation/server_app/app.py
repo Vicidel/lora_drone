@@ -103,8 +103,7 @@ class LoRa_datapoint(db.Document):
 	gps_speed 	 = db.FloatField()
 	gps_course 	 = db.IntField()
 
-# class and dataset for drone messages 
-drone_dataset = []
+# class for drone messages 
 class drone_datapoint:
 	pos_x 		 = 666
 	pos_y 		 = 666
@@ -118,9 +117,7 @@ class drone_datapoint:
 	state  		 = 666
 	drone_id     = 1
 
-# matrix for trilateration data	 
-tri_dataset = []
-tri_dataset_temp = []
+# class for trilateration data	 
 class tri_datapoint:
 	pos_x 		= 666
 	pos_y 		= 666
@@ -131,28 +128,25 @@ class tri_datapoint:
 	drone_id    = 666
 	gw_id 		= 666
 
-# to store the solution
+# class for the solution
 class solution_datapoint:
 	pos_x 		= 0
 	pos_y 		= 0
 	pos_z 		= 0
-solution = solution_datapoint()
-solution_temp = solution_datapoint()
 
-# to store the home
+# class for the home
 class home_datapoint:
-#	latitude    = 47.397751 	# Zurich
-#	longitude   = 8.545607 		# Zurich
-#	altitude    = 500 			# Zurich
 	latitude    = 46.513381 	# center of football field
 	longitude   = 6.563056 		# center of football field
 	altitude    = 400 			# center of football field
 	delta_x     = 0				# home is at zero
 	delta_y     = 0				# home is at zero		
 	delta_z     = 0				# home is at zero
-homeR = home_datapoint()
-homeG = home_datapoint()
-homeB = home_datapoint()
+
+# datasets
+drone_dataset 	   = []		# storage of the drone messages
+tri_dataset        = []		# storage of the trilateration messages
+tri_dataset_temp   = []		# storage of the temporary trilateration messages
 
 
 
@@ -180,10 +174,17 @@ gateway_id_RGB 	  = [gateway_corner, gateway_logitech, gateway_printer]
 ##################################  DRONE PARAMETERS  ###################################
 #########################################################################################
 
-# waypoint parameters
+# homes
+homeR = home_datapoint()			# home of the R drone
+homeG = home_datapoint()			# home of the G drone
+homeB = home_datapoint()			# home of the B drone
+
+# altitudes
 flying_altitude   = 20
 delta_fly_alt 	  = [-2, 0, 2]		# for obstacle avoidance, drones don't have same flying altitude
 takeoff_altitude  = 5
+
+# waypoint parameters
 landing_radius    = 4    # circle around landing positions
 hover_time 		  = 4
 base_angle 		  = 0    # for one drone, to go to the 1st wp as fast as possible
@@ -192,9 +193,11 @@ base_angle 		  = 0    # for one drone, to go to the 1st wp as fast as possible
 current_state1 	  = 666
 current_state2 	  = 666
 current_state3 	  = 666
+
+# number of estimations already made
 nb_est_made       = 666
 
-# for 3 drone: are the drones ready for next step
+# for three drone: are the drones ready for next step
 bool_drone1_ready = False
 bool_drone2_ready = False
 bool_drone3_ready = False
@@ -204,19 +207,23 @@ bool_drone1_start = False
 bool_drone2_start = False
 bool_drone3_start = False
 
-# for one or three drones: are the drone online and able to receive the offboard things
+# for one or three drones: are the drone online and able to receive the offboard command
 bool_drone1_online = False
 bool_drone2_online = False
 bool_drone3_online = False
 
 # safety switch
-gmaps_safety_switch  = 0		# 0 for unkill, 1 for kill, 2 for hover, 3 for RTL
+gmaps_safety_switch  = 0		# 0 for none, 1 for kill, 2 for hover, 3 for RTL
 
 
 
 #########################################################################################
 ###############################  LOCALIZATION PARAMETERS  ###############################
 #########################################################################################
+
+# solution storage
+solution 		   = solution_datapoint()		# current solution
+solution_temp 	   = solution_datapoint()		# temporary current solution
 
 # localization parameters
 loop_todo		  = 1
@@ -227,16 +234,16 @@ network_y 		  = 0	 	# used parameters (will be changed)
 network_z 		  = 0
 
 # radius of waypoints around est
-circle_radius     = 666     # used parameters (will be changed)
-circle_radius_v1  = 100	    # base parameter when starting the simulation
-circle_radius_v2  = 50	    # second parameter for second loop
-circle_radius_v3  = 20 		# third parameter for third loop
+circle_radius     = 666     # used parameter, will be changed to the value below
+circle_radius_v1  = 100	    # radius for first loop 
+circle_radius_v2  = 50	    # radius for second loop
+circle_radius_v3  = 20 		# radius for third and following loops
 
 # uncertainties radius
-est_uncertainty_net  = 150
-est_uncertainty1  = 50
-est_uncertainty2  = 20
-est_uncertainty3  = 10
+est_uncertainty_net  = 150	# radius of uncertainty for the network
+est_uncertainty1  = 50		# base uncertainty radius for the first estimation
+est_uncertainty2  = 20		# base uncertainty radius for the second estimation
+est_uncertainty3  = 10		# base uncertainty radius for the third estimation
 
 # if we already made estimations before, compare it with new ones
 bool_new_est_made = False
@@ -302,7 +309,7 @@ def print_tri_dataset():
 
 
 #########################################################################################
-##################################  GMAPS API THINGS  ###################################
+##################################  FIREBASE STORAGE  ###################################
 #########################################################################################
 
 # store position in Firebase

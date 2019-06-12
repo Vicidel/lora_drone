@@ -18,7 +18,7 @@
 var map, oms, iw
 
 // Firebase reference
-var firebase = new Firebase('https://drone-3bd2a.firebaseio.com/');
+var firebase = new Firebase('https://lora-drone-v2.firebaseio.com/');
 
 // create base coordinates
 var lat_zurich = 47.39784;
@@ -41,9 +41,6 @@ var altitudeR = 0;
 var altitudeG = 0;
 var altitudeB = 0;
 
-// geofence
-var geofence_radius = 0;        // TODO: 0 because can't click through circle...
-
 // listener active for click
 var click_listener_active = false
 
@@ -51,10 +48,14 @@ var click_listener_active = false
 var delay_after_takeoff = 8000;
 
 // checks drone onlines ready for takeoff and server online
-var delay_online_check = 500;
+var delay_online_check = 3000;
 
 // to (de)activate buttons
 var bool_some_drone_is_flying = false;
+
+// colors for buttons
+var color_can_click = '#fafafa';
+var color_clicked = '#aaa';
 
 
 
@@ -69,7 +70,7 @@ function main() {
 
     // define the map itself
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: lat_zurich, lng: lng_zurich},
+        center: {lat: lat_lausanne, lng: lng_lausanne},
         zoom: 16,
         scaleControl: true,
         styles: [{
@@ -123,18 +124,21 @@ function main() {
     lat_last_est = 0
     lng_last_est = 0
 
-    // legend
-    init_legend(map);
-
-    // states
-    init_states(map);
+    // legend, states, param, network buttons
+    init_legend();
+    init_states();
+    init_takeoff_buttons();
+    init_param();
+    init_network_param();
+    init_safeties();
+    init_results();
 
     // start Firebase and database listeners
-    init_firebase_homes(map, markers, circles);         // homes
-    init_firebase_drones(map, markers, paths);          // drones, paths
-    init_firebase_waypoints(map, wp_lists);             // waypoints
-    init_firebase_estimations(map, markers, circles);   // estimations
-    init_firebase_node(map, markers);                   // node ground truth
+    firebase_homes(markers);                  // homes
+    firebase_drones(markers, paths);          // drones, paths
+    firebase_waypoints(wp_lists);             // waypoints
+    firebase_estimations(markers, circles);   // estimations
+    firebase_node(markers);                   // node ground truth
 
     // initial button colors: call callbacks as if clicked
     takeoff_button_cb('X');
@@ -142,7 +146,7 @@ function main() {
     network_button_cb('none');
 
     // initialize the periodic check of drone and server online
-    check_drone_online();
+    check_drone_online(markers);
 
     // fills the parameters and state fields
     get_base_param();
@@ -158,16 +162,27 @@ function main() {
 // prints a checklist when loading the app
 function print_checklist(){
     window.alert(`CHECKLIST:\n
-    * check safety settings
-        - geofence
-        - RTL
-        - communication loss
+    * check safety settings in QGC
+        - geofence: action and radius
+        - RTL: action and altitude
+        - communication loss: action
+    * change parameters in QGC
+        - MPC_XY_VEL_MAX: maximum horizontal speed
+        - MPC_TILTMAX_AIR: maximum tilt angle 
+    * check radio calibration in QGC
+    * if in a new testing place, run droneR code once
+        - set the zero for conversions
+        - otherwise problem in conversions
     * put all drones in MANUAL mode
         - drones will takeoff if in OFFBOARD
     * buttons are deactivated on drone takeoff 
         - if drone landed, press kill to activate again
-        - safeties are always active
+    * safeties are always active
+        - keyboard shortcuts khr
     * launch beaconing mode on the node
+    * secret keys: >+"*ç
+        - to print datasets
+    * check that the gateways IDs are correct (secret key %)
     * TODO: add more
         `)
 }
@@ -198,6 +213,8 @@ function init_listeners(){
         if(e.keyCode==62){
             if(window.confirm("Key '>' pressed, do you want to empty the database?")){
                 console.log("Deleting Firebase database")
+
+                // empty database
                 const url='http://victor.scapp.io/firebase/empty';
                 const data={'id': 1}
                 axios({method: 'POST', url: url, data: data})
@@ -205,6 +222,15 @@ function init_listeners(){
                 axios({method: 'POST', url: url, data: data2})
                 const data3={'id': 3}
                 axios({method: 'POST', url: url, data: data3})
+
+                // clear states
+                stateR = 'UNKNOWN'
+                stateG = 'UNKNOWN'
+                stateB = 'UNKNOWN'
+                altitudeR = 0
+                altitudeG = 0
+                altitudeB = 0
+                change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
             }
         }
 
@@ -224,20 +250,50 @@ function init_listeners(){
             }
         }
 
-        // print drone_temp dataset
+        // print tri_dataset
         if(e.keyCode==42){
-            if(window.confirm(`Key '*' pressed, do you want to popup-print the temporary drone dataset?`)){
-                console.log("Popup-printing drone_temp dataset")
-                window.open('http://victor.scapp.io/print/drone_dataset_temp');
-            }
-        }
-
-        // print tri dataset
-        if(e.keyCode==231){
-            if(window.confirm(`Key 'ç' pressed, do you want to popup-print the trilateration dataset?`)){
+            if(window.confirm(`Key '*' pressed, do you want to popup-print the trilateration dataset?`)){
                 console.log("Popup-printing trilateration dataset")
                 window.open('http://victor.scapp.io/print/tri_dataset');
             }
+        }
+
+        // print tri_dataset_temp
+        if(e.keyCode==231){
+            if(window.confirm(`Key 'ç' pressed, do you want to popup-print the temporary trilateration dataset?`)){
+                console.log("Popup-printing temporary trilateration dataset")
+                window.open('http://victor.scapp.io/print/tri_dataset_temp');
+            }
+        }
+
+        // change gateway IDs
+        if(e.keyCode==37){
+            if(window.confirm(`Key '%' pressed, do you want to change the gateway IDs?`)){
+                console.log("Changing gateway IDs");
+
+                // change gateway IDs
+                var gatewayR = prompt("Gateway R: ", "004A1092");
+                var gatewayG = prompt("Gateway G: ", "004A1093");
+                var gatewayB = prompt("Gateway B: ", "004A0DB4");
+                const url='http://victor.scapp.io/param/gateways';
+                const data={'gatewayR': gatewayR, 'gatewayG': gatewayG, 'gatewayB': gatewayB}
+                axios({method: 'POST', url: url, data: data})
+            }
+        }
+
+        // kill
+        if(e.keyCode==107){
+            kill_button_cb(1)
+        }
+
+        // hover
+        if(e.keyCode==104){
+            kill_button_cb(2)
+        }
+
+        // return
+        if(e.keyCode==114){
+            kill_button_cb(3)
         }
     };
 }
@@ -259,8 +315,8 @@ function param_change(){
     var takeoff = parseFloat(document.getElementById("takeoff").value);
 
     // check validity 
-    if(loop_todo!=1 && loop_todo!=2 && loop_todo!=3){
-        window.alert("Loops todo parameter is not correct, should be 1, 2 or 3")
+    if(loop_todo<=0){
+        window.alert("Loops todo parameter is not correct, should be positive")
         return;
     }
     if(rad1<0 || rad2<0 || rad3<0){
@@ -273,6 +329,10 @@ function param_change(){
     }
     if(flight<0 || takeoff<0){
         window.alert("Altitudes parameters are not correct, should be positive")
+        return;
+    }
+    if(flight<5 || takeoff<2){
+        window.alert("Altitudes parameters are too small")
         return;
     }
     if(flight<=takeoff){
@@ -317,7 +377,7 @@ function change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB){
 }
 
 // testing if drone is online
-function check_drone_online(){
+function check_drone_online(markers){
 
     // check online from server
     const url='http://victor.scapp.io/param/check_online';
@@ -325,6 +385,7 @@ function check_drone_online(){
     .catch(function (error){
         if(window.confirm("Server is offline\nOK to try again\n")){
             get_base_param();
+            markers.network.setMap(null);
         }
     })
     .then(function(response){
@@ -366,9 +427,9 @@ function check_drone_online(){
         document.getElementById("network_place").disabled = true;
         document.getElementById("network_get").disabled = true;
         document.getElementById("network_closeby").disabled = true;
+        document.getElementById("network_latlng").disabled = true;
 
         // parameters
-        document.getElementById("send").disabled = true;
         document.getElementById("send2").disabled = true;
         document.getElementById("loop_todo").disabled = true;
         document.getElementById("rad1").disabled = true;
@@ -384,9 +445,9 @@ function check_drone_online(){
         document.getElementById("network_place").disabled = false;
         document.getElementById("network_get").disabled = false;
         document.getElementById("network_closeby").disabled = false;
+        document.getElementById("network_latlng").disabled = false;
 
         // parameters
-        document.getElementById("send").disabled = false;
         document.getElementById("send2").disabled = false;
         document.getElementById("loop_todo").disabled = false;
         document.getElementById("rad1").disabled = false;
@@ -398,7 +459,9 @@ function check_drone_online(){
     }
 
     // call function again after X seconds
-    setTimeout(check_drone_online, delay_online_check);
+    setTimeout(function(){
+        check_drone_online(markers)
+    }, delay_online_check);
 }
 
 // compute distance between node and est
@@ -446,7 +509,7 @@ function print_results(){
 
     // print results in header
     document.querySelector('.results').innerHTML = 
-        "node:("+lat_node.toFixed(5)+","+lng_node.toFixed(5)+"),est:("+lat_last_est.toFixed(5)+","+lng_last_est.toFixed(5)+"), distance:("+compute_result_dist()+"m)";
+        "Node:("+lat_node.toFixed(5)+","+lng_node.toFixed(5)+"), est:("+lat_last_est.toFixed(5)+","+lng_last_est.toFixed(5)+"), distance:("+compute_result_dist()+"m)";
 }
 
 
@@ -460,31 +523,31 @@ function init_centering_controls() {
 
     // create div for centering button
     var centerControlDiv = document.createElement('div');
-    var centerControl = new center_control(centerControlDiv, map, lat_lausanne, lng_lausanne, "Lausanne");
+    var centerControl = new center_control(centerControlDiv, lat_lausanne, lng_lausanne, "Lausanne");
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 
     // create div for centering button
     var centerControlDiv2 = document.createElement('div');
-    var centerControl2 = new center_control(centerControlDiv2, map, lat_zurich, lng_zurich, "Zurich");
+    var centerControl2 = new center_control(centerControlDiv2, lat_zurich, lng_zurich, "Zurich");
     centerControlDiv2.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
 
     // create div for centering button
     var centerControlDiv3 = document.createElement('div');
-    var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
+    var centerControl3 = new center_control(centerControlDiv3, 0, 0, "Zero");
     centerControlDiv3.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
 
     // create div for centering button
     var centerControlDiv4 = document.createElement('div');
-    var centerControl4 = new center_control(centerControlDiv4, map, lat_node, lng_node, "Node");
+    var centerControl4 = new center_control(centerControlDiv4, lat_node, lng_node, "Node");
     centerControlDiv4.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv4);
 }
 
 // creates a GUI for centering map
-function center_control(control_div, map, lat, lng, string){
+function center_control(control_div, lat, lng, string){
 
     // Set CSS for the control border.
     var controlUI = document.createElement('div');
@@ -493,14 +556,14 @@ function center_control(control_div, map, lat, lng, string){
     controlUI.style.borderRadius = '3px';
     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
     controlUI.style.cursor = 'pointer';
-    controlUI.style.marginBottom = '22px';
+    controlUI.style.margin = '3px';
     controlUI.style.textAlign = 'center';
     controlUI.title = 'Click to recenter the map';
     control_div.appendChild(controlUI);
 
     // Set CSS for the control interior.
     var controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
+    controlText.style.color = '#000';
     controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
     controlText.style.fontSize = '14px';
     controlText.style.lineHeight = '20px';
@@ -522,7 +585,7 @@ function center_control(control_div, map, lat, lng, string){
 }
 
 // init states
-function init_states(map){
+function init_states(){
     // create states object
     var states = document.getElementById('states');
 
@@ -545,8 +608,17 @@ function init_states(map){
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(states);
 }
 
+// init param
+function init_param(){
+    // create param object
+    var param = document.getElementById('param');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(param);
+}
+
 // init legend
-function init_legend(map){
+function init_legend(){
     // create legend object
     var legend = document.getElementById('legend');
 
@@ -572,17 +644,17 @@ function init_legend(map){
     
     // add node
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/node_circle.png width=20> Node ground truth (goal)'
+    div.innerHTML = '<img src=marker/node_circle.png width=20> Node ground truth'
     legend.appendChild(div);
 
     // add network
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/network_circle.png width=20> Network estimate (start)'
+    div.innerHTML = '<img src=marker/network_circle.png width=20> Network estimate'
     legend.appendChild(div);
 
     // add estcont
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Temporary estimate (continuous)'
+    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Temporary estimation'
     legend.appendChild(div);
 
     // add est
@@ -594,6 +666,42 @@ function init_legend(map){
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 }
 
+// init network buttons
+function init_network_param(){
+    // create param object
+    var network_param = document.getElementById('network_param');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(network_param);
+}
+
+// init takeoff buttons
+function init_takeoff_buttons() {
+    // create takeoff_button object
+    var takeoff_button = document.getElementById('takeoff_button');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(takeoff_button);
+}
+
+// init safety buttons
+function init_safeties() {
+    // create safeties object
+    var safeties = document.getElementById('safeties');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(safeties);
+}
+
+// init results
+function init_results() {
+    // create results object
+    var results = document.getElementById('results');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(results);
+}
+
 // get lora network estimate
 function get_lora_network_estimate() {
 
@@ -603,14 +711,14 @@ function get_lora_network_estimate() {
         if(response.data=='No location received...') {
             console.log(response.data)
             window.alert("No location data was ever received by the server, please place network manually");
-            network_button_cb(this, 'none');
+            network_button_cb('none');
         }
         else{
             console.log(response.data)
             window.alert(response.data)
             //var lat = parseFloat(response.data.substring(4+response.data.indexOf('lat='), response.data.length))
             //var lng = parseFloat(response.data.substring(4+response.data.indexOf('lng='), response.data.length))
-            network_button_cb(this, 'none');
+            network_button_cb('none');
         }
     })
 }
@@ -622,8 +730,8 @@ function get_lora_network_estimate() {
 //################################  FIREBASE OBJECTS ######################################
 //#########################################################################################
 
-// init Firebase for home
-function init_firebase_homes(map, markers, circles) {
+// Firebase for home
+function firebase_homes(markers) {
 
     // reference in Firebase
     var home_refR = firebase.child('homeR');
@@ -641,11 +749,6 @@ function init_firebase_homes(map, markers, circles) {
         markers.homeR.setPosition(new google.maps.LatLng(lat, lng));
         oms.addMarker(markers.homeR);
 
-        // move geofence circle
-        circles.geoR.setCenter(new google.maps.LatLng(lat, lng));
-        circles.geoR.setRadius(geofence_radius);
-        circles.geoR.setMap(map);
-
         // set start as home
         lat_homeR = lat;
         lng_homeR = lng;
@@ -658,7 +761,6 @@ function init_firebase_homes(map, markers, circles) {
     });
     home_refR.on('child_removed', function(snapshot) {
         markers.homeR.setMap(null)
-        circles.geoR.setMap(null)
     });
 
     // for homeG
@@ -672,11 +774,6 @@ function init_firebase_homes(map, markers, circles) {
         markers.homeG.setPosition(new google.maps.LatLng(lat, lng));
         oms.addMarker(markers.homeG);
 
-        // move geofence circle
-        circles.geoG.setCenter(new google.maps.LatLng(lat, lng));
-        circles.geoG.setRadius(geofence_radius);
-        circles.geoG.setMap(map);
-
         // set start as home
         lat_homeG = lat;
         lng_homeG = lng;
@@ -689,7 +786,6 @@ function init_firebase_homes(map, markers, circles) {
     });
     home_refG.on('child_removed', function(snapshot) {
         markers.homeG.setMap(null)
-        circles.geoG.setMap(null)
     });
 
     // for homeB
@@ -703,11 +799,6 @@ function init_firebase_homes(map, markers, circles) {
         markers.homeB.setPosition(new google.maps.LatLng(lat, lng));
         oms.addMarker(markers.homeB);
 
-        // move geofence circle
-        circles.geoB.setCenter(new google.maps.LatLng(lat, lng));
-        circles.geoB.setRadius(geofence_radius);
-        circles.geoB.setMap(map);
-
         // set start as home
         lng_homeB = lat;
         lng_homeB = lng;
@@ -720,12 +811,11 @@ function init_firebase_homes(map, markers, circles) {
     });
     home_refB.on('child_removed', function(snapshot) {
         markers.homeB.setMap(null)
-        circles.geoB.setMap(null)
     });
 }
 
-// init Firebase for drones and paths
-function init_firebase_drones(map, markers, paths) {
+// Firebase for drones and paths
+function firebase_drones(markers, paths) {
 
     // reference in Firebase
     var drone_refR = firebase.child('droneR');
@@ -847,8 +937,8 @@ function init_firebase_drones(map, markers, paths) {
     });
 }
 
-// init Firebase for waypoints
-function init_firebase_waypoints(map, wp_lists) {
+// Firebase for waypoints
+function firebase_waypoints(wp_lists) {
 
     // reference in Firebase
     var wayp_refR  = firebase.child('waypointR');
@@ -866,12 +956,21 @@ function init_firebase_waypoints(map, wp_lists) {
             item.setIcon('marker/waypointR_old.png');
         });
 
+        // create title for waypoint
+        var title;
+        if(snapshot.val().id=='WP'){
+            title = 'Waypoint R (#'+wp_lists.wpR.length+')';
+        }
+        else{
+            title = 'Waypoint R (#'+wp_lists.wpR.length+','+snapshot.val().id+')';
+        }
+
         // create new marker
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointR_current.png',
-            title: 'Waypoint R',
+            title: title,
         });
         oms.addMarker(waypoint_marker);
 
@@ -903,12 +1002,21 @@ function init_firebase_waypoints(map, wp_lists) {
             item.setIcon('marker/waypointG_old.png');
         });
 
+        // create title for waypoint
+        var title;
+        if(snapshot.val().id=='WP'){
+            title = 'Waypoint G (#'+wp_lists.wpG.length+')';
+        }
+        else{
+            title = 'Waypoint G (#'+wp_lists.wpG.length+','+snapshot.val().id+')';
+        }
+
         // create new marker
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
             icon: 'marker/waypointG_current.png',
-            title: 'Waypoint G',
+            title: title,
         });
         oms.addMarker(waypoint_marker);
 
@@ -937,16 +1045,25 @@ function init_firebase_waypoints(map, wp_lists) {
 
         // change color of last waypoints
         wp_lists.wpB.forEach(function(item, index, array){
-            item.setIcon('marker/waypointB_current.png');
+            item.setIcon('marker/waypointB_old.png');
         });
         oms.addMarker(waypoint_marker);
+
+        // create title for waypoint
+        var title;
+        if(snapshot.val().id=='WP'){
+            title = 'Waypoint B (#'+wp_lists.wpB.length+')';
+        }
+        else{
+            title = 'Waypoint B (#'+wp_lists.wpB.length+','+snapshot.val().id+')';
+        }
 
         // create new marker
         var waypoint_marker = new google.maps.Marker({
             position: {lat: lat, lng: lng},
             map: map,
-            icon: 'marker/waypointB_old.png',
-            title: 'Waypoint B',
+            icon: 'marker/waypointB_current.png',
+            title: title,
         });
 
         // add it to list
@@ -967,8 +1084,8 @@ function init_firebase_waypoints(map, wp_lists) {
     });
 }
 
-// init Firebase for estimations
-function init_firebase_estimations(map, markers, circles) {
+// Firebase for estimations
+function firebase_estimations(markers, circles) {
 
     // reference in Firebase
     var netw_ref   = firebase.child('network');
@@ -1090,8 +1207,8 @@ function init_firebase_estimations(map, markers, circles) {
     });
 }   
 
-// init Firebase for node
-function init_firebase_node(map, markers) {
+// Firebase for node
+function firebase_node(markers) {
 
     // reference in Firebase
     var node_ref = firebase.child('node');
@@ -1136,33 +1253,33 @@ function init_firebase_node(map, markers) {
 function kill_button_cb(kill){
     if(kill==1){
         console.log("Sending kill command to all drones");
-        document.getElementById('unkill').style.backgroundColor='#fff';
+        document.getElementById('unkill').style.backgroundColor=color_can_click;
         document.getElementById('kill').style.backgroundColor='#f55';
-        document.getElementById('hold').style.backgroundColor='#fff';
-        document.getElementById('rtl').style.backgroundColor='#fff';
+        document.getElementById('hold').style.backgroundColor=color_can_click;
+        document.getElementById('rtl').style.backgroundColor=color_can_click;
 
         // reactivate things
         bool_some_drone_is_flying = false;
     }
     else if(kill==0){
-        document.getElementById('unkill').style.backgroundColor='#aaa';
-        document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hold').style.backgroundColor='#fff';
-        document.getElementById('rtl').style.backgroundColor='#fff';
+        document.getElementById('unkill').style.backgroundColor=color_clicked;
+        document.getElementById('kill').style.backgroundColor=color_can_click;
+        document.getElementById('hold').style.backgroundColor=color_can_click;
+        document.getElementById('rtl').style.backgroundColor=color_can_click;
     }
     else if(kill==2){
         console.log("Sending hover command to all drones");
-        document.getElementById('unkill').style.backgroundColor='#fff';
-        document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hold').style.backgroundColor='#aaa';
-        document.getElementById('rtl').style.backgroundColor='#fff';
+        document.getElementById('unkill').style.backgroundColor=color_can_click;
+        document.getElementById('kill').style.backgroundColor=color_can_click;
+        document.getElementById('hold').style.backgroundColor=color_clicked;
+        document.getElementById('rtl').style.backgroundColor=color_can_click;
     }
     else if(kill==3){
         console.log("Sending RTL coommand to all drones");
-        document.getElementById('unkill').style.backgroundColor='#fff';
-        document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hold').style.backgroundColor='#fff';
-        document.getElementById('rtl').style.backgroundColor='#aaa';
+        document.getElementById('unkill').style.backgroundColor=color_can_click;
+        document.getElementById('kill').style.backgroundColor=color_can_click;
+        document.getElementById('hold').style.backgroundColor=color_can_click;
+        document.getElementById('rtl').style.backgroundColor=color_clicked;
     }
 
     // POST on server
@@ -1182,15 +1299,18 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 1, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#aaa';
-        document.getElementById('G').style.backgroundColor='#fff';
-        document.getElementById('B').style.backgroundColor='#fff';
-        document.getElementById('X').style.backgroundColor='#fff';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_clicked;
+        document.getElementById('G').style.backgroundColor=color_can_click;
+        document.getElementById('B').style.backgroundColor=color_can_click;
+        document.getElementById('X').style.backgroundColor=color_can_click;
+        document.getElementById('all').style.backgroundColor=color_can_click;
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
-        setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+        setTimeout(function(){
+            console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+            takeoff_button_cb('X')
+        }, delay_after_takeoff);
 
         // disable network estimate change
         network_button_cb('none');
@@ -1203,15 +1323,18 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 0, 'bool_drone2_start': 1, 'bool_drone3_start': 0};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#fff';
-        document.getElementById('G').style.backgroundColor='#aaa';
-        document.getElementById('B').style.backgroundColor='#fff';
-        document.getElementById('X').style.backgroundColor='#fff';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_can_click;
+        document.getElementById('G').style.backgroundColor=color_clicked;
+        document.getElementById('B').style.backgroundColor=color_can_click;
+        document.getElementById('X').style.backgroundColor=color_can_click;
+        document.getElementById('all').style.backgroundColor=color_can_click;
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
-        setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+        setTimeout(function(){
+            console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+            takeoff_button_cb('X')
+        }, delay_after_takeoff);
 
         // disable network estimate change
         network_button_cb('none');
@@ -1224,15 +1347,18 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 1};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#fff';
-        document.getElementById('G').style.backgroundColor='#fff';
-        document.getElementById('B').style.backgroundColor='#aaa';
-        document.getElementById('X').style.backgroundColor='#fff';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_can_click;
+        document.getElementById('G').style.backgroundColor=color_can_click;
+        document.getElementById('B').style.backgroundColor=color_clicked;
+        document.getElementById('X').style.backgroundColor=color_can_click;
+        document.getElementById('all').style.backgroundColor=color_can_click;
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
-        setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+        setTimeout(function(){
+            console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+            takeoff_button_cb('X')
+        }, delay_after_takeoff);
 
         // disable network estimate change
         network_button_cb('none');
@@ -1245,11 +1371,11 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#fff';
-        document.getElementById('G').style.backgroundColor='#fff';
-        document.getElementById('B').style.backgroundColor='#fff';
-        document.getElementById('X').style.backgroundColor='#aaa';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_can_click;
+        document.getElementById('G').style.backgroundColor=color_can_click;
+        document.getElementById('B').style.backgroundColor=color_can_click;
+        document.getElementById('X').style.backgroundColor=color_clicked;
+        document.getElementById('all').style.backgroundColor=color_can_click;
     }
     if(drone_id=='all') {
         var confirmation = window.confirm("Are you sure?")
@@ -1259,15 +1385,18 @@ function takeoff_button_cb(drone_id) {
             data={'bool_drone1_start': 1, 'bool_drone2_start': 1, 'bool_drone3_start': 1};
 
             // buttons color
-            document.getElementById('R').style.backgroundColor='#fff';
-            document.getElementById('G').style.backgroundColor='#fff';
-            document.getElementById('B').style.backgroundColor='#fff';
-            document.getElementById('X').style.backgroundColor='#fff';
-            document.getElementById('all').style.backgroundColor='#aaa';
+            document.getElementById('R').style.backgroundColor=color_can_click;
+            document.getElementById('G').style.backgroundColor=color_can_click;
+            document.getElementById('B').style.backgroundColor=color_can_click;
+            document.getElementById('X').style.backgroundColor=color_can_click;
+            document.getElementById('all').style.backgroundColor=color_clicked;
 
             // go back in None after X seconds
             console.log("Setting all drones to takeoff, disabling network estimate change");
-            setTimeout(function(){console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");takeoff_button_cb(this, 'X')}, delay_after_takeoff);
+            setTimeout(function(){
+                console.log("Setting drone takeoff back to none ("+delay_after_takeoff/1000+" seconds passed)");
+                takeoff_button_cb('X')
+            }, delay_after_takeoff);
 
             // disable network estimate change
             network_button_cb('none');
@@ -1292,10 +1421,11 @@ function network_button_cb(type) {
     // different types of network estimate 
     if(type=='get') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#aaa';
-        document.getElementById('network_place').style.backgroundColor='#fff';
-        document.getElementById('network_none').style.backgroundColor='#fff';
-        document.getElementById('network_closeby').style.backgroundColor='#fff';
+        document.getElementById('network_get').style.backgroundColor=color_clicked;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
 
         // click listener
         click_listener_active = false
@@ -1305,37 +1435,63 @@ function network_button_cb(type) {
     }
     if(type=='place') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#fff';
-        document.getElementById('network_place').style.backgroundColor='#aaa';
-        document.getElementById('network_none').style.backgroundColor='#fff';
-        document.getElementById('network_closeby').style.backgroundColor='#fff';
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_clicked;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
 
         // click listener
         click_listener_active = true
     }
     if(type=='none') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#fff';
-        document.getElementById('network_place').style.backgroundColor='#fff';
-        document.getElementById('network_none').style.backgroundColor='#aaa';
-        document.getElementById('network_closeby').style.backgroundColor='#fff';
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_clicked;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
 
         // click listener
         click_listener_active = false
     }
-    if(type=='node') {
+    if(type=='latlng') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#fff';
-        document.getElementById('network_place').style.backgroundColor='#fff';
-        document.getElementById('network_none').style.backgroundColor='#fff';
-        document.getElementById('network_closeby').style.backgroundColor='#aaa';
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_clicked;
 
         // click listener
         click_listener_active = false
 
+        // ask user input
+        var lat = prompt("Latitude: ", "46.51341")
+        var lng = prompt("Longitude: ", "6.356288")
+
+        // post network estimate on server
+        const url='http://victor.scapp.io/lora/network_estimate_latlng';
+        const data={'lat': lat, 'lng': lng}
+        axios({method: 'POST', url: url, data: data})
+    }
+    if(type=='node') {
+        // button color
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_clicked;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
+
+        // click listener
+        click_listener_active = false
+
+        // get max distance from node
+        var max_dist = prompt("Maximum distance from node: ", "0");
+
         // get random things around node
-        var dist_meters = Math.random()*200; 
-        var angle_degrees = Math.random()*2*Math.PI;
+        var dist_meters = Math.random()*max_dist; 
+        var angle_degrees = Math.random()*360;
         var answer = shift_latlng(lat_node, lng_node, dist_meters, angle_degrees)
         var lat = answer.lat; var lng = answer.lng;
 
@@ -1477,65 +1633,42 @@ function create_circles() {
 
     // for network estimations
     var network_circle1 = new google.maps.Circle({
-        strokeColor: '#FF0000',
+        strokeColor: '#000000',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#FF0000',
+        fillColor: '#222222',       // for network, grey
         fillOpacity: 0.1,
     })
     var network_circle2 = new google.maps.Circle({
         strokeColor: '#FFBB00',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#FF9900',
+        fillColor: '#FF9900',       // for est1, orange
         fillOpacity: 0.2,
     })
     var network_circle3 = new google.maps.Circle({
         strokeColor: '#FFFF00',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#FFFF00',
+        fillColor: '#FFFF00',       // for est2, yellow
         fillOpacity: 0.1,
     })
     var network_circle4 = new google.maps.Circle({
         strokeColor: '#00FF00',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#00FF00',
+        fillColor: '#00FF00',       // for est3, green
         fillOpacity: 0.1,
     })
     var network_circle5 = new google.maps.Circle({
         strokeColor: '#000000',
         strokeOpacity: 0.5,
         strokeWeight: 2,
-        fillColor: '#000000',
-        fillOpacity: 0.1,
-    })
-
-    // for geofences
-    var home_circleR = new google.maps.Circle({
-        strokeColor: '#550000',
-        strokeOpacity: 1,
-        strokeWeight: 1,
-        fillColor: '#FFF',
-        fillOpacity: 0,
-    });
-    var home_circleG = new google.maps.Circle({
-        strokeColor: '#005500',
-        strokeOpacity: 1,
-        strokeWeight: 1,
-        fillColor: '#FFF',
-        fillOpacity: 0,
-    });
-    var home_circleB = new google.maps.Circle({
-        strokeColor: '#000055',
-        strokeOpacity: 1,
-        strokeWeight: 1,
-        fillColor: '#FFF',
-        fillOpacity: 0,
+        fillColor: '#000000',       // for temp est, black
+        fillOpacity: 0.15,
     });
 
-    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, c4: network_circle4, c_cont: network_circle5, geoR: home_circleR, geoG: home_circleG, geoB: home_circleB};
+    return {c1: network_circle1, c2: network_circle2, c3: network_circle3, c4: network_circle4, c_cont: network_circle5};
 }
 
 // creates the waypoints lists (empty)
@@ -1599,7 +1732,7 @@ function shift_latlng(lat1, lon1, dist_meters, bearing_degrees){
     //lon1 = lon1 * Math.PI / 180;
 
     var lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) + Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
-    var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2));
+    var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) * Math.cos(lat1), Math.cos(dist) - Math.sin(lat1) * Math.sin(lat2)) *180 / Math.PI;
 
     if (isNaN(lat2) || isNaN(lon2)) return null;
 

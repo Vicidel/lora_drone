@@ -120,14 +120,14 @@ function main() {
     lat_last_est = 0
     lng_last_est = 0
 
-    // legend
+    // legend, states, param, network buttons
     init_legend();
-
-    // states
     init_states();
-
-    // param
+    init_takeoff_buttons();
     init_param();
+    init_network_param();
+    init_safeties();
+    init_results();
 
     // start Firebase and database listeners
     firebase_homes(markers);                  // homes
@@ -505,7 +505,7 @@ function print_results(){
 
     // print results in header
     document.querySelector('.results').innerHTML = 
-        "node:("+lat_node.toFixed(5)+","+lng_node.toFixed(5)+"),est:("+lat_last_est.toFixed(5)+","+lng_last_est.toFixed(5)+"), distance:("+compute_result_dist()+"m)";
+        "Node:("+lat_node.toFixed(5)+","+lng_node.toFixed(5)+"), est:("+lat_last_est.toFixed(5)+","+lng_last_est.toFixed(5)+"), distance:("+compute_result_dist()+"m)";
 }
 
 
@@ -610,7 +610,7 @@ function init_param(){
     var param = document.getElementById('param');
 
     // push on map
-    map.controls[google.maps.ControlPosition.LEFT_TOP].push(param);
+    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(param);
 }
 
 // init legend
@@ -660,6 +660,42 @@ function init_legend(){
 
     // push on map
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+}
+
+// init network buttons
+function init_network_param(){
+    // create param object
+    var network_param = document.getElementById('network_param');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(network_param);
+}
+
+// init takeoff buttons
+function init_takeoff_buttons() {
+    // create takeoff_button object
+    var takeoff_button = document.getElementById('takeoff_button');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(takeoff_button);
+}
+
+// init safety buttons
+function init_safeties() {
+    // create safeties object
+    var safeties = document.getElementById('safeties');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(safeties);
+}
+
+// init results
+function init_results() {
+    // create results object
+    var results = document.getElementById('results');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(results);
 }
 
 // get lora network estimate

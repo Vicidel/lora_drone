@@ -126,6 +126,9 @@ function main() {
     // states
     init_states(map);
 
+    // param
+    init_param(map);
+
     // start Firebase and database listeners
     firebase_homes(map, markers);                  // homes
     firebase_drones(map, markers, paths);          // drones, paths
@@ -406,7 +409,6 @@ function check_drone_online(markers){
         document.getElementById("network_latlng").disabled = true;
 
         // parameters
-        document.getElementById("send").disabled = true;
         document.getElementById("send2").disabled = true;
         document.getElementById("loop_todo").disabled = true;
         document.getElementById("rad1").disabled = true;
@@ -425,7 +427,6 @@ function check_drone_online(markers){
         document.getElementById("network_latlng").disabled = false;
 
         // parameters
-        document.getElementById("send").disabled = false;
         document.getElementById("send2").disabled = false;
         document.getElementById("loop_todo").disabled = false;
         document.getElementById("rad1").disabled = false;
@@ -584,6 +585,15 @@ function init_states(map){
 
     // push on map
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(states);
+}
+
+// init param
+function init_param(map){
+    // create param object
+    var param = document.getElementById('param');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.LEFT_TOP].push(param);
 }
 
 // init legend

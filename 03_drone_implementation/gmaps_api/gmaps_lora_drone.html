@@ -30,6 +30,9 @@
             .button:disabled {
                 color: #888;
             }
+            input{
+                width: 30px;
+            }
             html, body {
                 height: 100%;
                 margin: 0;
@@ -37,11 +40,11 @@
             }
             #gui_elements{
                 line-height: var(--gui-line-height);
-                height: calc(6 * var(--gui-line-height));
+                height: calc(4 * var(--gui-line-height));
                 width: 100%;
             }
             #map {
-                height: calc(100% - calc(6 * var(--gui-line-height)));
+                height: calc(100% - calc(4 * var(--gui-line-height)));
                 width: 100%;
             }
             #legend {
@@ -68,6 +71,20 @@
                 margin-top: 0;
             }
             #states img {
+                vertical-align: middle;
+            }
+
+            #param {
+                font-family: Arial, sans-serif;
+                background: #fafafa;
+                padding: 10px;
+                margin: 10px;
+                border: 2px solid #555;
+            }
+            #param h3 {
+                margin-top: 0;
+            }
+            #param img {
                 vertical-align: middle;
             }
         </style>
@@ -107,23 +124,6 @@
                     <button class="button" id="rtl" title="Stops the drone program and return to takeoff position." type="submit" onclick="kill_button_cb(3)">RTL</button>
                 </div>
 
-                <!-- Parameter change and display -->
-                <form id="form">
-                    <b title="Defines the waypoints parameters for the path. Send using the Submit button.">Waypoints parameters:</b> 
-                    loop(s):<input type="text" title="Number of loops done by the program. More loops add precision but increases flight time. Currently 1 to 3 are supported." size="1" id="loop_todo" value="0">, 
-                    radius 1:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the first algorithm loop. Obtained through MATLAB optimization simulations." id="rad1" value="0">, 
-                    radius 2:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the second (if applicable) algorithm loop. Obtained through MATLAB optimization simulations." id="rad2" value="0">
-                    radius 3+:<input type="text" size="1" title="Radius of the circle on which the drone position themselves during the third (if applicable) algorithm loop. Obtained through MATLAB optimization simulations." id="rad3" value="0">
-                    <button id="send" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
-                </form>
-                <form id="form">
-                    <b title="Defines the flight parameters for the drone. Send using the Submit button.">Flight parameters:</b> 
-                    flying altitude:<input type="text" size="1" title="Altitude at which the drone makes the mission. Default is 20 meters. For three drones, R fly 2m under, G at flight altitude and B 2m over." id="flight" value="0">,
-                    takeoff altitude:<input type="text" size="1" title="Altitude at which the drone takeoff before starting the mission. Default is 5 meters." id="takeoff" value="0">,
-                    hover time:<input type="text" size="1" title="Hovering time at the LoRa message collection positions. Longer means more messages, but uses the flight autonomy." id="hover" value="0"> 
-                    <button id="send2" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
-                </form>
-
                 <!-- Results -->
                 <form id="form">
                     <b>Results:</b> <a title="Compute the distance between the last received node position and estimation. -1 is returned if one of the variable is undefined." class="results"></a>
@@ -135,6 +135,19 @@
         <div id="map"></div>
         <div id="legend"><h3>Legend</h3></div>
         <div id="states"><h3>States</h3></div>
+
+        <!-- Parameter change and display -->
+        <div id="param" align="right">
+            <h3>Parameters</h3>
+            Loops:<input type="text" title="Number of loops done by the program. More loops add precision but increases flight time." size="1" id="loop_todo" value="0"> <br>
+            Rad1:<input type="text" size="1" title="In meters, radius of the circle on which the drones position themselves during the first algorithm loop." id="rad1" value="0"> <br>
+            Rad2:<input type="text" size="1" title="In meters, radius of the circle on which the drones position themselves during the second (if applicable) algorithm loop." id="rad2" value="0"> <br>
+            Rad3+:<input type="text" size="1" title="In meters, radius of the circle on which the drones position themselves during the third and above (if applicable) algorithm loop(s)." id="rad3" value="0"> <br>
+            Flight:<input type="text" size="1" title="In meters, altitude at which the drones fly during the mission. Default is 20 meters. For three drones, R fly 2m under, G at flight altitude and B 2m over." id="flight" value="0"> <br>
+            Takeoff:<input type="text" size="1" title="In meters, altitude at which the drones takeoff before starting the mission. Default is 5 meters." id="takeoff" value="0"> <br>
+            Hover:<input type="text" size="1" title="In seconds, hovering time at the LoRa message collection positions. Longer means more messages, but uses the flight autonomy." id="hover" value="0"> <br>
+            <button id="send2" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
+        </div>
 
         <!-- Scripts for Firebase (database), Ajax and Axios (HTTP POST/GET), measure tool (check distances) -->
         <script src="https://cdn.firebase.com/js/client/2.3.2/firebase.js"></script>

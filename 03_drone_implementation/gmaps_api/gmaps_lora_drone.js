@@ -173,10 +173,12 @@ function print_checklist(){
         - drones will takeoff if in OFFBOARD
     * buttons are deactivated on drone takeoff 
         - if drone landed, press kill to activate again
-        - safeties are always active
+    * safeties are always active
+        - keyboard shortcuts khr
     * launch beaconing mode on the node
-    * secret keys: >+"*ç%
-        - check that the gateways IDs are correct (%)
+    * secret keys: >+"*ç
+        - to print datasets
+    * check that the gateways IDs are correct (secret key %)
     * TODO: add more
         `)
 }
@@ -273,6 +275,21 @@ function init_listeners(){
                 const data={'gatewayR': gatewayR, 'gatewayG': gatewayG, 'gatewayB': gatewayB}
                 axios({method: 'POST', url: url, data: data})
             }
+        }
+
+        // kill
+        if(e.keyCode==107){
+            kill_button_cb(1)
+        }
+
+        // hover
+        if(e.keyCode==104){
+            kill_button_cb(2)
+        }
+
+        // return
+        if(e.keyCode==114){
+            kill_button_cb(3)
         }
     };
 }

@@ -23,16 +23,21 @@
                 border: 1px solid #000;
                 color: #000;
                 text-decoration: none;
-                font-size: 12px;
+                font-size: 13px;
                 margin: 2px;
                 cursor: pointer;
+                background-color: #eee;
             }
             .button:disabled {
                 color: #888;
             }
             input{
                 width: 30px;
-                font-size: 12px;
+                font-size: 13px;
+                border: 1px solid #aaa;
+                border-radius: 3px;
+                margin: 2px;
+                background-color: #fafafa;
             }
             html, body {
                 height: 100%;
@@ -45,6 +50,7 @@
             }
             #legend, #states, #param, #network_param, #takeoff_button, #safeties, #results {
                 font-family: Roboto,Arial,sans-serif;
+                font-size: 12px;
                 background: #fff;
                 padding: 10px;
                 margin: 10px;
@@ -78,7 +84,7 @@
             Flight:<input type="text" size="1" title="In meters, altitude at which the drones fly during the mission. Default is 20 meters. For three drones, R fly 2m under, G at flight altitude and B 2m over." id="flight" value="0"> <br>
             Takeoff:<input type="text" size="1" title="In meters, altitude at which the drones takeoff before starting the mission. Default is 5 meters." id="takeoff" value="0"> <br>
             Hover:<input type="text" size="1" title="In seconds, hovering time at the LoRa message collection positions. Longer means more messages, but uses the flight autonomy." id="hover" value="0"> <br>
-            <button id="send2" type="submit" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
+            <button class="button" id="send2" title="Send the parameters entered in the boxes." onclick="param_change()">Submit</button>
         </div>
 
         <!-- Network estimate -->

@@ -53,6 +53,10 @@ var delay_online_check = 3000;
 // to (de)activate buttons
 var bool_some_drone_is_flying = false;
 
+// colors for buttons
+var color_can_click = '#fafafa';
+var color_clicked = '#aaa';
+
 
 
 
@@ -640,17 +644,17 @@ function init_legend(){
     
     // add node
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/node_circle.png width=20> Node ground truth (goal)'
+    div.innerHTML = '<img src=marker/node_circle.png width=20> Node ground truth'
     legend.appendChild(div);
 
     // add network
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/network_circle.png width=20> Network estimate (start)'
+    div.innerHTML = '<img src=marker/network_circle.png width=20> Network estimate'
     legend.appendChild(div);
 
     // add estcont
     var div = document.createElement('div');
-    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Temporary estimate (continuous)'
+    div.innerHTML = '<img src=marker/estimate_cont_circle.png width=20> Temporary estimation'
     legend.appendChild(div);
 
     // add est
@@ -1249,33 +1253,33 @@ function firebase_node(markers) {
 function kill_button_cb(kill){
     if(kill==1){
         console.log("Sending kill command to all drones");
-        document.getElementById('unkill').style.backgroundColor='#fff';
+        document.getElementById('unkill').style.backgroundColor=color_can_click;
         document.getElementById('kill').style.backgroundColor='#f55';
-        document.getElementById('hold').style.backgroundColor='#fff';
-        document.getElementById('rtl').style.backgroundColor='#fff';
+        document.getElementById('hold').style.backgroundColor=color_can_click;
+        document.getElementById('rtl').style.backgroundColor=color_can_click;
 
         // reactivate things
         bool_some_drone_is_flying = false;
     }
     else if(kill==0){
-        document.getElementById('unkill').style.backgroundColor='#aaa';
-        document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hold').style.backgroundColor='#fff';
-        document.getElementById('rtl').style.backgroundColor='#fff';
+        document.getElementById('unkill').style.backgroundColor=color_clicked;
+        document.getElementById('kill').style.backgroundColor=color_can_click;
+        document.getElementById('hold').style.backgroundColor=color_can_click;
+        document.getElementById('rtl').style.backgroundColor=color_can_click;
     }
     else if(kill==2){
         console.log("Sending hover command to all drones");
-        document.getElementById('unkill').style.backgroundColor='#fff';
-        document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hold').style.backgroundColor='#aaa';
-        document.getElementById('rtl').style.backgroundColor='#fff';
+        document.getElementById('unkill').style.backgroundColor=color_can_click;
+        document.getElementById('kill').style.backgroundColor=color_can_click;
+        document.getElementById('hold').style.backgroundColor=color_clicked;
+        document.getElementById('rtl').style.backgroundColor=color_can_click;
     }
     else if(kill==3){
         console.log("Sending RTL coommand to all drones");
-        document.getElementById('unkill').style.backgroundColor='#fff';
-        document.getElementById('kill').style.backgroundColor='#fff';
-        document.getElementById('hold').style.backgroundColor='#fff';
-        document.getElementById('rtl').style.backgroundColor='#aaa';
+        document.getElementById('unkill').style.backgroundColor=color_can_click;
+        document.getElementById('kill').style.backgroundColor=color_can_click;
+        document.getElementById('hold').style.backgroundColor=color_can_click;
+        document.getElementById('rtl').style.backgroundColor=color_clicked;
     }
 
     // POST on server
@@ -1295,11 +1299,11 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 1, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#aaa';
-        document.getElementById('G').style.backgroundColor='#fff';
-        document.getElementById('B').style.backgroundColor='#fff';
-        document.getElementById('X').style.backgroundColor='#fff';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_clicked;
+        document.getElementById('G').style.backgroundColor=color_can_click;
+        document.getElementById('B').style.backgroundColor=color_can_click;
+        document.getElementById('X').style.backgroundColor=color_can_click;
+        document.getElementById('all').style.backgroundColor=color_can_click;
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
@@ -1319,11 +1323,11 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 0, 'bool_drone2_start': 1, 'bool_drone3_start': 0};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#fff';
-        document.getElementById('G').style.backgroundColor='#aaa';
-        document.getElementById('B').style.backgroundColor='#fff';
-        document.getElementById('X').style.backgroundColor='#fff';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_can_click;
+        document.getElementById('G').style.backgroundColor=color_clicked;
+        document.getElementById('B').style.backgroundColor=color_can_click;
+        document.getElementById('X').style.backgroundColor=color_can_click;
+        document.getElementById('all').style.backgroundColor=color_can_click;
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
@@ -1343,11 +1347,11 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 1};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#fff';
-        document.getElementById('G').style.backgroundColor='#fff';
-        document.getElementById('B').style.backgroundColor='#aaa';
-        document.getElementById('X').style.backgroundColor='#fff';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_can_click;
+        document.getElementById('G').style.backgroundColor=color_can_click;
+        document.getElementById('B').style.backgroundColor=color_clicked;
+        document.getElementById('X').style.backgroundColor=color_can_click;
+        document.getElementById('all').style.backgroundColor=color_can_click;
 
         // go back in None after X seconds
         console.log("Setting drone "+drone_id+" to takeoff, disabling network estimate change");
@@ -1367,11 +1371,11 @@ function takeoff_button_cb(drone_id) {
         data={'bool_drone1_start': 0, 'bool_drone2_start': 0, 'bool_drone3_start': 0};
 
         // buttons color
-        document.getElementById('R').style.backgroundColor='#fff';
-        document.getElementById('G').style.backgroundColor='#fff';
-        document.getElementById('B').style.backgroundColor='#fff';
-        document.getElementById('X').style.backgroundColor='#aaa';
-        document.getElementById('all').style.backgroundColor='#fff';
+        document.getElementById('R').style.backgroundColor=color_can_click;
+        document.getElementById('G').style.backgroundColor=color_can_click;
+        document.getElementById('B').style.backgroundColor=color_can_click;
+        document.getElementById('X').style.backgroundColor=color_clicked;
+        document.getElementById('all').style.backgroundColor=color_can_click;
     }
     if(drone_id=='all') {
         var confirmation = window.confirm("Are you sure?")
@@ -1381,11 +1385,11 @@ function takeoff_button_cb(drone_id) {
             data={'bool_drone1_start': 1, 'bool_drone2_start': 1, 'bool_drone3_start': 1};
 
             // buttons color
-            document.getElementById('R').style.backgroundColor='#fff';
-            document.getElementById('G').style.backgroundColor='#fff';
-            document.getElementById('B').style.backgroundColor='#fff';
-            document.getElementById('X').style.backgroundColor='#fff';
-            document.getElementById('all').style.backgroundColor='#aaa';
+            document.getElementById('R').style.backgroundColor=color_can_click;
+            document.getElementById('G').style.backgroundColor=color_can_click;
+            document.getElementById('B').style.backgroundColor=color_can_click;
+            document.getElementById('X').style.backgroundColor=color_can_click;
+            document.getElementById('all').style.backgroundColor=color_clicked;
 
             // go back in None after X seconds
             console.log("Setting all drones to takeoff, disabling network estimate change");
@@ -1417,11 +1421,11 @@ function network_button_cb(type) {
     // different types of network estimate 
     if(type=='get') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#aaa';
-        document.getElementById('network_place').style.backgroundColor='#fff';
-        document.getElementById('network_none').style.backgroundColor='#fff';
-        document.getElementById('network_closeby').style.backgroundColor='#fff';
-        document.getElementById('network_latlng').style.backgroundColor='#fff';
+        document.getElementById('network_get').style.backgroundColor=color_clicked;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
 
         // click listener
         click_listener_active = false
@@ -1431,33 +1435,33 @@ function network_button_cb(type) {
     }
     if(type=='place') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#fff';
-        document.getElementById('network_place').style.backgroundColor='#aaa';
-        document.getElementById('network_none').style.backgroundColor='#fff';
-        document.getElementById('network_closeby').style.backgroundColor='#fff';
-        document.getElementById('network_latlng').style.backgroundColor='#fff';
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_clicked;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
 
         // click listener
         click_listener_active = true
     }
     if(type=='none') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#fff';
-        document.getElementById('network_place').style.backgroundColor='#fff';
-        document.getElementById('network_none').style.backgroundColor='#aaa';
-        document.getElementById('network_closeby').style.backgroundColor='#fff';
-        document.getElementById('network_latlng').style.backgroundColor='#fff';
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_clicked;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
 
         // click listener
         click_listener_active = false
     }
     if(type=='latlng') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#fff';
-        document.getElementById('network_place').style.backgroundColor='#fff';
-        document.getElementById('network_none').style.backgroundColor='#fff';
-        document.getElementById('network_closeby').style.backgroundColor='#fff';
-        document.getElementById('network_latlng').style.backgroundColor='#aaa';
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_can_click;
+        document.getElementById('network_latlng').style.backgroundColor=color_clicked;
 
         // click listener
         click_listener_active = false
@@ -1473,11 +1477,11 @@ function network_button_cb(type) {
     }
     if(type=='node') {
         // button color
-        document.getElementById('network_get').style.backgroundColor='#fff';
-        document.getElementById('network_place').style.backgroundColor='#fff';
-        document.getElementById('network_none').style.backgroundColor='#fff';
-        document.getElementById('network_closeby').style.backgroundColor='#aaa';
-        document.getElementById('network_latlng').style.backgroundColor='#fff';
+        document.getElementById('network_get').style.backgroundColor=color_can_click;
+        document.getElementById('network_place').style.backgroundColor=color_can_click;
+        document.getElementById('network_none').style.backgroundColor=color_can_click;
+        document.getElementById('network_closeby').style.backgroundColor=color_clicked;
+        document.getElementById('network_latlng').style.backgroundColor=color_can_click;
 
         // click listener
         click_listener_active = false

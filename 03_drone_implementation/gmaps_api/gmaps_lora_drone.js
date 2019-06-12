@@ -121,20 +121,20 @@ function main() {
     lng_last_est = 0
 
     // legend
-    init_legend(map);
+    init_legend();
 
     // states
-    init_states(map);
+    init_states();
 
     // param
-    init_param(map);
+    init_param();
 
     // start Firebase and database listeners
-    firebase_homes(map, markers);                  // homes
-    firebase_drones(map, markers, paths);          // drones, paths
-    firebase_waypoints(map, wp_lists);             // waypoints
-    firebase_estimations(map, markers, circles);   // estimations
-    firebase_node(map, markers);                   // node ground truth
+    firebase_homes(markers);                  // homes
+    firebase_drones(markers, paths);          // drones, paths
+    firebase_waypoints(wp_lists);             // waypoints
+    firebase_estimations(markers, circles);   // estimations
+    firebase_node(markers);                   // node ground truth
 
     // initial button colors: call callbacks as if clicked
     takeoff_button_cb('X');
@@ -519,31 +519,31 @@ function init_centering_controls() {
 
     // create div for centering button
     var centerControlDiv = document.createElement('div');
-    var centerControl = new center_control(centerControlDiv, map, lat_lausanne, lng_lausanne, "Lausanne");
+    var centerControl = new center_control(centerControlDiv, lat_lausanne, lng_lausanne, "Lausanne");
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 
     // create div for centering button
     var centerControlDiv2 = document.createElement('div');
-    var centerControl2 = new center_control(centerControlDiv2, map, lat_zurich, lng_zurich, "Zurich");
+    var centerControl2 = new center_control(centerControlDiv2, lat_zurich, lng_zurich, "Zurich");
     centerControlDiv2.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv2);
 
     // create div for centering button
     var centerControlDiv3 = document.createElement('div');
-    var centerControl3 = new center_control(centerControlDiv3, map, 0, 0, "Zero");
+    var centerControl3 = new center_control(centerControlDiv3, 0, 0, "Zero");
     centerControlDiv3.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv3);
 
     // create div for centering button
     var centerControlDiv4 = document.createElement('div');
-    var centerControl4 = new center_control(centerControlDiv4, map, lat_node, lng_node, "Node");
+    var centerControl4 = new center_control(centerControlDiv4, lat_node, lng_node, "Node");
     centerControlDiv4.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv4);
 }
 
 // creates a GUI for centering map
-function center_control(control_div, map, lat, lng, string){
+function center_control(control_div, lat, lng, string){
 
     // Set CSS for the control border.
     var controlUI = document.createElement('div');
@@ -552,14 +552,14 @@ function center_control(control_div, map, lat, lng, string){
     controlUI.style.borderRadius = '3px';
     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
     controlUI.style.cursor = 'pointer';
-    controlUI.style.marginBottom = '22px';
+    controlUI.style.margin = '3px';
     controlUI.style.textAlign = 'center';
     controlUI.title = 'Click to recenter the map';
     control_div.appendChild(controlUI);
 
     // Set CSS for the control interior.
     var controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
+    controlText.style.color = '#000';
     controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
     controlText.style.fontSize = '14px';
     controlText.style.lineHeight = '20px';
@@ -581,7 +581,7 @@ function center_control(control_div, map, lat, lng, string){
 }
 
 // init states
-function init_states(map){
+function init_states(){
     // create states object
     var states = document.getElementById('states');
 
@@ -605,7 +605,7 @@ function init_states(map){
 }
 
 // init param
-function init_param(map){
+function init_param(){
     // create param object
     var param = document.getElementById('param');
 
@@ -614,7 +614,7 @@ function init_param(map){
 }
 
 // init legend
-function init_legend(map){
+function init_legend(){
     // create legend object
     var legend = document.getElementById('legend');
 
@@ -691,7 +691,7 @@ function get_lora_network_estimate() {
 //#########################################################################################
 
 // Firebase for home
-function firebase_homes(map, markers) {
+function firebase_homes(markers) {
 
     // reference in Firebase
     var home_refR = firebase.child('homeR');
@@ -775,7 +775,7 @@ function firebase_homes(map, markers) {
 }
 
 // Firebase for drones and paths
-function firebase_drones(map, markers, paths) {
+function firebase_drones(markers, paths) {
 
     // reference in Firebase
     var drone_refR = firebase.child('droneR');
@@ -898,7 +898,7 @@ function firebase_drones(map, markers, paths) {
 }
 
 // Firebase for waypoints
-function firebase_waypoints(map, wp_lists) {
+function firebase_waypoints(wp_lists) {
 
     // reference in Firebase
     var wayp_refR  = firebase.child('waypointR');
@@ -1045,7 +1045,7 @@ function firebase_waypoints(map, wp_lists) {
 }
 
 // Firebase for estimations
-function firebase_estimations(map, markers, circles) {
+function firebase_estimations(markers, circles) {
 
     // reference in Firebase
     var netw_ref   = firebase.child('network');
@@ -1168,7 +1168,7 @@ function firebase_estimations(map, markers, circles) {
 }   
 
 // Firebase for node
-function firebase_node(map, markers) {
+function firebase_node(markers) {
 
     // reference in Firebase
     var node_ref = firebase.child('node');

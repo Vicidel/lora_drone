@@ -143,6 +143,16 @@ class home_datapoint:
 	delta_y     = 0				# home is at zero		
 	delta_z     = 0				# home is at zero
 
+# class for the estimation received from network
+class network_datapoint:
+	latitude    = 46.513381 	# center of football field
+	longitude   = 6.563056 		# center of football field
+	altitude    = 400 			# center of football field
+	loc_radius  = 666
+	alt_radius  = 666
+	est_time    = 0
+	est_ts		= 0
+
 # datasets
 drone_dataset 	   = []		# storage of the drone messages
 tri_dataset        = []		# storage of the trilateration messages
@@ -229,6 +239,7 @@ solution_temp 	   = solution_datapoint()		# temporary current solution
 loop_todo		  = 1
 
 # network position
+network = network_datapoint()
 network_x 		  = 0 
 network_y 		  = 0	 	# used parameters (will be changed)
 network_z 		  = 0

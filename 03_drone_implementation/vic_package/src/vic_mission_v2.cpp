@@ -199,8 +199,8 @@ int main(int argc, char **argv){
     bool bool_ignore = false;            // activated when hover or RTL switch active
     
     // set precision based on sim type
-    if(bool_continuous_sim) precision = 1.5f;
-    else precision = 0.5f;
+    if(bool_continuous_sim) precision = 2.0f;
+    else precision = 1.0f;
 
 
     /**************************************************************************

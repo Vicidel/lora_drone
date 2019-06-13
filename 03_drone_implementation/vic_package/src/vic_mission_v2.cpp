@@ -935,36 +935,73 @@ void threaded_ros_update(ros::Rate rate, bool bool_fly_straight, Vector3f pos_dr
 // ask user for input
 void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_id){
 
-    // user input for sim type
-    std::cout << "Input simulation type (0=classic, 1=continuous): ";
-    std::cin >> bool_continuous_sim;
+    // define variable to check input
+    bool bad_cin = false;
 
-    if(bool_continuous_sim){
-        // user input
-        std::cout << "Input number of drones for this simulation (1/3): ";
+    // sim type
+    do{
+        // user input 
+        std::cout << "Input simulation type (0=classic, 1=continuous): ";
+        std::cin >> bool_continuous_sim;
+        bad_cin = std::cin.fail();
+
+        // bad input (not a bool)
+        if(bad_cin){
+            ROS_WARN("ERROR: need boolean (0 or 1)");
+        }
+
+        // clear input
+        std::cin.clear();
+        std::cin.ignore(10,'\n');
+    } while(bad_cin);
+
+    // nb drone
+    do{
+        // user input 
+        std::cout << "Input number of drones for this simulation (1 or 3): ";
         std::cin >> nb_drone;
-        if(nb_drone==3){
-            std::cout << "Input drone id for this simulation (1/2/3): ";
+        bad_cin = std::cin.fail();
+
+        // bad input 
+        if(bad_cin || (nb_drone!=1 && nb_drone!=3)){
+            ROS_WARN("ERROR: need 1 or 3");
+            bad_cin = true;
+        }
+
+        // clear input
+        std::cin.clear();
+        std::cin.ignore(10,'\n');
+    } while(bad_cin);
+
+    // drone id
+    if(nb_drone==3){
+        do{
+            // user input 
+            std::cout << "Input drone id for this simulation (1 or 2 or 3): ";
             std::cin >> drone_id;
-            ROS_WARN("Continuous simulation started with three drone (drone_id=%d)", drone_id);
-        }
-        else{
-            drone_id = 1;       // drone R is default when using one drone
-            ROS_WARN("Continuous simulation started with one drone (R)");
-        }
+            bad_cin = std::cin.fail();
+
+            // bad input 
+            if(bad_cin || drone_id<1 || drone_id>3){
+                ROS_WARN("ERROR: need 1 or 2 or 3");
+                bad_cin = true;
+            }
+
+            // clear input
+            std::cin.clear();
+            std::cin.ignore(10,'\n');
+        } while(bad_cin);
     }
-    else{
-        // user input
-        std::cout << "Input number of drones for this simulation (1/3): ";
-        std::cin >> nb_drone;
-        if(nb_drone==3){
-            std::cout << "Input drone id for this simulation (1/2/3): ";
-            std::cin >> drone_id;
-            ROS_WARN("Classic simulation started with three drone (drone_id=%d)", drone_id);
-        }
-        else{
-            drone_id = 1;       // drone R is default when using one drone
-            ROS_WARN("Classic simulation started with one drone (R)");
-        }
+    else {
+        drone_id = 1;       // drone R is default when using one drone         
     }
+
+    // print info
+    ROS_WARN("%s simulation started with %s ", bool_continuous_sim ? "Continous":"Classic", nb_drone==1 ? "one drone":"three drones");
+    if(drone_id==1)
+        ROS_WARN("Drone ID is 1 (red)%s", nb_drone==3 ? "":" (default for one drone)");
+    else if(drone_id==2)
+        ROS_WARN("Drone ID is 2 (green)");
+    else
+        ROS_WARN("Drone ID is 3 (blue)");
 }

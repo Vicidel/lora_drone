@@ -185,7 +185,7 @@ int main(int argc, char **argv){
     float time_data_collection_temp_period = 2.0f;     // period for data collection when moving (temp)
 
     // misc variables
-    float precision = 1.5f;              // precision to reach
+    float precision;                     // precision to reach
     std::string answer;                  // string returned by the server when sending position
     int state = 0;                       // FSM state
     float hover_time;                    // hovering time at measure positions

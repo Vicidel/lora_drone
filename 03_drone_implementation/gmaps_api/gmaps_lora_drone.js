@@ -57,6 +57,9 @@ var bool_some_drone_is_flying = false;
 var color_can_click = '#fafafa';
 var color_clicked = '#aaa';
 
+// show the GUI objects or not
+var bool_show_gui = true;
+
 
 
 
@@ -124,14 +127,11 @@ function main() {
     lat_last_est = 0
     lng_last_est = 0
 
+    // show_gui checkbox
+    init_show_gui();
+
     // legend, states, param, network buttons
-    init_legend();
-    init_states();
-    init_takeoff_buttons();
-    init_param();
-    init_network_param();
-    init_safeties();
-    init_results();
+    init_gui_elements();
 
     // start Firebase and database listeners
     firebase_homes(markers);                  // homes
@@ -517,6 +517,26 @@ function print_results(){
 //#########################################################################################
 //################################  MAPS AND CONTROL ######################################
 //#########################################################################################
+
+// all the gui elements
+function init_gui_elements() {
+    init_legend();
+    init_states();
+    init_takeoff_buttons();
+    init_param();
+    init_network_param();
+    init_safeties();
+    init_results();
+}
+
+// init show_gui control
+function init_show_gui(){
+    // create showgui object
+    var showgui = document.getElementById('show_gui');
+
+    // push on map
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(showgui);
+}
 
 // init centering controls
 function init_centering_controls() {
@@ -1502,6 +1522,45 @@ function network_button_cb(type) {
     }
 }
 
+// callback for gui show checkbox
+function gui_show_cb() {
+    // get checkbox value
+    bool_show_gui = document.getElementById("show_gui_checkbox").checked;
+    
+    // (de)activate elements
+    if(bool_show_gui) {
+        var element = document.getElementById("legend");
+        element.style.display = "block";
+        var element = document.getElementById("states");
+        element.style.display = "block";
+        var element = document.getElementById("param");
+        element.style.display = "block";
+        var element = document.getElementById("network_param");
+        element.style.display = "block";
+        var element = document.getElementById("results");
+        element.style.display = "block";
+        var element = document.getElementById("takeoff_button");
+        element.style.display = "block";
+        var element = document.getElementById("safeties");
+        element.style.display = "block";
+    }
+    else{
+        var element = document.getElementById("legend");
+        element.style.display = "none";
+        var element = document.getElementById("states");
+        element.style.display = "none";
+        var element = document.getElementById("param");
+        element.style.display = "none";
+        var element = document.getElementById("network_param");
+        element.style.display = "none";
+        var element = document.getElementById("results");
+        element.style.display = "none";
+        var element = document.getElementById("takeoff_button");
+        element.style.display = "none";
+        var element = document.getElementById("safeties");
+        element.style.display = "none";
+    }
+}
 
 
 

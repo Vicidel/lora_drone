@@ -19,7 +19,7 @@
         <style>
             .button {
                 border-radius: 5px;
-                padding: 3px;
+                padding: 5px;
                 border: 1px solid #000;
                 color: #000;
                 text-decoration: none;
@@ -32,7 +32,17 @@
                 color: #888;
             }
             input{
-                width: 30px;
+                width: 20px;
+                padding: 5px;
+                font-size: 13px;
+                border: 1px solid #aaa;
+                border-radius: 3px;
+                margin: 2px;
+                background-color: #fafafa;
+            }
+            input[type=checkbox] {
+                width: 20px;
+                padding: 5px;
                 font-size: 13px;
                 border: 1px solid #aaa;
                 border-radius: 3px;
@@ -73,6 +83,10 @@
         <div id="legend"><h3>Legend</h3></div>
         <div id="states"><h3>States</h3></div>
         <div id="center"></div>
+        
+        <!-- Display GUI or not -->
+        <div id="show_gui">
+            <input type="checkbox" id="show_gui_checkbox" onclick="gui_show_cb()" checked><br>
 
         <!-- Parameter change and display -->
         <div id="param" align="right">

@@ -95,7 +95,7 @@ void threaded_ros_update(ros::Rate rate, bool bool_fly_straight, Vector3f pos_dr
     ros::Publisher target_pub, ros::Publisher local_pos_pub, std::future<void> future_object);
 
 // ask user for input
-void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_id);
+void user_input_sim_param(int& sim_type, int& nb_drone, int& drone_id);
 
 
 /***************************************************************************
@@ -150,10 +150,10 @@ int main(int argc, char **argv){
     // parameters to change depending on simulation type
     int drone_id;           // can be 1, 2 or 3
     int nb_drone;           // can be 1 or 3
-    bool bool_continuous_sim;    // continuous (true) or classic (false) sim type
+    int sim_type;           // can be 0 (classic), 1 (continuous) or 2 (continuous v2)
 
     // call user input function
-    user_input_sim_param(bool_continuous_sim, nb_drone, drone_id);
+    user_input_sim_param(sim_type, nb_drone, drone_id);
 
 
     /**************************************************************************
@@ -183,6 +183,7 @@ int main(int argc, char **argv){
     float time_kill_check_period      = 1.0f;     // period for server kill switch
     float time_data_collection_period = 1.0f;     // period for data collection when hovering
     float time_data_collection_temp_period = 2.0f;     // period for data collection when moving (temp)
+    float time_data_collection_temp_v2_period = 2.0f;  // period for data collection when moving (temp v2)
 
     // misc variables
     float precision;                     // precision to reach
@@ -199,8 +200,8 @@ int main(int argc, char **argv){
     bool bool_ignore = false;            // activated when hover or RTL switch active
     
     // set precision based on sim type
-    if(bool_continuous_sim) precision = 2.0f;
-    else precision = 1.0f;
+    if(sim_type==0) precision = 1.0f;
+    else precision = 2.0f;
 
 
     /**************************************************************************
@@ -352,7 +353,7 @@ int main(int argc, char **argv){
                                 pos_current_goal = pos_drone;
 
                                 // if drone retook off after partial mission: redo last FSM state
-                                if(state!=0 && state!=666) state = state - 1;
+                                if(state!=0 && state!=666 && state!=999) state = state - 1;
                             }
                         }
                     }
@@ -373,7 +374,7 @@ int main(int argc, char **argv){
                             pos_current_goal = pos_drone;
 
                             // if drone retook off after partial mission: redo last FSM state
-                            if(state!=0 && state!=666) state = state - 1;
+                            if(state!=0 && state!=666 && state!=999) state = state - 1;
                         }
                     }
 
@@ -425,7 +426,7 @@ int main(int argc, char **argv){
                             pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
 
                             // if drone retook off after partial mission: redo last FSM state
-                            if(state!=0 && state!=666) state = state - 1;
+                            if(state!=0 && state!=666 && state!=999) state = state - 1;
                         }
                     }
                     /***********************   STILL TRYING   ************************/
@@ -470,10 +471,12 @@ int main(int argc, char **argv){
                                 else{
                                     // next state: go to waypoint
                                     pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
-                                    if(bool_continuous_sim)
+                                    if(sim_type==0)
+                                        state = 1;
+                                    else if(sim_type==1)
                                         state = 666;
                                     else
-                                        state = 1;
+                                        state = 999;
 
                                     // drone flies in direction of waypoint for next state
                                     bool_fly_straight = true;
@@ -665,6 +668,37 @@ int main(int argc, char **argv){
                                     strcpy(answer_char, answer.c_str());
                                     if(answer_char[0]=='N')          // next waypoint
                                         state = 666;
+                                    else if(answer_char[0]=='L')     // landing waypoint
+                                        state = 5;
+                                }
+                            }
+                            break;
+                        }
+
+
+                        /**************************************************************************
+                        ***********************   CONTINUOUS STATES V2   **************************
+                        ***************************************************************************/
+
+                        /*******************   GOING TO WAYPOINT WHILE SENDING  ********************/
+                        case 999:{
+
+                            // sending and check if new waypoint
+                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_temp_v2_period)){
+                                answer = threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"data2", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                                time_last_request = ros::Time::now();
+
+                                // check server error
+                                if(check_server_answer(answer))
+                                    bool_pause_all = true;
+                                else{
+                                    pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+
+                                    // check if answer is next waypoint or landing
+                                    char answer_char[answer.size()+1];
+                                    strcpy(answer_char, answer.c_str());
+                                    if(answer_char[0]=='N')          // next waypoint
+                                        state = 999;
                                     else if(answer_char[0]=='L')     // landing waypoint
                                         state = 5;
                                 }
@@ -933,7 +967,7 @@ void threaded_ros_update(ros::Rate rate, bool bool_fly_straight, Vector3f pos_dr
 
 
 // ask user for input
-void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_id){
+void user_input_sim_param(int& sim_type, int& nb_drone, int& drone_id){
 
     // define variable to check input
     bool bad_cin = false;
@@ -941,13 +975,13 @@ void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_i
     // sim type
     do{
         // user input 
-        std::cout << "Input simulation type (0=classic, 1=continuous): ";
-        std::cin >> bool_continuous_sim;
+        std::cout << "Input simulation type (0=classic, 1=continuous, 2=continuous-v2): ";
+        std::cin >> sim_type;
         bad_cin = std::cin.fail();
 
-        // bad input (not a bool)
-        if(bad_cin){
-            ROS_WARN("ERROR: need boolean (0 or 1)");
+        // bad input
+        if(bad_cin || sim_type<0 || sim_type>2){
+            ROS_WARN("ERROR: need 0 or 1 or 2");
         }
 
         // clear input
@@ -997,7 +1031,13 @@ void user_input_sim_param(bool& bool_continuous_sim, int& nb_drone, int& drone_i
     }
 
     // print info
-    ROS_WARN("%s simulation started with %s ", bool_continuous_sim ? "Continous":"Classic", nb_drone==1 ? "one drone":"three drones");
+    if(sim_type==0)
+        ROS_WARN("Classic simulation started with %s ", nb_drone==1 ? "one drone":"three drones");
+    else if(sim_type==1)
+        ROS_WARN("Continuous simulation started with %s ", nb_drone==1 ? "one drone":"three drones");
+    else
+        ROS_WARN("Continuous v2 simulation started with %s ", nb_drone==1 ? "one drone":"three drones");
+
     if(drone_id==1)
         ROS_WARN("Drone ID is 1 (red)%s", nb_drone==3 ? "":" (default for one drone)");
     else if(drone_id==2)

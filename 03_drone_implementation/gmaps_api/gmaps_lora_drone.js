@@ -182,7 +182,7 @@ function print_checklist(){
     * launch beaconing mode on the node
     * secret keys: >+"*ç
         - to print datasets
-    * check that the gateways IDs are correct (secret key %)
+    * check that the gateways IDs are correct (secret key g)
     * TODO: add more
         `)
 }
@@ -267,8 +267,8 @@ function init_listeners(){
         }
 
         // change gateway IDs
-        if(e.keyCode==37){
-            if(window.confirm(`Key '%' pressed, do you want to change the gateway IDs?`)){
+        if(e.keyCode==103){
+            if(window.confirm(`Key 'g' pressed, do you want to change the gateway IDs?`)){
                 console.log("Changing gateway IDs");
 
                 // change gateway IDs
@@ -414,7 +414,7 @@ function check_drone_online(markers){
             document.getElementById('B').disabled = true;
 
         // all
-        if( (droneR_online==true) && (droneG_online==true) && (droneB_online==true))
+        if( (droneR_online==true) + (droneG_online==true) + (droneB_online==true) >= 2)
             document.getElementById('all').disabled = false;
         else
             document.getElementById('all').disabled = true;

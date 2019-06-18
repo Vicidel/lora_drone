@@ -1835,11 +1835,17 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			solution.pos_x = pos_x
 			solution.pos_y = pos_y
 			solution.pos_z = 0
+			solution_temp.pos_x = pos_x
+			solution_temp.pos_y = pos_y
+			solution_temp.pos_z = 0
 		else:
 			# yes: solution is network estimate set
 			solution.pos_x = network_x
 			solution.pos_y = network_y
 			solution.pos_z = 0
+			solution_temp.pos_x = network_x
+			solution_temp.pos_y = network_y
+			solution_temp.pos_z = 0
 
 		# set base parameters
 		circle_radius = circle_radius_v1
@@ -2006,6 +2012,37 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 			# add estimate to map
 			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, uncertainty, 'temp')
 
+	# (continuous and 3drones only) drone received data, needs a new waypoint based on estimation
+	if payload=='data2':
+		
+		# do multilateration and store position
+		pos_x_est, pos_y_est, pos_z_est = trilateration_main_temp()
+		if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:
+			# old position
+			print("LOC: Reusing previous estimate")
+		else:
+			# new position
+			solution_temp.pos_x = pos_x_est
+			solution_temp.pos_y = pos_y_est
+			solution_temp.pos_z = pos_z_est
+
+			# computed uncertainty
+			uncertainty = tri_get_uncertainty(tri_dataset_temp, solution_temp.pos_x, solution_temp.pos_y, solution_temp.pos_z)
+
+			# add estimate to map
+			add_estimation_maps(solution_temp.pos_x, solution_temp.pos_y, uncertainty, 'temp')
+
+		# get waypoint 
+		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, True)
+
+		# return string
+		if bool_landing_waypoint:
+			return_string = "Land at position: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+			add_waypoint_maps(wp_x, wp_y, drone_id, 'landing')
+		else:
+			return_string = "New waiipoint: x{} y{} z{}".format(wp_x, wp_y, wp_z)
+			add_waypoint_maps(wp_x, wp_y, drone_id, 'WP')
+
 
 	###################  RETURN  ######################
 	return return_string
@@ -2066,7 +2103,7 @@ def drone_receive_state():
 	###################  CREATE MEMORY  ######################
 	
 	# temporary estimate (data)
-	if r_payload=='data':
+	if r_payload=='data' or payload=='data2':
 
 		# match LoRa and drone (if possible)
 		tri_datapoint = match_tri_datapoint(r_timestamp, r_pos_x, r_pos_y, r_pos_z, r_drone_id, r_payload)

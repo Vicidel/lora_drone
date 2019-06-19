@@ -2103,7 +2103,7 @@ def drone_receive_state():
 	###################  CREATE MEMORY  ######################
 	
 	# temporary estimate (data)
-	if r_payload=='data' or payload=='data2':
+	if r_payload=='data' or r_payload=='data2':
 
 		# match LoRa and drone (if possible)
 		tri_datapoint = match_tri_datapoint(r_timestamp, r_pos_x, r_pos_y, r_pos_z, r_drone_id, r_payload)

@@ -275,18 +275,18 @@ def loc_test_latlng():
 
 	import localization as lx
 
-	P=lx.Project(mode='Earth1',solver='LSE')
+	P=lx.Project(mode='2D',solver='LSE')
 
 
-	P.add_anchor('anchore_A',(46.1,6.5))
-	P.add_anchor('anchore_B',(46.5,6.5))
-	P.add_anchor('anchore_C',(46.3,7.5))
+	P.add_anchor('anchore_A',(43, -39))
+	P.add_anchor('anchore_B',(-31, 77))
+	P.add_anchor('anchore_C',(-95, -45))
 
 	t,label=P.add_target()
 
-	t.add_measure('anchore_A',50)
-	t.add_measure('anchore_B',50)
-	t.add_measure('anchore_C',50)
+	t.add_measure('anchore_A',112)
+	t.add_measure('anchore_B',80)
+	t.add_measure('anchore_C',38)
 
 	P.solve()
 
@@ -304,14 +304,4 @@ def rand():
 	else:
 		print('message is loc')
 
-
-state = 0
-
-if state==0:
-	print("0")
-elif state%3==1:	# state=1/4/7/10...
-	print("1")
-elif state%3==2:	# state=2/5/8/11...
-	print("3")
-elif state%3==0:
-	print("4")
+loc_test_latlng()

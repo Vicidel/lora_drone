@@ -88,6 +88,11 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
 bool check_server_answer(std::string answer);
 
 // for threading
+ros::Time threaded_send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, 
+    float time_firebase_period, mavros_msgs::HomePosition home_position, 
+    sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, 
+    int fsm_state, ros::Rate rate, bool bool_fly_straight, 
+    Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub);
 std::string threaded_send_drone_state(Vector3f position, sensor_msgs::NavSatFix est_global_pos, double time, char* payload, 
     int drone_id, int nb_drone, bool bool_no_answer, ros::Rate rate, bool bool_fly_straight, 
     Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub);
@@ -724,8 +729,9 @@ int main(int argc, char **argv){
         rate.sleep();
 
         // sending to Firebase
-        time_last_send_firebase = send_firebase(bool_wait_for_offboard, time_last_send_firebase, 
-            time_firebase_period, home_position, est_global_pos, drone_id, current_state.mode, pos_drone(2), state);
+        time_last_send_firebase = threaded_send_firebase(bool_wait_for_offboard, time_last_send_firebase, 
+            time_firebase_period, home_position, est_global_pos, drone_id, current_state.mode, pos_drone(2), state,
+            rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
     }
 
     // success
@@ -897,6 +903,32 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
         time_last_send_firebase = ros::Time::now();
     }
 
+    return time_last_send_firebase;
+}
+
+// threded send Firebase
+ros::Time threaded_send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, 
+        float time_firebase_period, mavros_msgs::HomePosition home_position, 
+        sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, 
+        int fsm_state, ros::Rate rate, bool bool_fly_straight, 
+        Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub) {
+
+    // create a std::promise object
+    std::promise<void> exit_signal;
+    std::future<void> future_object = exit_signal.get_future();
+
+    // start ROS update thread (normal thread)
+    std::thread thread_ROS(threaded_ros_update, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub, std::move(future_object));
+
+    // start send_firebase thread (async thread)
+    auto thread_send = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos, drone_id, state, relative_altitude, fsm_state);
+
+    // finsihed send_state, send exit to ROS thread
+    time_last_send_firebase = thread_send.get();
+    exit_signal.set_value();
+    thread_ROS.join();
+
+    // return time
     return time_last_send_firebase;
 }
 

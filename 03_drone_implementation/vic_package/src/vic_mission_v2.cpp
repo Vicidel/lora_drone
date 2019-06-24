@@ -335,19 +335,41 @@ int main(int argc, char **argv){
             /**************************************************************************
             **************************   OFFBOARD CHECKING   **************************
             ***************************************************************************/
-            if(bool_wait_for_offboard && current_state.mode == "MANUAL"){
+            if(bool_wait_for_offboard){
                 if((ros::Time::now() - time_last_request) > ros::Duration(time_offboard_arm_period) ){
+                    if(current_state.mode == "MANUAL" || current_state.mode == "OFFBOARD"){
 
-                    /*************************   FROM SERVER   **************************/
-                    if(check_offboard_server(drone_id)){
+                        /*************************   FROM SERVER   **************************/
+                        if(check_offboard_server(drone_id)){
 
-                        // set mode as offboard
-                        set_mode.request.custom_mode = "OFFBOARD";
-                        if(set_mode_client.call(set_mode) && set_mode.response.mode_sent){
+                            // set mode as offboard
+                            set_mode.request.custom_mode = "OFFBOARD";
+                            if(set_mode_client.call(set_mode) && set_mode.response.mode_sent){
+
+                                // post on server
+                                ROS_INFO("Offboard enabled from server");
+                                answer = threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+
+                                // check server error
+                                if(check_server_answer(answer))
+                                    bool_pause_all = true;
+                                else{
+                                    // next state: drone arming
+                                    bool_wait_for_offboard = false;
+                                    pos_current_goal = pos_drone;
+
+                                    // if drone retook off after partial mission: redo last FSM state
+                                    if(state!=0 && state!=666 && state!=999) state = state - 1;
+                                }
+                            }
+                        }
+                        
+                        /*************************   FROM RC/QGC   **************************/
+                        else if(current_state.mode == "OFFBOARD"){
 
                             // post on server
-                            ROS_INFO("Offboard enabled from server");
-                            answer = threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                            ROS_INFO("Offboard enabled from RC");
+                            answer =threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
 
                             // check server error
                             if(check_server_answer(answer))
@@ -361,40 +383,20 @@ int main(int argc, char **argv){
                                 if(state!=0 && state!=666 && state!=999) state = state - 1;
                             }
                         }
-                    }
-                    
-                    /*************************   FROM RC/QGC   **************************/
-                    else if(current_state.mode == "OFFBOARD"){
 
-                        // post on server
-                        ROS_INFO("Offboard enabled from RC");
-                        answer =threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"offb", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
-
-                        // check server error
-                        if(check_server_answer(answer))
-                            bool_pause_all = true;
+                        /***********************   STILL WAITING   ************************/
                         else{
-                            // next state: drone arming
-                            bool_wait_for_offboard = false;
-                            pos_current_goal = pos_drone;
-
-                            // if drone retook off after partial mission: redo last FSM state
-                            if(state!=0 && state!=666 && state!=999) state = state - 1;
+                            ROS_INFO("Waiting for offboard mode (from server or RC)");
                         }
                     }
-
-                    /***********************   STILL WAITING   ************************/
                     else{
-                        ROS_INFO("Waiting for offboard mode (from server or RC)");
+                        // as it says...
+                        ROS_INFO("Can't start offboard mode when not in MANUAL mode");
                     }
 
                     // store current time
                     time_last_request = ros::Time::now();
                 }
-            }
-            else if(bool_wait_for_offboard){
-                // as it says...
-                ROS_INFO("Can't start offboard mode when not in MANUAL mode");
             }
 
             /**************************************************************************

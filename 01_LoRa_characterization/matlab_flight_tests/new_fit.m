@@ -101,3 +101,18 @@ plot(tot_dist, tot_ESP_corr, 'o'); grid on; hold on;
 plot(tot_dist, tot_ESP, 'o');
 legend('ESP corr', 'ESP');
 title('Signal as function of distance');
+
+
+%%
+% old fit
+figure;
+plot(tot_dist, tot_ESP, 'ro'); grid on; hold on;
+plot(tot_dist, tot_ESP_corr, 'bo');
+plot(x, log(x/0.2189)/(-0.0894), 'k'); 
+plot(x, -0.1018*x-58.91, 'r');
+plot(x, -0.2423*x-43.06, 'b');
+legend('Raw data', 'Corrected data', 'Exponential fit', 'Linear fit on raw data', 'Linear fit on corrected data')
+xlabel('Distance [m]')
+ylabel('ESP [dBm]')
+axis([0,100,-80,-25]);
+title('Linear fit based on flight data');

@@ -620,7 +620,21 @@ def function_signal_to_distance(esp, rssi):
 	return distance
 
 
-#
+# same but better ?
+def function_signal_to_distance_lin(esp, rssi):
+
+	# linear coefficients
+	p1 = -0.2864
+	p2 = -39.82
+
+	# compute based on ESP
+	distance = p1*esp + p2
+
+	# return the distance
+	return distance
+
+
+# attenuation based on angle
 def function_attenuation_angle(angle_deg):
 
 	# out of bound angles
@@ -753,7 +767,7 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	datapoint.esp_corr, datapoint.rssi_corr = angle_attenuation(datapoint.esp, datapoint.rssi, datapoint.pos_z, distance)
 
 	# get angle-corrected distance
-	datapoint.distance  = float(function_signal_to_distance(datapoint.esp_corr, datapoint.rssi_corr))
+	datapoint.distance  = float(function_signal_to_distance_lin(datapoint.esp_corr, datapoint.rssi_corr))
 
 	# add info
 	datapoint.drone_id  = drone_id

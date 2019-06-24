@@ -9,7 +9,8 @@ tot_angle_deg = [];
 tot_z = [];
 
 % get data
-fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'];
+fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'; 'matlab_flight_tests/20190624-1440-tri-data.json'];
+% fnames = ['matlab_flight_tests/20190624-1440-tri-data.json'];
 
 % for each file
 for j=1: length(fnames(:,1))
@@ -66,19 +67,19 @@ end
 %%
 close all;
 
-% % plot dist and angle
-% figure;
-% plot(tot_angle_deg, 'o'); hold on; grid on;
-% plot(tot_dist, 'o');
-% title('Angle and distance recorded');
-% legend('Angle [deg]', 'Distance [m]');
-% 
-% % plot signal
-% figure;
-% plot(tot_ESP, 'o'); hold on; grid on;
-% plot(tot_RSSI, 'o');
-% title('Signal recorded');
-% legend('ESP', 'RSSI');
+% plot dist and angle
+figure;
+plot(tot_angle_deg, 'o'); hold on; grid on;
+plot(tot_dist, 'o');
+title('Angle and distance recorded');
+legend('Angle [deg]', 'Distance [m]');
+
+% plot signal
+figure;
+plot(tot_ESP, 'o'); hold on; grid on;
+plot(tot_RSSI, 'o');
+title('Signal recorded');
+legend('ESP', 'RSSI');
 
 %% 
 % correct signal with angle attenuation
@@ -89,12 +90,12 @@ for i=1: length(tot_ESP)
     tot_RSSI_corr(i) = tot_RSSI_corr(i) - func_attenuation_angle(tot_angle_deg(i));
 end
 
-% % plot signal
-% figure;
-% plot(tot_ESP_corr, 'o'); hold on; grid on;
-% plot(tot_RSSI_corr, 'o');
-% title('Corrected signal recorded');
-% legend('ESP', 'RSSI');
+% plot signal
+figure;
+plot(tot_ESP_corr, 'o'); hold on; grid on;
+plot(tot_RSSI_corr, 'o');
+title('Corrected signal recorded');
+legend('ESP', 'RSSI');
 
 %%
 % plot

@@ -335,7 +335,7 @@ int main(int argc, char **argv){
             /**************************************************************************
             **************************   OFFBOARD CHECKING   **************************
             ***************************************************************************/
-            if(bool_wait_for_offboard){
+            if(bool_wait_for_offboard && current_state.mode == "MANUAL"){
                 if((ros::Time::now() - time_last_request) > ros::Duration(time_offboard_arm_period) ){
 
                     /*************************   FROM SERVER   **************************/
@@ -391,6 +391,10 @@ int main(int argc, char **argv){
                     // store current time
                     time_last_request = ros::Time::now();
                 }
+            }
+            else if(bool_wait_for_offboard){
+                // as it says...
+                ROS_INFO("Can't start offboard mode when not in MANUAL mode");
             }
 
             /**************************************************************************

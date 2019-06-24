@@ -125,6 +125,8 @@ class tri_datapoint:
 	esp 		= 666
 	rssi 		= 666
 	distance 	= 666
+	esp_corr    = 666
+	rssi_corr   = 666
 	drone_id    = 666
 	gw_id 		= 666
 
@@ -618,6 +620,25 @@ def function_signal_to_distance(esp, rssi):
 	return distance
 
 
+#
+def function_attenuation_angle(angle_deg):
+
+	# out of bound angles
+	if angle_deg < 0:
+		angle_deg = -angle_deg
+	while angle_deg > 180:
+		angle_deg = angle_deg - 180
+	if angle_deg > 90:
+		angle_deg = 180 - angle_deg
+
+	# coefficients
+	a_att = 0.5667
+	b_att = 1.38
+
+	# return, no b_att to have 0dB attenuation at 0deg
+	return -a_att*angle_deg
+
+
 # uses the multilateration package on the input dataset
 def trilateration(dataset):
 	# this function uses the localization package by Kamal Shadi:
@@ -670,6 +691,17 @@ def find_lora_match_gateway(lora_message, gateway_id):
 	return 666
 
 
+# attenuate angle based on altitude and signal
+def angle_attenuation(esp, rssi, altitude, distance):
+
+	# new corrected values ((TODO))
+	esp_corr = esp - function_attenuation_angle(math.asin(altitude/distance)*180/math.pi)
+	rssi_corr = rssi - function_attenuation_angle(math.asin(altitude/distance)*180/math.pi)
+
+	# return
+	return esp_corr, rssi_corr
+
+
 # returns a tri_datapoint based on matching data
 def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 
@@ -697,9 +729,9 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 		return None
 
 	# check signal strength 
-	if float(lora_message.gateway_rssi[gateway_index])<-100:
+	if float(lora_message.gateway_rssi[gateway_index])<-75:
 		# too small RSSI/ESP
-		print("TRI: too low RSSI to use (<-100)")
+		print("TRI: too low RSSI to use (<-75)")
 		return None
 
 	# create tri datapoint
@@ -713,7 +745,15 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	# save LoRa data 
 	datapoint.esp 	    = float(lora_message.gateway_esp[gateway_index])
 	datapoint.rssi 	    = float(lora_message.gateway_rssi[gateway_index])
-	datapoint.distance 	= float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
+	
+	# get non-angle-corrected distance
+	distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
+
+	# modify data with altitude (angle attenuation)
+	datapoint.esp_corr, datapoint.rssi_corr = angle_attenuation(datapoint.esp, datapoint.rssi, datapoint.pos_z, distance)
+
+	# get angle-corrected distance
+	datapoint.distance  = float(function_signal_to_distance(datapoint.esp_corr, datapoint.rssi_corr))
 
 	# add info
 	datapoint.drone_id  = drone_id

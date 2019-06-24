@@ -6,6 +6,7 @@ tot_ESP = [];
 tot_RSSI = [];
 tot_dist = [];
 tot_angle_deg = [];
+tot_z = [];
 
 % get data
 fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'];
@@ -55,6 +56,7 @@ for j=1: length(fnames(:,1))
     real_angle_deg = real_angle_rad*180/pi;
 
     % append data to total
+    tot_z = [tot_z, z];
     tot_ESP = [tot_ESP, ESP];
     tot_RSSI = [tot_RSSI, RSSI];
     tot_dist = [tot_dist, real_dist];
@@ -64,19 +66,19 @@ end
 %%
 close all;
 
-% plot dist and angle
-figure;
-plot(tot_angle_deg, 'o'); hold on; grid on;
-plot(tot_dist, 'o');
-title('Angle and distance recorded');
-legend('Angle [deg]', 'Distance [m]');
-
-% plot signal
-figure;
-plot(tot_ESP, 'o'); hold on; grid on;
-plot(tot_RSSI, 'o');
-title('Signal recorded');
-legend('ESP', 'RSSI');
+% % plot dist and angle
+% figure;
+% plot(tot_angle_deg, 'o'); hold on; grid on;
+% plot(tot_dist, 'o');
+% title('Angle and distance recorded');
+% legend('Angle [deg]', 'Distance [m]');
+% 
+% % plot signal
+% figure;
+% plot(tot_ESP, 'o'); hold on; grid on;
+% plot(tot_RSSI, 'o');
+% title('Signal recorded');
+% legend('ESP', 'RSSI');
 
 %% 
 % correct signal with angle attenuation
@@ -87,12 +89,12 @@ for i=1: length(tot_ESP)
     tot_RSSI_corr(i) = tot_RSSI_corr(i) - func_attenuation_angle(tot_angle_deg(i));
 end
 
-% plot signal
-figure;
-plot(tot_ESP_corr, 'o'); hold on; grid on;
-plot(tot_RSSI_corr, 'o');
-title('Corrected signal recorded');
-legend('ESP', 'RSSI');
+% % plot signal
+% figure;
+% plot(tot_ESP_corr, 'o'); hold on; grid on;
+% plot(tot_RSSI_corr, 'o');
+% title('Corrected signal recorded');
+% legend('ESP', 'RSSI');
 
 %%
 % plot
@@ -104,14 +106,70 @@ title('Signal as function of distance');
 
 
 %%
-% old fit
+% new fit
+ft = fittype('poly1');
+fitresult = fit(tot_dist', tot_ESP', ft);
+fitresult_corr = fit(tot_dist', tot_ESP_corr', ft);
+
+% old fit comparison
 figure;
 plot(tot_dist, tot_ESP, 'ro'); grid on; hold on;
 plot(tot_dist, tot_ESP_corr, 'bo');
+x = linspace(0,100,200);
 plot(x, log(x/0.2189)/(-0.0894), 'k'); 
-plot(x, -0.1018*x-58.91, 'r');
-plot(x, -0.2423*x-43.06, 'b');
-legend('Raw data', 'Corrected data', 'Exponential fit', 'Linear fit on raw data', 'Linear fit on corrected data')
+plot(x, fitresult.p1*x+fitresult.p2, 'r');
+plot(x, fitresult_corr.p1*x+fitresult_corr.p2, 'b');
+legend('Raw data', 'Corrected data', 'Exponential fit', 'Linear fit on raw data', 'Linear fit on corrected data (based on real angle)')
+xlabel('Distance [m]')
+ylabel('ESP [dBm]')
+axis([0,100,-80,-25]);
+title('Linear fit based on flight data');
+
+
+%% 
+% new correction
+tot_ESP_corr2 = tot_ESP;
+tot_RSSI_corr2 = tot_RSSI;
+tot_angle_est = zeros(size(tot_dist));
+for i=1: length(tot_ESP)
+    tot_angle_est(i) = (asin(tot_z(i) / func_signal_to_distance(tot_ESP(i), 'esp')))*180/pi;
+    tot_ESP_corr2(i) = tot_ESP_corr2(i) - func_attenuation_angle(tot_angle_est(i));
+    tot_RSSI_corr2(i) = tot_RSSI_corr2(i) - func_attenuation_angle(tot_angle_est(i));
+end
+
+% plot angle
+figure;
+plot(tot_angle_deg, 'o'); hold on; grid on;
+plot(tot_angle_est, 'o');
+legend('Real angle [deg]', 'Estimated angle [deg]');
+title('Comparison between the estimated and real angles');
+xlabel('Datapoint number [-]');
+ylabel('Angle [deg]');
+
+% plot signal
+figure;
+plot(tot_ESP, 'ro'); grid on; hold on;
+plot(tot_ESP_corr, 'bo');
+plot(tot_ESP_corr2, 'go');
+legend('Raw data', 'Corrected data (real angle)', 'Corrected data (est. angle)');
+title('Siganl correction based on estimated angle');
+xlabel('Distance [m]');
+ylabel('Signal [dBm]');
+
+%%
+% new fit
+ft = fittype('poly1');
+fitresult_corr2 = fit(tot_dist', tot_ESP_corr2', ft);
+
+% old fit comparison
+figure;
+plot(tot_dist, tot_ESP, 'ro'); grid on; hold on;
+plot(tot_dist, tot_ESP_corr2, 'bo');
+x = linspace(0,100,200);
+plot(x, log(x/0.2189)/(-0.0894), 'k'); 
+plot(x, fitresult.p1*x+fitresult.p2, 'r');
+plot(x, fitresult_corr2.p1*x+fitresult_corr2.p2, 'b');
+legend('Raw data', 'Corrected data v2', 'Exponential fit', 'Linear fit on raw data', 'Linear fit on corrected data (based on est. angle)')
 xlabel('Distance [m]')
 ylabel('ESP [dBm]')
 axis([0,100,-80,-25]);

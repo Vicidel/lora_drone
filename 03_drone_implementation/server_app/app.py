@@ -258,9 +258,6 @@ est_uncertainty1  = 50		# base uncertainty radius for the first estimation
 est_uncertainty2  = 20		# base uncertainty radius for the second estimation
 est_uncertainty3  = 10		# base uncertainty radius for the third estimation
 
-# if we already made estimations before, compare it with new ones
-bool_new_est_made = False
-
 
 
 #########################################################################################
@@ -712,9 +709,25 @@ def find_lora_match_gateway(lora_message, gateway_id):
 # attenuate angle based on altitude and signal
 def angle_attenuation(esp, rssi, altitude, distance):
 
-	# new corrected values ((TODO))
-	esp_corr = esp - function_attenuation_angle(math.asin(altitude/distance)*180/math.pi)
-	rssi_corr = rssi - function_attenuation_angle(math.asin(altitude/distance)*180/math.pi)
+	# init angle
+	angle = None
+
+	# altitude above distance
+	if altitude>distance:
+		angle = 45
+	else:
+		angle = math.asin(float(altitude)/distance)*180/math.pi
+
+	# correction and check if not too high
+	correction = -function_attenuation_angle(angle)
+	if correction>-esp:
+		correction=esp
+
+	# new corrected values
+	esp_corr = esp + correction
+	rssi_corr = rssi + correction
+
+	print(rssi_corr, esp_corr)
 
 	# return
 	return esp_corr, rssi_corr
@@ -724,8 +737,8 @@ def angle_attenuation(esp, rssi, altitude, distance):
 def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 
 	# ignore unrelevant states
-	if payload!='hover' and payload!='data':
-		print("TRI: ignored because payload is not 'hover' or 'data' (payload: {})".format(payload))
+	if payload!='hover' and payload!='data' and payload!='data2':
+		print("TRI: ignored because payload is not 'hover' or 'data' or 'data2' (payload: {})".format(payload))
 		return None
 
 	# find matching LoRa message from timestamp
@@ -750,6 +763,10 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	if float(lora_message.gateway_rssi[gateway_index])<-75:
 		# too small RSSI/ESP
 		print("TRI: too low RSSI to use (<-75)")
+		return None
+	if float(lora_message.gateway_rssi[gateway_index])>-50:
+		## too high RSSI/ESP
+		print("TRI: too high RSSI to use (>-50)")
 		return None
 
 	# create tri datapoint
@@ -776,6 +793,16 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	# add info
 	datapoint.drone_id  = drone_id
 	datapoint.gw_id     = gateway_id_RGB[drone_id-1]
+
+	# check signal strength corrected
+	if datapoint.rssi_corr<-75:
+		# too small RSSI/ESP
+		print("TRI: too low corrected RSSI to use (<-75)")
+		return None
+	if datapoint.rssi_corr>-50:
+		## too high RSSI/ESP
+		print("TRI: too high corrected RSSI to use (>-50)")
+		return None
 
 	# return tri_datapoint
 	print("TRI: datapoint x{0:.2f} y{0:.2f} d{0:.1f}".format(datapoint.pos_x, datapoint.pos_y, datapoint.distance))
@@ -1616,7 +1643,7 @@ def get_base_angle(pos_x, pos_y, network_x, network_y):
 def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 
 	# global variables
-	global solution, solution_temp, circle_radius, nb_est_made, bool_new_est_made, base_angle
+	global solution, solution_temp, circle_radius, nb_est_made, base_angle
 
 	# uncertainty computed
 	est_uncertainty = 666
@@ -1856,7 +1883,7 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	# global
 	global drone_dataset, drone_dataset_temp, tri_dataset, tri_dataset_temp
 	global current_state1, current_state2, current_state3
-	global solution, solution_temp, circle_radius, nb_est_made, bool_new_est_made
+	global solution, solution_temp, circle_radius, nb_est_made
 	global bool_drone1_ready, bool_drone2_ready, bool_drone3_ready
 
 
@@ -1953,9 +1980,6 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		if drone_id==3:
 			current_state3 = current_state3 + 1
 
-		# reset bool
-		bool_new_est_made = False
-
 		## all drones needs to be ready again
 		bool_drone1_ready = False
 		bool_drone2_ready = False
@@ -2041,9 +2065,6 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		if drone_id==3:
 			current_state3 = current_state3 + 1
 
-		# reset bool
-		bool_new_est_made = False
-
 		# get waypoint 
 		wp_x, wp_y, wp_z, bool_landing_waypoint = get_waypoint(drone_id, nb_drone, pos_x, pos_y, True)
 
@@ -2078,6 +2099,14 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 	# (continuous and 3drones only) drone received data, needs a new waypoint based on estimation
 	if payload=='data2':
 		
+		# read old state to increment it
+		if drone_id==1:
+			current_state1 = current_state1 + 1
+		if drone_id==2:
+			current_state2 = current_state2 + 1
+		if drone_id==3:
+			current_state3 = current_state3 + 1
+
 		# do multilateration and store position
 		pos_x_est, pos_y_est, pos_z_est = trilateration_main_temp()
 		if pos_x_est == 0 and pos_y_est == 0 and pos_z_est == 0:

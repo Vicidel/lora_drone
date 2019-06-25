@@ -35,6 +35,7 @@ using namespace Eigen; // To use matrix and vector representation
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <sensor_msgs/NavSatFix.h>
+#include <sensor_msgs/BatteryState.h>
 #include <mavros_msgs/HomePosition.h>
 #include <mavros_msgs/PositionTarget.h>
 #include <mavros_msgs/CommandBool.h>
@@ -57,7 +58,7 @@ mavros_msgs::State current_state;               // drone state (for OFFBOARD mod
 mavros_msgs::HomePosition home_position;        // home position 
 geometry_msgs::PoseStamped est_local_pos;       // local position (xyz)
 sensor_msgs::NavSatFix est_global_pos;          // global position (GPS)
-
+sensor_msgs::BatteryState battery_state;        // battery state
 
 
 /**************************************************************************
@@ -69,6 +70,7 @@ void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& msg);
 void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg);
 void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg);
+void battery_state_cb(const sensor_msgs::BatteryState::ConstPtr& msg);
 
 // conversion functions
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a, geometry_msgs::PoseStamped est_local_pos);
@@ -82,7 +84,7 @@ float parse_hover_time_from_answer(std::string answer_string);
 // for sending home and drone position to Firebase
 ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, 
     float time_firebase_period, mavros_msgs::HomePosition home_position, 
-    sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, int fsm_state);
+    sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, int fsm_state, double battery_percentage);
 
 // check if server is OK by its answer
 bool check_server_answer(std::string answer);
@@ -92,7 +94,7 @@ ros::Time threaded_send_firebase(bool bool_wait_for_offboard, ros::Time time_las
     float time_firebase_period, mavros_msgs::HomePosition home_position, 
     sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, 
     int fsm_state, ros::Rate rate, bool bool_fly_straight, 
-    Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub);
+    Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub, double battery_percentage);
 std::string threaded_send_drone_state(Vector3f position, sensor_msgs::NavSatFix est_global_pos, double time, char* payload, 
     int drone_id, int nb_drone, bool bool_no_answer, ros::Rate rate, bool bool_fly_straight, 
     Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub);
@@ -124,6 +126,7 @@ int main(int argc, char **argv){
     ros::Subscriber est_local_pos_sub   = nh.subscribe<geometry_msgs::PoseStamped> ("mavros/local_position/pose", 10, est_local_pos_cb);
     ros::Subscriber home_pos_sub        = nh.subscribe<mavros_msgs::HomePosition> ("mavros/home_position/home", 10, home_pos_cb);
     ros::Subscriber global_pos_sub      = nh.subscribe<sensor_msgs::NavSatFix> ("mavros/global_position/global", 10, est_global_pos_cb);
+    ros::Subscriber battery_sub         = nh.subscribe<sensor_msgs::BatteryState> ("mavros/battery", 10, battery_state_cb);
 
     // ROS services ("do something")
     ros::ServiceClient arming_client    = nh.serviceClient<mavros_msgs::CommandBool> ("mavros/cmd/arming");
@@ -737,7 +740,7 @@ int main(int argc, char **argv){
         // sending to Firebase
         time_last_send_firebase = threaded_send_firebase(bool_wait_for_offboard, time_last_send_firebase, 
             time_firebase_period, home_position, est_global_pos, drone_id, current_state.mode, pos_drone(2), state,
-            rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+            rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub, battery_state.percentage);
     }
 
     // success
@@ -842,6 +845,9 @@ void home_pos_cb(const mavros_msgs::HomePosition::ConstPtr& msg){
 void est_global_pos_cb(const sensor_msgs::NavSatFix::ConstPtr& msg){
     est_global_pos = *msg;
 }
+void battery_state_cb(const sensor_msgs::BatteryState::ConstPtr& msg){
+    battery_state = *msg;
+}
 
 
 // convertion functions between Vector3f and PoseStamped ROS message
@@ -890,7 +896,7 @@ mavros_msgs::PositionTarget conversion_to_target(Vector3f current, Vector3f goal
 // function for sending to Firebase
 ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, 
         float time_firebase_period, mavros_msgs::HomePosition home_position, 
-        sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, int fsm_state){
+        sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, int fsm_state, double battery_percentage){
     
     // every period
     if(ros::Time::now() - time_last_send_firebase > ros::Duration(time_firebase_period)) {
@@ -903,7 +909,7 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
 
         // send drone position
         send_GPS_firebase(est_global_pos.latitude, est_global_pos.longitude, est_global_pos.altitude, 
-            ros::Time::now().toSec(), drone_id, state, relative_altitude, fsm_state);
+            ros::Time::now().toSec(), drone_id, state, relative_altitude, fsm_state, battery_percentage);
 
         // store current time
         time_last_send_firebase = ros::Time::now();
@@ -916,8 +922,8 @@ ros::Time send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_fi
 ros::Time threaded_send_firebase(bool bool_wait_for_offboard, ros::Time time_last_send_firebase, 
         float time_firebase_period, mavros_msgs::HomePosition home_position, 
         sensor_msgs::NavSatFix est_global_pos, int drone_id, std::string state, double relative_altitude, 
-        int fsm_state, ros::Rate rate, bool bool_fly_straight, 
-        Vector3f pos_drone, Vector3f pos_current_goal, ros::Publisher target_pub, ros::Publisher local_pos_pub) {
+        int fsm_state, ros::Rate rate, bool bool_fly_straight, Vector3f pos_drone, Vector3f pos_current_goal, 
+        ros::Publisher target_pub, ros::Publisher local_pos_pub, double battery_percentage) {
 
     // create a std::promise object
     std::promise<void> exit_signal;
@@ -927,7 +933,7 @@ ros::Time threaded_send_firebase(bool bool_wait_for_offboard, ros::Time time_las
     std::thread thread_ROS(threaded_ros_update, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub, std::move(future_object));
 
     // start send_firebase thread (async thread)
-    auto thread_send = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos, drone_id, state, relative_altitude, fsm_state);
+    auto thread_send = std::async(send_firebase, bool_wait_for_offboard, time_last_send_firebase, time_firebase_period, home_position, est_global_pos, drone_id, state, relative_altitude, fsm_state, battery_percentage);
 
     // finsihed send_state, send exit to ROS thread
     time_last_send_firebase = thread_send.get();

@@ -41,6 +41,11 @@ var altitudeR = 0;
 var altitudeG = 0;
 var altitudeB = 0;
 
+// drone battery levels
+var batteryR = 0;
+var batteryG = 0;
+var batteryB = 0;
+
 // listener active for click
 var click_listener_active = false
 
@@ -369,11 +374,11 @@ function get_base_param(){
 }
 
 // set the states in GUI
-function change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB){
+function change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB){
     // change the string in HTML stuff
-    document.getElementById('states').children[1].innerHTML = '<img src=marker/droneR.png width=20> State:'+stateR+', altitude:'+altitudeR;
-    document.getElementById('states').children[2].innerHTML = '<img src=marker/droneG.png width=20> State:'+stateG+', altitude:'+altitudeG;
-    document.getElementById('states').children[3].innerHTML = '<img src=marker/droneB.png width=20> State:'+stateB+', altitude:'+altitudeB;
+    document.getElementById('states').children[1].innerHTML = '<img src=marker/droneR.png width=20> State:'+stateR+', altitude:'+altitudeR+', battery:'+batteryR;
+    document.getElementById('states').children[2].innerHTML = '<img src=marker/droneG.png width=20> State:'+stateG+', altitude:'+altitudeG+', battery:'+batteryG;
+    document.getElementById('states').children[3].innerHTML = '<img src=marker/droneB.png width=20> State:'+stateB+', altitude:'+altitudeB+', battery:'+batteryB;
 }
 
 // testing if drone is online
@@ -861,7 +866,8 @@ function firebase_drones(markers, paths) {
         // change state in HTML
         stateR = snapshot.val().state;
         altitudeR = parseInt(snapshot.val().rel_alt);
-        change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
+        batteryR = snapshot.val().battery;
+        change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB);
 
         // change variable
         lat_droneR = lat;
@@ -877,7 +883,7 @@ function firebase_drones(markers, paths) {
         markers.droneR.setMap(null)
         paths.lineR.setMap(null)
         paths.listR = []
-        change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN', 0, 0, 0);
+        change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN', 0, 0, 0, 0, 0, 0);
     });
 
     // for droneG
@@ -899,7 +905,7 @@ function firebase_drones(markers, paths) {
         // change state in HTML
         stateG = snapshot.val().state;
         altitudeG = parseInt(snapshot.val().rel_alt);
-        change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
+        change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB);
 
         // change variable
         lat_droneG = lat;
@@ -915,7 +921,7 @@ function firebase_drones(markers, paths) {
         markers.droneG.setMap(null)
         paths.lineG.setMap(null)
         paths.listG = []
-        change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN', 0, 0, 0);
+        change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN', 0, 0, 0, 0, 0, 0);
     });
 
     // for droneB
@@ -937,7 +943,7 @@ function firebase_drones(markers, paths) {
         // change state in HTML
         stateB = snapshot.val().state;
         altitudeB = parseInt(snapshot.val().rel_alt);
-        change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
+        change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB);
 
         // change variable
         lat_droneB = lat;
@@ -953,7 +959,7 @@ function firebase_drones(markers, paths) {
         markers.droneB.setMap(null)
         paths.lineB.setMap(null)
         paths.listB = []
-        change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN', 0, 0, 0);
+        change_states('UNKNOWN', 'UNKNOWN', 'UNKNOWN', 0, 0, 0, 0, 0, 0);
     });
 }
 

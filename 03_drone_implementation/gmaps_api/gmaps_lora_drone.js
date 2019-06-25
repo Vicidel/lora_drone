@@ -155,7 +155,7 @@ function main() {
 
     // fills the parameters and state fields
     get_base_param();
-    change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
+    change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB);
 
     // print checklist
     print_checklist()
@@ -235,7 +235,10 @@ function init_listeners(){
                 altitudeR = 0
                 altitudeG = 0
                 altitudeB = 0
-                change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB);
+                batteryR = 0
+                batteryG = 0
+                batteryB = 0
+                change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB);
             }
         }
 

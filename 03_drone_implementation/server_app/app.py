@@ -1729,8 +1729,8 @@ def get_waypoint(drone_id, nb_drone, pos_x, pos_y, bool_continuous):
 				wp_y = solution.pos_y + circle_radius*math.sin(base_angle)
 				wp_z = flying_altitude
 
-	# three drones
-	if nb_drone==3:
+	# three drones (or two drones, just in case one is not working)
+	if nb_drone==3 or nb_drone==2:
 
 		# if unknown drone number
 		if drone_id>3 or drone_id<1:
@@ -1977,6 +1977,11 @@ def get_return_string(payload, drone_id, nb_drone, pos_x, pos_y):
 		# for one drone, true
 		if nb_drone==1:
 			bool_drone_can_start_collection = True
+
+		# for two drones, any two drones need to be ready
+		if nb_drone==2:
+			if bool_drone1_ready+bool_drone2_ready+bool_drone3_ready == 2:
+				bool_drone_can_start_collection = True
 
 		# for three drones: check if all drones have finished their hovering
 		if nb_drone==3:

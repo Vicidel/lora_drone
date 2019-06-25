@@ -1030,7 +1030,7 @@ void user_input_sim_param(int& sim_type, int& nb_drone, int& drone_id){
     // nb drone
     do{
         // user input 
-        std::cout << "Input number of drones for this simulation (1 or 3): ";
+        std::cout << "Input number of drones for this simulation (1 or 2 or 3): ";
         std::cin >> nb_drone;
         bad_cin = std::cin.fail();
 
@@ -1046,7 +1046,7 @@ void user_input_sim_param(int& sim_type, int& nb_drone, int& drone_id){
     } while(bad_cin);
 
     // drone id
-    if(nb_drone==3){
+    if(nb_drone==3 || nb_drone==2){
         do{
             // user input 
             std::cout << "Input drone id for this simulation (1 or 2 or 3): ";
@@ -1077,7 +1077,7 @@ void user_input_sim_param(int& sim_type, int& nb_drone, int& drone_id){
         ROS_WARN("Continuous v2 simulation started with %d drone%s ", nb_drone, nb_drone==1 ? "":"s");
 
     if(drone_id==1)
-        ROS_WARN("Drone ID is 1 (red)%s", nb_drone==3 ? "":" (default for one drone)");
+        ROS_WARN("Drone ID is 1 (red)%s", nb_drone==1 ? "(default for one drone)":"");
     else if(drone_id==2)
         ROS_WARN("Drone ID is 2 (green)");
     else

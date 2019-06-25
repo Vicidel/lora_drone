@@ -488,11 +488,13 @@ def empty_firebase():
 	ref_netw   = firebase_db.reference('network')
 	ref_est    = firebase_db.reference('estimate')
 	ref_wayp   = firebase_db.reference('waypoint')
+	ref_node   = firebase_db.reference('node')
 	ref_drone.delete()
 	ref_home.delete()
 	ref_netw.delete()
 	ref_est.delete()
 	ref_wayp.delete()
+	ref_node.delete()
 
 	# based on drone_id, do stuff
 	if r_drone_id==1:

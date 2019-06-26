@@ -1026,6 +1026,13 @@ void user_input_sim_param(int& sim_type, int& nb_drone, int& drone_id){
         // bad input
         if(bad_cin || sim_type<0 || sim_type>2){
             ROS_WARN("ERROR: need 0 or 1 or 2");
+            bad_cin = true;
+        }
+
+        // secret mode
+        if(sim_type==666){
+            ROS_WARN("DEBUG mode entered");
+            bad_cin = false;
         }
 
         // clear input
@@ -1041,7 +1048,7 @@ void user_input_sim_param(int& sim_type, int& nb_drone, int& drone_id){
         bad_cin = std::cin.fail();
 
         // bad input 
-        if(bad_cin || (nb_drone<1 && nb_drone>3)){
+        if(bad_cin || nb_drone<1 || nb_drone>3){
             ROS_WARN("ERROR: need 1 or 2 or 3");
             bad_cin = true;
         }

@@ -296,7 +296,7 @@ def print_tri_dataset_temp():
 	# doing stuff to have a json...
 	data_dict = {}
 	for item in tri_dataset_temp:
-		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance, "drone": item.drone_id, "gateway": item.gw_id}
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "esp_corr": item.esp_corr, "rssi_corr": item.rssi_corr, "distance": item.distance, "drone": item.drone_id, "gateway": item.gw_id}
 		data_dict.update({"datapoint_"+str(tri_dataset_temp.index(item)): data})
 
 	# format as json and send

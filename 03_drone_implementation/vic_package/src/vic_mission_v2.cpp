@@ -489,8 +489,10 @@ int main(int argc, char **argv){
                                         state = 1;
                                     else if(sim_type==1)
                                         state = 666;
-                                    else
+                                    else if(sim_type=2)
                                         state = 999;
+                                    else
+                                        state = 333;
 
                                     // drone flies in direction of waypoint for next state
                                     bool_fly_straight = true;
@@ -719,6 +721,44 @@ int main(int argc, char **argv){
                             }
                             break;
                         }
+
+
+                        /**************************************************************************
+                        ***************************   DEBUGGING MODE   ****************************
+                        ***************************************************************************/
+
+                        /*******************   GOING TO WAYPOINT WHILE SENDING  ********************/
+                        case 333:{
+
+                            // sending
+                            if(ros::Time::now() - time_last_request > ros::Duration(time_data_collection_temp_period)){
+                                threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"debug", drone_id, nb_drone, true, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                                time_last_request = ros::Time::now();
+                            }
+
+                            // reached position
+                            if((pos_drone-pos_current_goal).norm()<precision){
+                                ROS_INFO("Waypoint reached!");
+                                answer = threaded_send_drone_state(pos_drone, est_global_pos, ros::Time::now().toSec(), (char*)"wp_ok_debug", drone_id, nb_drone, false, rate, bool_fly_straight, pos_drone, pos_current_goal, target_pub, local_pos_pub);
+                                
+                                // check server error
+                                if(check_server_answer(answer))
+                                    bool_pause_all = true;
+                                else{
+                                    pos_current_goal = parse_WP_from_answer(answer, pos_current_goal);
+
+                                    // check if answer is next waypoint or landing
+                                    char answer_char[answer.size()+1];
+                                    strcpy(answer_char, answer.c_str());
+                                    if(answer_char[0]=='N')          // next waypoint
+                                        state = 333;
+                                    else if(answer_char[0]=='L')     // landing waypoint
+                                        state = 5;
+                                }
+                            }
+                            break;
+                        }
+
 
                     }
                 }

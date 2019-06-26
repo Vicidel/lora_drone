@@ -782,27 +782,27 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	datapoint.rssi 	    = float(lora_message.gateway_rssi[gateway_index])
 	
 	# get non-angle-corrected distance
-	distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
+	datapoint.distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
 
-	# modify data with altitude (angle attenuation)
-	datapoint.esp_corr, datapoint.rssi_corr = angle_attenuation(datapoint.esp, datapoint.rssi, datapoint.pos_z, distance)
-
+	## modify data with altitude (angle attenuation)
+	#datapoint.esp_corr, datapoint.rssi_corr = angle_attenuation(datapoint.esp, datapoint.rssi, datapoint.pos_z, distance)
+	#
 	# get angle-corrected distance
-	datapoint.distance  = float(function_signal_to_distance_lin(datapoint.esp_corr, datapoint.rssi_corr))
-
-	# add info
-	datapoint.drone_id  = drone_id
-	datapoint.gw_id     = gateway_id_RGB[drone_id-1]
-
-	# check signal strength corrected
-	if datapoint.rssi_corr<-75:
-		# too small RSSI/ESP
-		print("TRI: too low corrected RSSI to use (<-75)")
-		return None
-	if datapoint.rssi_corr>-50:
-		## too high RSSI/ESP
-		print("TRI: too high corrected RSSI to use (>-50)")
-		return None
+	#datapoint.distance  = float(function_signal_to_distance_lin(datapoint.esp_corr, datapoint.rssi_corr))
+	#
+	## add info
+	#datapoint.drone_id  = drone_id
+	#datapoint.gw_id     = gateway_id_RGB[drone_id-1]
+	#
+	## check signal strength corrected
+	#if datapoint.rssi_corr<-75:
+	#	# too small RSSI/ESP
+	#	print("TRI: too low corrected RSSI to use (<-75)")
+	#	return None
+	#if datapoint.rssi_corr>-50:
+	#	## too high RSSI/ESP
+	#	print("TRI: too high corrected RSSI to use (>-50)")
+	#	return None
 
 	# return tri_datapoint
 	print("TRI: datapoint x{0:.2f} y{0:.2f} d{0:.1f}".format(datapoint.pos_x, datapoint.pos_y, datapoint.distance))

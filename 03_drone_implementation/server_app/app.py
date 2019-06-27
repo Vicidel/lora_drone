@@ -2122,31 +2122,29 @@ def drone_receive_state():
 		if tri_datapoint is not None:
 			tri_dataset_temp.append(tri_datapoint)
 
-	# normal datapoint
-	else:
-		# create new drone datapoint with parsed data
-		datapoint = drone_datapoint()
-		datapoint.pos_x 	= r_pos_x
-		datapoint.pos_y 	= r_pos_y
-		datapoint.pos_z 	= r_pos_z
-		datapoint.lat       = r_lat
-		datapoint.lng       = r_lng
-		datapoint.alt       = r_alt
-		datapoint.time 		= r_time
-		datapoint.timestamp = r_timestamp
-		datapoint.payload   = r_payload
-		datapoint.drone_id  = r_drone_id
+	# create new drone datapoint with parsed data
+	datapoint = drone_datapoint()
+	datapoint.pos_x 	= r_pos_x
+	datapoint.pos_y 	= r_pos_y
+	datapoint.pos_z 	= r_pos_z
+	datapoint.lat       = r_lat
+	datapoint.lng       = r_lng
+	datapoint.alt       = r_alt
+	datapoint.time 		= r_time
+	datapoint.timestamp = r_timestamp
+	datapoint.payload   = r_payload
+	datapoint.drone_id  = r_drone_id
 
-		# state
-		if r_drone_id==1:
-			datapoint.state = current_state1
-		elif r_drone_id==2:
-			datapoint.state = current_state2
-		elif r_drone_id==3:
-			datapoint.state = current_state3
+	# state
+	if r_drone_id==1:
+		datapoint.state = current_state1
+	elif r_drone_id==2:
+		datapoint.state = current_state2
+	elif r_drone_id==3:
+		datapoint.state = current_state3
 
-		# save it in dataset
-		drone_dataset.append(datapoint)
+	# save it in dataset
+	drone_dataset.append(datapoint)
 
 
 	###################  GET RETURN STRING  ######################

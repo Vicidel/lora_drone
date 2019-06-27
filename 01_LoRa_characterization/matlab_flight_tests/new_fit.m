@@ -9,8 +9,8 @@ tot_angle_deg = [];
 tot_z = [];
 
 % get data
-fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'; 'matlab_flight_tests/20190624-1440-tri-data.json'];
-% fnames = ['matlab_flight_tests/20190624-1440-tri-data.json'];
+fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'; 'matlab_flight_tests/20190627-0930-tri-data.json'];
+% fnames = [];
 
 % for each file
 for j=1: length(fnames(:,1))
@@ -39,8 +39,8 @@ for j=1: length(fnames(:,1))
     y = y - y(1);
 
     % correct with distance between home and node
-    x = x + 11.89;
-    y = y - 4.21;
+    x = x - mean(x);
+    y = y - mean(y);
 
     % get real distance
     real_dist = zeros(1,length(fieldnames(db)));

@@ -908,6 +908,7 @@ function firebase_drones(markers, paths) {
         // change state in HTML
         stateG = snapshot.val().state;
         altitudeG = parseInt(snapshot.val().rel_alt);
+        batteryG = snapshot.val().battery;
         change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB);
 
         // change variable
@@ -946,6 +947,7 @@ function firebase_drones(markers, paths) {
         // change state in HTML
         stateB = snapshot.val().state;
         altitudeB = parseInt(snapshot.val().rel_alt);
+        batteryB = snapshot.val().battery;
         change_states(stateR, stateG, stateB, altitudeR, altitudeG, altitudeB, batteryR, batteryG, batteryB);
 
         // change variable

@@ -9,8 +9,8 @@ tot_angle_deg = [];
 tot_z = [];
 
 % get data
-fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'; 'matlab_flight_tests/20190627-0930-tri-data.json'];
-% fnames = [];
+% fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'; 'matlab_flight_tests/20190627-0930-tri-data.json'];
+fnames = ['matlab_flight_tests/20190627-0930-tri-data.json'];
 
 % for each file
 for j=1: length(fnames(:,1))

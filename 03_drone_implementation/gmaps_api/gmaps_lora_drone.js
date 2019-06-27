@@ -282,7 +282,7 @@ function init_listeners(){
                 // change gateway IDs
                 var gatewayR = prompt("Gateway R: ", "004A1092");
                 var gatewayG = prompt("Gateway G: ", "004A1093");
-                var gatewayB = prompt("Gateway B: ", "004A0DB4");
+                var gatewayB = prompt("Gateway B: ", "004A1526");
                 const url='http://victor.scapp.io/param/gateways';
                 const data={'gatewayR': gatewayR, 'gatewayG': gatewayG, 'gatewayB': gatewayB}
                 axios({method: 'POST', url: url, data: data})

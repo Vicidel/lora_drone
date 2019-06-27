@@ -170,6 +170,7 @@ tri_dataset_temp   = []		# storage of the temporary trilateration messages
 gateway_printer   = '004A0DB4'
 gateway_corner    = '004A1092'
 gateway_logitech  = '004A1093'
+gateway_third     = '004A1526'
 victor_beacon     = '78AF580300000493'		# no gps
 micha_beacon      = '78AF580300000485'		# gps
 
@@ -178,7 +179,7 @@ TIME_FORMAT       = "%Y-%m-%dT%H:%M:%S.%f+02:00"		# change that to +01:00 in win
 TIME_FORMAT_QUERY = "%Y-%m-%dT%H:%M:%S"
 
 # gateways on drones
-gateway_id_RGB 	  = [gateway_corner, gateway_logitech, gateway_printer]
+gateway_id_RGB 	  = [gateway_corner, gateway_logitech, gateway_third]
 
 
 

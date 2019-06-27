@@ -604,54 +604,18 @@ def add_ground_truth(lat, lng, nb_sat, hdop, speed, course):
 ###################################  TRILATERATION  #####################################
 #########################################################################################
 
-# converts the signal data to a distance
-def function_signal_to_distance(esp, rssi):
+# modified version based on flight test data
+def function_signal_to_distance_lin(esp):
 
-	# exponential coefficents
-	a_ESP  = 0.1973
-	b_ESP  = -0.0902
-	a_RSSI = 0.2189
-	b_RSSI = -0.0894
-
-	# compute based on ESP or RSSI
-	distance = a_ESP * math.exp(b_ESP * esp)
-	#distance = a_RSSI * math.exp(b_RSSI * rssi)
-
-	# return the distance
-	return distance
-
-
-# same but better ?
-def function_signal_to_distance_lin(esp, rssi):
-
-	# linear coefficients
-	p1 = -0.2864
-	p2 = -39.82
+	# linear coefficients: esp=a*distance+b
+	a = -0.1127
+	b = -59.48
 
 	# compute based on ESP
-	distance = p1*esp + p2
+	distance = (esp - b) / a
 
 	# return the distance
 	return distance
-
-
-# attenuation based on angle
-def function_attenuation_angle(angle_deg):
-
-	# out of bound angles
-	if angle_deg < 0:
-		angle_deg = -angle_deg
-	while angle_deg > 180:
-		angle_deg = angle_deg - 180
-	if angle_deg > 90:
-		angle_deg = 180 - angle_deg
-
-	# coefficients
-	a_att = 0.5667
-	b_att = 1.38
-
-	# return, no b_att to have 0dB attenuation at 0deg
-	return -a_att*angle_deg
 
 
 # uses the multilateration package on the input dataset
@@ -706,33 +670,6 @@ def find_lora_match_gateway(lora_message, gateway_id):
 	return 666
 
 
-# attenuate angle based on altitude and signal
-def angle_attenuation(esp, rssi, altitude, distance):
-
-	# init angle
-	angle = None
-
-	# altitude above distance
-	if altitude>distance:
-		angle = 45
-	else:
-		angle = math.asin(float(altitude)/distance)*180/math.pi
-
-	# correction and check if not too high
-	correction = -function_attenuation_angle(angle)
-	if correction>-esp:
-		correction=esp
-
-	# new corrected values
-	esp_corr = esp + correction
-	rssi_corr = rssi + correction
-
-	print(rssi_corr, esp_corr)
-
-	# return
-	return esp_corr, rssi_corr
-
-
 # returns a tri_datapoint based on matching data
 def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 
@@ -781,28 +718,8 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	datapoint.esp 	    = float(lora_message.gateway_esp[gateway_index])
 	datapoint.rssi 	    = float(lora_message.gateway_rssi[gateway_index])
 	
-	# get non-angle-corrected distance
-	datapoint.distance = float(function_signal_to_distance(datapoint.esp, datapoint.rssi))
-
-	## modify data with altitude (angle attenuation)
-	#datapoint.esp_corr, datapoint.rssi_corr = angle_attenuation(datapoint.esp, datapoint.rssi, datapoint.pos_z, distance)
-	#
-	# get angle-corrected distance
-	#datapoint.distance  = float(function_signal_to_distance_lin(datapoint.esp_corr, datapoint.rssi_corr))
-	#
-	## add info
-	#datapoint.drone_id  = drone_id
-	#datapoint.gw_id     = gateway_id_RGB[drone_id-1]
-	#
-	## check signal strength corrected
-	#if datapoint.rssi_corr<-75:
-	#	# too small RSSI/ESP
-	#	print("TRI: too low corrected RSSI to use (<-75)")
-	#	return None
-	#if datapoint.rssi_corr>-50:
-	#	## too high RSSI/ESP
-	#	print("TRI: too high corrected RSSI to use (>-50)")
-	#	return None
+	# get distance
+	datapoint.distance = float(function_signal_to_distance_lin(datapoint.esp, datapoint.rssi))
 
 	# return tri_datapoint
 	print("TRI: datapoint x{0:.2f} y{0:.2f} d{0:.1f}".format(datapoint.pos_x, datapoint.pos_y, datapoint.distance))

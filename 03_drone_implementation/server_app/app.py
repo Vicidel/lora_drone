@@ -720,7 +720,7 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	datapoint.rssi 	    = float(lora_message.gateway_rssi[gateway_index])
 	
 	# get distance
-	datapoint.distance = float(function_signal_to_distance_lin(datapoint.esp, datapoint.rssi))
+	datapoint.distance = float(function_signal_to_distance_lin(datapoint.esp))
 
 	# return tri_datapoint
 	print("TRI: datapoint x{0:.2f} y{0:.2f} d{0:.1f}".format(datapoint.pos_x, datapoint.pos_y, datapoint.distance))
@@ -744,9 +744,9 @@ def tri_get_uncertainty(tri_dataset, x_est, y_est, z_est):
 
 			# new distance with added +std in first half, -std in second half
 			if j<len(dataset)/2:
-				dataset[j].distance = float(function_signal_to_distance(dataset[j].esp+2.5, dataset[j].rssi+2.5))
+				dataset[j].distance = float(function_signal_to_distance_lin(dataset[j].esp+2.5))
 			else:
-				dataset[j].distance = float(function_signal_to_distance(dataset[j].esp-2.5, dataset[j].rssi-2.5))
+				dataset[j].distance = float(function_signal_to_distance_lin(dataset[j].esp-2.5))
 
 		# do new tri
 		x_est2, y_est2, z_est2 = trilateration(dataset)
@@ -757,7 +757,7 @@ def tri_get_uncertainty(tri_dataset, x_est, y_est, z_est):
 		max_distance = max(max_distance, math.sqrt(delta_x*delta_x + delta_y*delta_y))
 
 	# return
-	return max_distance*5 		# safety factor
+	return max_distance
 
 
 # matches Lora and drone, then does trilateration on it

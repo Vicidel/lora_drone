@@ -339,10 +339,10 @@ function param_change(){
         window.alert("Altitudes parameters are not correct, should be positive")
         return;
     }
-    //if(flight<5 || takeoff<2){
-    //    window.alert("Altitudes parameters are too small")
-    //    return;
-    //}
+    if(flight<5 || takeoff<2){
+        window.alert("Altitudes parameters are too small")
+        return;
+    }
     if(flight<=takeoff){
         window.alert("Altitudes parameters are not correct, flight should be above takeoff")
         return;

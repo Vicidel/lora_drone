@@ -17,7 +17,7 @@ function [measured_signal] = get_noisy_signal(position1, position2, signal_type,
         % get signal
         signal_distance = func_distance_to_signal(distance_norm, signal_type);
         signal_attenuation = func_attenuation_angle(theta_deg);
-        signal(i) = signal_distance + signal_attenuation + normrnd(0, 2.5);     % adds gaussian noise of 2.5dB
+        signal(i) = signal_distance + signal_attenuation + normrnd(0, 1);     % adds gaussian noise of 2.5dB
     end
     
     % compute mean value

@@ -17,6 +17,7 @@ print_bool = true;
 pos_true_node = [0, 0, 0];
 pos_network_error = 200; 
 pos_network_estimate = pos_true_node + [rand()*pos_network_error*cos(rand()*2*pi), rand()*pos_network_error*sin(rand()*2*pi), 0];
+pos_network_estimate = [50, 48, 0];
 
 % name of the running script
 file_run = dbstack(1);

@@ -18,6 +18,7 @@ function output = sim2_1drone_continuous()
     if plot_bool
         figure();
         plot_tri(pos_true_node, 'ro'); grid on; hold on;
+        plot_tri([1000,1000,1000], 'kx');
         plot_tri(pos_network_estimate, 'co');
         view(0, 90); axis equal;
     end
@@ -55,8 +56,8 @@ function output = sim2_1drone_continuous()
         % temporary estimate
         if angle_count > 10
             [x, y] = get_position_dataset(dataset, signal_type);
-            pos_estimated_temp = [x, y, 0];
-            if plot_bool plot_tri(pos_estimated_temp, 'mx'); end
+            %pos_estimated_temp = [x, y, 0];
+            %if plot_bool plot_tri(pos_estimated_temp, 'mx'); end
         end
         
         % done on full circle
@@ -83,7 +84,7 @@ function output = sim2_1drone_continuous()
             
             % plot
             if plot_bool
-                for i=2:1:size(dataset)
+                for i=2:2:size(dataset)
                     plot_circle(dataset(i,1), dataset(i,2), func_signal_to_distance(dataset(i,4), signal_type));
                 end
                 plot_tri(pos_estimated, 'kx');
@@ -91,7 +92,7 @@ function output = sim2_1drone_continuous()
                 ylabel('y position [m]')
                 zlabel('z position [m]')
                 title('Node localization algorithm');
-                legend('Node position', 'Last estimate', 'Measuring positions');
+                legend('Node position', 'Computed position', 'Last estimate', 'Measuring positions');
                 view(0, 90); axis equal;
             end
             

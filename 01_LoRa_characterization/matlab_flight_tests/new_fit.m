@@ -9,8 +9,8 @@ tot_angle_deg = [];
 tot_z = [];
 
 % get data
-% fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'; 'matlab_flight_tests/20190627-0930-tri-data.json'];
-fnames = ['matlab_flight_tests/20190627-0930-tri-data.json'];
+fnames = ['matlab_flight_tests/20190619-1355-tri-data.json'; 'matlab_flight_tests/20190619-1417-tri-data.json'; 'matlab_flight_tests/20190627-0930-tri-data.json'];
+% fnames = ['matlab_flight_tests/20190627-0930-tri-data.json'];
 
 % for each file
 for j=1: length(fnames(:,1))
@@ -153,8 +153,8 @@ plot(tot_ESP, 'ro'); grid on; hold on;
 plot(tot_ESP_corr, 'bo');
 plot(tot_ESP_corr2, 'go');
 legend('Raw data', 'Corrected data (real angle)', 'Corrected data (est. angle)');
-title('Siganl correction based on estimated angle');
-xlabel('Distance [m]');
+title('Signal correction based on estimated angle');
+xlabel('Datapoint number [-]');
 ylabel('Signal [dBm]');
 
 %%

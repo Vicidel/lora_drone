@@ -125,8 +125,7 @@ class tri_datapoint:
 	esp 		= 666
 	rssi 		= 666
 	distance 	= 666
-	esp_corr    = 666
-	rssi_corr   = 666
+	dist_exp    = 666
 	drone_id    = 666
 	gw_id 		= 666
 
@@ -297,7 +296,7 @@ def print_tri_dataset_temp():
 	# doing stuff to have a json...
 	data_dict = {}
 	for item in tri_dataset_temp:
-		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "esp_corr": item.esp_corr, "rssi_corr": item.rssi_corr, "distance": item.distance, "drone": item.drone_id, "gateway": item.gw_id}
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance, "dist_exp": item.dist_exp, "angle_deg": item.angle_deg, "drone": item.drone_id, "gateway": item.gw_id}
 		data_dict.update({"datapoint_"+str(tri_dataset_temp.index(item)): data})
 
 	# format as json and send
@@ -311,7 +310,7 @@ def print_tri_dataset():
 	# doing stuff to have a json...
 	data_dict = {}
 	for item in tri_dataset:
-		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance, "drone": item.drone_id, "gateway": item.gw_id}
+		data={"x": item.pos_x, "y": item.pos_y, "z": item.pos_z, "esp": item.esp, "rssi": item.rssi, "distance": item.distance, "dist_exp": item.dist_exp, "angle_deg": item.angle_deg, "drone": item.drone_id, "gateway": item.gw_id}
 		data_dict.update({"datapoint_"+str(tri_dataset.index(item)): data})
 
 	# format as json and send
@@ -605,15 +604,47 @@ def add_ground_truth(lat, lng, nb_sat, hdop, speed, course):
 ###################################  TRILATERATION  #####################################
 #########################################################################################
 
-# modified version based on flight test data
-def function_signal_to_distance_lin(esp):
+# returns the attenuation due to angle 
+def function_attenuation_angle(angle_deg):
+
+	# out of bound angles
+	if angle_deg < 0:
+		angle_deg = -angle_deg
+	while angle_deg > 180:
+		angle_deg = angle_deg - 180
+	if angle_deg > 90:
+		angle_deg = 180 - angle_deg
+
+	# linear coefficients: delta = -a*angle_deg
+	a = 0.5667
+
+	# return the delta
+	return -a * angle_deg
+
+
+# converts the signal to a distance based on the linear fit corrected using estimated angle
+def function_signal_to_distance_lin(esp, angle):
 
 	# linear coefficients: esp=a*distance+b
-	a = -0.1127
-	b = -59.48
+	a = -0.2687
+	b = -52.18
+
+	# compute based on ESP and angle
+	distance = (esp + function_attenuation_angle(angle) - b) / a
+
+	# return the distance
+	return distance
+
+
+# converts the signal to a distance based on the exponential fit
+def function_signal_to_distance_exp(esp):
+
+	# exponential coefficients: dist=a*exp(esp*b)
+	a = 0.1973
+	b = -0.0902
 
 	# compute based on ESP
-	distance = (esp - b) / a
+	distance = a * math.exp(esp * b)
 
 	# return the distance
 	return distance
@@ -714,16 +745,22 @@ def match_tri_datapoint(timestamp, pos_x, pos_y, pos_z, drone_id, payload):
 	datapoint.pos_x 	= float(pos_x)
 	datapoint.pos_y 	= float(pos_y)
 	datapoint.pos_z 	= float(pos_z)
+	datapoint.drone_id  = int(drone_id)
+	datapoint.gw_id     = gateway_id_RGB[drone_id-1]
 
 	# save LoRa data 
 	datapoint.esp 	    = float(lora_message.gateway_esp[gateway_index])
 	datapoint.rssi 	    = float(lora_message.gateway_rssi[gateway_index])
 	
-	# get distance
-	datapoint.distance = float(function_signal_to_distance_lin(datapoint.esp))
+	# get distance from exp fit
+	datapoint.dist_exp  = float(function_signal_to_distance_exp(datapoint.esp))
+ 
+	# get distance from lincorr fit
+	datapoint.angle_deg = float(math.asin(pos_z/datapoint.dist_exp)*180/math.pi)
+	datapoint.distance  = float(function_signal_to_distance_lin(datapoint.esp, datapoint.angle_deg))
 
 	# return tri_datapoint
-	print("TRI: datapoint x{0:.2f} y{0:.2f} d{0:.1f}".format(datapoint.pos_x, datapoint.pos_y, datapoint.distance))
+	print("TRI: datapoint x%.2f y%.2f d%.1f" %(datapoint.pos_x, datapoint.pos_y, datapoint.distance))
 	return datapoint
 
 
@@ -744,9 +781,9 @@ def tri_get_uncertainty(tri_dataset, x_est, y_est, z_est):
 
 			# new distance with added +std in first half, -std in second half
 			if j<len(dataset)/2:
-				dataset[j].distance = float(function_signal_to_distance_lin(dataset[j].esp+2.5))
+				dataset[j].distance = float(function_signal_to_distance_lin(dataset[j].esp+2.5, dataset[j].angle_deg))
 			else:
-				dataset[j].distance = float(function_signal_to_distance_lin(dataset[j].esp-2.5))
+				dataset[j].distance = float(function_signal_to_distance_lin(dataset[j].esp-2.5, dataset[j].angle_deg))
 
 		# do new tri
 		x_est2, y_est2, z_est2 = trilateration(dataset)

@@ -3,11 +3,11 @@ close all
 clear all
 
 % get data
-% fnames = ['matlab_flight_tests/20190619-1417-tri-data.json';       % continuous
-%           'matlab_flight_tests/20190627-0930-tri-data.json'];      % classic
-% delta = [-4.7, -20.3;      % continuous
-%          -8.9, -12.3];     % classic
-fnames = ['matlab_flight_tests/20190627-0930-tri-data.json']; delta = [-8.9, -12.3];      % classic
+fnames = ['matlab_flight_tests/20190619-1417-tri-data.json';       % continuous
+          'matlab_flight_tests/20190627-0930-tri-data.json'];      % classic
+delta = [-4.7, -20.3;      % continuous
+         -8.9, -12.3];     % classic
+% fnames = ['matlab_flight_tests/20190627-0930-tri-data.json']; delta = [-8.9, -12.3];      % classic
 
      
 % for each file
@@ -53,21 +53,21 @@ for j=1: length(fnames(:,1))
     end
     real_angle_deg = real_angle_rad*180/pi;
 
-%     % plot distance
-%     figure(1);
-%     plot(real_dist, 'o-'); grid on; hold on;
-%     title('Real distance between node and drone');
-%     xlabel('Datapoint number [-]');
-%     ylabel('Distance [m]');
-%     legend('Continuous, d=100m', 'Classic, d=80m');
+    % plot distance
+    figure(1);
+    plot(real_dist, 'o-'); grid on; hold on;
+    title('Real distance between node and drone');
+    xlabel('Datapoint number [-]');
+    ylabel('Distance [m]');
+    legend('Continuous, d=100m', 'Classic, d=80m');
 
-%     % plot xy
-%     figure(2);
-%     plot(x, y, 'o-'); axis equal; grid on; hold on;
-%     title('Measuring positions');
-%     xlabel('x distance [m]');
-%     ylabel('y distance[m]');
-%     legend('Continuous, d=100m', 'Classic, d=80m');
+    % plot xy
+    figure(2);
+    plot(x, y, 'o-'); axis equal; grid on; hold on;
+    title('Measuring positions');
+    xlabel('x distance [m]');
+    ylabel('y distance[m]');
+    legend('Continuous, d=100m', 'Classic, d=80m');
 
     % get distance based on exp fit
     for k=1: length(fieldnames(db))
@@ -77,16 +77,16 @@ for j=1: length(fnames(:,1))
         dist_lin_corr(k) = (ESP(k)+func_attenuation_angle(angle_est(k))+52.18)/(-0.2687);
     end
     
-%     % plot distance comparison
-%     figure;
-%     plot(real_dist, 'o-'); grid on; hold on;
-%     plot(dist_exp, 'o-');
-%     plot(dist_lin, 'o-');
-%     plot(dist_lin_corr, 'o-');
-%     title('Comparison of distances');
-%     xlabel('Datapoint number [-]')
-%     ylabel('Distance [m]');
-%     legend('Real distance', 'Estimated distance, exponential', 'Estimated distance, linear', 'Estimated distance, corrected linear');
+    % plot distance comparison
+    figure;
+    plot(real_dist, 'o-'); grid on; hold on;
+    plot(dist_exp, 'o-');
+    plot(dist_lin, 'o-');
+    plot(dist_lin_corr, 'o-');
+    title('Comparison of distances');
+    xlabel('Datapoint number [-]')
+    ylabel('Distance [m]');
+    legend('Real distance', 'Estimated distance, exponential', 'Estimated distance, linear', 'Estimated distance, corrected linear');
     
     % multilateration
     points = [x; y; zeros(size(x))];
@@ -95,17 +95,17 @@ for j=1: length(fnames(:,1))
     sol_lin  = Trilateration(points, dist_lin, diag(ones(1,3)));
     sol_linc = Trilateration(points, dist_lin_corr, diag(ones(1,3)));
     
-%     % plot circles
-%     figure;
-%     plot(x, y, 'o'); axis equal; grid on; hold on;
-%     plot(sol_real(2), sol_real(3), 'kx');
-%     for k=1: length(x)
-%         plot_circle(x(k), y(k), real_dist(k), 'r')
-%     end
-%     title('Real distances');
-%     xlabel('x distance [m]');
-%     ylabel('y distance[m]');
-%     legend('Measuring positions', 'Solution found', 'Real distance');
+    % plot circles
+    figure;
+    plot(x, y, 'o'); axis equal; grid on; hold on;
+    plot(sol_real(2), sol_real(3), 'kx');
+    for k=1: length(x)
+        plot_circle(x(k), y(k), real_dist(k), 'r')
+    end
+    title('Real distances');
+    xlabel('x distance [m]');
+    ylabel('y distance[m]');
+    legend('Measuring positions', 'Solution found', 'Real distance');
     
     % plot circles
     figure;
@@ -119,22 +119,22 @@ for j=1: length(fnames(:,1))
     ylabel('y distance[m]');
     legend('Measuring positions', 'Solution found', 'Distance estimated');
     
-    % plot circle group
-    figure;
-    plot(x, y, 'o'); axis equal; grid on; hold on;
-    points_group = [mean(points(1,1:20)) mean(points(1,21:42)) mean(points(1,43:end));
-                    mean(points(2,1:20)) mean(points(2,21:42)) mean(points(2,43:end));
-                    zeros(1,3)];
-    dist_exp_group = [mean(dist_exp(1:20)) mean(dist_exp(21:42)) mean(dist_exp(43:end))];
-    sol_expo_group = Trilateration(points_group, dist_exp_group, diag(ones(1,3)));
-    plot(sol_expo_group(2), sol_expo_group(3), 'kx');
-    for k=1: 3
-        plot_circle(points_group(1,k), points_group(2,k), dist_exp_group(k), 'g')
-    end
-    title('Exponential fit grouped');
-    xlabel('x distance [m]');
-    ylabel('y distance[m]');
-    legend('Measuring positions', 'Solution found', 'Distance estimated');
+%     % plot circle group
+%     figure;
+%     plot(x, y, 'o'); axis equal; grid on; hold on;
+%     points_group = [mean(points(1,1:20)) mean(points(1,21:42)) mean(points(1,43:end));
+%                     mean(points(2,1:20)) mean(points(2,21:42)) mean(points(2,43:end));
+%                     zeros(1,3)];
+%     dist_exp_group = [mean(dist_exp(1:20)) mean(dist_exp(21:42)) mean(dist_exp(43:end))];
+%     sol_expo_group = Trilateration(points_group, dist_exp_group, diag(ones(1,3)));
+%     plot(sol_expo_group(2), sol_expo_group(3), 'kx');
+%     for k=1: 3
+%         plot_circle(points_group(1,k), points_group(2,k), dist_exp_group(k), 'g')
+%     end
+%     title('Exponential fit grouped');
+%     xlabel('x distance [m]');
+%     ylabel('y distance[m]');
+%     legend('Measuring positions', 'Solution found', 'Distance estimated');
     
     % plot circles
     figure;
@@ -148,19 +148,19 @@ for j=1: length(fnames(:,1))
     ylabel('y distance[m]');
     legend('Measuring positions', 'Solution found', 'Distance estimated');
     
-    % plot circle group
-    figure;
-    plot(x, y, 'o'); axis equal; grid on; hold on;
-    dist_lin_group = [mean(dist_lin(1:20)) mean(dist_lin(21:42)) mean(dist_lin(43:end))];
-    sol_lin_group = Trilateration(points_group, dist_lin_group, diag(ones(1,3)));
-    plot(sol_lin_group(2), sol_lin_group(3), 'kx');
-    for k=1: 3
-        plot_circle(points_group(1,k), points_group(2,k), dist_lin_group(k), 'g')
-    end
-    title('Linear fit grouped');
-    xlabel('x distance [m]');
-    ylabel('y distance[m]');
-    legend('Measuring positions', 'Solution found', 'Distance estimated');
+%     % plot circle group
+%     figure;
+%     plot(x, y, 'o'); axis equal; grid on; hold on;
+%     dist_lin_group = [mean(dist_lin(1:20)) mean(dist_lin(21:42)) mean(dist_lin(43:end))];
+%     sol_lin_group = Trilateration(points_group, dist_lin_group, diag(ones(1,3)));
+%     plot(sol_lin_group(2), sol_lin_group(3), 'kx');
+%     for k=1: 3
+%         plot_circle(points_group(1,k), points_group(2,k), dist_lin_group(k), 'g')
+%     end
+%     title('Linear fit grouped');
+%     xlabel('x distance [m]');
+%     ylabel('y distance[m]');
+%     legend('Measuring positions', 'Solution found', 'Distance estimated');
     
     % plot circles
     figure;
@@ -174,22 +174,22 @@ for j=1: length(fnames(:,1))
     ylabel('y distance[m]');
     legend('Measuring positions', 'Solution found', 'Distance estimated');
     
-    % plot circle group
-    figure;
-    plot(x, y, 'o'); axis equal; grid on; hold on;
-    dist_lin_corr_group = [mean(dist_lin_corr(1:20)) mean(dist_lin_corr(21:42)) mean(dist_lin_corr(43:end))];
-    sol_lin_corr_group = Trilateration(points_group, dist_lin_corr_group, diag(ones(1,3)));
-    plot(sol_lin_corr_group(2), sol_lin_corr_group(3), 'kx');
-    for k=1: 3
-        plot_circle(points_group(1,k), points_group(2,k), dist_lin_corr_group(k), 'y')
-    end
-    title('Linear fit corrected with estimated angle grouped');
-    xlabel('x distance [m]');
-    ylabel('y distance[m]');
-    legend('Measuring positions', 'Solution found', 'Distance estimated');
+%     % plot circle group
+%     figure;
+%     plot(x, y, 'o'); axis equal; grid on; hold on;
+%     dist_lin_corr_group = [mean(dist_lin_corr(1:20)) mean(dist_lin_corr(21:42)) mean(dist_lin_corr(43:end))];
+%     sol_lin_corr_group = Trilateration(points_group, dist_lin_corr_group, diag(ones(1,3)));
+%     plot(sol_lin_corr_group(2), sol_lin_corr_group(3), 'kx');
+%     for k=1: 3
+%         plot_circle(points_group(1,k), points_group(2,k), dist_lin_corr_group(k), 'y')
+%     end
+%     title('Linear fit corrected with estimated angle grouped');
+%     xlabel('x distance [m]');
+%     ylabel('y distance[m]');
+%     legend('Measuring positions', 'Solution found', 'Distance estimated');
     
     % print results
-    fprintf('\nError obtained on file %s: \nExponential fit: %.1f meters (grouped %.1f meters)\nLinear fit: %.1f meters (grouped %.1f meters)\nCorrected linear fit: %.1f meters (grouped %.1f meters)\n', fnames(j,21:end), norm(sol_expo(2:4)), norm(sol_expo_group(2:3)), norm(sol_lin(2:4)), norm(sol_lin_group(2:3)), norm(sol_linc(2:4)), norm(sol_lin_corr_group(2:3)));
+    fprintf('\nError obtained on file %s: \nExponential fit: %.1f meters (grouped %.1f meters)\nLinear fit: %.1f meters (grouped %.1f meters)\nCorrected linear fit: %.1f meters (grouped %.1f meters)\n', fnames(j,21:end), norm(sol_expo(2:4)), -1, norm(sol_lin(2:4)), -1, norm(sol_linc(2:4)), -1);
 end
 
 

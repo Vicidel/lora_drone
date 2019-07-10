@@ -17,8 +17,11 @@ This folder contains:
 - drone_logs
 - florian_rpi
 - gmaps_api
+- matlab_drone_logs_analysis
+- misc
 - scripts
 - server_app
+- solidworks_parts
 - tuino_lora_beaconing
 - vic_package
 
@@ -31,13 +34,22 @@ Contains the C++ code of Florian Kaufmann used on his Raspberry Pi to make the d
 #### GMAPS_API
 Contains the HTML/JS Google Maps API code used to visualize the drone flight in Maps. Also used as a GUI for giving commands.
 
+#### MATLAB_DRONE_LOGS_ANALYSIS
+Contains the files used to decode the ROSBAG files present in the *drone\_logs* folder.
+
+#### MISC
+Contains miscellaneous files.
+
 #### SCRIPTS
 Contains different scripts to ease the process of launching the simulation or compiling the ROS node...
 
 #### SERVER_APP
 Contains the Python code of the Swisscom server app. The server is connected to both the drone and the GMaps and is the one to compute the commands for the drone.
 
-#### TUINO_LORA_BEACONING
+#### SOLIDWORKS_PARTS
+Contains the differents parts 3D-printed and laser-cut at LIS for this project.
+
+#### TUINO_LORA_BEACONING (and ...V2)
 Contains the Arduino code to put the beacon in "lost" mode when the button is pressed. The v2 is for Micha's beacon with onboard GPS to have a ground truth.
 
 #### VIC_PACKAGE

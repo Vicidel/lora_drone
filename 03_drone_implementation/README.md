@@ -15,7 +15,6 @@ This folder contains the files used to make the drone(s) fly. Also in simulation
 
 This folder contains:
 - drone_logs
-- florian_rpi
 - gmaps_api
 - matlab_drone_logs_analysis
 - misc
@@ -27,9 +26,6 @@ This folder contains:
 
 #### DRONE_LOGS
 Contains the important logs of different flights.
-
-#### FLORIAN_RPI
-Contains the C++ code of Florian Kaufmann used on his Raspberry Pi to make the drone fly. Initially wanted to take inspiration from it, but decided to do again from scratch as I use ROS and he didn't.
 
 #### GMAPS_API
 Contains the HTML/JS Google Maps API code used to visualize the drone flight in Maps. Also used as a GUI for giving commands.
